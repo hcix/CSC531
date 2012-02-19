@@ -1,0 +1,122 @@
+package userinterface;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.KeyEvent; 
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+
+public class MainInterface extends JPanel{
+	private static final long serialVersionUID = 1L;
+	JPanel sidePanel, mapPanel, homePanel, shiftcommandersumreport;
+//-----------------------------------------------------------------------------	
+	public MainInterface(){
+		super(new GridLayout(1, 1));
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		
+		Dimension dim = new Dimension(970,1000);
+		
+		/*
+		 * Set up the tabbedPane panel and add the appropriate tabs.
+		 */
+		JTabbedPane tabbedPane = new JTabbedPane();
+	        
+		homePanel = makeTextPanel("HomePanel");
+		tabbedPane.addTab("Home", homePanel);
+		homePanel.setPreferredSize(dim);
+        tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
+        
+        JComponent boloPanel = makeTextPanel("boloPanel");
+        boloPanel.setPreferredSize(dim);
+        tabbedPane.addTab("BOLOs", boloPanel);
+        tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
+        
+        JComponent rollCallPanel = makeTextPanel("rollCallPanel");
+        tabbedPane.addTab("Roll Call", rollCallPanel);
+        tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
+        
+        mapPanel = new MapPanel();
+        tabbedPane.addTab("Map", mapPanel);
+        mapPanel.setPreferredSize(dim);
+        tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
+        
+        shiftcommandersumreport = new ShiftCommanderSumReportForm();
+        tabbedPane.addTab("Case Reports", shiftcommandersumreport);
+        tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
+        
+        JComponent patrolAssignmentsPanel = makeTextPanel("Patrol Assignments");
+        tabbedPane.addTab("Patrol Assignments", patrolAssignmentsPanel);
+        tabbedPane.setMnemonicAt(5, KeyEvent.VK_6);
+        
+        JComponent blueBookPanel = makeTextPanel("Blue Book");
+        tabbedPane.addTab("Blue Book", blueBookPanel);
+        tabbedPane.setMnemonicAt(6, KeyEvent.VK_7);
+        
+        JComponent schedPanel = makeTextPanel("Schedule");
+        tabbedPane.addTab("Schedule", schedPanel);
+        tabbedPane.setMnemonicAt(7, KeyEvent.VK_8);
+        
+        JComponent trainingSchedPanel = makeTextPanel("Training Schedule");
+        trainingSchedPanel.setPreferredSize(dim);
+        tabbedPane.addTab("Training Schedule", trainingSchedPanel);
+        tabbedPane.setMnemonicAt(8, KeyEvent.VK_9);
+        
+        //The following line enables the use of scrolling tabs
+        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);	
+        
+        //Register a change listener
+        tabbedPane.addChangeListener(new ChangeListener() {
+        //This method is called whenever the selected tab changes
+        	public void stateChanged(ChangeEvent evt) {
+        		JTabbedPane pane = (JTabbedPane)evt.getSource();
+        		//Get current tab
+        		Component currentPane = pane.getSelectedComponent();
+        		placeSidePanel(currentPane);
+        	}
+        });
+        
+        //Add the tabbed pane to this main panel.
+        add(tabbedPane);
+        
+        
+		//Add the right changing side panel to this main panel
+        sidePanel = new RightSidePanel();
+		add(sidePanel, BorderLayout.LINE_END);
+	}
+//-----------------------------------------------------------------------------				
+	/**
+	 * Temp holder method for now until each panel's separate method is made.
+	 * Makes a panel with the specified text as the only element.
+	 */
+    protected JPanel makeTextPanel(String text) {
+        JPanel panel = new JPanel(false);
+        JLabel filler = new JLabel(text);
+        filler.setHorizontalAlignment(JLabel.CENTER);
+        panel.setLayout(new GridLayout(1, 1));
+        panel.add(filler);
+        return panel;
+    }
+//-----------------------------------------------------------------------------	
+	/**
+	 * Make a panel with the specified text as the only element.
+	 */
+    private void placeSidePanel(Component current){
+
+    	if(current == mapPanel){
+    		System.out.println("MAPS");
+    		((RightSidePanel)sidePanel).makeMapsPanel();
+    	} else if (current == homePanel){
+    		((RightSidePanel)sidePanel).makeAnnouncementsPanel();
+    	}
+    	
+    }
+//-----------------------------------------------------------------------------
+}
