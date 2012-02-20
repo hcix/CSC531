@@ -51,15 +51,15 @@ public class MainInterface extends JPanel{
         
         JComponent messagesPanel = makeTextPanel("Messages");
         tabbedPane.addTab("Messages", messagesPanel);
-        tabbedPane.setMnemonicAt(5, KeyEvent.VK_5);
+        tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
         
         JComponent blueBookPanel = makeTextPanel("Blue Book");
         tabbedPane.addTab("Blue Book", blueBookPanel);
-        tabbedPane.setMnemonicAt(6, KeyEvent.VK_6);
+        tabbedPane.setMnemonicAt(5, KeyEvent.VK_6);
         
         JComponent schedPanel = makeTextPanel("Schedule");
         tabbedPane.addTab("Schedule", schedPanel);
-        tabbedPane.setMnemonicAt(7, KeyEvent.VK_7);
+        tabbedPane.setMnemonicAt(6, KeyEvent.VK_7);
         
         //The following line enables the use of scrolling tabs
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);	
