@@ -11,10 +11,6 @@ import userinterface.MapPanel;
 
 public class ImageHandler {
 //-----------------------------------------------------------------------------
-	ImageHandler(){
-		
-	}
-//-----------------------------------------------------------------------------
 	/**
 	 * Create an ImageIcon from the specified image path. Returns an ImageIcon,
 	 * or null if the path was invalid. 

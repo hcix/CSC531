@@ -4,14 +4,18 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.KeyEvent; 
+import java.awt.event.KeyEvent;
+
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import utilities.SwingHelper;
 
 
 public class MainInterface extends JPanel{
@@ -19,7 +23,7 @@ public class MainInterface extends JPanel{
 	JPanel sidePanel, homePanel, boloPanel, rollCallPanel, 
 		mapPanel, messagesPanel, blueBookPanel, schedPanel;
 //-----------------------------------------------------------------------------	
-	public MainInterface(){
+	public MainInterface(JFrame parent){
 		super(new GridLayout(1, 1));
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
@@ -30,17 +34,17 @@ public class MainInterface extends JPanel{
 		 */
 		JTabbedPane tabbedPane = new JTabbedPane();
 	        
-		homePanel = makeTextPanel("HomePanel");
+		homePanel = SwingHelper.makeTextPanel("HomePanel");
 		tabbedPane.addTab("Home", homePanel);
 		homePanel.setPreferredSize(dim);
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         
-        JComponent boloPanel = makeTextPanel("boloPanel");
+        JComponent boloPanel = new BOLOPanel(parent);
         boloPanel.setPreferredSize(dim);
         tabbedPane.addTab("BOLOs", boloPanel);
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
         
-        JComponent rollCallPanel = makeTextPanel("rollCallPanel");
+        JComponent rollCallPanel = SwingHelper.makeTextPanel("rollCallPanel");
         tabbedPane.addTab("Roll Call", rollCallPanel);
         tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
         
@@ -49,15 +53,15 @@ public class MainInterface extends JPanel{
         mapPanel.setPreferredSize(dim);
         tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
         
-        JComponent messagesPanel = makeTextPanel("Messages");
+        JComponent messagesPanel = SwingHelper.makeTextPanel("Messages");
         tabbedPane.addTab("Messages", messagesPanel);
         tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
         
-        JComponent blueBookPanel = makeTextPanel("Blue Book");
+        JComponent blueBookPanel = SwingHelper.makeTextPanel("Blue Book");
         tabbedPane.addTab("Blue Book", blueBookPanel);
         tabbedPane.setMnemonicAt(5, KeyEvent.VK_6);
         
-        JComponent schedPanel = makeTextPanel("Schedule");
+        JComponent schedPanel = SwingHelper.makeTextPanel("Schedule");
         tabbedPane.addTab("Schedule", schedPanel);
         tabbedPane.setMnemonicAt(6, KeyEvent.VK_7);
         
@@ -83,19 +87,6 @@ public class MainInterface extends JPanel{
         sidePanel = new RightSidePanel();
 		add(sidePanel, BorderLayout.LINE_END);
 	}
-//-----------------------------------------------------------------------------				
-	/**
-	 * Temp holder method for now until each panel's separate method is made.
-	 * Makes a panel with the specified text as the only element.
-	 */
-    protected JPanel makeTextPanel(String text) {
-        JPanel panel = new JPanel(false);
-        JLabel filler = new JLabel(text);
-        filler.setHorizontalAlignment(JLabel.CENTER);
-        panel.setLayout(new GridLayout(1, 1));
-        panel.add(filler);
-        return panel;
-    }
 //-----------------------------------------------------------------------------	
 	/**
 	 * Make a panel with the specified text as the only element.

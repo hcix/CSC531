@@ -2,19 +2,16 @@ package userinterface;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Date;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -22,9 +19,9 @@ import javax.swing.JToolBar;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
 import javax.swing.border.Border;
-
 import utilities.ImageHandler;
 import utilities.ScrollablePicture;
+import utilities.SwingHelper;
 
 public class MapPanel extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;
@@ -44,8 +41,6 @@ public class MapPanel extends JPanel implements ActionListener{
 	    //Create & add time frame panel
 	    JPanel timeFramePanel = makeTimeFramePanel();
 	    topPanel.add(timeFramePanel);
-	    
-	   // mapPanel.add(createToolBar());
 	    
 	    //Create & add the map
 	    mapPanel.add(makeMapArea());
@@ -90,39 +85,28 @@ public class MapPanel extends JPanel implements ActionListener{
        //Date Spinners
         SpinnerModel fromModel = new SpinnerDateModel(initDate,earliestDate,latestDate,
                                      Calendar.DAY_OF_MONTH);//ignored for user input
-        dateSpinner = addLabeledSpinner(fromPanel, "From: ", fromModel);       
+        dateSpinner = SwingHelper.addLabeledSpinner(fromPanel, "From: ", fromModel);       
         dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "MM/dd/yyyy"));
         
         SpinnerModel toModel = new SpinnerDateModel(initDate,earliestDate,latestDate,
                 Calendar.DAY_OF_MONTH);//ignored for user input
-        dateSpinner = addLabeledSpinner(toPanel, "To: ", toModel);       
+        dateSpinner = SwingHelper.addLabeledSpinner(toPanel, "To: ", toModel);       
         dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "MM/dd/yyyy"));
         
         //Time Spinners
         SpinnerModel fromTimeModel = new SpinnerDateModel(initTime,initTime,finalTime,
                 Calendar.HOUR);//ignored for user input
-		timeSpinner = addLabeledSpinner(fromPanel, " ", fromTimeModel);       
+		timeSpinner = SwingHelper.addLabeledSpinner(fromPanel, " ", fromTimeModel);       
 		timeSpinner.setEditor(new JSpinner.DateEditor(timeSpinner, "hh:mm a"));
 		
 		SpinnerModel toTimeModel = new SpinnerDateModel(initTime,initTime,finalTime,
 				Calendar.HOUR);//ignored for user input
-		timeSpinner = addLabeledSpinner(toPanel, " ", toTimeModel);       
+		timeSpinner = SwingHelper.addLabeledSpinner(toPanel, " ", toTimeModel);       
 		timeSpinner.setEditor(new JSpinner.DateEditor(timeSpinner, "hh:mm a"));
 
 		timeFramePanel.add(fromPanel);
 		timeFramePanel.add(toPanel);
 		return timeFramePanel;
-	}
-//-----------------------------------------------------------------------------
-	static protected JSpinner addLabeledSpinner(Container c,String label,SpinnerModel model) {
-		JLabel l = new JLabel(label);
-		c.add(l);
-		
-		JSpinner spinner = new JSpinner(model);
-		l.setLabelFor(spinner);
-		c.add(spinner);
-		
-		return spinner;
 	}
 //-----------------------------------------------------------------------------
 	/**

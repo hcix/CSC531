@@ -48,7 +48,7 @@ public class ProgramCore extends JFrame {
 		frame.add(new Dashboard(), BorderLayout.PAGE_START);
 
 		//Add the main panel to the window
-		frame.add(new MainInterface(), BorderLayout.CENTER);
+		frame.add(new MainInterface(frame), BorderLayout.CENTER);
 		
 		//Display the window
 	    frame.pack();
