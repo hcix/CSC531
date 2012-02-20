@@ -16,7 +16,8 @@ import javax.swing.event.ChangeListener;
 
 public class MainInterface extends JPanel{
 	private static final long serialVersionUID = 1L;
-	JPanel sidePanel, mapPanel, homePanel, shiftcommandersumreport;
+	JPanel sidePanel, homePanel, boloPanel, rollCallPanel, 
+		mapPanel, messagesPanel, blueBookPanel, schedPanel;
 //-----------------------------------------------------------------------------	
 	public MainInterface(){
 		super(new GridLayout(1, 1));
@@ -48,26 +49,17 @@ public class MainInterface extends JPanel{
         mapPanel.setPreferredSize(dim);
         tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
         
-        shiftcommandersumreport = new ShiftCommanderSumReportForm();
-        tabbedPane.addTab("Case Reports", shiftcommandersumreport);
-        tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
-        
-        JComponent patrolAssignmentsPanel = makeTextPanel("Patrol Assignments");
-        tabbedPane.addTab("Patrol Assignments", patrolAssignmentsPanel);
-        tabbedPane.setMnemonicAt(5, KeyEvent.VK_6);
+        JComponent messagesPanel = makeTextPanel("Messages");
+        tabbedPane.addTab("Messages", messagesPanel);
+        tabbedPane.setMnemonicAt(5, KeyEvent.VK_5);
         
         JComponent blueBookPanel = makeTextPanel("Blue Book");
         tabbedPane.addTab("Blue Book", blueBookPanel);
-        tabbedPane.setMnemonicAt(6, KeyEvent.VK_7);
+        tabbedPane.setMnemonicAt(6, KeyEvent.VK_6);
         
         JComponent schedPanel = makeTextPanel("Schedule");
         tabbedPane.addTab("Schedule", schedPanel);
-        tabbedPane.setMnemonicAt(7, KeyEvent.VK_8);
-        
-        JComponent trainingSchedPanel = makeTextPanel("Training Schedule");
-        trainingSchedPanel.setPreferredSize(dim);
-        tabbedPane.addTab("Training Schedule", trainingSchedPanel);
-        tabbedPane.setMnemonicAt(8, KeyEvent.VK_9);
+        tabbedPane.setMnemonicAt(7, KeyEvent.VK_7);
         
         //The following line enables the use of scrolling tabs
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);	
@@ -107,16 +99,32 @@ public class MainInterface extends JPanel{
 //-----------------------------------------------------------------------------	
 	/**
 	 * Make a panel with the specified text as the only element.
+	 * 
+	 * NOTE: TO IMPLEMENT YOUR SIDE PANEL JUST MAKE A METHOD IN 
+	 * THE RIGHTSIDEPANEL CLASS TO MAKE THE PANEL AND REPLACE THE 
+	 * CURRENT ONE WITH IT (FOLLOW THE SAME FORMAT AS THE ANNOUNCEMENTS 
+	 * PANEL AND MAPS PANEL) AND THEN WRITE A LINE HERE TO CALL THAT
+	 * METHOD. 
 	 */
     private void placeSidePanel(Component current){
 
     	if(current == mapPanel){
-    		System.out.println("MAPS");
     		((RightSidePanel)sidePanel).makeMapsPanel();
     	} else if (current == homePanel){
     		((RightSidePanel)sidePanel).makeAnnouncementsPanel();
+    	} else if (current == boloPanel){
+    		
+    	} else if (current == rollCallPanel){
+    		
+    	} else if (current == mapPanel){
+    		
+    	} else if (current == messagesPanel){
+    		
+    	} else if (current == blueBookPanel){
+    		
+    	} else if (current == schedPanel){
+    		
     	}
-    	
     }
 //-----------------------------------------------------------------------------
 }
