@@ -14,6 +14,13 @@ import javax.swing.SpinnerModel;
 
 public class SwingHelper {
 //-----------------------------------------------------------------------------
+	public static final int EXTRA_SMALL_TEXT_FIELD_LENGTH = 5;
+	public static final int SMALL_TEXT_FIELD_LENGTH = 12;
+	public static final int MEDIUM_TEXT_FIELD_LENGTH = 15;
+	public static final int LARGE_TEXT_FIELD_LENGTH = 25;
+	public static final int EXTRA_LARGE_TEXT_FIELD_LENGTH = 35;
+	public static final int DEFAULT_TEXT_FIELD_LENGTH = 20;
+//-----------------------------------------------------------------------------
 	/** <b> addLabeledSpinner </b>
 	 * <pre>public static JSpinner <b>addLabeledSpinner</b>(Container c,String label,SpinnerModel model)</pre> 
 	 * <blockquote> 
@@ -70,7 +77,7 @@ public class SwingHelper {
 	 * </blockquote>
 	 * @return a JPanel containing two date spinners used for specifying a date range
 	 */
-	public JPanel createDateRangePanel(){
+	public static JPanel createDateRangePanel(){
 		JPanel datePanel = new JPanel();
 		Calendar calendar = Calendar.getInstance();
 		JSpinner dateSpinner;

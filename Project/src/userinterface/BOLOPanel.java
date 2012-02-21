@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -58,21 +59,33 @@ private static final int TEXT_FIELD_LENGTH = 20;
 //-----------------------------------------------------------------------------
 	JPanel createSearchPanel(){
 		JPanel searchPanel = new JPanel();
+		JPanel searchFields = new JPanel();
+		searchFields.setLayout(new BoxLayout(searchFields, BoxLayout.Y_AXIS));
 		
 		//Create case # field
 		JPanel caseNum = SwingHelper.createLabeledTextBox("Case #: ", TEXT_FIELD_LENGTH);
 		
 		//Create date range spinners
-		//JPanel datePanel = createDatePanel();
+		JPanel dateRange = SwingHelper.createDateRangePanel();
 		
 		//Create location field
+		JPanel location = SwingHelper.createLabeledTextBox("Location: ", TEXT_FIELD_LENGTH);
 		
 		//Create status field
+		JPanel status = SwingHelper.createLabeledTextBox("Status: ", TEXT_FIELD_LENGTH);
 		
 		//Create search button
+		JButton searchButton = new JButton("Search");
 		
-		//add the components to this panel
-		searchPanel.add(caseNum);
+		//add the search field components to the search field panel
+		searchFields.add(caseNum);
+		searchFields.add(dateRange);
+		searchFields.add(location);
+		searchFields.add(status);
+		
+		//add the search fields and search button to the search panel
+		searchPanel.add(searchFields);
+		searchPanel.add(searchButton);
 
 		return searchPanel;
 	}
