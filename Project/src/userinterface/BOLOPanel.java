@@ -80,7 +80,7 @@ private static final int TEXT_FIELD_LENGTH = 20;
 		SwingHelper.addLineBorder( locationField);
 		SwingHelper.addLineBorder(statusField );
 		SwingHelper.addLineBorder(dateRange );*/
-		SwingHelper.addLineBorder(searchPanel );
+		SwingHelper.addLineBorder(searchPanel);
 		//SwingHelper.addLineBorder(searchFields);
 		
 		searchFields.add(caseNumLabel, "align left");
