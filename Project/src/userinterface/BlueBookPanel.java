@@ -1,8 +1,11 @@
 package userinterface;
 
+import java.awt.Dimension;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -16,15 +19,22 @@ import utilities.ImageHandler;
 import utilities.SwingHelper;
 
 public class BlueBookPanel extends JPanel {
-	public BlueBookPanel() {
+	public BlueBookPanel(final JFrame parent) {
 
 		JPanel inputPanel = createInputPanel();
+		JScrollPane inputScrollPane = new JScrollPane(inputPanel);
+		inputScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		
+		// change to use parents dimensions
+		inputScrollPane.setPreferredSize(new Dimension(600, 600)); 
+		
 		
 		JPanel buttonPanel = new JPanel();
 		JButton save = new JButton("Save");
 		buttonPanel.add(save);
 		
-		this.add(inputPanel);
+		
+		this.add(inputScrollPane);
 		this.add(buttonPanel);
 	}
 
@@ -42,8 +52,8 @@ public class BlueBookPanel extends JPanel {
 		JLabel DOB = new JLabel("DOB: ");
 		JLabel Affili = new JLabel("Affili: ");
 		JLabel Address = new JLabel("Last known address: ");
-		JLabel Description = new JLabel("Crime description: ");
 		JLabel Location = new JLabel("Location of incident: ");
+		JLabel Description = new JLabel("Crime description: ");
 		JLabel Reason = new JLabel("Narrative/Reason: ");
 		JLabel Picture = new JLabel("Picture(s): ");
 		JLabel Armed = new JLabel("Armed: ");
@@ -56,13 +66,38 @@ public class BlueBookPanel extends JPanel {
 		JPanel DOBField = SwingHelper.createDatePanel();
 		JTextField affiliField = new JTextField(20);
 		JTextField addressField = new JTextField(20);
-		JTextField descriptionField = new JTextField(20);
-		JTextField locationField = new JTextField(20);
+		//JTextField descriptionField = new JTextField(20);
+		//JTextField locationField = new JTextField(20);
+		
+		/*
+		 * create text areas, embed them in a scroll
+		 * pand and set the line wrap and scroll 
+		 * properties
+		 */
+		
+		JTextArea locationField = new JTextArea(5, 20);
+		locationField.setLineWrap(true);
+		JScrollPane locationScrollPane = new JScrollPane(locationField);
+		locationScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		
+		JTextArea descriptionField = new JTextArea(10, 20);
+		descriptionField.setLineWrap(true);
+		JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
+		locationScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		
 		JTextArea reasonField = new JTextArea(10, 20);
-		JScrollPane scrollPane = new JScrollPane(reasonField);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		reasonField.setLineWrap(true);
+		JScrollPane reasonScrollPane = new JScrollPane(reasonField);
+		descriptionScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		
+		/*
+		 * create an imageicon, set it to a default value, 
+		 * later this will be replaced with the possibility 
+		 * choose and add photos?
+		 */
 		ImageIcon pictureField = ImageHandler.createImageIcon("images/badge.png");
 		JLabel pictureLabel = new JLabel(pictureField);
+		
 		JCheckBox armedField1 = new JCheckBox("No");
 		JCheckBox armedField2 = new JCheckBox("Yes");
 		JTextField ifYesField = new JTextField(20);
@@ -80,12 +115,13 @@ public class BlueBookPanel extends JPanel {
 		inputPanel.add(affiliField, "align left,wrap");
 		inputPanel.add(Address, "alignx left");
 		inputPanel.add(addressField, "align left,wrap");
-		inputPanel.add(Description, "alignx left");
-		inputPanel.add(descriptionField, "align left, wrap");
+		
 		inputPanel.add(Location, "align left");
-		inputPanel.add(locationField, "align left, wrap");
+		inputPanel.add(locationScrollPane, "align left, wrap");
+		inputPanel.add(Description, "alignx left");
+		inputPanel.add(descriptionScrollPane, "align left, wrap");
 		inputPanel.add(Reason, "alignx left");
-		inputPanel.add(scrollPane, "align left, wrap");
+		inputPanel.add(reasonScrollPane, "align left, wrap");
 		inputPanel.add(Picture, "alignx left");
 		inputPanel.add(pictureLabel, "align left, wrap");
 		inputPanel.add(Armed, "align left");

@@ -34,7 +34,7 @@ public class MainInterface extends JPanel{
 		 */
 		JTabbedPane tabbedPane = new JTabbedPane();
 	        
-		homePanel = SwingHelper.makeTextPanel("HomePanel");
+		homePanel = new HomeTab(false);
 		tabbedPane.addTab("Home", homePanel);
 		homePanel.setPreferredSize(dim);
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
@@ -44,7 +44,7 @@ public class MainInterface extends JPanel{
         tabbedPane.addTab("BOLOs", boloPanel);
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
         
-        rollCallPanel = SwingHelper.makeTextPanel("rollCallPanel");
+        rollCallPanel = new RollCallPanel(parent);
         tabbedPane.addTab("Roll Call", rollCallPanel);
         tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
         
@@ -57,6 +57,7 @@ public class MainInterface extends JPanel{
         tabbedPane.addTab("Messages", messagesPanel);
         tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
         
+
         //blueBookPanel = SwingHelper.makeTextPanel("Blue Book");
         blueBookPanel = new BlueBookPanel(parent);
         tabbedPane.addTab("Blue Book", blueBookPanel);
