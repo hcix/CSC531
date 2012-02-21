@@ -2,38 +2,34 @@ package userinterface;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
-import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SpinnerDateModel;
-import javax.swing.SpinnerModel;
 import javax.swing.table.DefaultTableModel;
 
 import utilities.SwingHelper;
 
 public class BOLOPanel extends JPanel{
 private static final long serialVersionUID = 1L;
+private static final int TEXT_FIELD_LENGTH = 20;
 //-----------------------------------------------------------------------------
 	public BOLOPanel(final JFrame parent){
 		
 		//Create the search panel
 		JPanel searchPanel = createSearchPanel();
 
+		
 		//Create a button to create a new BOLO 
 		JButton newBOLO = new JButton("Create new BOLO");
 		newBOLO.addActionListener(new ActionListener() {
+			//BOLO form dialog
 			BOLOform formDialog = new BOLOform(parent);
 			public void actionPerformed(ActionEvent e){
 				formDialog.setVisible(true);
@@ -41,11 +37,22 @@ private static final long serialVersionUID = 1L;
 		});
 
 		//Create a button to import an existing BOLO
+		JButton importBOLO = new JButton("Import an existing BOLO");
+		importBOLO.addActionListener(new ActionListener() {
+			//file chooser dialog
+			public void actionPerformed(ActionEvent e){
+				//file chooser dialog .setVisable(true);
+			}
+		});
 		
+		//Create a button panel & add the buttons to it
+		JPanel buttonPanel = new JPanel(new FlowLayout());
+		buttonPanel.add(newBOLO);
+		buttonPanel.add(importBOLO);
 		
 		//add the components to this panel
 		this.add(searchPanel, BorderLayout.PAGE_START);
-		this.add(newBOLO, BorderLayout.CENTER);
+		this.add(buttonPanel, BorderLayout.CENTER);
 		
 	}
 //-----------------------------------------------------------------------------
@@ -53,7 +60,7 @@ private static final long serialVersionUID = 1L;
 		JPanel searchPanel = new JPanel();
 		
 		//Create case # field
-		JPanel caseNum = SwingHelper.createLabeledTextBox("Case #: ");
+		JPanel caseNum = SwingHelper.createLabeledTextBox("Case #: ", TEXT_FIELD_LENGTH);
 		
 		//Create date range spinners
 		//JPanel datePanel = createDatePanel();

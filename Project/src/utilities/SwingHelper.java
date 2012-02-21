@@ -38,7 +38,7 @@ public class SwingHelper {
 	}
 //-----------------------------------------------------------------------------
 	/** <b> createLabeledTextBox </b>
-	 * <pre>public static JPanel <b>createLabeledTextBox</b>(String label) </pre> 
+	 * <pre>public static JPanel <b>createLabeledTextBox</b>(String label, int length)</pre> 
 	 * <blockquote> 
 	 * Creates a <code>JTextField</code> with the specified text as a label
 	 * appearing before the text field.
@@ -46,15 +46,16 @@ public class SwingHelper {
 	 * <b><u>WARNING!</b></u> text field is initially about 1 char long - fixing this bug now
 	 * <p>
 	 * @param label - the text to appear in front of the text field
+	 * @param length - the length in columns of the text field 
 	 * @return a <code>JPanel</code> with the labeled text field as the only element
 	 */
-	public static JPanel createLabeledTextBox(String label) {
+	public static JPanel createLabeledTextBox(String label, int length) {
 		JPanel labeledTextBox = new JPanel();
 		
 		JLabel l = new JLabel(label);
 		labeledTextBox.add(l);
 		
-		JTextField text = new JTextField();
+		JTextField text = new JTextField(length);
 		labeledTextBox.add(text);
 		
 		return labeledTextBox;
