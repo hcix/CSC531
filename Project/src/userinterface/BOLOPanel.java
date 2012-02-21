@@ -2,19 +2,20 @@ package userinterface;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
+import net.miginfocom.swing.MigLayout;
 import utilities.SwingHelper;
 
 public class BOLOPanel extends JPanel{
@@ -60,72 +61,47 @@ private static final int TEXT_FIELD_LENGTH = 20;
 	JPanel createSearchPanel(){
 		JPanel searchPanel = new JPanel();
 		JPanel searchFields = new JPanel();
-		searchFields.setLayout(new BoxLayout(searchFields, BoxLayout.Y_AXIS));
+		searchFields.setLayout(new MigLayout());
+		searchPanel.setLayout(new MigLayout());
+
+		JLabel caseNumLabel = new JLabel("Case #: ");
+		JLabel locationLabel = new JLabel("Location: ");
+		JLabel statusLabel = new JLabel("Status: ");
+		JTextField caseNumField = new JTextField(15);
+		JTextField locationField = new JTextField(20);
+		JTextField statusField = new JTextField(20);
 		
-		//Create case # field
-		JPanel caseNum = SwingHelper.createLabeledTextBox("Case #: ", TEXT_FIELD_LENGTH);
-		
-		//Create date range spinners
 		JPanel dateRange = SwingHelper.createDateRangePanel();
 		
-		//Create location field
-		JPanel location = SwingHelper.createLabeledTextBox("Location: ", TEXT_FIELD_LENGTH);
+	/*	SwingHelper.addLineBorder(caseNumLabel );
+		SwingHelper.addLineBorder( locationLabel);
+		SwingHelper.addLineBorder( statusLabel);
+		SwingHelper.addLineBorder( caseNumField);
+		SwingHelper.addLineBorder( locationField);
+		SwingHelper.addLineBorder(statusField );
+		SwingHelper.addLineBorder(dateRange );*/
+		SwingHelper.addLineBorder(searchPanel );
+		//SwingHelper.addLineBorder(searchFields);
 		
-		//Create status field
-		JPanel status = SwingHelper.createLabeledTextBox("Status: ", TEXT_FIELD_LENGTH);
-		
+		searchFields.add(caseNumLabel, "align left");
+		searchFields.add(caseNumField, "align left, wrap");
+		searchFields.add(locationLabel,"alignx left");
+		searchFields.add(locationField, "align left, wrap");
+		searchFields.add(statusLabel, "alignx left");
+		searchFields.add(statusField, "align left, wrap");
+
 		//Create search button
 		JButton searchButton = new JButton("Search");
 		
 		//add the search field components to the search field panel
-		searchFields.add(caseNum);
-		searchFields.add(dateRange);
-		searchFields.add(location);
-		searchFields.add(status);
+
 		
 		//add the search fields and search button to the search panel
-		searchPanel.add(searchFields);
+		searchPanel.add(searchFields, "wrap");
+		searchPanel.add(dateRange);
 		searchPanel.add(searchButton);
 
 		return searchPanel;
 	}
-//-----------------------------------------------------------------------------	
-	JPanel makeInfoChart(){
-		JPanel tablePanel = new JPanel();
-		
-		String[] tableRowHeaderNames = {"Date; Time; Location of Incident:",
-		"Reference & Case #:",
-		"BOLO prepared by:",
-		"BOLO approved by:",
-		"Date & Time of BOLO:",
-		"Status",
-		"Subject description & information"};
-		
-		//Create initially empty table
-		JTable table = new JTable();
-		table.setShowGrid(true);
-		table.setGridColor(Color.black);
-		table.setPreferredScrollableViewportSize(new Dimension(895, 100));
-		table.setFillsViewportHeight(true);
-		
-		//Put the table in a scroll pane
-		JScrollPane tableScrollPane = new JScrollPane();
-		tableScrollPane.setViewportView(table);
-		
-		tablePanel.setLayout(new BorderLayout());
-		tablePanel.add(tableScrollPane,BorderLayout.CENTER);
-		add(tablePanel, BorderLayout.CENTER);
-		String[] colHeaders = {"", ""};
-		
-		DefaultTableModel tableModel = new DefaultTableModel(colHeaders,7);
-		table.setModel(tableModel);
-		
-		for(int i=0; i<tableRowHeaderNames.length; i++){
-			
-		}
-		return tablePanel;
-	}
-	
-	
-	
+//-----------------------------------------------------------------------------		
 }

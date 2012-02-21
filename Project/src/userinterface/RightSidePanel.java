@@ -15,7 +15,7 @@ public class RightSidePanel extends JPanel {
 	final static int GAP = 10;
 //-----------------------------------------------------------------------------
 	public RightSidePanel(){
-		
+			
 		/*
 		 * Set the initial contents of this panel to be the side panel 
 		 * corresponding to the home screen.
@@ -42,10 +42,7 @@ public class RightSidePanel extends JPanel {
 		
 		announcements.setPreferredSize(new Dimension(270,625));		
 		announcements.setLayout(new BoxLayout(announcements, BoxLayout.Y_AXIS));		
-		Border spaceBorder = BorderFactory.createEmptyBorder(GAP/2,GAP,GAP/2,GAP);
-		Border lineBorder = BorderFactory.createLineBorder(new Color(0x000000));
-		Border border = BorderFactory.createCompoundBorder(spaceBorder, lineBorder);
-		announcements.setBorder(border);
+		announcements.setBorder(makeSidePanelBorder());
 		
 		announcements.add(announcementsLabel);
 		announcements.add(scroller);

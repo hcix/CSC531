@@ -1,16 +1,23 @@
 package utilities;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.util.Calendar;
 import java.util.Date;
-
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
+import javax.swing.border.Border;
+import net.miginfocom.swing.MigLayout;
 
 public class SwingHelper {
 //-----------------------------------------------------------------------------
@@ -27,7 +34,8 @@ public class SwingHelper {
 	/** length in columns = 20 */
 	public static final int DEFAULT_TEXT_FIELD_LENGTH = 20;
 //-----------------------------------------------------------------------------
-	/** <b> addLabeledSpinner </b>
+	/** 
+	 * <b> addLabeledSpinner </b>
 	 * <pre>public static JSpinner <b>addLabeledSpinner</b>(Container c,String label,SpinnerModel model)</pre> 
 	 * <blockquote> 
 	 * Creates a <code>JSpinner</code> with the specified label text from the <code>SpinnerModel</code>  
@@ -50,31 +58,31 @@ public class SwingHelper {
 		return spinner;
 	}
 //-----------------------------------------------------------------------------
-	/** <b> createLabeledTextBox </b>
+	/** 
+	 * <b> createLabeledTextBox </b>
 	 * <pre>public static JPanel <b>createLabeledTextBox</b>(String label, int length)</pre> 
 	 * <blockquote> 
 	 * Creates a <code>JTextField</code> with the specified text as a label
 	 * appearing before the text field.
 	 * </blockquote>
-	 * <b><u>WARNING!</b></u> text field is initially about 1 char long - fixing this bug now
-	 * <p>
 	 * @param label - the text to appear in front of the text field
 	 * @param length - the length in columns of the text field 
 	 * @return a <code>JPanel</code> with the labeled text field as the only element
 	 */
 	public static JPanel createLabeledTextBox(String label, int length) {
 		JPanel labeledTextBox = new JPanel();
-		
+
 		JLabel l = new JLabel(label);
 		labeledTextBox.add(l);
 		
 		JTextField text = new JTextField(length);
 		labeledTextBox.add(text);
-		
+
 		return labeledTextBox;
 	}
 //-----------------------------------------------------------------------------
-	/** <b> createDateRangePanel </b>
+	/** 
+	 * <b> createDateRangePanel </b>
 	 * <pre>public JPanel createDateRangePanel()</pre> 
 	 * <blockquote> 
 	 * Creates a <code>JPanel</code> containing two labeled date spinners 
@@ -93,7 +101,7 @@ public class SwingHelper {
 		Date latestDate = calendar.getTime();		
 	    calendar.add(Calendar.YEAR, -10);        
 	    Date earliestDate = calendar.getTime();
-	
+		
 	   //Date Spinners
 	    SpinnerModel fromModel = new SpinnerDateModel(initDate,earliestDate,latestDate,
 	    		Calendar.DAY_OF_MONTH);
@@ -106,9 +114,11 @@ public class SwingHelper {
 	    dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "MM/dd/yyyy"));
 	    
 	    return datePanel;
+
 	}
 //-----------------------------------------------------------------------------				
-	/** <b> makeTextPanel </b>
+	/** 
+	 * <b> makeTextPanel </b>
 	 * <pre>public static JPanel makeTextPanel(String text)</pre> 
 	 * <blockquote> 
 	 * Creates a <code>JPanel</code> containing the given text placed in the
@@ -124,6 +134,20 @@ public class SwingHelper {
 	    panel.setLayout(new GridLayout(1, 1));
 	    panel.add(filler);
 	    return panel;
+	}
+//-----------------------------------------------------------------------------
+	/** 
+	 * <b> addLineBorder </b>
+	 * <pre>public static void addLineBorder(JComponent c)</pre> 
+	 * <blockquote> 
+	 * Adds a basic black line border around the given component.
+	 * </blockquote>
+	 * @param c - the component to put the border around
+	 */
+	public static void addLineBorder(JComponent c){
+		Border lineBorder;
+		lineBorder = BorderFactory.createLineBorder(Color.black);
+		c.setBorder(lineBorder);
 	}
 //-----------------------------------------------------------------------------
 }

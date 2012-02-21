@@ -1,5 +1,7 @@
 package userinterface;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -14,6 +16,9 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import utilities.ImageHandler;
 
@@ -126,7 +131,7 @@ private static final long serialVersionUID = 1L;
 
 //-----------------------------------------------------------------------------
 
-//-----------------------------------------------------------------------------	  
+  
 	//  public Font getNewFont( ) { return newFont; }
 	//  public Color getNewColor( ) { return newColor; }
 	//  public AttributeSet getAttributes( ) { return attributes; }
@@ -147,5 +152,41 @@ private static final long serialVersionUID = 1L;
 	    setVisible(false);
 	  }
 //-----------------------------------------------------------------------------
+		JPanel makeInfoChart(){
+			JPanel tablePanel = new JPanel();
+			
+			String[] tableRowHeaderNames = {"Date; Time; Location of Incident:",
+			"Reference & Case #:",
+			"BOLO prepared by:",
+			"BOLO approved by:",
+			"Date & Time of BOLO:",
+			"Status",
+			"Subject description & information"};
+			
+			//Create initially empty table
+			JTable table = new JTable();
+			table.setShowGrid(true);
+			table.setGridColor(Color.black);
+			table.setPreferredScrollableViewportSize(new Dimension(895, 100));
+			table.setFillsViewportHeight(true);
+			
+			//Put the table in a scroll pane
+			JScrollPane tableScrollPane = new JScrollPane();
+			tableScrollPane.setViewportView(table);
+			
+			tablePanel.setLayout(new BorderLayout());
+			tablePanel.add(tableScrollPane,BorderLayout.CENTER);
+			add(tablePanel, BorderLayout.CENTER);
+			String[] colHeaders = {"", ""};
+			
+			DefaultTableModel tableModel = new DefaultTableModel(colHeaders,7);
+			table.setModel(tableModel);
+			
+			for(int i=0; i<tableRowHeaderNames.length; i++){
+				
+			}
+			return tablePanel;
+		}
+//-----------------------------------------------------------------------------	
 
 }
