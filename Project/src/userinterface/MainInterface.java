@@ -34,7 +34,7 @@ public class MainInterface extends JPanel{
 		 */
 		JTabbedPane tabbedPane = new JTabbedPane();
 	        
-		homePanel = SwingHelper.makeTextPanel("HomePanel");
+		homePanel = new HomeTab(false);
 		tabbedPane.addTab("Home", homePanel);
 		homePanel.setPreferredSize(dim);
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);

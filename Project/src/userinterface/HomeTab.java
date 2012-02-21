@@ -1,30 +1,45 @@
 package userinterface;
-import javax.swing.*;
 import java.util.LinkedList;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import net.miginfocom.swing.MigLayout;
 
 public class HomeTab extends JPanel
 {
-	JScrollPane jsp = new JScrollPane();
-	JPanel jp = new JPanel();
-	JSeparator jsep = new JSeparator(SwingConstants.HORIZONTAL);
 	LinkedList<Object> llo = new LinkedList<Object>();
 	
 	public HomeTab(boolean load)
 	{
+		JPanel homePanel = new JPanel();
+		
 		//llo = getAssets(); // for getting the data from the DB
-		makeGUI();
+		
+		homePanel = makeGUI();
+		
+		this.add(homePanel);
+		
 	}
-	public void makeGUI()
+	public JPanel makeGUI()
 	{
-		jp.setLayout(new BoxLayout(jp, BoxLayout.X_AXIS)); // sets the layout of the scroll pane to a BoxLayout
+		//JScrollPane scrollPane = new JScrollPane();
+		JPanel panel = new JPanel(new MigLayout("flowy"));
+	//	JSeparator jsep = new JSeparator(SwingConstants.HORIZONTAL);
 		
-		JLabel jl = new JLabel("Welcome, Officer Mendez");
-		jp.add(jl);
-		jp.add(jsep);
+	//	JPanel homePanel = new JPanel();
 		
-		JTextArea jta1 = new JTextArea("Hello all, this is a message from the Chief.  I just wanted to say good work on apprehending that BOLO last week.  Keep it up!");
-		jp.add(jta1);
-		jp.add(jsep);
+		JLabel welcomeLabel = new JLabel("<html><font size=\"8\">Welcome, Officer Mendez</font>",JLabel.CENTER);
+		panel.add(welcomeLabel);
+	//	panel.add(jsep);
+		
+		JLabel welcomeTextLabel = new JLabel("<html><font size = \"4\">Hello all, this is a message from the Chief.<br>" +
+				"I just wanted to say good work on apprehending that BOLO last week.<br>  Keep it up!</font>", JLabel.CENTER);
+		//welcomeText.setPreferredSize(new Dimension(100, 100));
+		panel.add(welcomeTextLabel);
+	//	panel.add(jsep);
+		
 		
 		/*for(int i = 0; i < llo.size(); i++)
 		{
@@ -34,9 +49,7 @@ public class HomeTab extends JPanel
 			jp.add(jsep);
 		}*/
 		
-		jsp.add(jp);
-		JPanel jp2 = new JPanel();
-		jp2.add(jsp);
-		this.add(jp2);
+		
+		return panel;
 	}
 }
