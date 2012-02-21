@@ -57,7 +57,8 @@ public class MainInterface extends JPanel{
         tabbedPane.addTab("Messages", messagesPanel);
         tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
         
-        blueBookPanel = SwingHelper.makeTextPanel("Blue Book");
+        //blueBookPanel = SwingHelper.makeTextPanel("Blue Book");
+        blueBookPanel = new BlueBookPanel(parent);
         tabbedPane.addTab("Blue Book", blueBookPanel);
         tabbedPane.setMnemonicAt(5, KeyEvent.VK_6);
         
