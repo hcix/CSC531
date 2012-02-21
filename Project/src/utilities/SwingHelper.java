@@ -116,6 +116,37 @@ public class SwingHelper {
 	    return datePanel;
 
 	}
+	
+	/** 
+	 * <b> createDateRangePanel </b>
+	 * <pre>public JPanel createDateRangePanel()</pre> 
+	 * <blockquote> 
+	 * Creates a <code>JPanel</code> same as DateRange, but for only one date. The 
+	 * default range is -10 years from today's date through today's date. 
+	 * </blockquote>
+	 * @return a JPanel containing one date spinner used for specifying a date
+	 */
+	public static JPanel createDatePanel(){
+		JPanel datePanel = new JPanel();
+		Calendar calendar = Calendar.getInstance();
+		JSpinner dateSpinner;
+		
+		//Set up dates
+		Date initDate = calendar.getTime();
+		Date latestDate = calendar.getTime();		
+	    calendar.add(Calendar.YEAR, -10);        
+	    Date earliestDate = calendar.getTime();
+		
+	   //Date Spinner
+	    
+	    SpinnerModel toModel = new SpinnerDateModel(initDate,earliestDate,latestDate,
+	            Calendar.DAY_OF_MONTH);
+	    dateSpinner = SwingHelper.addLabeledSpinner(datePanel, "", toModel);       
+	    dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "MM/dd/yyyy"));
+	    
+	    return datePanel;
+
+	}
 //-----------------------------------------------------------------------------				
 	/** 
 	 * <b> makeTextPanel </b>
