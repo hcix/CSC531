@@ -14,11 +14,17 @@ import javax.swing.SpinnerModel;
 
 public class SwingHelper {
 //-----------------------------------------------------------------------------
+	/** length in columns = 5 */
 	public static final int EXTRA_SMALL_TEXT_FIELD_LENGTH = 5;
+	/** length in columns = 12 */
 	public static final int SMALL_TEXT_FIELD_LENGTH = 12;
+	/** length in columns = 15 */
 	public static final int MEDIUM_TEXT_FIELD_LENGTH = 15;
+	/** length in columns = 25 */
 	public static final int LARGE_TEXT_FIELD_LENGTH = 25;
+	/** length in columns = 35 */
 	public static final int EXTRA_LARGE_TEXT_FIELD_LENGTH = 35;
+	/** length in columns = 20 */
 	public static final int DEFAULT_TEXT_FIELD_LENGTH = 20;
 //-----------------------------------------------------------------------------
 	/** <b> addLabeledSpinner </b>

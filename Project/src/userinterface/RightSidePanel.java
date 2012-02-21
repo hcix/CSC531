@@ -16,6 +16,10 @@ public class RightSidePanel extends JPanel {
 //-----------------------------------------------------------------------------
 	public RightSidePanel(){
 		
+		/*
+		 * Set the initial contents of this panel to be the side panel 
+		 * corresponding to the home screen.
+		 */
 		makeAnnouncementsPanel();
 
 	}
@@ -66,14 +70,22 @@ public class RightSidePanel extends JPanel {
 
 		maps.setPreferredSize(new Dimension(270,625));
 		maps.setLayout(new BoxLayout(maps, BoxLayout.Y_AXIS));
-		Border spaceBorder = BorderFactory.createEmptyBorder(GAP/2,GAP,GAP/2,GAP);
-		Border lineBorder = BorderFactory.createLineBorder(new Color(0x000000));
-		Border border = BorderFactory.createCompoundBorder(spaceBorder, lineBorder);
-		maps.setBorder(border);
+		
+		
+		maps.setBorder(makeSidePanelBorder());
 
 		maps.add(mapsLabel);
 		maps.add(scroller);
 		this.add(maps);
+	}
+//-----------------------------------------------------------------------------
+	public Border makeSidePanelBorder(){
+		
+		Border spaceBorder = BorderFactory.createEmptyBorder(GAP/2,GAP,GAP/2,GAP);
+		Border lineBorder = BorderFactory.createLineBorder(new Color(0x000000));
+		Border border = BorderFactory.createCompoundBorder(spaceBorder, lineBorder);
+		
+		return border;
 	}
 //-----------------------------------------------------------------------------
 }

@@ -39,12 +39,12 @@ public class MainInterface extends JPanel{
 		homePanel.setPreferredSize(dim);
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         
-        JComponent boloPanel = new BOLOPanel(parent);
+        boloPanel = new BOLOPanel(parent);
         boloPanel.setPreferredSize(dim);
         tabbedPane.addTab("BOLOs", boloPanel);
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
         
-        JComponent rollCallPanel = SwingHelper.makeTextPanel("rollCallPanel");
+        rollCallPanel = SwingHelper.makeTextPanel("rollCallPanel");
         tabbedPane.addTab("Roll Call", rollCallPanel);
         tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
         
@@ -53,15 +53,15 @@ public class MainInterface extends JPanel{
         mapPanel.setPreferredSize(dim);
         tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
         
-        JComponent messagesPanel = SwingHelper.makeTextPanel("Messages");
+        messagesPanel = SwingHelper.makeTextPanel("Messages");
         tabbedPane.addTab("Messages", messagesPanel);
         tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
         
-        JComponent blueBookPanel = SwingHelper.makeTextPanel("Blue Book");
+        blueBookPanel = SwingHelper.makeTextPanel("Blue Book");
         tabbedPane.addTab("Blue Book", blueBookPanel);
         tabbedPane.setMnemonicAt(5, KeyEvent.VK_6);
         
-        JComponent schedPanel = SwingHelper.makeTextPanel("Schedule");
+        schedPanel = SwingHelper.makeTextPanel("Schedule");
         tabbedPane.addTab("Schedule", schedPanel);
         tabbedPane.setMnemonicAt(6, KeyEvent.VK_7);
         
@@ -91,11 +91,6 @@ public class MainInterface extends JPanel{
 	/**
 	 * Make a panel with the specified text as the only element.
 	 * 
-	 * NOTE: TO IMPLEMENT YOUR SIDE PANEL JUST MAKE A METHOD IN 
-	 * THE RIGHTSIDEPANEL CLASS TO MAKE THE PANEL AND REPLACE THE 
-	 * CURRENT ONE WITH IT (FOLLOW THE SAME FORMAT AS THE ANNOUNCEMENTS 
-	 * PANEL AND MAPS PANEL) AND THEN WRITE A LINE HERE TO CALL THAT
-	 * METHOD. 
 	 */
     private void placeSidePanel(Component current){
 
