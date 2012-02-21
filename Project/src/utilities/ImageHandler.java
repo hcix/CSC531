@@ -7,16 +7,25 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
+import program.ProgramCore;
+
+import userinterface.MainInterface;
 import userinterface.MapPanel;
 
 public class ImageHandler {
 //-----------------------------------------------------------------------------
-	/**
-	 * Create an ImageIcon from the specified image path. Returns an ImageIcon,
-	 * or null if the path was invalid. 
+	/** <b> createImageIcon </b>
+	 * <pre>public static ImageIcon <b>createImageIcon</b>(String path)</pre> 
+	 * <blockquote> 
+	 * Creates an <code>ImageIcon</code> from the specified image path. 
+	 * Image path should be given relative to the <code>userinterface</code> 
+	 * package.
+	 * </blockquote>
+	 * @param path - the image's path relative to the <code>userinterface</code> package
+	 * @return an <code>ImageIcon</code> or <code>null</code> if the path was invalid 
 	 */
 	public static ImageIcon createImageIcon(String path) {
-	    java.net.URL imgURL = MapPanel.class.getResource(path);
+	    java.net.URL imgURL = MainInterface.class.getResource(path);
 	    if (imgURL != null) {
 	        return new ImageIcon(imgURL);
 	    } else {
@@ -26,8 +35,18 @@ public class ImageHandler {
 	}
 //-----------------------------------------------------------------------------
     /**
-     * Resize an image to the specified size, returning a scaled image.
+     * 
      */
+	/** <b> getScaledImage </b>
+	 * <pre>public Image <b>getScaledImage</b>(Image srcImg, int w, int h)</pre> 
+	 * <blockquote> 
+	 * Scales/Resizes a given <code>Image</code> to the specified size.
+	 * </blockquote>
+	 * @param srcImg - the <code>Image</code> to be resized
+	 * @param w - the desired width
+	 * @param h - the desired height 
+	 * @return a scaled version of the given <code>Image</code>
+	 */
     public Image getScaledImage(Image srcImg, int w, int h){
         BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = resizedImg.createGraphics();

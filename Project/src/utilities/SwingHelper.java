@@ -17,13 +17,14 @@ public class SwingHelper {
 	/** <b> addLabeledSpinner </b>
 	 * <pre>public static JSpinner <b>addLabeledSpinner</b>(Container c,String label,SpinnerModel model)</pre> 
 	 * <blockquote> 
-	 * Creates a JSpinner from the SpinnerModel with the specified label text 
-	 * and adds the spinner to the given container.
+	 * Creates a <code>JSpinner</code> with the specified label text from the <code>SpinnerModel</code>  
+	 * and adds the <code>JSpinner</code> to the given <code>Container</code>.
 	 * </blockquote>
-	 * @param c the container which to add the spinner to
-	 * @param label the text label which to add to the spinner
-	 * @param model the spinnerModel of which to make the spinner from
-	 * @return JSpinner created from SpinnerModel with the specified label text
+	 * @param c - the container to add the spinner to
+	 * @param label - the text which to add to the spinner
+	 * @param model - the <code>SpinnerModel</code> to make the spinner from
+	 * @return a JSpinner created from the <code>SpinnerModel</code> with the 
+	 * specified label text
 	 */
 	public static JSpinner addLabeledSpinner(Container c,String label,SpinnerModel model) {
 		JLabel l = new JLabel(label);
@@ -36,6 +37,17 @@ public class SwingHelper {
 		return spinner;
 	}
 //-----------------------------------------------------------------------------
+	/** <b> createLabeledTextBox </b>
+	 * <pre>public static JPanel <b>createLabeledTextBox</b>(String label) </pre> 
+	 * <blockquote> 
+	 * Creates a <code>JTextField</code> with the specified text as a label
+	 * appearing before the text field.
+	 * </blockquote>
+	 * <b><u>WARNING!</b></u> text field is initially about 1 char long - fixing this bug now
+	 * <p>
+	 * @param label - the text to appear in front of the text field
+	 * @return a <code>JPanel</code> with the labeled text field as the only element
+	 */
 	public static JPanel createLabeledTextBox(String label) {
 		JPanel labeledTextBox = new JPanel();
 		
@@ -48,7 +60,16 @@ public class SwingHelper {
 		return labeledTextBox;
 	}
 //-----------------------------------------------------------------------------
-	JPanel createDateRangePanel(){
+	/** <b> createDateRangePanel </b>
+	 * <pre>public JPanel createDateRangePanel()</pre> 
+	 * <blockquote> 
+	 * Creates a <code>JPanel</code> containing two labeled date spinners 
+	 * labeled "To" and "From". Used to specify a specific date range. The 
+	 * default range is -10 years from today's date through today's date. 
+	 * </blockquote>
+	 * @return a JPanel containing two date spinners used for specifying a date range
+	 */
+	public JPanel createDateRangePanel(){
 		JPanel datePanel = new JPanel();
 		Calendar calendar = Calendar.getInstance();
 		JSpinner dateSpinner;
@@ -73,8 +94,14 @@ public class SwingHelper {
 	    return datePanel;
 	}
 //-----------------------------------------------------------------------------				
-	/**
-	 * Makes and returns a JPanel with the given text as the only component.
+	/** <b> makeTextPanel </b>
+	 * <pre>public static JPanel makeTextPanel(String text)</pre> 
+	 * <blockquote> 
+	 * Creates a <code>JPanel</code> containing the given text placed in the
+	 * center as the only component.
+	 * </blockquote>
+	 * @param text - the text to put on the panel
+	 * @return a JPanel containing only the given text
 	 */
 	public static JPanel makeTextPanel(String text) {
 	    JPanel panel = new JPanel(false);
