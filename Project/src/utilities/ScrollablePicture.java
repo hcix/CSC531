@@ -50,7 +50,7 @@ public class ScrollablePicture extends JLabel
             setOpaque(true);
             setBackground(Color.white);
         }
-        maxUnitIncrement = m;
+     //   maxUnitIncrement = m;
  
         //Let the user scroll by dragging to outside the window.
         setAutoscrolls(true); //enable synthetic drag events

@@ -3,6 +3,7 @@ package userinterface;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
@@ -136,7 +137,11 @@ public class MapPanel extends JPanel implements ActionListener{
     	toolbar.setRollover(false);
     	
     	//Get the map image
-    	ImageIcon mapImageIcon = ImageHandler.createImageIcon("images/campusMap.png");
+    	ImageIcon mapImageIcon = ImageHandler.createImageIcon("images/campusMapsmall.png");
+    /*	Image mapImage = mapImageIcon.getImage();
+    	Image resizedMap = ImageHandler.getScaledImage(mapImage, 1200, 600);
+    	ImageIcon resizedMapIcon = new ImageIcon(resizedMap);*/
+    	
     	
 	    //Set up the scroll pane.
         ScrollablePicture scrollableMap = new ScrollablePicture(mapImageIcon, 20);

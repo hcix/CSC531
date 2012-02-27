@@ -1,13 +1,11 @@
 package utilities;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -180,5 +178,51 @@ public class SwingHelper {
 		lineBorder = BorderFactory.createLineBorder(Color.black);
 		c.setBorder(lineBorder);
 	}
+//-----------------------------------------------------------------------------	
+	/** 
+	 * <b> addVerticalButtons </b>
+	 * <pre>addVerticalButtons(JPanel panel, JButton[] buttonArray)</pre> 
+	 * <blockquote> 
+	 * Adds a line of vertical buttons to the given panel.
+	 * </blockquote>
+	 * @param panel - the <code>JPanel</code> to add the buttons to
+	 * @param buttonArray - an array filled with buttons to add to panel
+	 */
+	public static void addVerticalButtons(JPanel panel, JButton[] buttonArray){
+		panel.setLayout(new MigLayout());
+		
+		System.out.println("array length = " + buttonArray.length);
+		for(int i=0; i<buttonArray.length; i++){
+			panel.add(buttonArray[i], "align, wrap");
+		}
+	}
 //-----------------------------------------------------------------------------
+	/** 
+	 * <b> addVerticalLabeledButtons </b>
+	 * <pre>addVerticalButtons(JPanel panel, JButton[] buttonArray, String[] labels)</pre> 
+	 * <blockquote> 
+	 * Adds a line of vertical buttons with accompaning text to the given panel.
+	 * The text will precede the panel and both buttons and panels will be left 
+	 * aligned.
+	 * </blockquote>
+	 * @param panel - the <code>JPanel</code> to add the buttons to
+	 * @param buttonArray - an array filled with buttons to add to panel
+	 * @param labels - an array filled with the text to precede each button
+	 * 
+	 * <u>Note</u>: buttons and accompaning labels should be in the same 
+	 * order w/in their respective arrays
+	 */
+	public static void addVerticalLabeledButtons(JPanel panel, JButton[] buttonArray, String[] labels){
+		panel.setLayout(new MigLayout());
+		
+		JLabel label;
+		
+		System.out.println("array length = " + buttonArray.length);
+		for(int i=0; i<buttonArray.length; i++){
+			panel.add(buttonArray[i], "align");
+			label = new JLabel(labels[i]);
+			panel.add(label, "aligny top, wrap");
+		}
+	}
+//-----------------------------------------------------------------------------	
 }

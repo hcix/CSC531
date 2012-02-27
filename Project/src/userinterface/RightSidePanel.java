@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
+import net.miginfocom.swing.MigLayout;
 
 public class RightSidePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -74,6 +75,33 @@ public class RightSidePanel extends JPanel {
 		maps.add(mapsLabel);
 		maps.add(scroller);
 		this.add(maps);
+	}
+//-----------------------------------------------------------------------------
+	public void makeBOLOPanel(){
+		this.removeAll();
+		
+		JPanel boloPanel = new JPanel();
+		boloPanel.setLayout(new MigLayout());
+		JPanel scrollPanel = new JPanel();
+		
+		//Add all new maps announcements to the top of the scroll pane
+		//addInfo(scrollPanel);
+		
+		JScrollPane scroller = new JScrollPane(scrollPanel,
+			ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		JLabel boloLabel = new JLabel("<html><font size=\"5\">Recent BOLOs</font>",JLabel.CENTER);
+
+		boloPanel.setPreferredSize(new Dimension(270,625));
+		boloPanel.setLayout(new BoxLayout(boloPanel, BoxLayout.Y_AXIS));
+		
+		
+		boloPanel.setBorder(makeSidePanelBorder());
+
+		boloPanel.add(boloLabel, "dock north");
+		boloPanel.add(scroller);
+		this.add(boloPanel);
 	}
 //-----------------------------------------------------------------------------
 	public Border makeSidePanelBorder(){

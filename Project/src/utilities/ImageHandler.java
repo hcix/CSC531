@@ -47,7 +47,7 @@ public class ImageHandler {
 	 * @param h - the desired height 
 	 * @return a scaled version of the given <code>Image</code>
 	 */
-    public Image getScaledImage(Image srcImg, int w, int h){
+    public static Image getScaledImage(Image srcImg, int w, int h){
         BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = resizedImg.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, 
@@ -56,5 +56,31 @@ public class ImageHandler {
         g2.dispose();
         return resizedImg;
     }
+//-----------------------------------------------------------------------------
+/**
+ * 
+ */
+/** <b> getScaledImageIcon </b>
+ * <pre>public ImageIcon <b>getScaledImageIcon</b>(ImageIcon srcImg, int w, int h)</pre> 
+ * <blockquote> 
+ * Scales/Resizes a given <code>ImageIcon</code> to the specified size returning
+ * an <code>ImageIcon</code>.
+ * </blockquote>
+ * @param srcImg - the <code>ImageIcon</code> to be resized
+ * @param w - the desired width
+ * @param h - the desired height 
+ * @return a scaled version of the given <code>ImageIcon</code>
+ */
+public static ImageIcon getScaledImageIcon(ImageIcon srcImgIcon, int w, int h){
+	Image srcImg = srcImgIcon.getImage();
+    BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g2 = resizedImg.createGraphics();
+    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, 
+    		RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+    g2.drawImage(srcImg, 0, 0, w, h, null);
+    g2.dispose();
+    ImageIcon resizedImgIcon = new ImageIcon(resizedImg);
+    return resizedImgIcon;
+}
 //-----------------------------------------------------------------------------
 }

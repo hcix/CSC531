@@ -21,7 +21,7 @@ import utilities.SwingHelper;
 public class MainInterface extends JPanel{
 	private static final long serialVersionUID = 1L;
 	JPanel sidePanel, homePanel, boloPanel, rollCallPanel, 
-		mapPanel, messagesPanel, blueBookPanel, schedPanel;
+		mapPanel, messagesPanel, blueBookPanel, schedPanel, adminPanel;
 //-----------------------------------------------------------------------------	
 	public MainInterface(JFrame parent){
 		super(new GridLayout(1, 1));
@@ -67,6 +67,10 @@ public class MainInterface extends JPanel{
         tabbedPane.addTab("Schedule", schedPanel);
         tabbedPane.setMnemonicAt(6, KeyEvent.VK_7);
         
+        adminPanel = new AdminPanel();
+        tabbedPane.addTab("Administration", adminPanel);
+        tabbedPane.setMnemonicAt(7, KeyEvent.VK_8);
+        
         //The following line enables the use of scrolling tabs
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);	
         
@@ -101,7 +105,7 @@ public class MainInterface extends JPanel{
     	} else if (current == homePanel){
     		((RightSidePanel)sidePanel).makeAnnouncementsPanel();
     	} else if (current == boloPanel){
-    		
+    		((RightSidePanel)sidePanel).makeBOLOPanel();
     	} else if (current == rollCallPanel){
     		
     	} else if (current == mapPanel){
