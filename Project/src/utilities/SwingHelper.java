@@ -22,9 +22,11 @@ import net.miginfocom.swing.MigLayout;
 
 public class SwingHelper {
 //-----------------------------------------------------------------------------
+	/** length in columns = 1 */
+	public static final int ONE_CHAR_TEXT_FIELD_LENGTH = 2;
+	/** length in columns = 2 */
+	public static final int EXTRA_SMALL_TEXT_FIELD_LENGTH = 3;
 	/** length in columns = 5 */
-	public static final int EXTRA_SMALL_TEXT_FIELD_LENGTH = 2;
-	/** length in columns = 12 */
 	public static final int SMALL_TEXT_FIELD_LENGTH = 5;
 	/** length in columns = 15 */
 	public static final int MEDIUM_TEXT_FIELD_LENGTH = 15;

@@ -121,11 +121,11 @@ private static final long serialVersionUID = 1L;
 		SwingHelper.addTitledBorder(infoPanel, "Physical Description");
 
         // create labels
-		JLabel ageLabel = new JLabel("Approx. Age");
+		JLabel ageLabel = new JLabel("<html>Approx.<br>Age</html>");
 		JLabel raceLabel = new JLabel("Race");
 		JLabel sexLabel = new JLabel("Sex");
-		JLabel heightLabel = new JLabel("Approx. Height");
-		JLabel weightLabel = new JLabel("Approx. Weight");
+		JLabel heightLabel = new JLabel("<html>Approx.<br>Height</html>");
+		JLabel weightLabel = new JLabel("<html>Approx.<br>Weight</html>");
 		JLabel buildLabel = new JLabel("Build");
 		JLabel eyesLabel = new JLabel("Eyes");
 		JLabel hairLabel = new JLabel("Hair");
@@ -134,59 +134,58 @@ private static final long serialVersionUID = 1L;
 		// create fields
 		JTextField ageField = new JTextField(SwingHelper.EXTRA_SMALL_TEXT_FIELD_LENGTH);
 		JTextField raceField = new JTextField(SwingHelper.EXTRA_SMALL_TEXT_FIELD_LENGTH);
-		JTextField sexField = new JTextField(SwingHelper.EXTRA_SMALL_TEXT_FIELD_LENGTH);
+		JTextField sexField = new JTextField(SwingHelper.ONE_CHAR_TEXT_FIELD_LENGTH);
 		JTextField heightField = new JTextField(SwingHelper.EXTRA_SMALL_TEXT_FIELD_LENGTH);
 		JTextField weightField = new JTextField(SwingHelper.EXTRA_SMALL_TEXT_FIELD_LENGTH);
-		JTextField buildField = new JTextField(SwingHelper.SMALL_TEXT_FIELD_LENGTH);
-		JTextField eyesField = new JTextField(SwingHelper.SMALL_TEXT_FIELD_LENGTH);
-		JTextField hairField = new JTextField(SwingHelper.SMALL_TEXT_FIELD_LENGTH);
+		JTextField buildField = new JTextField(10);
+		JTextField eyesField = new JTextField(10);
+		JTextField hairField = new JTextField(10);
 		JTextArea otherDescriptField = new JTextArea(5, 20);
 		otherDescriptField.setLineWrap(true);
 		JScrollPane otherDescriptScrollPane = new JScrollPane(otherDescriptField);
 		otherDescriptScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		
+		//Armed checkboxs
 		JLabel armedLabel = new JLabel("Armed?");
 		JLabel ifYes = new JLabel("If Yes: ");
 		JCheckBox armedField1 = new JCheckBox("No");
 		JCheckBox armedField2 = new JCheckBox("Yes");
-		JTextField ifYesField = new JTextField(20);
+		JTextField ifYesField = new JTextField(SwingHelper.MEDIUM_TEXT_FIELD_LENGTH);
 
-		// add to panel
-		JPanel jp1 = new JPanel();
-		jp1.add(ageLabel, "align left");
-		jp1.add(ageField);
-		jp1.add(raceLabel);
-		jp1.add(raceField);
-		jp1.add(sexLabel);
-		jp1.add(sexField);
-	//	infoPanel.add(jp1);
-	//	JPanel jp2 = new JPanel();
-		jp1.add(heightLabel);
-		jp1.add(heightField);
-		jp1.add(weightLabel);
-		jp1.add(weightField);
-		jp1.add(buildLabel);
-		jp1.add(buildField);
-	//	infoPanel.add(jp2);
-		JPanel jp3 = new JPanel();
-		jp3.add(eyesLabel);
-		jp3.add(eyesField);
-		jp3.add(hairLabel);
-		jp3.add(hairField);
-		infoPanel.add(jp3);
+		// add entry fields to panel
+		JPanel entryFields = new JPanel(new MigLayout());
+		//row 1
+		entryFields.add(ageLabel, "align");
+		entryFields.add(ageField, "align");
+		entryFields.add(raceLabel, "align");
+		entryFields.add(raceField, "align");
+		entryFields.add(sexLabel, "align");
+		entryFields.add(sexField, "align, wrap");
+		//row 2
+		entryFields.add(heightLabel, "align");
+		entryFields.add(heightField, "align");
+		entryFields.add(weightLabel, "align");
+		entryFields.add(weightField, "align");
+		entryFields.add(buildLabel, "align");
+		entryFields.add(buildField, "align, wrap");
+		//row 3
+		entryFields.add(eyesLabel, "align");
+		entryFields.add(eyesField, "align, spanx 3");
+		entryFields.add(hairLabel, "align");
+		entryFields.add(hairField, "align, wrap");
+		//other description area
+		entryFields.add(otherDescriptionLabel, "spanx");
+		entryFields.add(otherDescriptScrollPane, "spanx, growx");
+		//armed area
+		entryFields.add(armedLabel, "align, newline");
+		entryFields.add(armedField1);
+		entryFields.add(armedField2);
+		//TODO: make the weapon description field appear only if armed is checked
+		entryFields.add(ifYes);
+		entryFields.add(ifYesField, "span, shrink");
+		infoPanel.add(entryFields);
 		
-		JPanel jp4 = new JPanel(new MigLayout("flowy"));
-		jp4.add(otherDescriptionLabel);
-		SwingHelper.addLineBorder(otherDescriptField);
-		jp4.add(otherDescriptField);
-		infoPanel.add(jp4);
-		
-		JPanel jp5 = new JPanel();
-		infoPanel.add(armedLabel);
-		infoPanel.add(armedField1);
-		infoPanel.add(armedField2);
-		infoPanel.add(ifYes);
-		infoPanel.add(ifYesField);
+		infoPanel.add(entryFields);
 		
 		return infoPanel;
 	}
