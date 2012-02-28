@@ -5,7 +5,9 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -15,14 +17,15 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
 import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 public class SwingHelper {
 //-----------------------------------------------------------------------------
 	/** length in columns = 5 */
-	public static final int EXTRA_SMALL_TEXT_FIELD_LENGTH = 5;
+	public static final int EXTRA_SMALL_TEXT_FIELD_LENGTH = 2;
 	/** length in columns = 12 */
-	public static final int SMALL_TEXT_FIELD_LENGTH = 12;
+	public static final int SMALL_TEXT_FIELD_LENGTH = 5;
 	/** length in columns = 15 */
 	public static final int MEDIUM_TEXT_FIELD_LENGTH = 15;
 	/** length in columns = 25 */
@@ -81,7 +84,7 @@ public class SwingHelper {
 //-----------------------------------------------------------------------------
 	/** 
 	 * <b> createDateRangePanel </b>
-	 * <pre>public JPanel createDateRangePanel()</pre> 
+	 * <pre>public static JPanel createDateRangePanel()</pre> 
 	 * <blockquote> 
 	 * Creates a <code>JPanel</code> containing two labeled date spinners 
 	 * labeled "To" and "From". Used to specify a specific date range. The 
@@ -114,10 +117,10 @@ public class SwingHelper {
 	    return datePanel;
 
 	}
-	
+//-----------------------------------------------------------------------------	
 	/** 
-	 * <b> createDateRangePanel </b>
-	 * <pre>public JPanel createDateRangePanel()</pre> 
+	 * <b> createDatePanel </b>
+	 * <pre>public static JPanel createDatePanel()</pre> 
 	 * <blockquote> 
 	 * Creates a <code>JPanel</code> same as DateRange, but for only one date. The 
 	 * default range is -10 years from today's date through today's date. 
@@ -145,7 +148,40 @@ public class SwingHelper {
 	    return datePanel;
 
 	}
-//-----------------------------------------------------------------------------				
+//-----------------------------------------------------------------------------	
+	/** 
+	 * <b> createTimeSpinnerPanel </b>
+	 * <pre>public static JPanel createTimeSpinnerPanel()</pre> 
+	 * <blockquote> 
+	 * Creates a <code>JPanel</code> with a <code>JSpinner</code> to select
+	 * a time.
+	 * </blockquote>
+	 * @return a JPanel containing one time spinner used for specifying a time
+	 */
+	public static JPanel createTimeSpinnerPanel(){
+	// create and set panels
+	JPanel timePanel = new JPanel();
+	timePanel.setLayout(new MigLayout());
+
+    //Set up times
+	Calendar calendar = Calendar.getInstance();
+    calendar.set(Calendar.HOUR_OF_DAY, 1);
+    calendar.set(Calendar.MINUTE, 0);
+    Date initTime = calendar.getTime();
+    calendar.set(Calendar.HOUR_OF_DAY, 24);
+    calendar.set(Calendar.MINUTE, 59);
+    Date finalTime = calendar.getTime();
+    
+    JSpinner timeSpinner;
+    
+	SpinnerModel toTimeModel = new SpinnerDateModel(initTime,initTime,finalTime,Calendar.HOUR);
+	timeSpinner = SwingHelper.addLabeledSpinner(timePanel, "Time of Incident: ", toTimeModel);       
+	timeSpinner.setEditor(new JSpinner.DateEditor(timeSpinner, "hh:mm a"));
+	timePanel.add(timeSpinner);
+	return timePanel;
+	
+	}
+//-----------------------------------------------------------------------------
 	/** 
 	 * <b> makeTextPanel </b>
 	 * <pre>public static JPanel makeTextPanel(String text)</pre> 
@@ -178,10 +214,25 @@ public class SwingHelper {
 		lineBorder = BorderFactory.createLineBorder(Color.black);
 		c.setBorder(lineBorder);
 	}
+//-----------------------------------------------------------------------------
+	/** 
+	 * <b> addTitledBorder </b>
+	 * <pre>public static void addTitledBorder(JComponent c)</pre> 
+	 * <blockquote> 
+	 * Adds a basic black line border with the specified title around the given component.
+	 * </blockquote>
+	 * @param c - the component to put the border around
+	 * @param title - the title to give the titled border
+	 */
+	public static void addTitledBorder(JComponent c, String title){
+		TitledBorder titledBorder;
+		titledBorder = BorderFactory.createTitledBorder(title);
+		c.setBorder(titledBorder);
+	}
 //-----------------------------------------------------------------------------	
 	/** 
 	 * <b> addVerticalButtons </b>
-	 * <pre>addVerticalButtons(JPanel panel, JButton[] buttonArray)</pre> 
+	 * <pre>public static void addVerticalButtons(JPanel panel, JButton[] buttonArray)</pre> 
 	 * <blockquote> 
 	 * Adds a line of vertical buttons to the given panel.
 	 * </blockquote>
@@ -199,7 +250,7 @@ public class SwingHelper {
 //-----------------------------------------------------------------------------
 	/** 
 	 * <b> addVerticalLabeledButtons </b>
-	 * <pre>addVerticalButtons(JPanel panel, JButton[] buttonArray, String[] labels)</pre> 
+	 * <pre>public static void addVerticalButtons(JPanel panel, JButton[] buttonArray, String[] labels)</pre> 
 	 * <blockquote> 
 	 * Adds a line of vertical buttons with accompaning text to the given panel.
 	 * The text will precede the panel and both buttons and panels will be left 
@@ -223,6 +274,31 @@ public class SwingHelper {
 			label = new JLabel(labels[i]);
 			panel.add(label, "aligny top, wrap");
 		}
+	}
+//-----------------------------------------------------------------------------	
+	/** 
+	 * <b> createImageButton </b>
+	 * <pre>public static void createImageButton(String buttonText, String imagePath)</pre> 
+	 * <blockquote> 
+	 * Creates and returns a new <code>JButton</code> with the image found at the given
+	 * filename and the given text. Image will appear on top and text will appear centered
+	 * below the image. In the case that no image is found at the given path, a regular
+	 * <code>JButton</code> with the given text will be returned.
+	 * </blockquote>
+	 * @param buttonText - the text to appear on the button 
+	 * @param imagePath - the pathname of the image to place on the button given relative 
+	 * to userinterface package.
+	 * 
+	 * @return <code>JButton</code> with specified icon image and text
+	 */
+	public static JButton createImageButton(String buttonText, String imagePath){
+		
+		ImageIcon buttonIcon = ImageHandler.createImageIcon(imagePath);
+		JButton imageButton= new JButton(buttonText, buttonIcon);
+		imageButton.setVerticalTextPosition(AbstractButton.BOTTOM);
+		imageButton.setHorizontalTextPosition(AbstractButton.CENTER);
+		
+		return imageButton;
 	}
 //-----------------------------------------------------------------------------	
 }

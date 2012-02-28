@@ -108,8 +108,6 @@ public class MainInterface extends JPanel{
     		((RightSidePanel)sidePanel).makeBOLOPanel();
     	} else if (current == rollCallPanel){
     		
-    	} else if (current == mapPanel){
-    		
     	} else if (current == messagesPanel){
     		
     	} else if (current == blueBookPanel){

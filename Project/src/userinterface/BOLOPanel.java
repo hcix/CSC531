@@ -5,10 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Date;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,22 +24,18 @@ private static final long serialVersionUID = 1L;
 private static final int TEXT_FIELD_LENGTH = 20;
 //-----------------------------------------------------------------------------
 	public BOLOPanel(final JFrame parent){
-	//	super(new BorderLayout());
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-	/*	JToolBar toolbar = new JToolBar(JToolBar.HORIZONTAL);
-		toolbar.setFloatable(true);
-		toolbar.setRollover(true);
-		toolbar.setBorderPainted(true);
-		toolbar.
-		toolbar.setLayout(new MigLayout("fill"));*/
+	//	this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setLayout(new MigLayout("nogrid"));
 		
-		//Create the search panel
-		JPanel searchPanel = createSearchPanel();
+		//Create the search fields panel
+		JPanel searchPanel = createSearchFieldsPanel();
 
-		
+		//Create search button
+		JButton searchButton = SwingHelper.createImageButton("Search Records", "icons/search.png");
+				
 		//Create a button to create a new BOLO 
-		JButton newBOLO = new JButton("Create new BOLO");
-		newBOLO.addActionListener(new ActionListener() {
+		JButton newBOLOButton = SwingHelper.createImageButton("Create BOLO", "icons/plusSign.png");
+		newBOLOButton.addActionListener(new ActionListener() {
 			//BOLO form dialog
 			BOLOform formDialog = new BOLOform(parent);
 			public void actionPerformed(ActionEvent e){
@@ -48,36 +44,32 @@ private static final int TEXT_FIELD_LENGTH = 20;
 		});
 
 		//Create a button to import an existing BOLO
-		JButton importBOLO = new JButton("Import an existing BOLO");
-		importBOLO.addActionListener(new ActionListener() {
+		JButton importBOLOButton = SwingHelper.createImageButton("Import Existing BOLO", "icons/Import.png");
+		importBOLOButton.addActionListener(new ActionListener() {
 			//file chooser dialog
 			public void actionPerformed(ActionEvent e){
 				//file chooser dialog .setVisable(true);
+				//Create a file chooser
+				final JFileChooser fc = new JFileChooser();
+
+				//In response to a button click:
+				int returnVal = fc.showOpenDialog(parent);
 			}
 		});
-		
-	//	toolbar.add(newBOLO);
-	//	toolbar.add(importBOLO);
-		
-		//Create a button panel & add the buttons to it
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.add(newBOLO);
-		buttonPanel.add(importBOLO);
-		
+
 		//add the components to this panel
-	//	this.add(toolbar, BorderLayout.PAGE_START);
-	//	this.add(searchPanel, BorderLayout.CENTER);
-		this.add(searchPanel);
-		this.add(buttonPanel);
-		//this.add(buttonPanel, BorderLayout.CENTER);
+		this.add(newBOLOButton, "gapy para");
+		this.add(importBOLOButton, "wrap, gapy para");
+		this.add(searchPanel, "shrink, gapy para");
+		this.add(searchButton, "wrap, aligny bottom");
+
+	//	this.add(buttonPanel);
 		
 	}
 //-----------------------------------------------------------------------------
-	JPanel createSearchPanel(){
-		JPanel searchPanel = new JPanel();
-		JPanel searchFields = new JPanel();
-		searchFields.setLayout(new MigLayout("align left"));
-		searchPanel.setLayout(new MigLayout());
+	JPanel createSearchFieldsPanel(){
+		JPanel searchFieldsPanel = new JPanel();
+		searchFieldsPanel.setLayout(new MigLayout("align left"));
 
 		JLabel caseNumLabel = new JLabel("Case #: ");
 		JLabel locationLabel = new JLabel("Location: ");
@@ -88,57 +80,27 @@ private static final int TEXT_FIELD_LENGTH = 20;
 		JTextField statusField = new JTextField(20);
 		
 		JPanel dateRange = SwingHelper.createDateRangePanel();
-		
-	/*	SwingHelper.addLineBorder(caseNumLabel );
-		SwingHelper.addLineBorder( locationLabel);
-		SwingHelper.addLineBorder( statusLabel);
-		SwingHelper.addLineBorder( caseNumField);
-		SwingHelper.addLineBorder( locationField);
-		SwingHelper.addLineBorder(statusField );
-		SwingHelper.addLineBorder(dateRange );*/
-		SwingHelper.addLineBorder(searchPanel);
-		//SwingHelper.addLineBorder(searchFields);
-		
-		searchFields.add(caseNumLabel, "align left");
-		searchFields.add(caseNumField, "align left, wrap");
+
+		searchFieldsPanel.add(caseNumLabel, "align left");
+		searchFieldsPanel.add(caseNumField, "align left, wrap");
 		String[] statusStrings = { "Need to Identify", "Identified", "Arrested" };
 		JComboBox statusList = new JComboBox(statusStrings);
 		statusList.setSelectedIndex(0);
 		//statusList.addActionListener(this);
 		
-	//	JPanel dateRange = SwingHelper.createDateRangePanel();
+		SwingHelper.addLineBorder(searchFieldsPanel);
 		
-/*		SwingHelper.addLineBorder(caseNumLabel);
-		SwingHelper.addLineBorder(locationLabel);
-		SwingHelper.addLineBorder(statusLabel);
-		SwingHelper.addLineBorder(caseNumField);
-		SwingHelper.addLineBorder(locationField);
-		SwingHelper.addLineBorder(statusList);
-		SwingHelper.addLineBorder(dateRange);
-		SwingHelper.addLineBorder(searchPanel);*/
-		SwingHelper.addLineBorder(searchFields);
-		
-		searchFields.add(caseNumLabel, "alignx left");
-		searchFields.add(caseNumField, "alignx left, wrap");
-		searchFields.add(locationLabel,"alignx left");
-		searchFields.add(locationField, "alignx left, wrap");
+		searchFieldsPanel.add(caseNumLabel, "alignx left");
+		searchFieldsPanel.add(caseNumField, "alignx left, wrap");
+		searchFieldsPanel.add(locationLabel,"alignx left");
+		searchFieldsPanel.add(locationField, "alignx left, wrap");
 
-		createDateRangePanel(searchFields);
+		createDateRangePanel(searchFieldsPanel);
 
-		searchFields.add(statusLabel, "alignx left");
-		searchFields.add(statusList, "alignx left, wrap");
-		
-		//Create search button
-		JButton searchButton = new JButton("Search Records");
-	//	SwingHelper.addLineBorder(searchButton);
-		//add the search field components to the search field panel
+		searchFieldsPanel.add(statusLabel, "alignx left");
+		searchFieldsPanel.add(statusList, "alignx left, wrap");
 
-		
-		//add the search fields and search button to the search panel
-		searchPanel.add(searchFields);
-		searchPanel.add(searchButton);
-
-		return searchPanel;
+		return searchFieldsPanel;
 	}
 //-----------------------------------------------------------------------------
 	public static JSpinner addLabeledSpinner(Container c,String label,SpinnerModel model, boolean wrap) {

@@ -8,27 +8,38 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SpinnerDateModel;
+import javax.swing.SpinnerModel;
 import javax.swing.table.DefaultTableModel;
+import net.miginfocom.swing.MigLayout;
 
 import utilities.ImageHandler;
+import utilities.SwingHelper;
 
 public class BOLOform extends JDialog implements ActionListener {
 private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	BOLOform(JFrame parent){
 		super(parent, "New BOLO", true);
-		this.setPreferredSize(new Dimension(700,900));
-		this.setSize(new Dimension(700,900));
+		this.setPreferredSize(new Dimension(800,900));
+		this.setSize(new Dimension(800,900));
 		
 		JPanel dialogPanel = new JPanel();
 		dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
@@ -46,28 +57,28 @@ private static final long serialVersionUID = 1L;
 	    
 	    //Set up form interface
 	    Container contentPane = getContentPane();
-	 //   SpringLayout layout = new SpringLayout();
-   //     contentPane.setLayout(layout);
-        
         
 	    
 		//Add the BOLO "letter head" image
 		ImageIcon boloHeaderIcon = ImageHandler.createImageIcon("images/boloHeader.png");
-		JLabel boloHeader = new JLabel(boloHeaderIcon);
-		//add(boloHeader);
 		JPanel boloHeaderPanel = new JPanel();
-		boloHeaderPanel.add(boloHeader);
+		boloHeaderPanel.add(new JLabel(boloHeaderIcon));
 		
 	
+		//Add photo/video Panel
 		
-		
+		//Add info panel
 	    JPanel basicInfo = new JPanel();
-	   // basicInfo.setLayout(new BoxLayout(basicInfo, BoxLayout.Y_AXIS));
-
-	    JLabel dateField = new JLabel("Date: ");
-	    basicInfo.add(dateField);
-
+		basicInfo.add(createPhysicalDescriptionPanel());
 	    dialogPanel.add(basicInfo);
+		//Add remarks area
+		
+		//Add standard footer
+		
+
+
+	    
+
 
 	    JButton cancelButton = new JButton("Cancel");
 	    cancelButton.addActionListener(new ActionListener( ) {
@@ -101,6 +112,83 @@ private static final long serialVersionUID = 1L;
 	 //   contentPane.add(controlPanel);
 	    
 	//    this.pack();
+	}
+//-----------------------------------------------------------------------------	
+	public JPanel createPhysicalDescriptionPanel(){
+		JPanel infoPanel = new JPanel();
+		infoPanel.setLayout(new MigLayout("flowy"));
+		
+		SwingHelper.addTitledBorder(infoPanel, "Physical Description");
+
+        // create labels
+		JLabel ageLabel = new JLabel("Approx. Age");
+		JLabel raceLabel = new JLabel("Race");
+		JLabel sexLabel = new JLabel("Sex");
+		JLabel heightLabel = new JLabel("Approx. Height");
+		JLabel weightLabel = new JLabel("Approx. Weight");
+		JLabel buildLabel = new JLabel("Build");
+		JLabel eyesLabel = new JLabel("Eyes");
+		JLabel hairLabel = new JLabel("Hair");
+		JLabel otherDescriptionLabel = new JLabel("Other Description/Info");
+		
+		// create fields
+		JTextField ageField = new JTextField(SwingHelper.EXTRA_SMALL_TEXT_FIELD_LENGTH);
+		JTextField raceField = new JTextField(SwingHelper.EXTRA_SMALL_TEXT_FIELD_LENGTH);
+		JTextField sexField = new JTextField(SwingHelper.EXTRA_SMALL_TEXT_FIELD_LENGTH);
+		JTextField heightField = new JTextField(SwingHelper.EXTRA_SMALL_TEXT_FIELD_LENGTH);
+		JTextField weightField = new JTextField(SwingHelper.EXTRA_SMALL_TEXT_FIELD_LENGTH);
+		JTextField buildField = new JTextField(SwingHelper.SMALL_TEXT_FIELD_LENGTH);
+		JTextField eyesField = new JTextField(SwingHelper.SMALL_TEXT_FIELD_LENGTH);
+		JTextField hairField = new JTextField(SwingHelper.SMALL_TEXT_FIELD_LENGTH);
+		JTextArea otherDescriptField = new JTextArea(5, 20);
+		otherDescriptField.setLineWrap(true);
+		JScrollPane otherDescriptScrollPane = new JScrollPane(otherDescriptField);
+		otherDescriptScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		
+		JLabel armedLabel = new JLabel("Armed?");
+		JLabel ifYes = new JLabel("If Yes: ");
+		JCheckBox armedField1 = new JCheckBox("No");
+		JCheckBox armedField2 = new JCheckBox("Yes");
+		JTextField ifYesField = new JTextField(20);
+
+		// add to panel
+		JPanel jp1 = new JPanel();
+		jp1.add(ageLabel, "align left");
+		jp1.add(ageField);
+		jp1.add(raceLabel);
+		jp1.add(raceField);
+		jp1.add(sexLabel);
+		jp1.add(sexField);
+	//	infoPanel.add(jp1);
+	//	JPanel jp2 = new JPanel();
+		jp1.add(heightLabel);
+		jp1.add(heightField);
+		jp1.add(weightLabel);
+		jp1.add(weightField);
+		jp1.add(buildLabel);
+		jp1.add(buildField);
+	//	infoPanel.add(jp2);
+		JPanel jp3 = new JPanel();
+		jp3.add(eyesLabel);
+		jp3.add(eyesField);
+		jp3.add(hairLabel);
+		jp3.add(hairField);
+		infoPanel.add(jp3);
+		
+		JPanel jp4 = new JPanel(new MigLayout("flowy"));
+		jp4.add(otherDescriptionLabel);
+		SwingHelper.addLineBorder(otherDescriptField);
+		jp4.add(otherDescriptField);
+		infoPanel.add(jp4);
+		
+		JPanel jp5 = new JPanel();
+		infoPanel.add(armedLabel);
+		infoPanel.add(armedField1);
+		infoPanel.add(armedField2);
+		infoPanel.add(ifYes);
+		infoPanel.add(ifYesField);
+		
+		return infoPanel;
 	}
 //-----------------------------------------------------------------------------
 	 // Something in the font changed, so figure out what and make a
@@ -152,41 +240,7 @@ private static final long serialVersionUID = 1L;
 	    setVisible(false);
 	  }
 //-----------------------------------------------------------------------------
-		JPanel makeInfoChart(){
-			JPanel tablePanel = new JPanel();
-			
-			String[] tableRowHeaderNames = {"Date; Time; Location of Incident:",
-			"Reference & Case #:",
-			"BOLO prepared by:",
-			"BOLO approved by:",
-			"Date & Time of BOLO:",
-			"Status",
-			"Subject description & information"};
-			
-			//Create initially empty table
-			JTable table = new JTable();
-			table.setShowGrid(true);
-			table.setGridColor(Color.black);
-			table.setPreferredScrollableViewportSize(new Dimension(895, 100));
-			table.setFillsViewportHeight(true);
-			
-			//Put the table in a scroll pane
-			JScrollPane tableScrollPane = new JScrollPane();
-			tableScrollPane.setViewportView(table);
-			
-			tablePanel.setLayout(new BorderLayout());
-			tablePanel.add(tableScrollPane,BorderLayout.CENTER);
-			add(tablePanel, BorderLayout.CENTER);
-			String[] colHeaders = {"", ""};
-			
-			DefaultTableModel tableModel = new DefaultTableModel(colHeaders,7);
-			table.setModel(tableModel);
-			
-			for(int i=0; i<tableRowHeaderNames.length; i++){
-				
-			}
-			return tablePanel;
-		}
+
 //-----------------------------------------------------------------------------	
 
 }
