@@ -38,86 +38,79 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	BOLOform(JFrame parent){
 		super(parent, "New BOLO", true);
-		this.setPreferredSize(new Dimension(800,900));
-		this.setSize(new Dimension(800,900));
+		//Set the size of the form
+		this.setPreferredSize(new Dimension(950,900));
+		this.setSize(new Dimension(950,900));
+
+		//JPanel dialogPanel = new JPanel(new MigLayout("", "[center][center]", "[top][b][b][b]"));
+		JPanel dialogPanel = new JPanel(new MigLayout("ins 20", "[]5%[]", ""));
 		
-		JPanel dialogPanel = new JPanel();
-		dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.Y_AXIS));
 		
-		//put the form in the middle of the screen
+		//Make the form scrollable
+		JScrollPane dialogPanelScroller = new JScrollPane(dialogPanel);
+		dialogPanelScroller.setVerticalScrollBarPolicy(
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+		//Put the form in the middle of the screen
 		this.setLocationRelativeTo(null);
 
-		// Make sure that if the user cancels, the window does the right thing
+		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
 		this.addWindowListener(new WindowAdapter( ) {
 			public void windowClosing(WindowEvent e) {
 				closeAndCancel( );
 			}
 		});
 	    
-	    
-	    //Set up form interface
-	    Container contentPane = getContentPane();
-        
-	    
-		//Add the BOLO "letter head" image
+
+		//Set up the new BOLO form
+		
+		//Add the BOLO "letter head" image to the top
 		ImageIcon boloHeaderIcon = ImageHandler.createImageIcon("images/boloHeader.png");
 		JPanel boloHeaderPanel = new JPanel();
 		boloHeaderPanel.add(new JLabel(boloHeaderIcon));
-		
+		dialogPanel.add(boloHeaderPanel, "dock north");
 	
-		//Add photo/video Panel
+		//Add photo/video panel
+		JPanel photoVideoPanel = createPhotoVideoPanel();
+		dialogPanel.add(photoVideoPanel, "align left");
 		
-		//Add info panel
-	    JPanel basicInfo = new JPanel();
-		basicInfo.add(createPhysicalDescriptionPanel());
-	    dialogPanel.add(basicInfo);
-		//Add remarks area
-		
-		//Add standard footer
-		
-
-
-	    
-
-
-	    JButton cancelButton = new JButton("Cancel");
-	    cancelButton.addActionListener(new ActionListener( ) {
-	      public void actionPerformed(ActionEvent ae) {
-	        closeAndCancel( );
-	      }
-	    });
-	    
-	    // Add in the OK and Cancel buttons for our dialog box.
-	    JButton saveButton = new JButton("Save");
-	    saveButton.addActionListener(new ActionListener( ) {
-	      public void actionPerformed(ActionEvent e) {
-	        closeAndSave( );
-	      }
-	    });
-	    
+		//Add physical description panel
+	    JPanel physicalDescriptPanel = createPhysicalDescriptionPanel();
+	    dialogPanel.add(physicalDescriptPanel, "align left, wrap");
 	
+	    //Add incident info panel
+	    JPanel incidentInfoPanel = createIncidentInfoPanel();
+	    dialogPanel.add(incidentInfoPanel, "align left, growx");
+	    
+	    //Add narrative area
+	    JPanel narrativePanel = createNarrativePanel();
+	    dialogPanel.add(narrativePanel, "align left, wrap, growx");
+	    
+	    //Add administrative panel
+	    JPanel adminPanel = createAdministrativePanel();
+	    dialogPanel.add(adminPanel, "align left");
 
-	    JPanel controlPanel = new JPanel();
-	    
-	    controlPanel.add(saveButton);
-	    controlPanel.add(cancelButton);
+		//TODO: Add standard footer
+		
 
-		dialogPanel.add(boloHeaderPanel);
-	    dialogPanel.add(basicInfo);
-	    dialogPanel.add(controlPanel);
+
+	    /*Add buttons panel to top of scroll panel as the row header
+	     *(the buttons panel stays at the top of the screen even if the top of the form isn't
+	     *currently visible) */
+	    JPanel buttonsPanel = createButtonsPanel();
+	    dialogPanelScroller.setColumnHeaderView(buttonsPanel);
 	    
-	    contentPane.add(dialogPanel);
-	 //   contentPane.add(boloHeaderPanel);
-	 //   contentPane.add(basicInfo);
-	 //   contentPane.add(controlPanel);
 	    
-	//    this.pack();
+	    //Add the BOLO form scrolling pane dialog to the screen
+	    Container contentPane = getContentPane();
+	    contentPane.add(dialogPanelScroller);
+	    
+	    //this.pack();
 	}
 //-----------------------------------------------------------------------------	
 	public JPanel createPhysicalDescriptionPanel(){
-		JPanel infoPanel = new JPanel();
-		infoPanel.setLayout(new MigLayout("flowy"));
-		
+		JPanel infoPanel = new JPanel(new MigLayout());
+				
 		SwingHelper.addTitledBorder(infoPanel, "Physical Description");
 
         // create labels
@@ -132,7 +125,7 @@ private static final long serialVersionUID = 1L;
 		JLabel otherDescriptionLabel = new JLabel("Other Description/Info");
 		
 		// create fields
-		JTextField ageField = new JTextField(SwingHelper.EXTRA_SMALL_TEXT_FIELD_LENGTH);
+		JTextField ageField = new JTextField(4);
 		JTextField raceField = new JTextField(SwingHelper.EXTRA_SMALL_TEXT_FIELD_LENGTH);
 		JTextField sexField = new JTextField(SwingHelper.ONE_CHAR_TEXT_FIELD_LENGTH);
 		JTextField heightField = new JTextField(SwingHelper.EXTRA_SMALL_TEXT_FIELD_LENGTH);
@@ -152,44 +145,186 @@ private static final long serialVersionUID = 1L;
 		JCheckBox armedField2 = new JCheckBox("Yes");
 		JTextField ifYesField = new JTextField(SwingHelper.MEDIUM_TEXT_FIELD_LENGTH);
 
-		// add entry fields to panel
-		JPanel entryFields = new JPanel(new MigLayout());
-		//row 1
-		entryFields.add(ageLabel, "align");
-		entryFields.add(ageField, "align");
-		entryFields.add(raceLabel, "align");
-		entryFields.add(raceField, "align");
-		entryFields.add(sexLabel, "align");
-		entryFields.add(sexField, "align, wrap");
-		//row 2
-		entryFields.add(heightLabel, "align");
-		entryFields.add(heightField, "align");
-		entryFields.add(weightLabel, "align");
-		entryFields.add(weightField, "align");
-		entryFields.add(buildLabel, "align");
-		entryFields.add(buildField, "align, wrap");
-		//row 3
-		entryFields.add(eyesLabel, "align");
-		entryFields.add(eyesField, "align, spanx 3");
-		entryFields.add(hairLabel, "align");
-		entryFields.add(hairField, "align, wrap");
-		//other description area
-		entryFields.add(otherDescriptionLabel, "spanx");
-		entryFields.add(otherDescriptScrollPane, "spanx, growx");
-		//armed area
-		entryFields.add(armedLabel, "align, newline");
-		entryFields.add(armedField1);
-		entryFields.add(armedField2);
-		//TODO: make the weapon description field appear only if armed is checked
-		entryFields.add(ifYes);
-		entryFields.add(ifYesField, "span, shrink");
-		infoPanel.add(entryFields);
 		
-		infoPanel.add(entryFields);
+		//add row 1 fields
+		infoPanel.add(ageLabel, "align");
+		infoPanel.add(ageField, "align");
+		infoPanel.add(raceLabel, "align");
+		infoPanel.add(raceField, "align");
+		infoPanel.add(sexLabel, "align");
+		infoPanel.add(sexField, "align, wrap");
+		//add row 2 fields
+		infoPanel.add(heightLabel, "align");
+		infoPanel.add(heightField, "align");
+		infoPanel.add(weightLabel, "align");
+		infoPanel.add(weightField, "align");
+		infoPanel.add(buildLabel, "align");
+		infoPanel.add(buildField, "align, wrap");
+		//add row 3 fiels
+		infoPanel.add(eyesLabel, "align");
+		infoPanel.add(eyesField, "align, spanx 3");
+		infoPanel.add(hairLabel, "align");
+		infoPanel.add(hairField, "align, wrap");
+		//add other description area
+		infoPanel.add(otherDescriptionLabel, "spanx");
+		infoPanel.add(otherDescriptScrollPane, "spanx, growx");
+		//add "armed?" area
+		infoPanel.add(armedLabel, "align, newline");
+		infoPanel.add(armedField1);
+		infoPanel.add(armedField2);
+//TODO: make the weapon description field appear only if armed is checked
+		infoPanel.add(ifYes);
+		infoPanel.add(ifYesField, "span, shrink");
 		
 		return infoPanel;
 	}
 //-----------------------------------------------------------------------------
+	public JPanel createIncidentInfoPanel(){
+		JPanel infoPanel = new JPanel(new MigLayout());
+					
+		SwingHelper.addTitledBorder(infoPanel, "Incident Info");
+
+        // create labels
+		JLabel doiLabel = new JLabel("Date of Incident");
+		JLabel toiLabel = new JLabel("Time of Incident");
+		JLabel loiLabel = new JLabel("Location of Incident");
+		JLabel referenceLabel = new JLabel("Reference");
+		JLabel caseNumLabel = new JLabel("Case #");
+		JLabel statusLabel = new JLabel("Status");
+		
+		// create fields
+		JTextField doiField = new JTextField(15);
+		JTextField toiField = new JTextField(15);
+		JTextField loiField = new JTextField(15);
+		JTextField referenceField = new JTextField(15);
+		JTextField caseNumField = new JTextField(15);
+		JTextField statusField = new JTextField(15);
+
+		//row 1
+		infoPanel.add(doiLabel, "align");
+		infoPanel.add(doiField, "align, wrap");
+		infoPanel.add(toiLabel, "align");
+		infoPanel.add(toiField, "align, wrap");
+		infoPanel.add(referenceLabel, "align");
+		infoPanel.add(referenceField, "align, wrap");
+		infoPanel.add(caseNumLabel, "align");
+		infoPanel.add(caseNumField, "align, wrap");
+		infoPanel.add(statusLabel, "align");
+		infoPanel.add(statusField, "align, wrap");
+		
+		return infoPanel;
+	}
+//-----------------------------------------------------------------------------
+	public JPanel createNarrativePanel(){
+		JPanel narrativePanel = new JPanel(new MigLayout());
+		
+		SwingHelper.addTitledBorder(narrativePanel, "Narrative/Remarks");
+		
+		// create fields
+		JTextArea textField = new JTextArea(10, 30);
+		textField.setLineWrap(true);
+		JScrollPane otherDescriptScrollPane = new JScrollPane(textField);
+		otherDescriptScrollPane.setVerticalScrollBarPolicy(
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		
+		//add other description area
+		narrativePanel.add(otherDescriptScrollPane, "growx, align center");
+		
+		return narrativePanel;
+	}
+//-----------------------------------------------------------------------------
+	public JPanel createAdministrativePanel(){
+		JPanel adminPanel = new JPanel(new MigLayout());
+		//adminPanel.setToolTipText("Administrative information pertaining to this BOLO");
+		
+		SwingHelper.addTitledBorder(adminPanel, "Administrative Info");
+
+        // create labels
+		JLabel preparedByLabel = new JLabel("BOLO prepared by");
+		JLabel approvedByLabel = new JLabel("BOLO approved by");
+		JLabel dateLabel = new JLabel("Date BOLO prepared");
+		JLabel timeLabel = new JLabel("Time BOLO prepared");
+		
+		// create fields
+		JTextField preparedByField = new JTextField(15);
+		JTextField approvedByField = new JTextField(15);
+		JTextField dateField = new JTextField(15);
+		JTextField timeField = new JTextField(15);
+		
+		//add labels & text fields to  panel
+		adminPanel.add(preparedByLabel, "align");
+		adminPanel.add(preparedByField, "align, wrap");
+		adminPanel.add(approvedByLabel, "align");
+		adminPanel.add(approvedByField, "align, wrap");
+		adminPanel.add(dateLabel, "align");
+		adminPanel.add(dateField, "align, wrap");
+		adminPanel.add(timeLabel, "align");
+		adminPanel.add(timeField, "align, wrap");
+
+		return adminPanel;
+	}
+//-----------------------------------------------------------------------------
+	public JPanel createPhotoVideoPanel(){
+		JPanel photoVideoPanel = new JPanel(new MigLayout());
+		
+		//Create initial no-photo placeholder photo
+		ImageIcon noPhotoImage = ImageHandler.createImageIcon("images/unknownPerson.jpeg");
+		JLabel noPhotoLabel = new JLabel(noPhotoImage);
+		photoVideoPanel.add(noPhotoLabel, "span, wrap");
+		
+		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", "icons/camera.png");
+		addPhotoButton.setToolTipText("Attach a photo to this BOLO");
+		JButton addVideoButton = SwingHelper.createImageButton("Add a Video", "icons/videoCamera.png");
+		addVideoButton.setToolTipText("Attach a video to this BOLO");
+		photoVideoPanel.add(addPhotoButton);
+		photoVideoPanel.add(addVideoButton);
+		
+		return photoVideoPanel;
+	}
+//-----------------------------------------------------------------------------
+	public JPanel createButtonsPanel(){
+	
+		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
+		
+		//Add cancel button
+		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel.png");
+		cancelButton.setToolTipText("Cancel and do not save");
+		cancelButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae) {
+				closeAndCancel( );
+			}
+		});
+	
+	    // Add save button
+	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/Save.png");
+	    saveButton.setToolTipText("Save BOLO");
+	    saveButton.addActionListener(new ActionListener( ) {
+	    	public void actionPerformed(ActionEvent e) {
+	    		closeAndSave( );
+	    	}
+	    });
+	    
+	    // Add preview button
+	    JButton previewButton = new JButton("<html>Preview<br>  BOLO</html>");
+	    previewButton.setToolTipText("Preview and print final BOLO document");
+	    saveButton.addActionListener(new ActionListener( ) {
+	    	public void actionPerformed(ActionEvent e) {
+	    		closeAndSave( );
+	    	}
+	    });
+	    
+	    
+	    JPanel saveAndCancelButtonsPanel = new JPanel();
+	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
+	    saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
+	    JPanel previewButtonPanel = new JPanel(new MigLayout("rtl"));
+	    previewButtonPanel.add(previewButton, "tag right");
+	    buttonsPanel.add(saveAndCancelButtonsPanel, "shrinky");
+	    buttonsPanel.add(previewButtonPanel, "growx, shrinky");
+	    SwingHelper.addLineBorder(buttonsPanel);
+	    return buttonsPanel;
+	}
+	//-----------------------------------------------------------------------------
 	 // Something in the font changed, so figure out what and make a
 	  // new font for the preview label.
 	  public void actionPerformed(ActionEvent e) {

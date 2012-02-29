@@ -13,7 +13,7 @@ import utilities.SwingHelper;
  * GUI layout for Administration Panel.
  * The Administration Panel allows ranking officers to do administrative tasks
  * within the system such as adding, removing, and editing personal, recording
- * video announcements, etc.
+ * video announcements, editing system properties etc.
  *
  */
 public class AdminPanel extends JPanel {
@@ -29,18 +29,21 @@ public class AdminPanel extends JPanel {
 	public JPanel createActionButtons(){
 		JPanel buttonsPanel = new JPanel();
 		
-		ImageIcon bigQuestionMark = ImageHandler.createImageIcon("images/unknown.png");
+		ImageIcon bigQuestionMark = ImageHandler.createImageIcon("icons/questionMark.png");
 		ImageIcon iconSizedQMark = ImageHandler.getScaledImageIcon(bigQuestionMark, 50, 50);
 		
 		JButton addNewUserButton = new JButton(iconSizedQMark);
 		JButton editUserButton = new JButton(iconSizedQMark);
 		JButton recordVideoButton = new JButton(iconSizedQMark);
+		JButton editStdBOLOfooterButton = new JButton(iconSizedQMark);
 		
-		JButton[] buttonArray = { addNewUserButton, editUserButton, recordVideoButton };
+		JButton[] buttonArray = {addNewUserButton, editUserButton, recordVideoButton, 
+				editStdBOLOfooterButton};
 		
 		String[] buttonLabelText = {"<html><h2>Add a new user to the system</h2></html",
 				"<html><h2>Edit an existing user</h2></html", 
-				"<html><h2>Record a video announcement</h2></html"
+				"<html><h2>Record a video announcement</h2></html",
+				"<html><h2>Edit standard BOLO footer</h2></html"
 		};
 		
 		

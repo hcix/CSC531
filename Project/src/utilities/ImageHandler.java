@@ -64,7 +64,9 @@ public class ImageHandler {
  * <pre>public ImageIcon <b>getScaledImageIcon</b>(ImageIcon srcImg, int w, int h)</pre> 
  * <blockquote> 
  * Scales/Resizes a given <code>ImageIcon</code> to the specified size returning
- * an <code>ImageIcon</code>.
+ * an <code>ImageIcon</code>. If an error occurs with locating the original image
+ * from the <code>ImageIcon</code>, then the original <code>ImageIcon</code> is
+ * returned.
  * </blockquote>
  * @param srcImg - the <code>ImageIcon</code> to be resized
  * @param w - the desired width
@@ -72,7 +74,14 @@ public class ImageHandler {
  * @return a scaled version of the given <code>ImageIcon</code>
  */
 public static ImageIcon getScaledImageIcon(ImageIcon srcImgIcon, int w, int h){
-	Image srcImg = srcImgIcon.getImage();
+	Image srcImg;
+	try{
+		srcImg = srcImgIcon.getImage();
+	}catch(Exception e){
+		e.printStackTrace();
+		System.out.println("Unable to find original image");
+		return srcImgIcon;
+	}
     BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
     Graphics2D g2 = resizedImg.createGraphics();
     g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, 
