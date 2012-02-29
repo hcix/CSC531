@@ -29,19 +29,18 @@ public class AdminPanel extends JPanel {
 	public JPanel createActionButtons(){
 		JPanel buttonsPanel = new JPanel();
 		
-		ImageIcon bigQuestionMark = ImageHandler.createImageIcon("icons/questionMark.png");
-		ImageIcon iconSizedQMark = ImageHandler.getScaledImageIcon(bigQuestionMark, 50, 50);
+		JButton addNewUserButton = SwingHelper.createImageButton("icons/addUser_48.png");
+		JButton editUserButton = SwingHelper.createImageButton("icons/editUser_48.png");
+		JButton deleteUserButton = SwingHelper.createImageButton("icons/deleteUser_48.png");
+		JButton recordVideoButton = SwingHelper.createImageButton("icons/videoCamera.png");
+		JButton editStdBOLOfooterButton = SwingHelper.createImageButton("icons/pencil.png");
 		
-		JButton addNewUserButton = new JButton(iconSizedQMark);
-		JButton editUserButton = new JButton(iconSizedQMark);
-		JButton recordVideoButton = new JButton(iconSizedQMark);
-		JButton editStdBOLOfooterButton = new JButton(iconSizedQMark);
-		
-		JButton[] buttonArray = {addNewUserButton, editUserButton, recordVideoButton, 
-				editStdBOLOfooterButton};
+		JButton[] buttonArray = {addNewUserButton, editUserButton, deleteUserButton,
+				recordVideoButton, editStdBOLOfooterButton};
 		
 		String[] buttonLabelText = {"<html><h2>Add a new user to the system</h2></html",
 				"<html><h2>Edit an existing user</h2></html", 
+				"<html><h2>Delete an existing user</h2></html", 
 				"<html><h2>Record a video announcement</h2></html",
 				"<html><h2>Edit standard BOLO footer</h2></html"
 		};

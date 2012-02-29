@@ -134,7 +134,7 @@ public class MapPanel extends JPanel implements ActionListener{
     	JToolBar toolbar = new JToolBar("Map Actions");
     	addButtonsToToolbar(toolbar);
     	toolbar.setFloatable(true);
-    	toolbar.setRollover(false);
+    	//toolbar.setRollover(false);
     	
     	//Get the map image
     	ImageIcon mapImageIcon = ImageHandler.createImageIcon("images/campusMapsmall.png");
@@ -158,29 +158,32 @@ public class MapPanel extends JPanel implements ActionListener{
     }
 //-----------------------------------------------------------------------------
 	public void addButtonsToToolbar(JToolBar toolbar) {
-		JButton button = null;
 		
 		//Add zoom controls
-		button = new JButton("+");//TODO: GET PICS FOR THE ZOOM IN & ZOOM OUT BUTTONS
-		button.setToolTipText("zoom in");
-		button.setActionCommand(ZOOM_IN);
-		button.addActionListener(this);
-		toolbar.add(button);//add zoom in
-		button = new JButton("-");
-		button.setToolTipText("zoom out");
-		button.setActionCommand(ZOOM_OUT);
-		button.addActionListener(this);
-		toolbar.add(button);//add zoom out
+		ImageIcon zoomInIcon = ImageHandler.createImageIcon("icons/zoomIn_32.png");
+		JButton zoomInbutton = new JButton(zoomInIcon);
+		zoomInbutton.setToolTipText("Zoom In");
+		zoomInbutton.setActionCommand(ZOOM_IN);
+		zoomInbutton.addActionListener(this);
+		toolbar.add(zoomInbutton);//add zoom in
+		
+		ImageIcon zoomOutIcon = ImageHandler.createImageIcon("icons/zoomOut_32.png");
+		JButton zoomOutbutton = new JButton(zoomOutIcon);
+		zoomOutbutton.setToolTipText("Zoom Out");
+		zoomOutbutton.setActionCommand(ZOOM_OUT);
+		zoomOutbutton.addActionListener(this);
+		toolbar.add(zoomOutbutton);//add zoom out
 		
 		//Add a separator 
         toolbar.addSeparator();
 
 	    //Add a fullscreen option button
-		button = new JButton("FS");//TODO: GET FULLSCREEN OPTION BUTTON
-		button.setToolTipText("Full Screen mode");
-		button.setActionCommand(FULL_SCREEN);
-		button.addActionListener(this);
-		toolbar.add(button);
+		ImageIcon fullScreenIcon = ImageHandler.createImageIcon("icons/fullscreen_32.png");
+		JButton fullScreenbutton = new JButton(fullScreenIcon);
+		fullScreenbutton.setToolTipText("Full Screen mode");
+		fullScreenbutton.setActionCommand(FULL_SCREEN);
+		fullScreenbutton.addActionListener(this);
+		toolbar.add(fullScreenbutton);
 		
 		//Add other toolbar buttons/options/fields
 		//...

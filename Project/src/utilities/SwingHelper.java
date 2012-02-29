@@ -303,4 +303,26 @@ public class SwingHelper {
 		return imageButton;
 	}
 //-----------------------------------------------------------------------------	
+	/** 
+	 * <b> createImageButton </b>
+	 * <pre>public static void createImageButton(String imagePath)</pre> 
+	 * <blockquote> 
+	 * Creates and returns a new <code>JButton</code> with the image found at the given
+	 * filename.In the case that no image is found at the given path, a <code>JButton</code>
+	 * with no text or image will be returned.
+	 * </blockquote>
+	 * @param buttonText - the text to appear on the button 
+	 * @param imagePath - the pathname of the image to place on the button given relative 
+	 * to userinterface package.
+	 * 
+	 * @return <code>JButton</code> with specified icon image and text
+	 */
+	public static JButton createImageButton(String imagePath){
+		
+		ImageIcon buttonIcon = ImageHandler.createImageIcon(imagePath);
+		JButton imageButton= new JButton(buttonIcon);
+		
+		return imageButton;
+	}
+//-----------------------------------------------------------------------------	
 }
