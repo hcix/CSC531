@@ -21,7 +21,6 @@ import utilities.SwingHelper;
 
 public class BOLOPanel extends JPanel  implements ActionListener {
 private static final long serialVersionUID = 1L;
-private static final int TEXT_FIELD_LENGTH = 20;
 //-----------------------------------------------------------------------------
 	public BOLOPanel(final JFrame parent){
 	//	this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
