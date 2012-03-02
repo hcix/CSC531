@@ -90,7 +90,7 @@ public class MainInterfaceWindow extends JPanel{
         
 		//Add the right changing side panel to this main panel
         sidePanel = new RightSidePanel();
-		add(sidePanel, BorderLayout.LINE_END);
+	//	add(sidePanel, BorderLayout.LINE_END);
 	}
 //-----------------------------------------------------------------------------	
 	/**
