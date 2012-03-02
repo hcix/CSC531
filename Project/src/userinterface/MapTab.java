@@ -24,7 +24,7 @@ import utilities.ImageHandler;
 import utilities.ScrollablePicture;
 import utilities.SwingHelper;
 
-public class MapPanel extends JPanel implements ActionListener{
+public class MapTab extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private static final int GAP=20;
 	static final private String ZOOM_IN = "zoomin";
@@ -34,7 +34,7 @@ public class MapPanel extends JPanel implements ActionListener{
 	/**
 	 * Create the map panel.
 	 */
-	public MapPanel() {
+	public MapTab() {
 	    JPanel mapPanel = new JPanel(true);
 	    JPanel topPanel = new JPanel();
 	    topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));

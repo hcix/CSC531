@@ -5,8 +5,8 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import userinterface.Dashboard;
-import userinterface.MainInterface;
+import userinterface.DashboardPanel;
+import userinterface.MainInterfaceWindow;
 
 public class ProgramCore extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -45,10 +45,10 @@ public class ProgramCore extends JFrame {
 		frame.setResizable(true);
 		
 		//Add the dashboard area to the window   
-		frame.add(new Dashboard(), BorderLayout.PAGE_START);
+		frame.add(new DashboardPanel(), BorderLayout.PAGE_START);
 
 		//Add the main panel to the window
-		frame.add(new MainInterface(frame), BorderLayout.CENTER);
+		frame.add(new MainInterfaceWindow(frame), BorderLayout.CENTER);
 		
 		//Display the window
 	    frame.pack();

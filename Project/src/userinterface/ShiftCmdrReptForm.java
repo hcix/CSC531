@@ -11,10 +11,10 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 //-----------------------------------------------------------------------------	
-public class ShiftCommanderSumReportForm extends JPanel{
+public class ShiftCmdrReptForm extends JPanel{
 private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------	
-	public ShiftCommanderSumReportForm(){
+	public ShiftCmdrReptForm(){
 		super(new GridLayout(1,0));	
 
 		//Table1

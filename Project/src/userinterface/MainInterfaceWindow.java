@@ -18,12 +18,12 @@ import javax.swing.event.ChangeListener;
 import utilities.SwingHelper;
 
 
-public class MainInterface extends JPanel{
+public class MainInterfaceWindow extends JPanel{
 	private static final long serialVersionUID = 1L;
-	JPanel sidePanel, homePanel, boloPanel, rollCallPanel, 
-		mapPanel, messagesPanel, blueBookPanel, schedPanel, adminPanel;
+	JPanel sidePanel, homeTab, boloTab, rollCallTab, 
+		mapTab, messagesTab, blueBookTab, schedTab, adminTab;
 //-----------------------------------------------------------------------------	
-	public MainInterface(JFrame parent){
+	public MainInterfaceWindow(JFrame parent){
 		super(new GridLayout(1, 1));
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
@@ -34,41 +34,40 @@ public class MainInterface extends JPanel{
 		 */
 		JTabbedPane tabbedPane = new JTabbedPane();
 	        
-		homePanel = new HomeTab(false);
-		tabbedPane.addTab("Home", homePanel);
-		homePanel.setPreferredSize(dim);
+		homeTab = new HomeTab(false);
+		tabbedPane.addTab("Home", homeTab);
+		homeTab.setPreferredSize(dim);
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         
-        boloPanel = new BOLOPanel(parent);
-        boloPanel.setPreferredSize(dim);
-        tabbedPane.addTab("BOLOs", boloPanel);
+        boloTab = new BOLOtab(parent);
+        boloTab.setPreferredSize(dim);
+        tabbedPane.addTab("BOLOs", boloTab);
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
         
-        rollCallPanel = new RollCallPanel(parent);
-        tabbedPane.addTab("Roll Call", rollCallPanel);
+        rollCallTab = new RollCallTab(parent);
+        tabbedPane.addTab("Roll Call", rollCallTab);
         tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
         
-        mapPanel = new MapPanel();
-        tabbedPane.addTab("Map", mapPanel);
-        mapPanel.setPreferredSize(dim);
+        mapTab = new MapTab();
+        tabbedPane.addTab("Map", mapTab);
+        mapTab.setPreferredSize(dim);
         tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
         
-        messagesPanel = SwingHelper.makeTextPanel("Messages");
-        tabbedPane.addTab("Messages", messagesPanel);
+        messagesTab = SwingHelper.makeTextPanel("Messages");
+        tabbedPane.addTab("Messages", messagesTab);
         tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
         
 
-        //blueBookPanel = SwingHelper.makeTextPanel("Blue Book");
-        blueBookPanel = new BlueBookPanel(parent);
-        tabbedPane.addTab("Blue Book", blueBookPanel);
+        blueBookTab = new BlueBookTab(parent);
+        tabbedPane.addTab("Blue Book", blueBookTab);
         tabbedPane.setMnemonicAt(5, KeyEvent.VK_6);
         
-        schedPanel = SwingHelper.makeTextPanel("Schedule");
-        tabbedPane.addTab("Schedule", schedPanel);
+        schedTab = SwingHelper.makeTextPanel("Schedule");
+        tabbedPane.addTab("Schedule", schedTab);
         tabbedPane.setMnemonicAt(6, KeyEvent.VK_7);
         
-        adminPanel = new AdminPanel();
-        tabbedPane.addTab("Administration", adminPanel);
+        adminTab = new AdminTab();
+        tabbedPane.addTab("Administration", adminTab);
         tabbedPane.setMnemonicAt(7, KeyEvent.VK_8);
         
         //The following line enables the use of scrolling tabs
@@ -100,19 +99,19 @@ public class MainInterface extends JPanel{
 	 */
     private void placeSidePanel(Component current){
 
-    	if(current == mapPanel){
+    	if(current == mapTab){
     		((RightSidePanel)sidePanel).makeMapsPanel();
-    	} else if (current == homePanel){
+    	} else if (current == mapTab){
     		((RightSidePanel)sidePanel).makeAnnouncementsPanel();
-    	} else if (current == boloPanel){
+    	} else if (current == boloTab){
     		((RightSidePanel)sidePanel).makeBOLOPanel();
-    	} else if (current == rollCallPanel){
+    	} else if (current == rollCallTab){
     		
-    	} else if (current == messagesPanel){
+    	} else if (current == messagesTab){
     		
-    	} else if (current == blueBookPanel){
+    	} else if (current == blueBookTab){
     		
-    	} else if (current == schedPanel){
+    	} else if (current == schedTab){
     		
     	}
     }

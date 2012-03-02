@@ -19,11 +19,10 @@ import javax.swing.SpinnerModel;
 import net.miginfocom.swing.MigLayout;
 import utilities.SwingHelper;
 
-public class BOLOPanel extends JPanel  implements ActionListener {
+public class BOLOtab extends JPanel  implements ActionListener {
 private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
-	public BOLOPanel(final JFrame parent){
-	//	this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+	public BOLOtab(final JFrame parent){
 		this.setLayout(new MigLayout("nogrid"));
 		
 		//Create the search fields panel
@@ -76,9 +75,6 @@ private static final long serialVersionUID = 1L;
 		
 		JTextField caseNumField = new JTextField(15);
 		JTextField locationField = new JTextField(20);
-		JTextField statusField = new JTextField(20);
-		
-		JPanel dateRange = SwingHelper.createDateRangePanel();
 
 		searchFieldsPanel.add(caseNumLabel, "align left");
 		searchFieldsPanel.add(caseNumField, "align left, wrap");

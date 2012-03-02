@@ -9,8 +9,8 @@ import javax.swing.ImageIcon;
 
 import program.ProgramCore;
 
-import userinterface.MainInterface;
-import userinterface.MapPanel;
+import userinterface.MainInterfaceWindow;
+import userinterface.MapTab;
 
 public class ImageHandler {
 //-----------------------------------------------------------------------------
@@ -25,7 +25,7 @@ public class ImageHandler {
 	 * @return an <code>ImageIcon</code> or <code>null</code> if the path was invalid 
 	 */
 	public static ImageIcon createImageIcon(String path) {
-	    java.net.URL imgURL = MainInterface.class.getResource(path);
+	    java.net.URL imgURL = MainInterfaceWindow.class.getResource(path);
 	    if (imgURL != null) {
 	        return new ImageIcon(imgURL);
 	    } else {

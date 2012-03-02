@@ -5,10 +5,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import utilities.ImageHandler;
 
-public class Dashboard extends JPanel {
+public class DashboardPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------	
-	public Dashboard(){
+	public DashboardPanel(){
 		super();
 		
 		ImageIcon logoIcon = ImageHandler.createImageIcon("images/umpdLogo.gif");

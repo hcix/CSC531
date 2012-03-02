@@ -3,12 +3,16 @@ package utilities;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -41,8 +45,9 @@ public class SwingHelper {
 	 * <b> addLabeledSpinner </b>
 	 * <pre>public static JSpinner <b>addLabeledSpinner</b>(Container c,String label,SpinnerModel model)</pre> 
 	 * <blockquote> 
-	 * Creates a <code>JSpinner</code> with the specified label text from the <code>SpinnerModel</code>  
-	 * and adds the <code>JSpinner</code> to the given <code>Container</code>.
+	 * Creates a <code>JSpinner</code> with the specified label text from the given
+	 * <code>SpinnerModel</code> and adds the <code>JSpinner</code> to the given 
+	 * <code>Container</code>.
 	 * </blockquote>
 	 * @param c - the container to add the spinner to
 	 * @param label - the text which to add to the spinner
@@ -62,7 +67,47 @@ public class SwingHelper {
 	}
 //-----------------------------------------------------------------------------
 	/** 
-	 * <b> createLabeledTextBox </b>
+	 * <b> addLabeledSpinner </b>
+	 * <pre>public static JSpinner <b>addLabeledSpinner</b>(Container c,String label,SpinnerModel model, boolean wrap)</pre> 
+	 * <blockquote> 
+	 * Creates a <code>JSpinner</code> with the specified label text from the given
+	 * <code>SpinnerModel</code> and adds the <code>JSpinner</code> to the given
+	 * <code>Container</code>. If the wrap parameter is set to true, MigLayout's 
+	 * "wrap" attribute will be applied to the <code>JTextField</code>, meaning 
+	 * the next component added will appear on the next line.
+	 * (Exception: Will not work if MigLayout's flowy layout constraint is applied,
+	 * but it is rarely used MigLayout feature and thus not a common concern; however
+	 * if you have set this layout constraint on your <code>JComponent</code> do not
+	 * attempt to use the wrap option of this method.)
+	 * </blockquote>
+	 * @param c - the container to add the spinner to
+	 * @param label - the text which to add to the spinner
+	 * @param model - the <code>SpinnerModel</code> to make the spinner from
+	 * @param wrap - indicates whether the MigLayout "wrap" attribute should be
+	 * present when this <code>JSpinner</code> is added to the container; if 
+	 * component does not have the MigLayout as it's layout manager then this 
+	 * property has no effect
+	 * @return a JSpinner created from the <code>SpinnerModel</code> with the 
+	 * specified label text
+	 */
+	public static JSpinner addLabeledSpinner(Container c,String label,SpinnerModel model, boolean wrap) {
+		JLabel l = new JLabel(label);
+		c.add(l, "align left");
+		
+		JSpinner spinner = new JSpinner(model);
+
+		l.setLabelFor(spinner);
+		if(wrap){
+			c.add(spinner, "align left, wrap");
+		} else{
+			c.add(spinner, "align left, split");
+		}
+		
+		return spinner;
+	}
+//-----------------------------------------------------------------------------
+	/** 
+	 * <b> createLabeledTextField </b>
 	 * <pre>public static JPanel <b>createLabeledTextBox</b>(String label, int length)</pre> 
 	 * <blockquote> 
 	 * Creates a <code>JTextField</code> with the specified text as a label
@@ -72,7 +117,7 @@ public class SwingHelper {
 	 * @param length - the length in columns of the text field 
 	 * @return a <code>JPanel</code> with the labeled text field as the only element
 	 */
-	public static JPanel createLabeledTextBox(String label, int length) {
+	public static JPanel createLabeledTextField(String label, int length) {
 		JPanel labeledTextBox = new JPanel();
 
 		JLabel l = new JLabel(label);
@@ -82,6 +127,35 @@ public class SwingHelper {
 		labeledTextBox.add(text);
 
 		return labeledTextBox;
+	}
+//-----------------------------------------------------------------------------
+	/** 
+	 * <b> addLabeledTextField </b>
+	 * <pre>public static JPanel <b>addLabeledTextField</b>(JComponent c, String label, int length, boolean wrap)</pre> 
+	 * <blockquote> 
+	 * Adds a <code>JTextField</code> with the specified text as a label
+	 * appearing before the text field to the given <code>JComponent</code>. 
+	 * Assuming the <code>JComponent</code> has the MigLayout set, the label
+	 * and text field are both left aligned within the <code>JComponent</code>.
+	 * If the wrap parameter is set to true, MigLayout's "wrap" attribute will be
+	 * applied to the <code>JTextField</code>, meaning the next component added
+	 * will appear on the next line.
+	 * (Exception: Will not work if MigLayout's flowy layout constraint is applied,
+	 * but it is rarely used MigLayout feature and thus not a common concern; however
+	 * if you have set this layout constraint on your <code>JComponent</code> do not
+	 * attempt to use the wrap option of this method.)
+	 * </blockquote>
+	 * @param label - the text to appear in front of the text field
+	 * @param length - the length in columns of the text field 
+	 * @param wrap
+	 */
+	public static void addLabeledTextField(JComponent c, String label, int length, boolean wrap){
+		JLabel l = new JLabel(label);
+		c.add(l);
+		
+		JTextField text = new JTextField(length);
+		c.add(text);
+
 	}
 //-----------------------------------------------------------------------------
 	/** 
@@ -95,7 +169,7 @@ public class SwingHelper {
 	 * @return a JPanel containing two date spinners used for specifying a date range
 	 */
 	public static JPanel createDateRangePanel(){
-		JPanel datePanel = new JPanel();
+		JPanel dateRangePanel = new JPanel();
 		Calendar calendar = Calendar.getInstance();
 		JSpinner dateSpinner;
 		
@@ -108,29 +182,92 @@ public class SwingHelper {
 	   //Date Spinners
 	    SpinnerModel fromModel = new SpinnerDateModel(initDate,earliestDate,latestDate,
 	    		Calendar.DAY_OF_MONTH);
-	    dateSpinner = SwingHelper.addLabeledSpinner(datePanel, "From: ", fromModel);       
+	    dateSpinner = SwingHelper.addLabeledSpinner(dateRangePanel, "From: ", fromModel);       
 	    dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "MM/dd/yyyy"));
 	    
 	    SpinnerModel toModel = new SpinnerDateModel(initDate,earliestDate,latestDate,
 	            Calendar.DAY_OF_MONTH);
-	    dateSpinner = SwingHelper.addLabeledSpinner(datePanel, "To: ", toModel);       
+	    dateSpinner = SwingHelper.addLabeledSpinner(dateRangePanel, "To: ", toModel);       
 	    dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "MM/dd/yyyy"));
 	    
-	    return datePanel;
-
+	    return dateRangePanel;
+	}
+//-----------------------------------------------------------------------------
+	/** 
+	 * <b> addDateRangePanel </b>
+	 * <pre>public static JPanel createDateRangePanel()</pre> 
+	 * <blockquote> 
+	 * Adds to the given <code>JComponent</code> two date spinners 
+	 * labeled "To" and "From". Used to specify a specific date range. The 
+	 * default range is -10 years from today's date through today's date. 
+	 * </blockquote>
+	 * @param c - <code>JComponent</code> to add the date spinners to
+	 */
+	public static void addDateRangePanel(JComponent c){
+		Calendar calendar = Calendar.getInstance();
+		JSpinner dateSpinner;
+		
+		//Set up dates
+		Date initDate = calendar.getTime();
+		Date latestDate = calendar.getTime();		
+	    calendar.add(Calendar.YEAR, -10);        
+	    Date earliestDate = calendar.getTime();
+		
+	   //Date Spinners
+	    SpinnerModel fromModel = new SpinnerDateModel(initDate,earliestDate,latestDate,
+	    		Calendar.DAY_OF_MONTH);
+	    dateSpinner = addLabeledSpinner(c, "From: ", fromModel, false);       
+	    dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "MM/dd/yyyy"));
+	    
+	    SpinnerModel toModel = new SpinnerDateModel(initDate,earliestDate,latestDate,
+	            Calendar.DAY_OF_MONTH);
+	    dateSpinner = addLabeledSpinner(c, "To: ", toModel, true);       
+	    dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "MM/dd/yyyy"));
 	}
 //-----------------------------------------------------------------------------	
 	/** 
 	 * <b> createDatePanel </b>
 	 * <pre>public static JPanel createDatePanel()</pre> 
 	 * <blockquote> 
-	 * Creates a <code>JPanel</code> same as DateRange, but for only one date. The 
-	 * default range is -10 years from today's date through today's date. 
+	 * Creates a <code>JSpinner</code> used for selecting the a date to the given
+	 * <code>JComponent</code>. The default range is -10 years from today's date
+	 * through today's date. 
 	 * </blockquote>
 	 * @return a JPanel containing one date spinner used for specifying a date
 	 */
-	public static JPanel createDatePanel(){
+	public static JPanel createDateSpinnerPanel(){
 		JPanel datePanel = new JPanel();
+		Calendar calendar = Calendar.getInstance();
+		JSpinner dateSpinner;
+		
+		//Set up dates
+		Date initDate = calendar.getTime();
+		Date latestDate = calendar.getTime();		
+	    calendar.add(Calendar.YEAR, -10);        
+	    Date earliestDate = calendar.getTime();
+		
+	   //Date Spinner    
+	    SpinnerModel toModel = new SpinnerDateModel(initDate,earliestDate,latestDate,
+	            Calendar.DAY_OF_MONTH);
+	    dateSpinner = SwingHelper.addLabeledSpinner(datePanel, "", toModel);       
+	    dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "MM/dd/yyyy"));
+	    
+	    return datePanel;
+	}
+//-----------------------------------------------------------------------------	
+	/** 
+	 * <b> addDateSpinner </b>
+	 * <pre>public static JPanel addDateSpinner(JComponent c, String label)</pre> 
+	 * <blockquote> 
+	 * Adds a <code>JSpinner</code> used for selecting the a date to the given
+	 * <code>JComponent</code>. The default range is -10 years from today's 
+	 * date through today's date. 
+	 * </blockquote>
+	 * @param c - the <code>JCompoent</code> to add the date spinner to
+	 * @param label - the text label to attach to the date spinner; set to ""
+	 * to add an unlabeled date spinner
+	 */
+	public static void addDateSpinner(JComponent c, String label){
 		Calendar calendar = Calendar.getInstance();
 		JSpinner dateSpinner;
 		
@@ -144,11 +281,8 @@ public class SwingHelper {
 	    
 	    SpinnerModel toModel = new SpinnerDateModel(initDate,earliestDate,latestDate,
 	            Calendar.DAY_OF_MONTH);
-	    dateSpinner = SwingHelper.addLabeledSpinner(datePanel, "", toModel);       
+	    dateSpinner = SwingHelper.addLabeledSpinner(c, label, toModel, true);       
 	    dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "MM/dd/yyyy"));
-	    
-	    return datePanel;
-
 	}
 //-----------------------------------------------------------------------------	
 	/** 
@@ -182,6 +316,34 @@ public class SwingHelper {
 	timePanel.add(timeSpinner);
 	return timePanel;
 	
+	}
+//-----------------------------------------------------------------------------	
+	/** 
+	 * <b> addTimeSpinner </b>
+	 * <pre>public static void addTimeSpinner(JComponent c, String label)</pre> 
+	 * <blockquote> 
+	 * Adds a <code>JSpinner</code> used to select a time to the 
+	 * given <code>JComponent</code>.
+	 * </blockquote>
+	 * @param c - <code>JComponent</code> to add the time spinner to
+	 * @param label - the text label to attach to the date spinner; set to ""
+	 * to add an unlabeled time spinner
+	 */
+	public static void addTimeSpinner(JComponent c, String label){
+	    //Set up times
+		Calendar calendar = Calendar.getInstance();
+	    calendar.set(Calendar.HOUR_OF_DAY, 1);
+	    calendar.set(Calendar.MINUTE, 0);
+	    Date initTime = calendar.getTime();
+	    calendar.set(Calendar.HOUR_OF_DAY, 24);
+	    calendar.set(Calendar.MINUTE, 59);
+	    Date finalTime = calendar.getTime();
+	    
+	    JSpinner timeSpinner;
+	    
+		SpinnerModel toTimeModel = new SpinnerDateModel(initTime,initTime,finalTime,Calendar.HOUR);
+		timeSpinner = SwingHelper.addLabeledSpinner(c, label, toTimeModel, true);       
+		timeSpinner.setEditor(new JSpinner.DateEditor(timeSpinner, "hh:mm a"));
 	}
 //-----------------------------------------------------------------------------
 	/** 
@@ -325,4 +487,50 @@ public class SwingHelper {
 		return imageButton;
 	}
 //-----------------------------------------------------------------------------	
+	/** 
+	 * <b> addArmedQuestionCheckboxes </b>
+	 * <pre>public static JPanel createArmedQuestionCheckboxes</pre> 
+	 * <blockquote> 
+	 * Adds armed check boxes and text used to inquire if a suspect
+	 * was armed. It contains text reading "Armed?" along with two
+	 * check boxes (one yes, one no). If the yes check box is selected a 
+	 * <code>JTextField</code> appears for the user to input the weapon.
+	 * </blockquote>
+	 * @param armedPanel - <code>JPanel</code> to add the Armed? question to
+	 * @param ifYesField - <code>JTextField</code> to appear if yes check box is selected
+	 * this <code>JTextField</code> must be set up and initialized by the calling class
+	 * in order for entered text to be retrieved 
+	 */
+	public static void addArmedQuestionCheckboxes(final JPanel armedPanel, final JTextField ifYesField){
+		ifYesField.setColumns(SwingHelper.MEDIUM_TEXT_FIELD_LENGTH);
+		
+        JLabel armedLabel = new JLabel("Armed?");
+		JCheckBox armedFieldNo = new JCheckBox("No");
+		armedFieldNo.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae) {
+				ifYesField.setVisible(false);
+			}
+		});
+		
+		JCheckBox armedFieldYes = new JCheckBox("Yes");
+		armedFieldYes.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae) {
+				ifYesField.setVisible(true);
+			}
+		});
+		
+		//Group the check boxes
+        ButtonGroup group = new ButtonGroup();
+        group.add(armedFieldNo);
+        group.add(armedFieldYes);
+
+        //Add the components
+        armedPanel.add(armedLabel);
+        armedPanel.add(armedFieldNo, "split");
+        armedPanel.add(armedFieldYes);
+        
+        armedPanel.add(ifYesField);
+        ifYesField.setVisible(false);
+	}
+//-----------------------------------------------------------------------------		
 }

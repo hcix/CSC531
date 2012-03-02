@@ -16,9 +16,9 @@ import utilities.SwingHelper;
  * video announcements, editing system properties etc.
  *
  */
-public class AdminPanel extends JPanel {
+public class AdminTab extends JPanel {
 //-----------------------------------------------------------------------------
-	AdminPanel(){
+	public AdminTab(){
 		JPanel adminPanel = new JPanel();
 		
 		adminPanel.add(createActionButtons());
@@ -26,7 +26,7 @@ public class AdminPanel extends JPanel {
 		this.add(adminPanel);
 	}
 //-----------------------------------------------------------------------------
-	public JPanel createActionButtons(){
+	private JPanel createActionButtons(){
 		JPanel buttonsPanel = new JPanel();
 		
 		JButton addNewUserButton = SwingHelper.createImageButton("icons/addUser_48.png");

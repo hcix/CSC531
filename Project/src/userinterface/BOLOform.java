@@ -41,10 +41,8 @@ private static final long serialVersionUID = 1L;
 		//Set the size of the form
 		this.setPreferredSize(new Dimension(950,900));
 		this.setSize(new Dimension(950,900));
-
-		//JPanel dialogPanel = new JPanel(new MigLayout("", "[center][center]", "[top][b][b][b]"));
-		JPanel dialogPanel = new JPanel(new MigLayout("ins 20", "[]5%[]", ""));
 		
+		JPanel dialogPanel = new JPanel(new MigLayout("ins 20", "[]5%[]", ""));
 		
 		//Make the form scrollable
 		JScrollPane dialogPanelScroller = new JScrollPane(dialogPanel);
@@ -137,12 +135,6 @@ private static final long serialVersionUID = 1L;
 		otherDescriptField.setLineWrap(true);
 		JScrollPane otherDescriptScrollPane = new JScrollPane(otherDescriptField);
 		otherDescriptScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		
-		//Armed checkboxs
-		JLabel armedLabel = new JLabel("Armed?");
-		JLabel ifYes = new JLabel("If Yes: ");
-		JCheckBox armedField1 = new JCheckBox("No");
-		JCheckBox armedField2 = new JCheckBox("Yes");
 		JTextField ifYesField = new JTextField(SwingHelper.MEDIUM_TEXT_FIELD_LENGTH);
 
 		
@@ -169,12 +161,7 @@ private static final long serialVersionUID = 1L;
 		infoPanel.add(otherDescriptionLabel, "spanx");
 		infoPanel.add(otherDescriptScrollPane, "spanx, growx");
 		//add "armed?" area
-		infoPanel.add(armedLabel, "align, newline");
-		infoPanel.add(armedField1);
-		infoPanel.add(armedField2);
-//TODO: make the weapon description field appear only if armed is checked
-		infoPanel.add(ifYes);
-		infoPanel.add(ifYesField, "span, shrink");
+		SwingHelper.addArmedQuestionCheckboxes(infoPanel, ifYesField);
 		
 		return infoPanel;
 	}

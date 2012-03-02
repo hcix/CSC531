@@ -20,10 +20,10 @@ import javax.swing.table.DefaultTableModel;
 
 import utilities.SwingHelper;
 
-public class RollCallPanel extends JPanel{
+public class RollCallTab extends JPanel{
 	private static final long serialVersionUID = 1L;
 	
-	public RollCallPanel(final JFrame parent) {
+	public RollCallTab(final JFrame parent) {
 		
 		// create a table
 		JTable rollCallTable = new JTable(new RollCallTable());
