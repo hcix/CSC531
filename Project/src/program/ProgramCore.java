@@ -54,5 +54,6 @@ public class ProgramCore extends JFrame {
 	    frame.pack();
 	    frame.setVisible(true);  
 	}
+//----	
 //-----------------------------------------------------------------------------	
 }
