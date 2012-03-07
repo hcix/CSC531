@@ -33,7 +33,7 @@ public class AdminTab extends JPanel {
 		JButton editUserButton = SwingHelper.createImageButton("icons/editUser_48.png");
 		JButton deleteUserButton = SwingHelper.createImageButton("icons/deleteUser_48.png");
 		JButton recordVideoButton = SwingHelper.createImageButton("icons/videoCamera.png");
-		JButton editStdBOLOfooterButton = SwingHelper.createImageButton("icons/pencil.png");
+		JButton editStdBOLOfooterButton = SwingHelper.createImageButton("icons/edit_48.png");
 		
 		JButton[] buttonArray = {addNewUserButton, editUserButton, deleteUserButton,
 				recordVideoButton, editStdBOLOfooterButton};
@@ -42,7 +42,7 @@ public class AdminTab extends JPanel {
 				"<html><h2>Edit an existing user</h2></html", 
 				"<html><h2>Delete an existing user</h2></html", 
 				"<html><h2>Record a video announcement</h2></html",
-				"<html><h2>Edit standard BOLO footer</h2></html"
+				"<html><h2>Edit system settings</h2></html"
 		};
 		
 		

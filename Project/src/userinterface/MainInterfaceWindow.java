@@ -21,7 +21,7 @@ import utilities.SwingHelper;
 public class MainInterfaceWindow extends JPanel{
 	private static final long serialVersionUID = 1L;
 	JPanel sidePanel, homeTab, boloTab, rollCallTab, 
-		mapTab, messagesTab, blueBookTab, schedTab, adminTab;
+		mapTab, shiftCdrTab, blueBookTab, schedTab, adminTab;
 //-----------------------------------------------------------------------------	
 	public MainInterfaceWindow(JFrame parent){
 		super(new GridLayout(1, 1));
@@ -53,8 +53,8 @@ public class MainInterfaceWindow extends JPanel{
         mapTab.setPreferredSize(dim);
         tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
         
-        messagesTab = SwingHelper.makeTextPanel("Messages");
-        tabbedPane.addTab("Messages", messagesTab);
+        shiftCdrTab = new ShiftCdrTab(parent);
+        tabbedPane.addTab("Shift Commander", shiftCdrTab);
         tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
         
 
@@ -107,7 +107,7 @@ public class MainInterfaceWindow extends JPanel{
     		((RightSidePanel)sidePanel).makeBOLOPanel();
     	} else if (current == rollCallTab){
     		
-    	} else if (current == messagesTab){
+    	} else if (current == shiftCdrTab){
     		
     	} else if (current == blueBookTab){
     		
