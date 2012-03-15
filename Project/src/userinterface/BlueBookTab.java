@@ -1,39 +1,38 @@
 package userinterface;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
-import java.util.Date;
+import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.SpinnerDateModel;
-import javax.swing.SpinnerModel;
 import net.miginfocom.swing.MigLayout;
 import utilities.SwingHelper;
 
 //-----------------------------------------------------------------------------	
 public class BlueBookTab extends JPanel implements ActionListener {
+private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------	
 	BlueBookTab(final JFrame parent){
-		this.setLayout(new MigLayout("nogrid"));
+		this.setLayout(new BorderLayout());
 		
-		//Create the search fields panel
-		JPanel searchPanel = createSearchFieldsPanel();
-	
-		//Create search button
-		JButton searchButton = SwingHelper.createImageButton("Search Blue Book", "icons/search.png");
+		//Create Blue Book tabbed display area
+		JTabbedPane tabbedPane = new JTabbedPane();
+		//Add recent BOLOs tab
+		JPanel recentBolosTab = new JPanel();
+		tabbedPane.addTab("Blue Book", recentBolosTab);
+		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
 				
 		//Create a button to create a new Blue Book entry 
 		JButton newEntryButton = 
-				SwingHelper.createImageButton("Create new Blue Book entry", "icons/plusSign.png");
+				SwingHelper.createImageButton("Create new Blue Book entry", "icons/plusSign_48.png");
 		newEntryButton.addActionListener(new ActionListener() {
 			//Create new Blue Book entry form dialog
 			BlueBookForm formDialog = new BlueBookForm(parent);
@@ -42,37 +41,64 @@ public class BlueBookTab extends JPanel implements ActionListener {
 			}
 		});
 	
-		//add the components to this panel
-		this.add(newEntryButton, "gapy para, wrap");
-		this.add(searchPanel, "shrink, gapy para");
-		this.add(searchButton, "wrap, aligny bottom");
 
+		//Create search button
+		JButton searchButton = SwingHelper.createImageButton("Search Blue Book", "icons/search.png");
+		searchButton.addActionListener(new ActionListener() {
+			//Search dialog
+			JDialog searchDialog = createSearchDialog(parent);
+			public void actionPerformed(ActionEvent e){
+				searchDialog.setVisible(true);
+			}
+		});
+		 
+		
+		//add the components to this panel
+		this.add(tabbedPane, BorderLayout.CENTER);
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.add(newEntryButton);
+		buttonsPanel.add(searchButton);
+		this.add(buttonsPanel, BorderLayout.PAGE_END);
 	}
 //-----------------------------------------------------------------------------
-	private JPanel createSearchFieldsPanel(){
-		JPanel searchFieldsPanel = new JPanel();
-		searchFieldsPanel.setLayout(new MigLayout("align left"));
+	JDialog createSearchDialog(JFrame parent){
+		//Create the dialog and set the size
+		JDialog searchDialog = new JDialog(parent, "Search Blue Book Database", true);
+		searchDialog.setPreferredSize(SwingHelper.SEARCH_DIALOG_DIMENSION);
+		searchDialog.setSize(SwingHelper.SEARCH_DIALOG_DIMENSION);
+		
+		//Put the dialog in the middle of the screen
+		searchDialog.setLocationRelativeTo(null);
+	
+		//Create the various search fields and add them to the dialog
+		JPanel searchPanel = new JPanel();
+		searchPanel.setLayout(new MigLayout("align left"));
+		SwingHelper.addLineBorder(searchPanel);
 
 		JLabel caseNumLabel = new JLabel("Case #: ");
 		JLabel locationLabel = new JLabel("Location: ");
 		JLabel nameLabel = new JLabel("Name: ");
 		
-		JTextField caseNumField = new JTextField(15);
-		JTextField locationField = new JTextField(20);
-		JTextField nameField = new JTextField(20);
-	
-		SwingHelper.addLineBorder(searchFieldsPanel);
+		JTextField caseNumField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
+		JTextField locationField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
+		JTextField nameField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
 		
-		searchFieldsPanel.add(caseNumLabel, "alignx left");
-		searchFieldsPanel.add(caseNumField, "alignx left, wrap");
-		searchFieldsPanel.add(nameLabel, "alignx left");
-		searchFieldsPanel.add(nameField, "alignx left, wrap");
-		searchFieldsPanel.add(locationLabel,"alignx left");
-		searchFieldsPanel.add(locationField, "alignx left, wrap");
+		String[] statusStrings = { "Need to Identify", "Identified", "Arrested" };
+		JComboBox statusList = new JComboBox(statusStrings);
+		statusList.setSelectedIndex(0);
+
+		searchPanel.add(caseNumLabel, "alignx left");
+		searchPanel.add(caseNumField, "alignx left, wrap");
+		searchPanel.add(nameLabel, "alignx left");
+		searchPanel.add(nameField, "alignx left, wrap");
+		searchPanel.add(locationLabel,"alignx left");
+		searchPanel.add(locationField, "alignx left, wrap");
 	
-		SwingHelper.addDateRangePanel(searchFieldsPanel);
-	
-		return searchFieldsPanel;
+		SwingHelper.addDateRangePanel(searchPanel);
+		
+		Container contentPane = searchDialog.getContentPane();
+		contentPane.add(searchPanel);
+		return searchDialog;
 	}
 //-----------------------------------------------------------------------------		
 	/* (non-Javadoc)

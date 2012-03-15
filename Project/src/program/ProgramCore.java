@@ -2,13 +2,17 @@ package program;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import userinterface.DashboardPanel;
+import userinterface.LoginDialog;
 import userinterface.MainInterfaceWindow;
+import utilities.SwingHelper;
 
-public class ProgramCore extends JFrame {
+public class ProgramCore extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------	 
 	/**
@@ -26,9 +30,13 @@ public class ProgramCore extends JFrame {
 	        		e.printStackTrace();
 	        	}
 	        	
+	        	//Set up and show the login GUI
+	        	//COMMENT NEXT LINE OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
+	        	createAndShowLoginGUI();
+	        	
 	        	//Set up the UI
-	        	createAndShowGUI();
-
+	        	createAndShowMainGUI();
+	        	 
 	        }
 	    });
 	}
@@ -37,12 +45,13 @@ public class ProgramCore extends JFrame {
 	 * Create the GUI and show it.  For thread safety, this method should be
 	 * invoked from the event dispatch thread.
 	 */
-	private static void createAndShowGUI() {
+	private static void createAndShowMainGUI() {
 	    //Create and set up the main window	
 		JFrame frame = new JFrame("UMPD");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setPreferredSize(new Dimension(1275,1000));
 		frame.setResizable(true);
+		frame.setLocationRelativeTo(null);
 		
 		//Add the dashboard area to the window   
 		frame.add(new DashboardPanel(), BorderLayout.PAGE_START);
@@ -54,6 +63,36 @@ public class ProgramCore extends JFrame {
 	    frame.pack();
 	    frame.setVisible(true);  
 	}
-//----	
+//-----------------------------------------------------------------------------	
+	/**
+	 * Create the GUI and show it.  For thread safety, this method should be
+	 * invoked from the event dispatch thread.
+	 */
+	private static void createAndShowLoginGUI() {
+	    //Create and set up the frame to place the login window in
+		JFrame frame = new JFrame("UMPD Login");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setPreferredSize(SwingHelper.LOGIN_DIALOG_DIMENSION);
+		frame.setResizable(true);
+
+		//Display the login dialog
+		LoginDialog loginDialog = new LoginDialog(frame);
+		loginDialog.setVisible(true);
+		
+		//If login attempt(s) was/were not successful, exit the program
+		if(!loginDialog.isSuccessful()){
+			System.exit(0);
+		}
+	}
+//-----------------------------------------------------------------------------	
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+
+	}
 //-----------------------------------------------------------------------------	
 }

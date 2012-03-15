@@ -2,12 +2,8 @@ package userinterface;
 
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,7 +17,9 @@ import utilities.ImageHandler;
 import utilities.SwingHelper;
 //-----------------------------------------------------------------------------
 public class BlueBookForm extends JDialog {
-//-----------------------------------------------------------------------------
+
+	private static final long serialVersionUID = 1L;
+	//-----------------------------------------------------------------------------
 	public BlueBookForm(JFrame parent) {
 		super(parent, "New Blue Book Entry", true);
 		//Set the size of the form
@@ -70,9 +68,6 @@ public class BlueBookForm extends JDialog {
 		JLabel Location = new JLabel("Location of incident: ");
 		JLabel Description = new JLabel("Crime description: ");
 		JLabel Reason = new JLabel("Narrative/Reason: ");
-		JLabel Picture = new JLabel("Picture(s): ");
-		JLabel Armed = new JLabel("Armed: ");
-		JLabel ifYes = new JLabel("If Yes: ");
 		
 		// create fields
 		JTextField caseNumField = new JTextField(20);
@@ -136,11 +131,11 @@ public class BlueBookForm extends JDialog {
 		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
 		
 		//Add cancel button
-		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel.png");
+		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 
 	    // Add save button
-	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/Save.png");
+	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
 	    saveButton.setToolTipText("Save BOLO");
 
 	    // Add preview button

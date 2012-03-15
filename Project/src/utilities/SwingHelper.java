@@ -2,6 +2,7 @@ package utilities;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +23,7 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import userinterface.MainInterfaceWindow;
 import net.miginfocom.swing.MigLayout;
 
 public class SwingHelper {
@@ -40,6 +42,9 @@ public class SwingHelper {
 	public static final int EXTRA_LARGE_TEXT_FIELD_LENGTH = 35;
 	/** length in columns = 20 */
 	public static final int DEFAULT_TEXT_FIELD_LENGTH = 20;
+	
+	public static final Dimension SEARCH_DIALOG_DIMENSION = new Dimension(500, 200);
+	public static final Dimension LOGIN_DIALOG_DIMENSION = new Dimension(450, 250);
 //-----------------------------------------------------------------------------
 	/** 
 	 * <b> addLabeledSpinner </b>
@@ -147,15 +152,44 @@ public class SwingHelper {
 	 * </blockquote>
 	 * @param label - the text to appear in front of the text field
 	 * @param length - the length in columns of the text field 
-	 * @param wrap
+	 * @param wrap - indicates is this component should be the last on the current line
 	 */
 	public static void addLabeledTextField(JComponent c, String label, int length, boolean wrap){
 		JLabel l = new JLabel(label);
-		c.add(l);
+		c.add(l, "align left");
 		
 		JTextField text = new JTextField(length);
-		c.add(text);
+		if(wrap){
+			c.add(text, "align left, wrap");
+		} else{
+			c.add(text, "align left");
+		}
+		
 
+	}
+//-----------------------------------------------------------------------------
+	/** <b> createImageLabel </b>
+	 * <pre>public static ImageIcon <b>createImageLabel</b>(String path)</pre> 
+	 * <blockquote> 
+	 * Creates a <code>JLabel</code> containing the image located at the
+	 * specified image path. Image path should be given relative to the 
+	 * <code>userinterface</code> package.
+	 * </blockquote>
+	 * @param path - the image's path relative to the <code>userinterface</code> package
+	 * @return a <code>JLabel</code> containing the image or <code>null</code> if 
+	 * the path was invalid 
+	 */
+	public static JLabel createImageLabel(String path) {
+		ImageIcon imgIcon = null;
+	    java.net.URL imgURL = MainInterfaceWindow.class.getResource(path);
+	    if (imgURL != null) {
+	    	imgIcon = new ImageIcon(imgURL);
+	    } else {
+	        System.err.println("Couldn't find file: " + path);
+	        return null;
+	    }
+	    
+	    return (new JLabel(imgIcon));
 	}
 //-----------------------------------------------------------------------------
 	/** 
@@ -532,5 +566,5 @@ public class SwingHelper {
         armedPanel.add(ifYesField);
         ifYesField.setVisible(false);
 	}
-//-----------------------------------------------------------------------------		
+//-----------------------------------------------------------------------------	
 }

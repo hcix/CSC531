@@ -1,33 +1,21 @@
 package userinterface;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Calendar;
-import java.util.Date;
-
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SpinnerDateModel;
-import javax.swing.SpinnerModel;
-import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
 import utilities.ImageHandler;
@@ -174,7 +162,6 @@ private static final long serialVersionUID = 1L;
         // create labels
 		JLabel doiLabel = new JLabel("Date of Incident");
 		JLabel toiLabel = new JLabel("Time of Incident");
-		JLabel loiLabel = new JLabel("Location of Incident");
 		JLabel referenceLabel = new JLabel("Reference");
 		JLabel caseNumLabel = new JLabel("Case #");
 		JLabel statusLabel = new JLabel("Status");
@@ -182,7 +169,6 @@ private static final long serialVersionUID = 1L;
 		// create fields
 		JTextField doiField = new JTextField(15);
 		JTextField toiField = new JTextField(15);
-		JTextField loiField = new JTextField(15);
 		JTextField referenceField = new JTextField(15);
 		JTextField caseNumField = new JTextField(15);
 		JTextField statusField = new JTextField(15);
@@ -274,7 +260,7 @@ private static final long serialVersionUID = 1L;
 		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
 		
 		//Add cancel button
-		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel.png");
+		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae) {
@@ -283,7 +269,7 @@ private static final long serialVersionUID = 1L;
 		});
 	
 	    // Add save button
-	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/Save.png");
+	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
 	    saveButton.setToolTipText("Save BOLO");
 	    saveButton.addActionListener(new ActionListener( ) {
 	    	public void actionPerformed(ActionEvent e) {

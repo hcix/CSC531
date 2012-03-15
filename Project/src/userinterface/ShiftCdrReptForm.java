@@ -18,8 +18,10 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 import utilities.SwingHelper;
+
 //-----------------------------------------------------------------------------	
 public class ShiftCdrReptForm extends JDialog implements ActionListener {
+private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------	
 	public ShiftCdrReptForm(JFrame parent){
 		super(parent, "New Shift Commander Summary Report", true);
@@ -44,7 +46,7 @@ public class ShiftCdrReptForm extends JDialog implements ActionListener {
  		JScrollPane reportPanelScroller = new JScrollPane(reportPanel);
  		reportPanelScroller.setVerticalScrollBarPolicy(
  				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		
+ 		reportPanelScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
  		
 		reportPanel.add(createInputPanel());
 	    
@@ -65,11 +67,8 @@ public class ShiftCdrReptForm extends JDialog implements ActionListener {
 
 //-----------------------------------------------------------------------------		
 	JPanel makeTable(String[] tablecolNames, int rowCount){
-		int numOfColumns;
 		JPanel tablePanel = new JPanel();
 				
-		numOfColumns = tablecolNames.length;
-		
 		//Create initially empty table
         JTable table = new JTable();
 	    table.setShowGrid(true);
@@ -80,7 +79,7 @@ public class ShiftCdrReptForm extends JDialog implements ActionListener {
 	    //Put the table in a scroll pane
 	    JScrollPane tableScrollPane = new JScrollPane();
 	    tableScrollPane.setViewportView(table);
-
+	    
 	    tablePanel.setLayout(new BorderLayout());
 	    tablePanel.add(tableScrollPane,BorderLayout.CENTER);
 	    
@@ -126,7 +125,7 @@ public class ShiftCdrReptForm extends JDialog implements ActionListener {
 	JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
 	
 	//Add cancel button
-	JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel.png");
+	JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
 	cancelButton.setToolTipText("Cancel and do not save");
 	cancelButton.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent ae) {
@@ -135,7 +134,7 @@ public class ShiftCdrReptForm extends JDialog implements ActionListener {
 	});
 
     // Add save button
-    JButton saveButton = SwingHelper.createImageButton("Save", "icons/Save.png");
+    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
     saveButton.setToolTipText("Save Report");
     saveButton.addActionListener(new ActionListener( ) {
     	public void actionPerformed(ActionEvent e) {

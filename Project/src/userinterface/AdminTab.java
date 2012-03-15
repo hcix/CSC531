@@ -3,10 +3,8 @@
  */
 package userinterface;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import utilities.ImageHandler;
 import utilities.SwingHelper;
 
 /**
@@ -17,6 +15,7 @@ import utilities.SwingHelper;
  *
  */
 public class AdminTab extends JPanel {
+private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	public AdminTab(){
 		JPanel adminPanel = new JPanel();
@@ -41,7 +40,7 @@ public class AdminTab extends JPanel {
 		String[] buttonLabelText = {"<html><h2>Add a new user to the system</h2></html",
 				"<html><h2>Edit an existing user</h2></html", 
 				"<html><h2>Delete an existing user</h2></html", 
-				"<html><h2>Record a video announcement</h2></html",
+				"<html><h2>Load a video announcement</h2></html",
 				"<html><h2>Edit system settings</h2></html"
 		};
 		

@@ -1,20 +1,20 @@
 package userinterface;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
-import java.util.Date;
+import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
 import net.miginfocom.swing.MigLayout;
 import utilities.SwingHelper;
@@ -23,16 +23,21 @@ public class BOLOtab extends JPanel  implements ActionListener {
 private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	public BOLOtab(final JFrame parent){
-		this.setLayout(new MigLayout("nogrid"));
-		
-		//Create the search fields panel
-		JPanel searchPanel = createSearchFieldsPanel();
-
-		//Create search button
-		JButton searchButton = SwingHelper.createImageButton("Search Records", "icons/search.png");
+		this.setLayout(new BorderLayout());
 				
+		//Create BOLOs tabbed display area
+		JTabbedPane tabbedPane = new JTabbedPane();
+		//Add recent BOLOs tab
+		JPanel recentBolosTab = new JPanel();
+		tabbedPane.addTab("Recent BOLOs", recentBolosTab);
+		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
+	    //Add archived BOLOs tab 
+		JPanel archievedBolosTab = new JPanel();
+		tabbedPane.addTab("Archieved", archievedBolosTab);
+		tabbedPane.setMnemonicAt(1, KeyEvent.VK_3);
+        
 		//Create a button to create a new BOLO 
-		JButton newBOLOButton = SwingHelper.createImageButton("Create BOLO", "icons/plusSign.png");
+		JButton newBOLOButton = SwingHelper.createImageButton("Create BOLO", "icons/plusSign_48.png");
 		newBOLOButton.addActionListener(new ActionListener() {
 			//BOLO form dialog
 			BOLOform formDialog = new BOLOform(parent);
@@ -51,51 +56,69 @@ private static final long serialVersionUID = 1L;
 				final JFileChooser fc = new JFileChooser();
 
 				//In response to a button click:
-				int returnVal = fc.showOpenDialog(parent);
+			//	int returnVal = 
+						fc.showOpenDialog(parent);
 			}
 		});
 
-		//add the components to this panel
-		this.add(newBOLOButton, "gapy para");
-		this.add(importBOLOButton, "wrap, gapy para");
-		this.add(searchPanel, "shrink, gapy para");
-		this.add(searchButton, "wrap, aligny bottom");
+		//Create search button
+		JButton searchButton = SwingHelper.createImageButton("Search Records", "icons/search.png");
+		searchButton.addActionListener(new ActionListener() {
+			//Search dialog
+			JDialog searchDialog = createSearchDialog(parent);
+			public void actionPerformed(ActionEvent e){
+				searchDialog.setVisible(true);
+			}
+		});
 
-	//	this.add(buttonPanel);
+        this.add(tabbedPane, BorderLayout.CENTER);
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.add(newBOLOButton);
+        buttonsPanel.add(importBOLOButton);
+        buttonsPanel.add(searchButton);
+        this.add(buttonsPanel, BorderLayout.PAGE_END);
 		
 	}
 //-----------------------------------------------------------------------------
-	JPanel createSearchFieldsPanel(){
-		JPanel searchFieldsPanel = new JPanel();
-		searchFieldsPanel.setLayout(new MigLayout("align left"));
+	JDialog createSearchDialog(JFrame parent){
+		//Create the dialog and set the size
+		JDialog searchDialog = new JDialog(parent, "Search BOLO Database", true);
+		searchDialog.setPreferredSize(SwingHelper.SEARCH_DIALOG_DIMENSION);
+		searchDialog.setSize(SwingHelper.SEARCH_DIALOG_DIMENSION);
+		
+		//Put the dialog in the middle of the screen
+		searchDialog.setLocationRelativeTo(null);
+	
+		//Create the various search fields and add them to the dialog
+		JPanel searchPanel = new JPanel();
+		searchPanel.setLayout(new MigLayout("align left"));
+		SwingHelper.addLineBorder(searchPanel);
 
 		JLabel caseNumLabel = new JLabel("Case #: ");
 		JLabel locationLabel = new JLabel("Location: ");
 		JLabel statusLabel = new JLabel("Status: ");
 		
-		JTextField caseNumField = new JTextField(15);
-		JTextField locationField = new JTextField(20);
-
-		searchFieldsPanel.add(caseNumLabel, "align left");
-		searchFieldsPanel.add(caseNumField, "align left, wrap");
+		JTextField caseNumField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
+		JTextField locationField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
+		
 		String[] statusStrings = { "Need to Identify", "Identified", "Arrested" };
 		JComboBox statusList = new JComboBox(statusStrings);
 		statusList.setSelectedIndex(0);
-		//statusList.addActionListener(this);
+
+		searchPanel.add(caseNumLabel, "alignx left");
+		searchPanel.add(caseNumField, "alignx left, wrap");
+		searchPanel.add(locationLabel,"alignx left");
+		searchPanel.add(locationField, "alignx left, wrap");
+
+		SwingHelper.addDateRangePanel(searchPanel);
+
+		searchPanel.add(statusLabel, "alignx left");
+		searchPanel.add(statusList, "alignx left, wrap");
+
 		
-		SwingHelper.addLineBorder(searchFieldsPanel);
-		
-		searchFieldsPanel.add(caseNumLabel, "alignx left");
-		searchFieldsPanel.add(caseNumField, "alignx left, wrap");
-		searchFieldsPanel.add(locationLabel,"alignx left");
-		searchFieldsPanel.add(locationField, "alignx left, wrap");
-
-		createDateRangePanel(searchFieldsPanel);
-
-		searchFieldsPanel.add(statusLabel, "alignx left");
-		searchFieldsPanel.add(statusList, "alignx left, wrap");
-
-		return searchFieldsPanel;
+		Container contentPane = searchDialog.getContentPane();
+		contentPane.add(searchPanel);
+		return searchDialog;
 	}
 //-----------------------------------------------------------------------------
 	public static JSpinner addLabeledSpinner(Container c,String label,SpinnerModel model, boolean wrap) {
@@ -104,9 +127,6 @@ private static final long serialVersionUID = 1L;
 		
 		JSpinner spinner = new JSpinner(model);
 		
-/*		SwingHelper.addLineBorder(spinner);
-		SwingHelper.addLineBorder(l);
-		*/
 		l.setLabelFor(spinner);
 		if(wrap){
 			c.add(spinner, "align left, wrap");
@@ -115,30 +135,6 @@ private static final long serialVersionUID = 1L;
 		}
 		
 		return spinner;
-	}
-//-----------------------------------------------------------------------------
-	public static void createDateRangePanel(JComponent c){
-	//	JPanel datePanel = new JPanel();
-		Calendar calendar = Calendar.getInstance();
-		JSpinner dateSpinner;
-		
-		//Set up dates
-		Date initDate = calendar.getTime();
-		Date latestDate = calendar.getTime();		
-	    calendar.add(Calendar.YEAR, -10);        
-	    Date earliestDate = calendar.getTime();
-		
-	   //Date Spinners
-	    SpinnerModel fromModel = new SpinnerDateModel(initDate,earliestDate,latestDate,
-	    		Calendar.DAY_OF_MONTH);
-	    dateSpinner = addLabeledSpinner(c, "From: ", fromModel, false);       
-	    dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "MM/dd/yyyy"));
-	    
-	    SpinnerModel toModel = new SpinnerDateModel(initDate,earliestDate,latestDate,
-	            Calendar.DAY_OF_MONTH);
-	    dateSpinner = addLabeledSpinner(c, "To: ", toModel, true);       
-	    dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "MM/dd/yyyy"));
-
 	}
 //-----------------------------------------------------------------------------		
 	/* (non-Javadoc)
