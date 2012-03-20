@@ -11,15 +11,16 @@ import userinterface.DashboardPanel;
 import userinterface.LoginDialog;
 import userinterface.MainInterfaceWindow;
 import utilities.SwingHelper;
+import utilities.xml.PersonnelManager;
 
 public class ProgramCore extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------	 
 	/**
-	 * Main method to start the thread that will run the main program.
+	 * Main method to start the thread that will run the main program
 	 */
 	public static void main(String[] args) {
-	    //Schedule a job for the event dispatch thread: creating and showing the GUI.
+	    //Schedule a job for the event dispatch thread: creating and showing the GUI
 	    SwingUtilities.invokeLater(new Runnable() {
 	        public void run() {
 	        	
@@ -32,11 +33,12 @@ public class ProgramCore extends JFrame implements ActionListener {
 	        	
 	        	//Set up and show the login GUI
 	        	//COMMENT NEXT LINE OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
+	        	//MUST ALSO COMMENT OUT 6 LINES IN MAININTERFACEWINDOW AS INDICATED THERE
 	        	createAndShowLoginGUI();
-	        	
+	        
 	        	//Set up the UI
 	        	createAndShowMainGUI();
-	        	 
+  	 
 	        }
 	    });
 	}

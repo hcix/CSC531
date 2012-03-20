@@ -9,24 +9,26 @@
  */
 package utilities;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Date;
+import boloTab.Bolo;
 
-public class DatabaseHelper {
-	
+public class DatabaseHelper {	
 //-----------------------------------------------------------------------------
 	/**
-	 * <b> addCrime </b>
-	 * <pre>public void addCrime(int caseNum, String location, String time, String date)</pre> 
-	 * <blockquote> 
 	 * Adds a new crime to the crime table in the database. 
 	 * This method adds the most basic data that every crime entry must have.
-	 * </blockquote>
 	 * @param caseNum - the case number associated with the crime
 	 * @param location - the location of the crime
-	 * @param time - the time of the crime occurance
-	 * @param date - the date of the crime occurance 
+	 * @param time - the time of the crime occurrence
+	 * @param date - the date of the crime occurrence 
 	 * @throws Exception
 	 */
 	public void addCrime(int caseNum, String location, String time, String date) throws Exception{
@@ -55,17 +57,13 @@ public class DatabaseHelper {
 	}
 //-----------------------------------------------------------------------------	
 	/**
-	 * <b> addCrime </b>
-	 * <pre>public void addCrime(int caseNum, String location, int offCode, String time, String date)</pre> 
-	 * <blockquote> 
 	 * Adds a new crime to the crime table in the database. 
 	 * This method adds the most basic data that every crime entry must have.
-	 * </blockquote>
 	 * @param caseNum - the case number associated with the crime
 	 * @param location - the location of the crime
 	 * @param offCode - the offense code of the incident
-	 * @param time - the time of the crime occurance
-	 * @param date - the date of the crime occurance 
+	 * @param time - the time of the crime occurrence
+	 * @param date - the date of the crime occurrence 
 	 * @throws Exception
 	 */
 	public void addCrime(int caseNum, String location, int offCode, String time, String date) throws Exception{
@@ -95,18 +93,14 @@ public class DatabaseHelper {
 	}
 //-----------------------------------------------------------------------------	
 	/**
-	 * <b> addCrime </b>
-	 * <pre>public void addCrime(int caseNum, String location, int offCode, String incident, String time, String date)</pre> 
-	 * <blockquote> 
 	 * Adds a new crime to the crime table in the database. 
 	 * This method adds the most basic data that every crime entry must have.
-	 * </blockquote>
 	 * @param caseNum - the case number associated with the crime
 	 * @param location - the location of the crime
 	 * @param offCode - the offense code of the crime
 	 * @param incident - the incident associated with the crime
-	 * @param time - the time of the crime occurance
-	 * @param date - the date of the crime occurance 
+	 * @param time - the time of the crime occurrence
+	 * @param date - the date of the crime occurrence 
 	 * @throws Exception
 	 */
 	public void addCrime(int caseNum, String location, int offCode, String incident, String time, String date) throws Exception{
@@ -137,18 +131,14 @@ public class DatabaseHelper {
 	}
 //-----------------------------------------------------------------------------	
 	/**
-	 * <b> addCrime </b>
-	 * <pre>public void addCrime(int caseNum, String location, int offCode, String incident, String time, String date, String remarks)</pre> 
-	 * <blockquote> 
 	 * Adds a new crime to the crime table in the database. 
 	 * This method adds the most basic data that every crime entry must have.
-	 * </blockquote>
 	 * @param caseNum - the case number associated with the crime
 	 * @param location - the location of the crime
 	 * @param offCode - the offense code of the crime
 	 * @param incident - the incident associated with the crime
-	 * @param time - the time of the crime occurance
-	 * @param date - the date of the crime occurance 
+	 * @param time - the time of the crime occurrence
+	 * @param date - the date of the crime occurrence 
 	 * @param remarks - remarks associated with the crime
 	 * @throws Exception
 	 */
@@ -182,18 +172,14 @@ public class DatabaseHelper {
 	}
 //-----------------------------------------------------------------------------	
 	/**
-	 * <b> addCrime </b>
-	 * <pre>public void addCrime(int caseNum, String location, int offCode, String incident, String time, String date, String remarks, String status)</pre> 
-	 * <blockquote> 
 	 * Adds a new crime to the crime table in the database. 
 	 * This method adds the most basic data that every crime entry must have.
-	 * </blockquote>
 	 * @param caseNum - the case number associated with the crime
 	 * @param location - the location of the crime
 	 * @param offCode - the offense code of the crime
 	 * @param incident - the incident associated with the crime
-	 * @param time - the time of the crime occurance
-	 * @param date - the date of the crime occurance 
+	 * @param time - the time of the crime occurrence
+	 * @param date - the date of the crime occurrence 
 	 * @param remarks - remarks associated with the crime
 	 * @param status - the crime's status
 	 * @throws Exception
@@ -206,7 +192,8 @@ public class DatabaseHelper {
 	
 	    //Create a prepared statement to add the crime data
 	    PreparedStatement prep = conn.prepareStatement(
-	      "INSERT into crimes(caseNum, location, offCode, incident, time, date, remarks, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+	      "INSERT into crimes(caseNum, location, offCode, incident, time, date, remarks, status) " +
+	      "VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
 	
 	    //Add the data to the prepared statement
 	    prep.setInt(1, caseNum);
@@ -227,5 +214,175 @@ public class DatabaseHelper {
 	    //Close the connection
 	    conn.close();
 	}
-//-----------------------------------------------------------------------------		
+//-----------------------------------------------------------------------------
+	/**
+	 * Adds a new crime to the crime table in the database. 
+	 * This method adds the most basic data that every crime entry must have.
+	 * @param caseNum - the case number associated with the crime
+	 * @param location - the location of the crime
+	 * @param offCode - the offense code of the crime
+	 * @param incident - the incident associated with the crime
+	 * @param time - the time of the crime occurrence
+	 * @param date - the date of the crime occurrence 
+	 * @param remarks - remarks associated with the crime
+	 * @param status - the crime's status
+	 * @throws Exception
+
+	 */
+	public void addBOLO(String age,String race,String sex,String height,String weight,String build,
+			String eyes,String hair,Date incidentDate,String reference,String caseNum,String status,
+			String weapon,String preparedBy,String approvedBy,Date prepDate, String otherDescrip,
+			String narrative) throws Exception{
+		long incidentEpoch, prepEpoch;
+		//Create the connection to the database
+		Class.forName("org.sqlite.JDBC");
+	    Connection conn = DriverManager.getConnection("jdbc:sqlite:umpd.db");
+	
+	    //Create a prepared statement to add the crime data
+	    PreparedStatement prep = conn.prepareStatement(
+	      "INSERT into bolo(age, race, sex, height, weight, build, eyes, hair," +
+	      " epochTime, reference, caseNum, status, weapon, prepedBy, approvedBy, prepdate," +
+	      " description, narrative)" + 
+	      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+	
+	    incidentEpoch = convertDateToEpoch(incidentDate);
+	    prepEpoch = convertDateToEpoch(prepDate);
+	    
+	    //Add the data to the prepared statement
+	    prep.setString(1, age);
+	    prep.setString(2, race);
+	    prep.setString(3, sex);
+	    prep.setString(4, height);
+	    prep.setString(5, weight);
+	    prep.setString(6, build);
+	    prep.setString(7, eyes);
+	    prep.setString(8, hair);
+	    prep.setLong(9, incidentEpoch);
+	    prep.setString(10, reference);
+	    prep.setString(11, caseNum);
+	    prep.setString(12, status);
+	    prep.setString(13, weapon);
+	    prep.setString(14, preparedBy);
+	    prep.setString(15, approvedBy);
+	    prep.setLong(16, prepEpoch);
+	    prep.setString(17, otherDescrip);
+	    prep.setString(18, narrative);
+	    prep.addBatch();
+	
+	    //Create new row in the table for the data
+	    conn.setAutoCommit(false);
+	    prep.executeBatch();
+	    conn.setAutoCommit(true);
+	    
+	    //Close the connection
+	    conn.close();
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Retrives all the BOLOs from the database and places them into an 
+	 * <code>Arraylist</code> of BOLO objects, which is returned to the 
+	 * caller.
+	 * @return an arraylist of BOLO objects
+	 * @throws Exception
+	 */
+	public static ArrayList<Bolo> getBOLOsFromDB() throws Exception{
+		ArrayList<Bolo> boloList = new ArrayList<Bolo>();
+		String age, race, sex, height, weight, build, eyes, hair;
+		String reference, caseNum, status, weapon;
+		String preparedBy, approvedBy;
+		String otherDescrip, narrative, photoPath, videoPath;
+		long incidentDate=0, prepDate=0;
+		 
+		//Create the connection to the database
+		Class.forName("org.sqlite.JDBC");
+	    Connection conn = DriverManager.getConnection("jdbc:sqlite:Database/umpd.db");
+	    Statement stat = conn.createStatement();
+	    ResultSet allBOLOs = stat.executeQuery("SELECT * FROM bolo;");
+
+	    Bolo bolo;
+	    while (allBOLOs.next()) {
+	    	bolo = new Bolo();
+	        
+	    	bolo.setBoloID(allBOLOs.getInt("bolo_id"));
+	    	
+	        age = allBOLOs.getString("age");
+	        if(age!=null){ bolo.setAge(age); }
+			race = allBOLOs.getString("race");
+			if(race!=null){ bolo.setRace(race); }
+			sex = allBOLOs.getString("sex");
+			if(sex!=null){ bolo.setSex(sex); }
+			height = allBOLOs.getString("height");
+			if(height!=null){ bolo.setHeight(height); }
+			weight = allBOLOs.getString("weight");
+			if(weight!=null){ bolo.setWeight(weight); }
+			build=allBOLOs.getString("build");
+			if(build!=null){ bolo.setBuild(build); }
+			eyes=allBOLOs.getString("eyes");
+			if(eyes!=null){ bolo.setEyes(eyes); }
+			hair=allBOLOs.getString("hair");
+			if(hair!=null){ bolo.setHair(hair); }
+			reference=allBOLOs.getString("reference");
+			if(reference!=null){ bolo.setReference(reference); }
+			caseNum=allBOLOs.getString("caseNum");
+			if(caseNum!=null){ bolo.setCaseNum(caseNum); }
+			status=allBOLOs.getString("status");
+			if(status!=null){ bolo.setStatus(status); }
+			weapon=allBOLOs.getString("weapon");
+			if(weapon!=null){ bolo.setWeapon(weapon); }
+			preparedBy= allBOLOs.getString("prepedBy");
+			if(preparedBy!=null){ bolo.setPreparedBy(preparedBy); }
+			approvedBy= allBOLOs.getString("approvedBy");
+			if(approvedBy!=null){ bolo.setApprovedBy(approvedBy); }
+			otherDescrip= allBOLOs.getString("description");
+			if(otherDescrip!=null){ bolo.setOtherDescrip(otherDescrip); }
+			narrative=allBOLOs.getString("narrative");
+			if(narrative!=null){ bolo.setNarrative(narrative); }
+			incidentDate = allBOLOs.getLong("incidentDate");
+			if(incidentDate!=0){ bolo.setincidentDate(incidentDate); }
+			prepDate = allBOLOs.getLong("prepdate");
+			if(prepDate!=0){ bolo.setprepDate(prepDate); }
+			
+			photoPath=allBOLOs.getString("photoPath");
+			if(photoPath!=null){ 
+				Path pp = Paths.get(photoPath);
+				bolo.setPhotoFilePath(pp);
+			}
+			videoPath=allBOLOs.getString("videoPath");
+			if(videoPath!=null){ 
+				Path vp = Paths.get(videoPath);
+				bolo.setVideoFilePath(vp);
+			}
+
+			boloList.add(bolo);
+	    }
+	    
+	    //Close the connections
+	    allBOLOs.close();
+	    conn.close();
+	    
+	    return boloList;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Converts a <code>Date</code> object into a <code>long</code> representing
+	 * the number of seconds elapsed since the epoch. 
+	 * @param date - <code>Date</code> object to convert
+	 * @return <code>long</code> value representing time in seconds since epoch
+	 */
+	public static long convertDateToEpoch(Date date){
+		long epoch = (date.getTime() / 1000);
+		return epoch;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Converts a <code>long</code> value representing time in seconds since 
+	 * epoch into a <code>Date</code> object representing the same time. 
+	 * @param epoch - time in seconds since epoch
+	 * @return <code>Date</code> object representing the given time
+	 */
+	public static Date convertEpochToDate(long epoch){
+		Date date = new Date(epoch*1000);
+		return date;
+	}
+//-----------------------------------------------------------------------------
 }

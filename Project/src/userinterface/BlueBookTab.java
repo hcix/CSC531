@@ -40,7 +40,6 @@ private static final long serialVersionUID = 1L;
 				formDialog.setVisible(true);
 			}
 		});
-	
 
 		//Create search button
 		JButton searchButton = SwingHelper.createImageButton("Search Blue Book", "icons/search.png");
@@ -52,7 +51,6 @@ private static final long serialVersionUID = 1L;
 			}
 		});
 		 
-		
 		//add the components to this panel
 		this.add(tabbedPane, BorderLayout.CENTER);
 		JPanel buttonsPanel = new JPanel();
@@ -101,12 +99,9 @@ private static final long serialVersionUID = 1L;
 		return searchDialog;
 	}
 //-----------------------------------------------------------------------------		
-	/* (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+	public void actionPerformed(ActionEvent ev) {
+		
 		
 	}
 //-----------------------------------------------------------------------------	

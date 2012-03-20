@@ -2,6 +2,8 @@ package userinterface;
 
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -17,9 +19,8 @@ import utilities.ImageHandler;
 import utilities.SwingHelper;
 //-----------------------------------------------------------------------------
 public class BlueBookForm extends JDialog {
-
-	private static final long serialVersionUID = 1L;
-	//-----------------------------------------------------------------------------
+private static final long serialVersionUID = 1L;
+//-----------------------------------------------------------------------------
 	public BlueBookForm(JFrame parent) {
 		super(parent, "New Blue Book Entry", true);
 		//Set the size of the form
@@ -39,18 +40,22 @@ public class BlueBookForm extends JDialog {
 		//Put the dialog in the middle of the screen
 		this.setLocationRelativeTo(null);
 		
-		 /*Add buttons panel to top of scroll panel as the row header
-	     *(the buttons panel stays at the top of the screen even if the top of the form isn't
-	     *currently visible) */
+		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
+		this.addWindowListener(new WindowAdapter( ) {
+			public void windowClosing(WindowEvent e) {
+				closeAndCancel( );
+			}
+		});
+		
+		/*Add buttons panel to top of scroll panel as the row header
+		 *(the buttons panel stays at the top of the screen even if the top of the form isn't
+		 *currently visible) */
 		JPanel buttonsPanel = createButtonsPanel();
 		inputScrollPane.setColumnHeaderView(buttonsPanel);
 	    
-
-		
 		//Add the Blue Book form dialog to the screen
 	    Container contentPane = getContentPane();
 	    contentPane.add(inputScrollPane);
-	    
 	}
 //-----------------------------------------------------------------------------
 	private JPanel createInputPanel() {
@@ -156,7 +161,7 @@ public class BlueBookForm extends JDialog {
 	private JPanel createPhotoPanel(){
 		JPanel photoPanel = new JPanel(new MigLayout());
 		
-		//Create initial no-photo placeholder photo
+		//Create initial no-photo place holder photo
 		ImageIcon noPhotoImage = ImageHandler.createImageIcon("images/unknownPerson.jpeg");
 		JLabel noPhotoLabel = new JLabel(noPhotoImage);
 		photoPanel.add(noPhotoLabel, "span, wrap");
@@ -168,6 +173,20 @@ public class BlueBookForm extends JDialog {
 		return photoPanel;
 	}
 //-----------------------------------------------------------------------------
-	
+	 public void closeAndSave( ) {
+	    // Save font and color information.
+	    //newFont = previewLabel.getFont( );
+	   // newColor = previewLabel.getForeground( );
+
+	    // Close the window.
+	    setVisible(false);
+	  }
+//-----------------------------------------------------------------------------
+	  public void closeAndCancel( ) {
+	    //TODO:Erase any info in the form
+		  
+		  //close the window
+		  setVisible(false);
+	  }
 //-----------------------------------------------------------------------------
 }

@@ -16,17 +16,27 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
+import program.CurrentUser;
 import utilities.SwingHelper;
+import utilities.xml.Employee;
+import utilities.xml.PersonnelManager;
 
 //-----------------------------------------------------------------------------
 public class LoginDialog extends JDialog implements ActionListener {
 private static final long serialVersionUID = 1L;
-	private boolean loginSuccessful=false;
+	private static boolean loginSuccessful=false;
+	//buttons
 	private static final String LOGIN = "login";
 	private static final String CANCEL = "cancel";
 	private static final String HELP = "help";
+	//error codes
+	private static final int NO_ERROR = 0;
+	private static final int ERROR_BAD_PASSWORD = 1;
+	private static final int ERROR_USR_DNE = 2;
 	JLabel retryLabel;
+	JTextField caneIdField, passwordField;
 //-----------------------------------------------------------------------------	
 	public LoginDialog(final JFrame frame){
 		super(frame, "UMPD Login", true);
@@ -60,10 +70,10 @@ private static final long serialVersionUID = 1L;
 	public JPanel createInputPanel(){
 		JPanel inputPanel = new JPanel(new MigLayout());
 		
-		SwingHelper.addLabeledTextField(inputPanel, "Cane ID: ", 
+		caneIdField = SwingHelper.addLabeledTextField(inputPanel, "Cane ID: ", 
 				SwingHelper.DEFAULT_TEXT_FIELD_LENGTH, true);
 		
-		SwingHelper.addLabeledTextField(inputPanel, "Password: ", 
+		passwordField = SwingHelper.addLabeledTextField(inputPanel, "Password: ", 
 				SwingHelper.DEFAULT_TEXT_FIELD_LENGTH, true);
 		
 		return inputPanel;
@@ -99,45 +109,94 @@ private static final long serialVersionUID = 1L;
 		
 		if(ev.getActionCommand()==LOGIN){
 			//check user name and password
-			loginSuccessful = authenicateUser();
-			if(loginSuccessful){
+			int authenticationResult = authenticateUser();
+			if(authenticationResult==0){
+				//set the login result value to be true
+				loginSuccessful = true;
 				//close the dialog
 				setVisible(false);
-				//play the login sound
-				//TODO: find and play login sound
+	
+/* *****************************************************************************
+* TODO: 1.Find and play a login sound upon success. 
+* 		2.Create and display spash screen.
+* Since the program takes a few seconds to load, should play a login tone and
+* show a splash screen to let user know that their login has been successful
+* and the program is loading.
+*******************************************************************************/
+				
 			} else {
 				//display retry login text
-				displayRetryLabel();
+				displayRetryLabel(authenticationResult);
 			}
 		} else if(ev.getActionCommand()==CANCEL){
 			//close the dialog
 			loginSuccessful=false;
 			setVisible(false);
 		} else if(ev.getActionCommand()==HELP){
-			/*TODO: display help info telling user to enter their caneID and password
-			and displaying the UM site they can go to to reset it if they forgot it*/
-			
+	
+/* *****************************************************************************
+* TODO: Display help info telling user to enter their caneID and password
+* and displaying the UM site they can go to to reset it if they forgot it.
+*******************************************************************************/
 		}
 		
 	}
 //-----------------------------------------------------------------------------
-	  public boolean authenicateUser() {
-	/* 
-	 * TODO Code to check user name and password against UM's web portal
-	 * will return true if successful, false if unsuccessful
-	 * Currently, just returns true all the time.
-	 * 
-	*/
-		  return true;
+	/**
+	 * Authenticates a user trying to login to the program. 
+	 * Checks the user name and password first against UM's web portal, then 
+	 * against the roster xml file to determine the user's permissions.
+	 * @return the error code of the corresponding login error, or 0 if 
+	 * login was successful
+	 */
+	  public int authenticateUser() {
+		  String caneID = caneIdField.getText().trim();
+		  String password = passwordField.getText().trim();
+		  Employee user = null;
+		  
+		  //Get the employee object that matches the given caneID
+		  user = PersonnelManager.getEmployeeByCaneID(caneID);
+		  
+		  if(user==null){ 
+			  //employee matching the given caneID not found in system
+			  return ERROR_USR_DNE; 
+		  }
+		  
+//DEBUG--------------------------------		  
+		  System.out.println("caneID field = " + caneIdField.getText() + " and user" +
+		  		"caneID = "  + user.getCaneID());
+//--------------------------------DEBUG		  
+		  
+		  //Set the current user to be the employee that just logged in 
+		  CurrentUser.setCurrentUser(user);
+		  
+		  //Authenticate the caneID and password info via UM's web portal
+/* *****************************************************************************
+* TODO (BEN) Code to check user name and password against UM's web portal 
+* Currently, the program runs as if it always receives true from 
+* the web portal. 
+*******************************************************************************/
+		  
+		  return NO_ERROR;
 	  }
 //-----------------------------------------------------------------------------
 	  public boolean isSuccessful() {
 		  return loginSuccessful;
 	  }
 //-----------------------------------------------------------------------------
-	  public void displayRetryLabel() {
-		  retryLabel.setText("<html><b><font color=#ff0000>You entered incorrect credentials.<br>" +
-		  		"Please try again.</font></b></html>");
+	  public void displayRetryLabel(int errorID) {
+		  //Display the error corresponding to the gven error code
+		  switch(errorID){
+		  case ERROR_BAD_PASSWORD:
+			  retryLabel.setText("<html><b><font color=#ff0000>You entered incorrect credentials.<br>" +
+					  "Please try again.</font></b></html>");
+			  break;
+		  case ERROR_USR_DNE:
+			  retryLabel.setText("<html><b><font color=#ff0000>The caneID you have entered does not " +
+		  			"correspond to an existing user. Please renter your information or see your <br>" +
+		  			"supervisor to be added to the system.</font></b></html>");
+			  break;
+		  }
 
   }
 //-----------------------------------------------------------------------------
