@@ -1,6 +1,8 @@
 package utilities.xml;
 
 import java.util.List;
+import progAdmin.Employee;
+import progAdmin.PersonnelManager;
 
 public class TestWrite {
 //-----------------------------------------------------------------------------	 

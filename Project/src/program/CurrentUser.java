@@ -3,7 +3,7 @@
  */
 package program;
 
-import utilities.xml.Employee;
+import progAdmin.Employee;
 
 public class CurrentUser extends Employee{
 	private static Employee user;

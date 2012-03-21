@@ -32,4 +32,12 @@
 		<email>wgerlach@miami.edu</email>
 		<permissions>command</permissions>
 	</employee>
+	<employee>
+		<cnumber>1</cnumber>
+		<firstname>Sir/Ma'am</firstname>
+		<lastname>!</lastname>
+		<caneid>demo</caneid>
+		<email>none</email>
+		<permissions>supervisor</permissions>
+	</employee>
 </roster>

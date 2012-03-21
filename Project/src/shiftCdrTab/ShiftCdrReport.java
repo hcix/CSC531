@@ -22,10 +22,16 @@ import com.itextpdf.text.pdf.PdfStamper;
  * of these reports are stored in the ProgramDirectory/Documents/ShiftCdrSumReports 
  * directory in flattened form. Thus, the reports may be viewed outside the system, 
  * but cannot be existing forms cannot edited via outside means.
+ * 
+ * @see ShiftCdrReportForm
+ * @see OfficerAssignment
+ * @see AttendanceRecord
+ * @see PatrolActivity
+ * @see Crime
  */
 public class ShiftCdrReport {
 	ArrayList<OfficerAssignment> assignmentsList;
-	ArrayList<AttendanceRecord> attendance;
+	ArrayList<AttendanceRecord> attendanceList;
 	ArrayList<PatrolActivity> patrols;
 	ArrayList<Crime> incidents;
 	String remarks;
@@ -38,7 +44,7 @@ public class ShiftCdrReport {
 //-----------------------------------------------------------------------------
 	ShiftCdrReport(){
 		assignmentsList = new ArrayList<OfficerAssignment>();
-		attendance = new ArrayList<AttendanceRecord>();
+		attendanceList = new ArrayList<AttendanceRecord>();
 		patrols = new ArrayList<PatrolActivity>();
 	}
 //-----------------------------------------------------------------------------
@@ -86,17 +92,19 @@ public class ShiftCdrReport {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return the attendance
+	 * @return the attendanceList for the shift represented by this 
+	 * <code>ShiftCdrReport</code>
 	 */
-	public ArrayList<AttendanceRecord> getAttendance() {
-		return attendance;
+	public ArrayList<AttendanceRecord> getAttendanceList() {
+		return attendanceList;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param attendance the attendance to set
+	 * @param attendanceList - the attendanceList to set for the shift represented
+	 * by this <code>ShiftCdrReport</code>
 	 */
-	public void setAttendance(ArrayList<AttendanceRecord> attendance) {
-		this.attendance = attendance;
+	public void setAttendanceList(ArrayList<AttendanceRecord> attendancelist) {
+		this.attendanceList = attendanceList;
 	}
 //-----------------------------------------------------------------------------
 	/**

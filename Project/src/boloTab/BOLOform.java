@@ -26,6 +26,7 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.miginfocom.swing.MigLayout;
+import utilities.ComponentResizer;
 import utilities.FileHelper;
 import utilities.ImageHandler;
 import utilities.ImagePreview;
@@ -460,7 +461,10 @@ public class BOLOform extends JDialog implements ChangeListener {
 			if(choosenPhoto!=null){
 				bolo.setPhotoFilePath(photoPath);
 				photoPanel.removeAll();
+				
 				photoPanel.add(new JLabel(choosenPhoto));
+				
+				
 				(photoPanel.getParent()).validate();
 			}
 		}

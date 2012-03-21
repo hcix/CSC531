@@ -13,6 +13,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import progAdmin.Employee;
 
 public class RosterParser {
 	static final String CNUMBER = "cnumber";

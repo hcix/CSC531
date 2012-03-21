@@ -7,11 +7,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import progAdmin.LoginDialog;
+import progAdmin.PersonnelManager;
 import userinterface.DashboardPanel;
-import userinterface.LoginDialog;
 import userinterface.MainInterfaceWindow;
 import utilities.SwingHelper;
-import utilities.xml.PersonnelManager;
 
 public class ProgramCore extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;

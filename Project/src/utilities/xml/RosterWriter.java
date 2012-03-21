@@ -12,6 +12,7 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartDocument;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import progAdmin.Employee;
 //-----------------------------------------------------------------------------	 
 public class RosterWriter {
 	private String rosterFile;

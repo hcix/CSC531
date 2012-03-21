@@ -40,7 +40,6 @@ private static final long serialVersionUID = 1L;
 				//Shift CDR form dialog
 				ShiftCdrReportForm formDialog = new ShiftCdrReportForm(parent);
 				public void actionPerformed(ActionEvent e){
-					
 					formDialog.setVisible(true);
 				}
 			});
