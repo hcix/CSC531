@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 //-----------------------------------------------------------------------------
 /**
@@ -27,7 +28,7 @@ public class PhotoResizer extends MouseAdapter {
 
 	private static Map<Integer, Integer> cursors = new HashMap<Integer, Integer>();
 	{
-		cursors.put(1, Cursor.N_RESIZE_CURSOR);
+		cursors.put(1,  Cursor.N_RESIZE_CURSOR);
 		cursors.put(2, Cursor.W_RESIZE_CURSOR);
 		cursors.put(4, Cursor.S_RESIZE_CURSOR);
 		cursors.put(8, Cursor.E_RESIZE_CURSOR);
@@ -37,8 +38,8 @@ public class PhotoResizer extends MouseAdapter {
 		cursors.put(12, Cursor.SE_RESIZE_CURSOR);
 	}
 
-	private Insets dragInsets;
-	private Dimension snapSize;
+	private Insets dragInsets = new Insets(5, 5, 5, 5);
+	private Dimension snapSize = new Dimension(1, 1);
 
 	private int direction;
 	protected static final int NORTH = 1;
@@ -55,14 +56,17 @@ public class PhotoResizer extends MouseAdapter {
 	private Dimension minimumSize = MINIMUM_SIZE;
 	private Dimension maximumSize = MAXIMUM_SIZE;
 	
+	JLabel photoFrame;
 	ImageIcon originalImgIcon;
 //-----------------------------------------------------------------------------
 	PhotoResizer(ResizablePhoto photo){
 		setDragInsets( dragInsets );
 		setSnapSize( snapSize );
-		registerComponent( photo.getPhotoFrame() );
-	
-		originalImgIcon = photo.getOriginalImgIcon();
+		this.photoFrame = photo.getPhotoFrame();
+		this.originalImgIcon = photo.getOriginalImgIcon();
+		
+		registerComponent(photoFrame);
+
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -161,6 +165,7 @@ public class PhotoResizer extends MouseAdapter {
 				component.addMouseListener( this );
 				component.addMouseMotionListener( this );
 			}
+			 
 		}
 //-----------------------------------------------------------------------------
 		/**
@@ -326,7 +331,7 @@ public class PhotoResizer extends MouseAdapter {
 //-----------------------------------------------------------------------------
 		protected void changeBounds(Component source, int direction, Rectangle bounds, Point pressed, Point current)
 		{
-			//  Start with original locaton and size
+			//  Start with original location and size
 
 			int x = bounds.x;
 			int y = bounds.y;
@@ -337,12 +342,18 @@ public class PhotoResizer extends MouseAdapter {
 
 			if (WEST == (direction & WEST))
 			{
-				int drag = getDragDistance(pressed.x, current.x, snapSize.width);
+				/*int drag = getDragDistance(pressed.x, current.x, snapSize.width);
 				int maximum = Math.min(width + x, maximumSize.width);
 				drag = getDragBounded(drag, snapSize.width, width, minimumSize.width, maximum);
 
 				x -= drag;
+				width += drag;*/
+				int drag = getDragDistance(pressed.x, current.x, snapSize.width);
+				Dimension boundingSize = getBoundingSize( source );
+				int maximum = Math.min(boundingSize.width + x, maximumSize.width);
+				drag = getDragBounded(drag, snapSize.width, width, minimumSize.width, maximum);
 				width += drag;
+				
 			}
 
 			if (NORTH == (direction & NORTH))
@@ -376,7 +387,11 @@ public class PhotoResizer extends MouseAdapter {
 			}
 
 			source.setBounds(x, y, width, height);
-		//	ImageIcon newImgIcon 
+			ImageIcon newImgIcon = ImageHandler.getScaledImageIcon(originalImgIcon, width, height);
+			
+			//photoFrame.removeAll();
+			photoFrame.setIcon(newImgIcon);
+
 			source.validate();
 		}
 //-----------------------------------------------------------------------------

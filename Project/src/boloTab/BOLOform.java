@@ -1,7 +1,10 @@
 package boloTab;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -23,13 +26,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.miginfocom.swing.MigLayout;
-import utilities.ComponentResizer;
 import utilities.FileHelper;
 import utilities.ImageHandler;
 import utilities.ImagePreview;
+import utilities.ResizablePhoto;
 import utilities.SwingHelper;
 
 public class BOLOform extends JDialog implements ChangeListener {
@@ -109,8 +113,7 @@ public class BOLOform extends JDialog implements ChangeListener {
 	     *(the buttons panel stays at the top of the screen even if the top of the form isn't
 	     *currently visible) */
 	    JPanel buttonsPanel = createButtonsPanel();
-	    dialogPanelScroller.setColumnHeaderView(buttonsPanel);
-	    
+	    dialogPanelScroller.setColumnHeaderView(buttonsPanel);	    
 	    
 	    //Add the BOLO form scrolling pane dialog to the screen
 	    Container contentPane = getContentPane();
@@ -266,7 +269,7 @@ public class BOLOform extends JDialog implements ChangeListener {
 		ImageIcon noPhotoImage = ImageHandler.createImageIcon("images/unknownPerson.jpeg");
 		JLabel noPhotoLabel = new JLabel(noPhotoImage);
 		photoPanel.add(noPhotoLabel);
-		photoVideoPanel.add(photoPanel, "span, wrap");
+		photoVideoPanel.add(photoPanel, "spanx,grow,wrap");
 		
 		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", "icons/camera.png");
 		addPhotoButton.addActionListener(new ActionListener(){
@@ -278,8 +281,12 @@ public class BOLOform extends JDialog implements ChangeListener {
 		addPhotoButton.setToolTipText("Attach a photo to this BOLO");
 		JButton addVideoButton = SwingHelper.createImageButton("Add a Video", "icons/videoCamera.png");
 		addVideoButton.setToolTipText("Attach a video to this BOLO");
-		photoVideoPanel.add(addPhotoButton);
-		photoVideoPanel.add(addVideoButton);
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.add(addPhotoButton);
+		buttonsPanel.add(addVideoButton);
+		
+		photoVideoPanel.add(buttonsPanel, "dock south");
+
 
 		return photoVideoPanel;
 	}
@@ -452,20 +459,35 @@ public class BOLOform extends JDialog implements ChangeListener {
 			
 		//if a photo was selected, add it to BOLO and load into photo area
 		if(returnVal==JFileChooser.APPROVE_OPTION){
-			//copy the choosen photo into the program's 'Photos' directory
+			//copy the chosen photo into the program's 'Photos' directory
 			File file = fc.getSelectedFile();
 			System.out.printf("filepath = %s\n", file.getName(), file.getPath());
 			Path photoPath = FileHelper.copyPhoto(file);
 			//load the image into photo area
-			ImageIcon choosenPhoto = ImageHandler.getResizableImageIcon(photoPath, 200, 299);
-			if(choosenPhoto!=null){
+			if(photoPath==null){
+				//report that an error occurred in coping and retrieving the img file
+				return;
+			} else {
+			ImageIcon chosenPhoto = ImageHandler.getResizableImageIcon(photoPath, 200, 299);
+				ResizablePhoto chosenImg = new ResizablePhoto(chosenPhoto);
 				bolo.setPhotoFilePath(photoPath);
-				photoPanel.removeAll();
+	
+				JDialog resizerDialog = new JDialog(this, "Resize Photo", 
+						Dialog.ModalityType.DOCUMENT_MODAL);
+				//resizerDialog.setLocationRelativeTo(null);
+				resizerDialog.setPreferredSize(new Dimension(700, 700));
+				resizerDialog.setSize(new Dimension(700, 700));
+				JPanel p = new JPanel();
+				p.setPreferredSize(new Dimension(700, 700));
+				p.setSize(new Dimension(700, 700));
+				resizerDialog.setLocationRelativeTo(null);
+				p.add(chosenImg.getPhotoFrame());
+							
+				Container cp = resizerDialog.getContentPane();
+				cp.add(p);
+				resizerDialog.setVisible(true);
 				
-				photoPanel.add(new JLabel(choosenPhoto));
-				
-				
-				(photoPanel.getParent()).validate();
+
 			}
 		}
 		

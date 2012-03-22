@@ -59,22 +59,22 @@ private static final long serialVersionUID = 1L;
         
       //if user is at least a shift cdr, set up shift cdr tab
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
-        	if(CurrentUser.getCurrentUser().getLevel()>=
-        		PersonnelManager.PERMIS_LEVEL_COMMAND){  	
+//        	if(CurrentUser.getCurrentUser().getLevel()>=
+//        		PersonnelManager.PERMIS_LEVEL_COMMAND){  	
         	shiftCdrTab = new ShiftCdrTab(parent);
 	        tabbedPane.addTab("Shift Commander", shiftCdrTab);
 	        tabbedPane.setMnemonicAt(5, KeyEvent.VK_6);
 	        
 	      //if user is at a supervisor, set up supervisor tab
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
-	        if(CurrentUser.getCurrentUser().getLevel()>=
-	        		PersonnelManager.PERMIS_LEVEL_SUPERVISR){
+//	        if(CurrentUser.getCurrentUser().getLevel()>=
+//	        		PersonnelManager.PERMIS_LEVEL_SUPERVISR){
 		        adminTab = new AdminTab();
 		        tabbedPane.addTab("Administration", adminTab);
 		        tabbedPane.setMnemonicAt(6, KeyEvent.VK_7);
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
-	        }
-        }
+//	        }
+//        }
 	        
         //The following line enables the use of scrolling tabs
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);	

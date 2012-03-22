@@ -15,14 +15,29 @@ public class ResizablePhoto {
 	 * 
 	 * @param imgIcon
 	 */
-	ResizablePhoto(ImageIcon imgIcon){
+	public ResizablePhoto(ImageIcon imgIcon){
 		originalImgIcon = imgIcon;
 		photoFrame.setIcon(originalImgIcon);
 		
 		SwingHelper.addLineBorder(photoFrame);
 		
-		ComponentResizer cr = new ComponentResizer();
-		cr.registerComponent(photoFrame);
+		PhotoResizer pr = new PhotoResizer(this);
+		pr.registerComponent(photoFrame);
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @param absFileName
+	 */
+	public ResizablePhoto(String absFileName){
+		originalImgIcon = ImageHandler.createImageIcon(absFileName);
+
+		photoFrame.setIcon(originalImgIcon);
+		
+		SwingHelper.addLineBorder(photoFrame);
+		
+		PhotoResizer pr = new PhotoResizer(this);
+		pr.registerComponent(photoFrame);
 	}
 //-----------------------------------------------------------------------------
 	/**

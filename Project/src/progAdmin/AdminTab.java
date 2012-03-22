@@ -8,10 +8,12 @@ import javax.swing.JPanel;
 import utilities.SwingHelper;
 
 /**
- * GUI layout for Administration Panel.
- * The Administration Panel allows ranking officers to do administrative tasks
- * within the system such as adding, removing, and editing personal, recording
- * video announcements, editing system properties etc.
+ * The Administration Panel allows users with Supervisor privileges to 
+ * perform administrative tasks within the system such as adding, removing,
+ * and editing personal, recording video announcements, editing system 
+ * properties etc.
+ * This panel will only be displayed if the current user has Supervisor
+ * privileges. 
  *
  */
 public class AdminTab extends JPanel {

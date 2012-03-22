@@ -3,9 +3,9 @@
  */
 package utilities;
 
-import java.awt.image.ImageFilter;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -101,13 +101,23 @@ public class FileHelper {
 		Path destination = Paths.get(progDir, DOC_DIR);
 		
 		Path orginalPath = original.toPath();
+		Path newPath = destination.resolve(orginalPath.getFileName());
+		String newFileName;
 		
-		try {
-			destination = Files.copy(orginalPath, destination.resolve(orginalPath.getFileName()));
-			return destination;
-		} catch (IOException x) {
-	                System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
-	    }
+		for(int i=0; i<100; i++){
+			try {
+				destination = Files.copy(orginalPath, newPath);
+				return destination;
+			} catch (FileAlreadyExistsException e){
+				Path p = orginalPath.getFileName();
+				newFileName = p.toString() + i + "";
+				newPath = Paths.get(newFileName);
+			} catch (IOException x) {
+		                System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
+		    }
+		}
+		//100 files with this file's same name (and diff numbers after) already exist, 
+		//tell the user to pick a new name
 		return null;
 	}
 //-----------------------------------------------------------------------------
@@ -122,14 +132,28 @@ public class FileHelper {
 		//Specifies a system independent path
 		Path destination = Paths.get(progDir, PHOTO_DIR);
 		
+		return (copyFile(original, destination));
+		/*
 		Path orginalPath = original.toPath();
-		try {
-			destination = Files.copy(orginalPath, destination.resolve(orginalPath.getFileName()));
-			return destination;
-		} catch (IOException x) {
-	                System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
-	    }
+		Path newPath = destination.resolve(orginalPath.getFileName());
+		String newFileName;
+				//
+		for(int i=0; i<100; i++){
+			try {
+				destination = Files.copy(orginalPath, newPath);
+				return destination;
+			} catch (FileAlreadyExistsException e){
+				Path p = orginalPath.getFileName();
+				newFileName = p.toString() + i + "";
+				newPath = Paths.get(newFileName);
+			} catch (IOException x) {
+		                System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
+		    }
+		}
+		//100 files with this file's same name (and diff numbers after) already exist, 
+		//tell the user to pick a new name
 		return null;
+		*/
 		
 	}
 //-----------------------------------------------------------------------------
@@ -144,14 +168,27 @@ public class FileHelper {
 		//Specifies a system independent path
 		Path destination = Paths.get(progDir, VIDEO_DIR);
 		
+		return (copyFile(original, destination));
+		/*
 		Path orginalPath = original.toPath();
-		try {
-			destination = Files.copy(orginalPath, destination.resolve(orginalPath.getFileName()));
-			return destination;
-		} catch (IOException x) {
-	                System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
-	    }
-		return null;
+		Path newPath = destination.resolve(orginalPath.getFileName());
+		String newFileName;
+				//
+		for(int i=0; i<100; i++){
+			try {
+				destination = Files.copy(orginalPath, newPath);
+				return destination;
+			} catch (FileAlreadyExistsException e){
+				Path p = orginalPath.getFileName();
+				newFileName = p.toString() + i + "";
+				newPath = Paths.get(newFileName);
+			} catch (IOException x) {
+		                System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
+		    }
+		}
+		//100 files with this file's same name (and diff numbers after) already exist, 
+		//tell the user to pick a new name
+		return null;*/
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -166,16 +203,55 @@ public class FileHelper {
 		Path destination = Paths.get(progDir, VIDEO_DIR, ANNOUN_SUB_DIR);
 		
 		Path orginalPath = original.toPath();
-		try {
-			destination = Files.copy(orginalPath, destination.resolve(orginalPath.getFileName()));
-			return destination;
-		} catch (IOException x) {
-	                System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
-	    }
-		
+		Path newPath = destination.resolve(orginalPath.getFileName());
+		String newFileName;
+				//
+		for(int i=0; i<100; i++){
+			try {
+				destination = Files.copy(orginalPath, newPath);
+				return destination;
+			} catch (FileAlreadyExistsException e){
+				Path p = orginalPath.getFileName();
+				newFileName = p.toString() + i + "";
+				newPath = Paths.get(newFileName);
+			} catch (IOException x) {
+		                System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
+		    }
+		}
+		//100 files with this file's same name (and diff numbers after) already exist, 
+		//tell the user to pick a new name
 		return null;
 		
 	}
+//-----------------------------------------------------------------------------
+		/**
+		 * Copies the specified source file to the target destination.
+		 * @param source - file to copy
+		 * @param target - absolute path of the location to copy the 
+		 * source file to
+		 */
+		public static Path copyFile(File soure, Path target){
+			
+			Path orginalPath = soure.toPath();
+			Path newPath = target.resolve(orginalPath.getFileName());
+			String newFileName;
+					//
+			for(int i=0; i<100; i++){
+				try {
+					target = Files.copy(orginalPath, newPath);
+					return target;
+				} catch (FileAlreadyExistsException e){
+					Path p = orginalPath.getFileName();
+					newFileName = p.toString() + i + "";
+					newPath = Paths.get(newFileName);
+				} catch (IOException x) {
+			                System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
+			    }
+			}
+			//100 files with this file's same name (and diff numbers after) already exist, 
+			//tell the user to pick a new name
+			return null;
+		}
 //-----------------------------------------------------------------------------
   	/** 
   	 * Creates and returns an instance of <code>FileHelper</code>'s inner
