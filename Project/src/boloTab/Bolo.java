@@ -400,13 +400,13 @@ public class Bolo {
 	    prep.setString(17, this.otherDescrip);
 	    prep.setString(18, this.narrative);
 	    
+	
 	    if(photoFilePath!=null){
 		    Path absPhotoFilePath = photoFilePath.toAbsolutePath();
 		   // URI imgURI = absPhotoFilePath.toUri();
 		    photoPathName = absPhotoFilePath.toString();
 	    }
-	    prep.setString(19, photoPathName);
-	    
+	    prep.setString(19, photoPathName);	    
 	    
 	    if(videoFilePath!=null){
 	    	Path absVideoFilePath = videoFilePath.toAbsolutePath();
@@ -425,6 +425,7 @@ public class Bolo {
 	    
 	    //Close the connection
 	    conn.close();
+	    
 	}
 //-----------------------------------------------------------------------------
 }

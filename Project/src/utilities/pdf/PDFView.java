@@ -40,6 +40,7 @@ import org.jpedal.exception.PdfException;
 import org.jpedal.external.Options;
 import org.jpedal.utils.LogWriter;
 import org.jpedal.utils.Messages;
+import program.ResourceManager;
 
 public class PDFView {
 //-----------------------------------------------------------------------------
@@ -60,71 +61,97 @@ public class PDFView {
     private JButton[] topButtons = null;
     private JPanel topButtonPanel = null;
     org.jpedal.objects.acroforms.rendering.AcroRenderer formRenderer = null;
-   // List<String> textFieldsContents;
-   // List<String> textAreasContents;
-   // List<Boolean> radioButtonsVals;
-   // List<JCheckBox> cbsChecked;
+
     ArrayList<FieldAndVal> allFormFields;
 //-----------------------------------------------------------------------------
-    public PDFView(String doc, Container comp) {
-      //enable error messages which are OFF by default
-      PdfDecoder.showErrorMessages=true;
-      
-     // String prefFile = "/Users/heatherciechowski/CSC531/TestProj/src/test23/preferences.xml";
-      //null; System.getProperty("org.jpedal.SimpleViewer.Prefs");
-    /* 
-      if(prefFile != null){
-        properties.loadProperties(prefFile);
-      }else{
-        properties.loadProperties();
-      }
-      */
-      this.setRootContainer(comp);
-      this.setupViewer();
-      this.openDefaultFile(doc);
-      
+    /**
+     * Create a new <code>PDFView</code>.
+     */
+    public PDFView(String doc, Container comp, ResourceManager rm) {
+		//enable error messages which are OFF by default
+		PdfDecoder.showErrorMessages=true;
+
+		properties.loadProperties();
+  
+		this.setRootContainer(comp);
+		this.setupViewer();
+		this.openPdfFile(doc);
+		  
+		formRenderer = decode_pdf.getFormRenderer();
+		
+		if(formRenderer==null) { 
+			rm.showErrorDialog("File I/O", "An error occured when attempting to display" +
+					"the document.");
+			System.out.println("fail"); 
+		}
      
     }
 //-----------------------------------------------------------------------------
+    /**
+     * Create a new <code>PDFView</code> with the preferences set in the specified
+     * properties xml file.
+     * @param prefsFile - the absolute path of the file containing the preferences 
+     * to use for this <code>PDFView</code>.
+     */
+    public PDFView(String doc, Container comp, ResourceManager rm, String prefsFile) {
+		//enable error messages which are OFF by default
+		PdfDecoder.showErrorMessages=true;
+		  
+		String prefFile = "/Users/heatherciechowski/CSC531/Project/src/utilities/pdf/properties/pdf_reportsTab.xml";
+
+		  if(prefFile != null){
+		    properties.loadProperties(prefFile);
+		  }else{
+		    properties.loadProperties();
+		  }
+		  
+		this.setRootContainer(comp);
+		this.setupViewer();
+		this.openPdfFile(doc);
+		  
+		formRenderer = decode_pdf.getFormRenderer();
+		
+		if(formRenderer==null) { 
+			rm.showErrorDialog("File I/O", "An error occured when attempting to display" +
+					"the document.");
+			System.out.println("fail"); 
+		}
+     
+    }
+//-----------------------------------------------------------------------------
+    /**
+     * Create a new <code>PDFView</code>.
+     * This constructor is to be used by JScrollPanes with top button panels.
+     */
     public PDFView(String doc, Container comp, JButton[] topButtons) {
       //enable error messages which are OFF by default
       PdfDecoder.showErrorMessages=true;
-      
-     // String prefFile = "/Users/heatherciechowski/CSC531/TestProj/src/test23/preferences.xml";
-      //null; System.getProperty("org.jpedal.SimpleViewer.Prefs");
-    /* 
-      if(prefFile != null){
-        properties.loadProperties(prefFile);
-      }else{
-        properties.loadProperties();
-      }
-      */
-      
+
       this.topButtons = topButtons;
       this.setRootContainer(comp);
       this.setupViewer();
-      this.openDefaultFile(doc);
+      this.openPdfFile(doc);
+      
+      formRenderer = decode_pdf.getFormRenderer();
+
+      if(formRenderer==null) { 
+    	 System.out.println("fail");
+      }  
 
     }
 //-----------------------------------------------------------------------------
+    /**
+     * Create a new <code>PDFView</code>.
+     * This constructor is to be used by JScrollPanes with top button panels.
+     */
     public PDFView(String doc, Container comp, JPanel topButtonPanel) {
         //enable error messages which are OFF by default
         PdfDecoder.showErrorMessages=true;
         
-       // String prefFile = "/Users/heatherciechowski/CSC531/TestProj/src/test23/preferences.xml";
-        //null; System.getProperty("org.jpedal.SimpleViewer.Prefs");
-      /* 
-        if(prefFile != null){
-          properties.loadProperties(prefFile);
-        }else{
-          properties.loadProperties();
-        }
-        */
-        
         this.topButtonPanel= topButtonPanel;
         this.setRootContainer(comp);
         this.setupViewer();
-        this.openDefaultFile(doc);
+        this.openPdfFile(doc);
         
         formRenderer
         	= decode_pdf.getFormRenderer();
@@ -193,73 +220,66 @@ public class PDFView {
 //-----------------------------------------------------------------------------
     /**
      *
-     * @param defaultFile
-     * Allow user to open PDF file to display
+     * @param file
+     * Allow user to open PDF file (or webpage) to display
      */
-	public void openDefaultFile(String defaultFile) {
-	
-	
-	    commonValues.maxViewY=0;// ensure reset for any viewport
-	
-	    /**
-	     * open any default file and selected page
-	     */
-	    if(defaultFile!=null){
-	
-	            //<start-wrap>
-	            File testExists=new File(defaultFile);
-	      boolean isURL=false;
-	      if(defaultFile.startsWith("http:")|| defaultFile.startsWith("jar:") || defaultFile.startsWith("file:")){
-	        LogWriter.writeLog("Opening http connection");
-	        isURL=true;
-	      }
-	
-	      if((!isURL) && (!testExists.exists())){
-	        currentGUI.showMessageDialog(defaultFile+ '\n' +Messages.getMessage("PdfViewerdoesNotExist.message"));
-	      }else if((!isURL) &&(testExists.isDirectory())){
-	        currentGUI.showMessageDialog(defaultFile+ '\n' +Messages.getMessage("PdfViewerFileIsDirectory.message"));
-	      }else{
-	                commonValues.setFileSize(testExists.length() >> 10);
-	
-	            //<end-wrap>
-	
-	        commonValues.setSelectedFile(defaultFile);
-	
-	        currentGUI.setViewerTitle("New Shift Commander Summary Report");
-	
-	                //<start-wrap>
-	        /**see if user set Page*/
-	        String page=System.getProperty("org.jpedal.page");
-	        String bookmark=System.getProperty("org.jpedal.bookmark");
-	        if(page!=null && !isURL){
-	
-	          try{
-	            int pageNum=Integer.parseInt(page);
-	
-	            if(pageNum<1){
-	              pageNum=-1;
-	              System.err.println(page+ " must be 1 or larger. Opening on page 1");
-	              LogWriter.writeLog(page+ " must be 1 or larger. Opening on page 1");
-	            }
-	
-	
-	          }catch(Exception e){
-	            System.err.println(page+ "is not a valid number for a page number. Opening on page 1");
-	            LogWriter.writeLog(page+ "is not a valid number for a page number. Opening on page 1");
-	          }
-	        }else{
-	                    //<end-wrap>
-	          try {
-	            currentCommands.openFile(defaultFile);
-	          } catch (PdfException e) {
-	          }
-	          }
-	      }
-	     
+	public void openPdfFile(String file) {
+		//ensure reset for any viewport
+		commonValues.maxViewY=0;
+
+		//open default file to first page
+	    if(file!=null){
+	    	File testExists=new File(file);
+	    	boolean isURL=false;
+	    	if(file.startsWith("http:")|| file.startsWith("jar:") || 
+	    			file.startsWith("file:")){
+	    		LogWriter.writeLog("Opening http connection");
+            	isURL=true;
+            }
+
+	    	//display error dialog if not a URL and file doesn't exist
+	    	if((!isURL) && (!testExists.exists())){
+	    		currentGUI.showMessageDialog(file+ '\n' +
+	    				Messages.getMessage("PdfViewerdoesNotExist.message"));
+    		//display error dialog if the file is a directory	
+	    	}else if((!isURL) &&(testExists.isDirectory())){
+	    		currentGUI.showMessageDialog(file+ '\n' +
+	    				Messages.getMessage("PdfViewerFileIsDirectory.message"));
+	    	}else{
+                commonValues.setFileSize(testExists.length() >> 10);
+                commonValues.setSelectedFile(file);
+
+                //see if user set a page val
+                String page=System.getProperty("org.jpedal.page");
+                if(page!=null && !isURL){
+                	try{
+                		int pageNum=Integer.parseInt(page);
+                		if(pageNum<1){
+                			pageNum=-1;
+                			System.err.println(page+ " must be 1 or larger. Opening on page 1");
+                			LogWriter.writeLog(page+ " must be 1 or larger. Opening on page 1");
+                		}
+                	}catch(Exception e){
+                		System.err.println(page+ "is not a valid number for a " +
+                				"page number. Opening on page 1");
+                		LogWriter.writeLog(page+ "is not a valid number for a page number. " +
+                				"Opening on page 1");
+                	}
+                }else{
+                	try {
+                		currentCommands.openFile(file);
+                	} catch (PdfException e) { 
+                		currentGUI.showMessageDialog("File: " + file + '\n' + "File cannot be opened."); 
+                	}
+                }
+	    	}
 	    }
-	
-	}
+
+}
 //-----------------------------------------------------------------------------
+	/**
+	 * Set the container this <code>PDFView</code> should be placed in.
+	 */
 	public void setRootContainer(Container rootContainer){
 		if(rootContainer==null){ throw new RuntimeException("Null containers not allowed."); }
     
@@ -283,7 +303,8 @@ public class PDFView {
       
     }else if(rootContainer instanceof JSplitPane){
       throw new RuntimeException("To add the simpleViewer to a split pane " +
-      		"please pass through either JSplitPane.getLeftComponent() or JSplitPane.getRightComponent()");
+      		"please pass through either JSplitPane.getLeftComponent() or" +
+      		" JSplitPane.getRightComponent()");
     }
     
     if(!(rootContainer instanceof JFrame)){
@@ -318,72 +339,68 @@ public class PDFView {
 		scroller.setColumnHeaderView(buttonPanel);
 	}
 //-----------------------------------------------------------------------------
-  /**
-   * initialise and run client (default as Application in own Frame)
-   */
-  public void setupViewer() {
-
-        //also allow messages to be suppressed with JVM option
-        String flag=System.getProperty("org.jpedal.suppressViewerPopups");
-        boolean suppressViewerPopups = false;
-
-        if(flag!=null && flag.toLowerCase().equals("true"))
-            suppressViewerPopups =true;
-
-        /**
-         *  set search window position here to ensure
-         *  that gui has correct value
-         */
-        String searchType = properties.getValue("searchWindowType");
-        if(searchType!=null && searchType.length() != 0){
-            int type = Integer.parseInt(searchType);
-            searchFrame.setStyle(type);
-        }else
-            searchFrame.setStyle(SwingSearchWindow.SEARCH_MENU_BAR);
-
-        //Set search frame here
-        currentGUI.setSearchFrame(searchFrame);
-
-        /**switch on thumbnails if flag set*/
-        String setThumbnail=System.getProperty("org.jpedal.thumbnail");
+	/**
+	 * Initialize and run client PDF viewer. 
+	 * If a root container wasn't specified, it will appear as in it's own
+	 * frame separate from the application
+	 */
+	public void setupViewer() {
+		//also allow messages to be suppressed with JVM option
+		String flag=System.getProperty("org.jpedal.suppressViewerPopups");
+		boolean suppressViewerPopups = false;
+		if(flag!=null && flag.toLowerCase().equals("true")){
+			suppressViewerPopups = true;
+		}
+	  
+		/**
+		 *  set search window position here to ensure
+		 *  that gui has correct value
+		
+		String searchType = properties.getValue("searchWindowType");
+		if(searchType!=null && searchType.length() != 0){
+			System.out.println("System property: searchWindowType = "+searchType);
+		    int type = Integer.parseInt(searchType);
+		    searchFrame.setStyle(type);
+		}else
+		    searchFrame.setStyle(SwingSearchWindow.SEARCH_MENU_BAR);
+		
+		//Set search frame here
+		currentGUI.setSearchFrame(searchFrame);
+ */
+		
+        /*switch on thumbnails if flag is set
+		String setThumbnail=System.getProperty("org.jpedal.thumbnail");
         if(setThumbnail!=null){
+        	System.out.println("System property: org.jpedal.thumbnail = "+setThumbnail);
             if(setThumbnail.equals("true"))
                 thumbnails.setThumbnailsEnabled(true);
             else if(setThumbnail.equals("true"))
                 thumbnails.setThumbnailsEnabled(false);
-        }else //default
+        }else{ //default
             thumbnails.setThumbnailsEnabled(true);
-
-        /**
-         * non-GUI initialisation
-         **/
-
-
+        }
+*/
+        //non-GUI initialization
         String customBundle=System.getProperty("org.jpedal.bundleLocation");
-        //customBundle="org.jpedal.international.messages"; //test code
-        
-        if(customBundle!=null){
 
+        if(customBundle!=null){
+        	System.out.println("System property: org.jpedal.bundleLocation = "+customBundle);
+        	
             BufferedReader input_stream = null;
             ClassLoader loader = Messages.class.getClassLoader();
             String fileName=customBundle.replaceAll("\\.","/")+"_"+java.util.Locale.getDefault().getLanguage()+".properties";
 
-            //also tests if locale file exists and tell user if not
+            //also tests if locale file exists and tell user if it does not
             try{
-
-                input_stream =new BufferedReader(new InputStreamReader(loader.getResourceAsStream(fileName)));
-
+                input_stream =new BufferedReader(new InputStreamReader(
+                		loader.getResourceAsStream(fileName)));
                 input_stream.close();
-                
             }catch(Exception ee){
-
-                
-                java.util.Locale.setDefault(new java.util.Locale("en", "EN"));
-                currentGUI.showMessageDialog("No locale file "+fileName+" has been defined for this Locale - using English as Default"+
+            	java.util.Locale.setDefault(new java.util.Locale("en", "EN"));
+                currentGUI.showMessageDialog("No locale file "+fileName+
+                		" has been defined for this Locale - using English as Default"+
                         "\n Format is path, using '.' as break ie org.jpedal.international.messages");
-
             }
-
             ResourceBundle rb = ResourceBundle.getBundle(customBundle);
             //Messages.setBundle(ResourceBundle.getBundle(customBundle));
             init(rb);
@@ -392,108 +409,97 @@ public class PDFView {
             init(null);
 
 
-
-        /**
-         * gui setup, create gui, load properties
-         */
+        //gui setup, create gui, load properties
         currentGUI.init(scalingValues,currentCommands,currentPrinter);
-
-        //now done on first usage
-        //p.createPreferenceWindow(currentGUI);
-
         mouseHandler.setupMouse();
 
-        if(searchFrame.getStyle()==SwingSearchWindow.SEARCH_TABBED_PANE)
+        if(searchFrame.getStyle()==SwingSearchWindow.SEARCH_TABBED_PANE){
             currentGUI.searchInTab(searchFrame);
-
-        /**
-         * setup window for warning if renderer has problem
-         */
+        }
+        
+        //setup window for warning if renderer has problem
         decode_pdf.getDynamicRenderer().setMessageFrame(currentGUI.getFrame());
 
-       
-
         if(currentGUI.isSingle()){
-            TransferHandler singleViewTransferHandler = new SingleViewTransferHandler(commonValues, thumbnails, currentGUI, currentCommands);
+        	//System.out.println("is single");
+            TransferHandler singleViewTransferHandler = 
+            		new SingleViewTransferHandler(commonValues, thumbnails, currentGUI, currentCommands);
             decode_pdf.setTransferHandler(singleViewTransferHandler);
         } else {
-            TransferHandler multiViewTransferHandler = new MultiViewTransferHandler(commonValues, thumbnails, currentGUI, currentCommands);
+        	//System.out.println("is NOT single");
+            TransferHandler multiViewTransferHandler = 
+            		new MultiViewTransferHandler(commonValues, thumbnails, currentGUI, currentCommands);
             currentGUI.getMultiViewerFrames().setTransferHandler(multiViewTransferHandler);
         }
         
     }
 //-----------------------------------------------------------------------------
-  /**
-   * setup the viewer
-   */
-  protected void init(ResourceBundle bundle) {
-
-    /**
-     * load correct set of messages
-     */
-    if(bundle==null){
-
-      //load locale file
-      try{
-        Messages.setBundle(ResourceBundle.getBundle("org.jpedal.international.messages"));
-      }catch(Exception e){
-        LogWriter.writeLog("Exception "+e+" loading resource bundle.\n" +
-            "Also check you have a file in org.jpedal.international.messages to support Locale="+java.util.Locale.getDefault());
-      }
-
-    }else{
-            try{
-          Messages.setBundle(bundle);
-            }catch(Exception ee){
-                LogWriter.writeLog("Exception with bundle "+bundle);
-                ee.printStackTrace();
-            }
-        }
-    /**setup scaling values which ar displayed for user to choose*/
-    this.scalingValues= new String[]{Messages.getMessage("PdfViewerScaleWindow.text"),Messages.getMessage("PdfViewerScaleHeight.text"),
-        Messages.getMessage("PdfViewerScaleWidth.text"),
-        "25%","50%","75%","100%","125%","150%","200%","250%","500%","750%","1000%"};
-
-    /**
-     * setup display
-     */
-    if(commonValues.isContentExtractor())
-      if (SwingUtilities.isEventDispatchThread()) {
-
-          decode_pdf.setDisplayView(Display.SINGLE_PAGE, Display.DISPLAY_LEFT_ALIGNED);
-
-        } else {
-          final Runnable doPaintComponent = new Runnable() {
-
-            public void run() {
-              decode_pdf.setDisplayView(Display.SINGLE_PAGE, Display.DISPLAY_LEFT_ALIGNED);
-            }
-          };
-          SwingUtilities.invokeLater(doPaintComponent);
-        }
-    //decode_pdf.setDisplayView(Display.SINGLE_PAGE,Display.DISPLAY_LEFT_ALIGNED);
-    else
-      if (SwingUtilities.isEventDispatchThread()) {
-
-          decode_pdf.setDisplayView(Display.SINGLE_PAGE, Display.DISPLAY_CENTERED);
-
-        } else {
-          final Runnable doPaintComponent = new Runnable() {
-
-            public void run() {
-              decode_pdf.setDisplayView(Display.SINGLE_PAGE, Display.DISPLAY_CENTERED);
-            }
-          };
-          SwingUtilities.invokeLater(doPaintComponent);
-        }
-//    decode_pdf.setDisplayView(Display.SINGLE_PAGE,Display.DISPLAY_CENTERED);
-
-    //pass through GUI for use in multipages and Javascript
-    decode_pdf.addExternalHandler(currentGUI, Options.MultiPageUpdate);
-
-    //make sure widths in data CRITICAL if we want to split lines correctly!!
-    decode_pdf.init(true);
-  }
+	/**
+	* setup the viewer
+	*/
+	@SuppressWarnings("static-access")
+	protected void init(ResourceBundle bundle) {
+	
+		/**
+	     * load correct set of messages
+	     */
+	    if(bundle==null){
+	
+	    	//load locale file
+	    	try{
+	    		Messages.setBundle(ResourceBundle.getBundle("org.jpedal.international.messages"));
+	    	}catch(Exception e){
+	    		LogWriter.writeLog("Exception "+e+" loading resource bundle.\n" +
+	            "Also check you have a file in org.jpedal.international.messages to support Locale="
+	    				+java.util.Locale.getDefault());
+	    	}
+	    }else{
+	    	try{ Messages.setBundle(bundle); 
+	    	}catch(Exception ee){
+	                LogWriter.writeLog("Exception with bundle "+bundle);
+	                ee.printStackTrace();
+	        }
+	    }
+	    
+	    //setup scaling values which are displayed for user to choose
+	    this.scalingValues= new String[]{Messages.getMessage("PdfViewerScaleWindow.text"),
+	    		Messages.getMessage("PdfViewerScaleHeight.text"),
+	        Messages.getMessage("PdfViewerScaleWidth.text"),
+	        "25%","50%","75%","100%","125%","150%","200%","250%","500%","750%","1000%"};
+	
+	
+	    //setup display
+		if(commonValues.isContentExtractor()){
+			if (SwingUtilities.isEventDispatchThread()) {
+				decode_pdf.setDisplayView(Display.SINGLE_PAGE, Display.DISPLAY_LEFT_ALIGNED);
+			} else {
+				final Runnable doPaintComponent = new Runnable() {
+					public void run() {
+						decode_pdf.setDisplayView(Display.SINGLE_PAGE, Display.DISPLAY_LEFT_ALIGNED);
+					}
+				};
+				SwingUtilities.invokeLater(doPaintComponent);
+			}
+		} else {
+			if (SwingUtilities.isEventDispatchThread()) {
+				decode_pdf.setDisplayView(Display.SINGLE_PAGE, Display.DISPLAY_CENTERED);
+			} else {
+				final Runnable doPaintComponent = new Runnable() {
+					public void run() {
+						decode_pdf.setDisplayView(Display.SINGLE_PAGE, Display.DISPLAY_CENTERED);
+					}
+				};
+				SwingUtilities.invokeLater(doPaintComponent);
+			}
+			
+			//decode_pdf.setDisplayView(Display.SINGLE_PAGE,Display.DISPLAY_CENTERED);
+			//pass through GUI for use in multipages and Javascript
+			decode_pdf.addExternalHandler(currentGUI, Options.MultiPageUpdate);
+	
+			//make sure widths in data CRITICAL if we want to split lines correctly!!
+			decode_pdf.init(true);
+		}
+	}
 //-----------------------------------------------------------------------------
   /**
      * Allows external helper classes to be added to JPedal to alter default functionality.

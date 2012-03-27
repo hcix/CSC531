@@ -8,8 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import progAdmin.AdminTab;
-import progAdmin.PersonnelManager;
-import program.CurrentUser;
+import program.ResourceManager;
 import shiftCdrTab.ShiftCdrTab;
 import utilities.SwingHelper;
 import blueBookTab.BlueBookTab;
@@ -21,7 +20,7 @@ private static final long serialVersionUID = 1L;
 	JPanel sidePanel, homeTab, boloTab, rollCallTab, 
 		mapTab, shiftCdrTab, blueBookTab, schedTab, adminTab;
 //-----------------------------------------------------------------------------	
-	public MainInterfaceWindow(JFrame parent){
+	public MainInterfaceWindow(JFrame parent, ResourceManager rm){
 		super(new GridLayout(1, 1));
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
@@ -61,7 +60,7 @@ private static final long serialVersionUID = 1L;
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
 //        	if(CurrentUser.getCurrentUser().getLevel()>=
 //        		PersonnelManager.PERMIS_LEVEL_COMMAND){  	
-        	shiftCdrTab = new ShiftCdrTab(parent);
+        	shiftCdrTab = new ShiftCdrTab(rm);
 	        tabbedPane.addTab("Shift Commander", shiftCdrTab);
 	        tabbedPane.setMnemonicAt(5, KeyEvent.VK_6);
 	        

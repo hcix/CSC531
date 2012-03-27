@@ -35,7 +35,7 @@ private static final long serialVersionUID = 1L;
 		
 		try {
 			boolean em = pdfDecoder.PDFContainsEmbeddedFonts();
-			pdfDecoder.isRunningOnMac = true;
+	//		pdfDecoder.isRunningOnMac = true;
 			if(em){ System.out.println("admitting it"); }
 			
 		} catch (Exception e) {

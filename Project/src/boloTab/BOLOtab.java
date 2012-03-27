@@ -2,7 +2,6 @@ package boloTab;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -18,7 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 import net.miginfocom.swing.MigLayout;
 import utilities.DatabaseHelper;
 import utilities.SwingHelper;
@@ -31,7 +29,7 @@ private static final long serialVersionUID = 1L;
 	public BOLOtab(final JFrame parent){
 		this.setLayout(new BorderLayout());
 				
-		ArrayList<Bolo> boloList = null;
+	//	ArrayList<Bolo> boloList = null;
 		this.parent = parent;
 		
 		//Create BOLOs tabbed display area
@@ -111,7 +109,7 @@ private static final long serialVersionUID = 1L;
 		JTextField locationField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
 		
 		String[] statusStrings = { "Need to Identify", "Identified", "Arrested" };
-		JComboBox statusList = new JComboBox(statusStrings);
+		JComboBox<String> statusList = new JComboBox<String>(statusStrings);
 		statusList.setSelectedIndex(0);
 
 		searchPanel.add(caseNumLabel, "alignx left");

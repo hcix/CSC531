@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+  <recentfiles>
+    <file name="/Users/heatherciechowski/CSC531/Documents/ShiftReports/ShiftCDRSumReport03_24_2012_17_38.pdf"/>
+  </recentfiles>
+  <showfirsttimepopup value="false"/>
+  <daysLeft value=""/>
+  <showrhinomessage value="false"/>
+  <showsaveformsmessage value="true"/>
+  <showitextmessage value="false"/>
+  <showddmessage value="true"/>
+  <searchWindowType value="1"/>
+  <borderType value="1"/>
+  <useHiResPrinting value="true"/>
+  <showDownloadWindow value="true"/>
+  <DPI value="96"/>
+  <allowCursorToChange value="true"/>
+  <autoScroll value="true"/>
+  <pageMode value="1"/>
+  <displaytipsonstartup value="false"/>
+  <automaticupdate value="false"/>
+  <currentversion value="4.73b01-OS"/>
+  <showtiffmessage value="true"/>
+  <maxmultiviewers value="20"/>
+  <MenuBarMenu value="false">
+    <FileMenu value="false">
+      <OpenMenu value="true">
+        <Open value="true"/>
+        <Openurl value="true"/>
+      </OpenMenu>
+      <Save value="true"/>
+      <Resaveasforms value="true"/>
+      <Find value="true"/>
+      <Documentproperties value="true"/>
+      <Signpdf value="true"/>
+      <Print value="true"/>
+      <Recentdocuments value="true"/>
+      <Exit value="true"/>
+    </FileMenu>
+    <EditMenu value="false">
+      <Copy value="true"/>
+      <Selectall value="true"/>
+      <Deselectall value="true"/>
+      <Preferences value="true"/>
+    </EditMenu>
+    <ViewMenu value="false">
+      <GotoMenu value="true">
+        <Firstpage value="true"/>
+        <Backpage value="true"/>
+        <Forwardpage value="true"/>
+        <Lastpage value="true"/>
+        <Goto value="true"/>
+        <Previousdocument value="true"/>
+        <Nextdocument value="true"/>
+      </GotoMenu>
+      <PagelayoutMenu value="true">
+        <Single value="true"/>
+        <Continuous value="true"/>
+        <Facing value="true"/>
+        <Continuousfacing value="true"/>
+        <PageFlow value="true"/>
+      </PagelayoutMenu>
+      <separateCover value="true"/>
+      <textSelect value="true"/>
+      <panMode value="true"/>
+      <Fullscreen value="true"/>
+    </ViewMenu>
+    <WindowMenu value="false">
+      <Cascade value="true"/>
+      <Tile value="true"/>
+    </WindowMenu>
+    <ExportMenu value="false">
+      <PdfMenu value="true">
+        <Oneperpage value="true"/>
+        <Nup value="true"/>
+        <Handouts value="true"/>
+      </PdfMenu>
+      <ContentMenu value="true">
+        <Images value="true"/>
+        <Text value="true"/>
+      </ContentMenu>
+      <Bitmap value="true"/>
+    </ExportMenu>
+    <PagetoolsMenu value="false">
+      <Rotatepages value="true"/>
+      <Deletepages value="true"/>
+      <Addpage value="true"/>
+      <Addheaderfooter value="true"/>
+      <Stamptext value="true"/>
+      <Stampimage value="true"/>
+      <Crop value="true"/>
+    </PagetoolsMenu>
+    <HelpMenu value="false">
+      <Visitwebsite value="true"/>
+      <Tipoftheday value="true"/>
+      <Checkupdates value="true"/>
+      <About value="true"/>
+    </HelpMenu>
+  </MenuBarMenu>
+  <ButtonsMenu value="false">
+    <Openfilebutton value="false"/>
+    <Printbutton value="false"/>
+    <Searchbutton value="true"/>
+    <Propertiesbutton value="true"/>
+    <Aboutbutton value="true"/>
+    <Snapshotbutton value="true"/>
+    <CursorButton value="false"/>
+    <MouseModeButton value="false"/>
+  </ButtonsMenu>
+  <DisplayOptionsMenu value="true">
+    <Scalingdisplay value="true"/>
+    <Rotationdisplay value="false"/>
+    <Imageopdisplay value="true"/>
+    <Progressdisplay value="true"/>
+    <Downloadprogressdisplay value="true"/>
+  </DisplayOptionsMenu>
+  <NavigationBarMenu value="true">
+    <Memorybottom value="true"/>
+    <Firstbottom value="true"/>
+    <Back10bottom value="true"/>
+    <Backbottom value="true"/>
+    <Gotobottom value="true"/>
+    <Forwardbottom value="true"/>
+    <Forward10bottom value="true"/>
+    <Lastbottom value="true"/>
+    <Singlebottom value="true"/>
+    <Continuousbottom value="true"/>
+    <Continuousfacingbottom value="true"/>
+    <Facingbottom value="true"/>
+    <PageFlowbottom value="true"/>
+  </NavigationBarMenu>
+  <SideTabBarMenu value="true">
+    <Pagetab value="true"/>
+    <Bookmarkstab value="false"/>
+    <Layerstab value="false"/>
+    <Signaturestab value="false"/>
+  </SideTabBarMenu>
+  <ShowMenubar value="false"/>
+  <ShowButtons value="true"/>
+  <ShowDisplayoptions value="true"/>
+  <ShowNavigationbar value="true"/>
+  <ShowSidetabbar value="true"/>
+  <highlightBoxColor value="-16777216"/>
+  <highlightTextColor value="16750900"/>
+  <highlightComposite value="0.35"/>
+  <invertHighlights value="false"/>
+  <openLastDocument value="false"/>
+  <lastDocumentPage value="3"/>
+  <pageInsets value="15"/>
+  <pageFlowPages value="8"/>
+  <pageFlowExtraCache value="10"/>
+  <pageFlowReflection value="true"/>
+  <pageFlowSideSize value="0.75"/>
+  <pageFlowReflectionHeight value="0.25"/>
+  <sideTabBarCollapseLength value="30"/>
+  <consistentTabBar value="true"/>
+  <allowRightClick value="true"/>
+  <allowScrollwheelZoom value="true"/>
+  <readOnly value="true"/>
+  <enhancedViewerMode value="true"/>
+  <enhancedFacingMode value="true"/>
+  <windowTitle value=""/>
+  <confirmClose value="false"/>
+  <iconLocation value="/org/jpedal/examples/simpleviewer/res/"/>
+  <enhancedGUI value="false"/>
+  <showpageflow3dsmessage value="true"/>
+  <defaultPrinter value=""/>
+  <debugPrinter value="false"/>
+  <defaultDPI value="600"/>
+  <defaultPagesize value=""/>
+  <printerBlacklist value=""/>
+  <useHinting value="false"/>
+  <voice value="kevin16(general domain)"/>
+  <previewOnSingleScroll value="true"></previewOnSingleScroll>
+  <showMouseSelectionBox value="false"/>
+  <separateCoverOn value="true"/>
+</properties>

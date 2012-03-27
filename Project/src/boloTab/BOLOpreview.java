@@ -21,7 +21,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
 import utilities.ImageHandler;
-import utilities.PrintHelper;
 import utilities.SwingHelper;
 import utilities.pdf.PDFViewHelper;
 //-----------------------------------------------------------------------------
@@ -263,7 +262,7 @@ public class BOLOpreview extends JDialog {
 	    printButton.setToolTipText("Print this BOLO document");
 	    printButton.addActionListener(new ActionListener( ) {
 	    	public void actionPerformed(ActionEvent e) {
-	    		PrintHelper ph = new PrintHelper(dialogPanel);
+	 //   		PrintHelper ph = new PrintHelper(dialogPanel);
 	    	}
 	    });
 	    

@@ -1,7 +1,6 @@
 package shiftCdrTab;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 //-----------------------------------------------------------------------------	
 /**
@@ -40,13 +39,13 @@ public class OfficerAssignment {
 	 * Creates a new <code>OfficerAssignment</code> object
 	 */
 	OfficerAssignment(){
-		this.officer = officer;
 		patrolAssignments = new ArrayList<PatrolAssignment>();
 		buildingChecks = new ArrayList<String>();
 	}
 //-----------------------------------------------------------------------------	
 	OfficerAssignment(String officer){
 		this.officer = officer;
+		//call other OfficerAssignment constructor
 	}
 //-----------------------------------------------------------------------------	
 	/**

@@ -8,8 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -18,36 +16,38 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
+import program.ResourceManager;
 import utilities.FileHelper;
-import utilities.ImageHandler;
 import utilities.ImagePreview;
 import utilities.SwingHelper;
-import utilities.pdf.FieldAndVal;
-import utilities.pdf.PDFHelper;
-import com.itextpdf.text.pdf.AcroFields;
+import utilities.pdf.PDFView;
 
 
-public class ReportsPanel extends JPanel  implements ActionListener {
+public class ReportsPanel extends JPanel {
 private static final long serialVersionUID = 1L;
+	final ResourceManager rm;
 //-----------------------------------------------------------------------------
-		public ReportsPanel(final JFrame parent){
+		public ReportsPanel(final ResourceManager rm){
 			this.setLayout(new MigLayout("fill"));
+			this.rm = rm;
 			
-			//Create a button to create a new BOLO 
-			JButton newBOLOButton = SwingHelper.createImageButton("Create new Report", 
+			final JFrame parent = rm.getGuiParent();
+			
+			//Create a button to create a new Report 
+			JButton newButton = SwingHelper.createImageButton("Create new Report", 
 					"icons/plusSign_48.png");
-			newBOLOButton.addActionListener(new ActionListener() {
+			newButton.addActionListener(new ActionListener() {
 				//Shift CDR form dialog
-				ShiftCdrReportForm formDialog = new ShiftCdrReportForm(parent);
+				ShiftReportForm formDialog = new ShiftReportForm(rm);
 				public void actionPerformed(ActionEvent e){
 					formDialog.setVisible(true);
 				}
 			});
 
-			//Create a button to import an existing BOLO
-			JButton importBOLOButton = SwingHelper.createImageButton("Import Existing Report", 
+			//Create a button to import an existing Report
+			JButton importButton = SwingHelper.createImageButton("Import Existing Report", 
 					"icons/Import.png");
-			importBOLOButton.addActionListener(new ActionListener() {
+			importButton.addActionListener(new ActionListener() {
 				//file chooser dialog
 				public void actionPerformed(ActionEvent e){
 					//show choose photo dialog
@@ -65,15 +65,15 @@ private static final long serialVersionUID = 1L;
 						Path filePath = FileHelper.copyShiftCdrReport(file);
 						//load the report's info into the program
 						if(filePath==null){ return; }
-						ShiftCdrReportForm formDialog = 
-								new ShiftCdrReportForm(parent, filePath.toString());
+						ShiftReportForm formDialog = 
+								new ShiftReportForm(parent, filePath.toString());
 						formDialog.setVisible(true);
 					}
 					
 				}
 			});
 
-			//Create search button
+			//Create a button to search existing Reports
 			JButton searchButton = SwingHelper.createImageButton("Search Records", "icons/search.png");
 			searchButton.addActionListener(new ActionListener() {
 				//Search dialog
@@ -83,11 +83,14 @@ private static final long serialVersionUID = 1L;
 				}
 			});
 
+			//Automatically load the most recent report into the window
+			JPanel lastReport = loadInLastReport();
+			this.add(lastReport, "dock center");
 			
-	       // this.add(tabbedPane, BorderLayout.CENTER);
+			//Create and add the buttons to the bottom of the screen
 	        JPanel buttonsPanel = new JPanel();
-	        buttonsPanel.add(newBOLOButton);
-	        buttonsPanel.add(importBOLOButton);
+	        buttonsPanel.add(newButton);
+	        buttonsPanel.add(importButton);
 	        buttonsPanel.add(searchButton);
 	        this.add(buttonsPanel, "dock south");
 		}
@@ -124,14 +127,18 @@ private static final long serialVersionUID = 1L;
 		contentPane.add(searchPanel);
 		return searchDialog;
 	}
-//-----------------------------------------------------------------------------		
-	/* (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+//-----------------------------------------------------------------------------
+	/**
+	 * Load the most recent report into the PDF view
 	 */
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+	public JPanel loadInLastReport(){
+		JPanel panel = new JPanel();
 		
+		String shiftCdrForm = System.getProperty("UMPD.latestReport");
+		 	    
+		PDFView pdfv = new PDFView(shiftCdrForm, panel, rm);
+
+		return panel;
 	}
 //-----------------------------------------------------------------------------	
 	}

@@ -13,7 +13,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -31,6 +30,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import net.miginfocom.swing.MigLayout;
+import program.ResourceManager;
 import utilities.SwingHelper;
 //-----------------------------------------------------------------------------
 public class ShiftCdrTab extends JPanel implements ActionListener{
@@ -41,10 +41,9 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	DefaultTableModel tableModel;
 	final static int GAP = 10;
 //-----------------------------------------------------------------------------
-	public ShiftCdrTab(final JFrame parent) {
+	public ShiftCdrTab(ResourceManager rm) {
 		this.setLayout(new BorderLayout());
 
-		
 		JPanel sidePanel = new JPanel();
 		String label = "Items to Review";
 		JPanel scrollPanel = new JPanel();
@@ -69,7 +68,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		tabbedPane.addTab("Roll Call", rollCallTab);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 	    //Add reports tab
-		JPanel summaryReportsTab = new ReportsPanel(parent);
+		JPanel summaryReportsTab = new ReportsPanel(rm);
 		tabbedPane.addTab("Shift Commander Summary Reports", summaryReportsTab);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 		

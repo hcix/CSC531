@@ -1,13 +1,11 @@
 package shiftCdrTab;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import utilities.FileHelper;
 import utilities.pdf.PDFHelper;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.PdfStamper;
 //-----------------------------------------------------------------------------
@@ -23,7 +21,7 @@ import com.itextpdf.text.pdf.PdfStamper;
  * directory in flattened form. Thus, the reports may be viewed outside the system, 
  * but cannot be existing forms cannot edited via outside means.
  * 
- * @see ShiftCdrReportForm
+ * @see ShiftReportForm
  * @see OfficerAssignment
  * @see AttendanceRecord
  * @see PatrolActivity
@@ -104,7 +102,7 @@ public class ShiftCdrReport {
 	 * by this <code>ShiftCdrReport</code>
 	 */
 	public void setAttendanceList(ArrayList<AttendanceRecord> attendancelist) {
-		this.attendanceList = attendanceList;
+		this.attendanceList = attendancelist;
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -240,13 +238,13 @@ public class ShiftCdrReport {
 	 * Save this ShiftCdrReport's information in a pdf on the file system
 	 * 
 	 */
-	public void saveToFileSystem(){
+	public String saveToFileSystem(){
 		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getDateInstance();
 		dateFormat.applyPattern("MM_dd_yyyy_HH_mm");
 		String dateTime = dateFormat.format(timeRecieved);
 		
-		String formPathName = FileHelper.getDocumentPathName("ShiftCDRSumReport.pdf");
-		String saveAs = FileHelper.getDocumentPathName("ShiftCDRSumReport" + dateTime + ".pdf");
+		String formPathName = FileHelper.getFormTemplatePathName("ShiftCDRSumReport.pdf");
+		String saveAs = FileHelper.getReportPathName("ShiftCDRSumReport" + dateTime + ".pdf");
 		
 		PdfStamper stamper = PDFHelper.getPdfStampler(formPathName, saveAs);
 		
@@ -254,8 +252,8 @@ public class ShiftCdrReport {
 		
 		stamper.setFormFlattening(true);
 		
-		try{ stamper.close(); } 
-		catch(Exception e){ e.printStackTrace(); }
+		try{ stamper.close(); return saveAs; } 
+		catch(Exception e){ e.printStackTrace(); return null; }
 	}
 //-----------------------------------------------------------------------------
     /**

@@ -1,10 +1,8 @@
 package boloTab;
 
-import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -26,7 +24,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.miginfocom.swing.MigLayout;
@@ -413,10 +410,10 @@ public class BOLOform extends JDialog implements ChangeListener {
 	  * Places the info from the input fields into the global BOLO object.
 	  */
 	 public void loadFromExistingBOLO(){
-		 String age, race, sex, height, weight, build, eyes, hair;
+	/*	 String age, race, sex, height, weight, build, eyes, hair;
 		 String reference, caseNum, status, weapon;
 		 String preparedBy, approvedBy;
-		 String otherDescrip, narrative;
+		 String otherDescrip, narrative;*/
 		 
 		 //set the filled in fields in the global BOLO object
 		 ageField.setText(bolo.getAge());

@@ -48,7 +48,6 @@ public class PersonnelManager {
 
 	}
 //-----------------------------------------------------------------------------	 
-		@SuppressWarnings({ "unchecked", "null" })
 		public static List<Employee> getRoster(String configFile) {
 			List<Employee> roster = new ArrayList<Employee>();
 			try {

@@ -31,13 +31,17 @@ public class FileHelper {
     //Associated Program Directories
     public final static String PHOTO_DIR = "Photos";
     public final static String VIDEO_DIR = "Videos";
-    public final static String ANNOUN_SUB_DIR = "Announcements";
     public final static String DOC_DIR = "Documents";
+    public final static String FORMS_SUBDIR = "FormTemplates";
+    public final static String ANNOUN_SUB_DIR = "Announcements";
+    public final static String SFT_RPTS_SUBDIR = "ShiftReports";
+    
+    public final static String PATH_SEP = File.pathSeparator;
 //-----------------------------------------------------------------------------
   	/**
   	 * Constructor used to provide access to the various inner classes of 
   	 * <code>FileHelper</code>. Also serves to get the path of the directory
-  	 * that this program and it's asssociated files are in.
+  	 * that this program and it's associated files are in.
   	 */
   	public FileHelper() { 
   		
@@ -60,9 +64,50 @@ public class FileHelper {
 		docName = docPath.toString();
 		
 //DEBUG:	
-		System.out.println("docName = " + docName);	
+		System.out.println("getDocumentPathName = " + docName);	
 		return docName;
 		
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * 
+	 */
+	public static String getReportPathName(String reportName){
+		File progDir = new File("..");
+		Path docPath=null;
+		String docName=null;
+			
+		try{
+		docPath = Paths.get(progDir.getCanonicalPath(), DOC_DIR, SFT_RPTS_SUBDIR, reportName);
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		
+		docName = docPath.toString();
+		
+//DEBUG:	
+		System.out.println("getDocumentPathName = " + docName);	
+		return docName;
+		
+	}
+//-----------------------------------------------------------------------------
+	public static String getFormTemplatePathName(String form){
+		File progDir = new File("..");
+		Path docPath=null;
+		String docName=null;
+			
+		try{
+		docPath = Paths.get(progDir.getCanonicalPath(), DOC_DIR, FORMS_SUBDIR, form);
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		
+		docName = docPath.toString();
+		
+//DEBUG:	
+		System.out.println("getFormTemplatePathName = " + docName);
+		
+		return docName;
 	}
 //-----------------------------------------------------------------------------
   	/**
@@ -87,6 +132,21 @@ public class FileHelper {
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Gets the name of the properties file path, which is used by 
+	 * <code>ResourceManager</code> to load the program's properties.
+	 * @return the absolute path to properties file
+	 */
+	public static String getPropertiesFile(){
+		String progDir = getProgramDirPathName();
+		
+		//Specifies a system independent path
+		Path propFilePath = Paths.get(progDir, "Project", "src",
+				"program", "progProperties.xml");
+		
+		return (propFilePath.toString());
+	}
+//-----------------------------------------------------------------------------
+	/**
 	 * Copies a Shift Commander Summary Report into the UMPD Management Program's
 	 * program files. Makes a copy of the specified file and places the copy into
 	 * the program's Documents/ShiftCdrReports subdirectory.
@@ -98,27 +158,9 @@ public class FileHelper {
 		String progDir = getProgramDirPathName();
 		
 		//Specifies a system independent path
-		Path destination = Paths.get(progDir, DOC_DIR);
+		Path destination = Paths.get(progDir, DOC_DIR, SFT_RPTS_SUBDIR);
 		
-		Path orginalPath = original.toPath();
-		Path newPath = destination.resolve(orginalPath.getFileName());
-		String newFileName;
-		
-		for(int i=0; i<100; i++){
-			try {
-				destination = Files.copy(orginalPath, newPath);
-				return destination;
-			} catch (FileAlreadyExistsException e){
-				Path p = orginalPath.getFileName();
-				newFileName = p.toString() + i + "";
-				newPath = Paths.get(newFileName);
-			} catch (IOException x) {
-		                System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
-		    }
-		}
-		//100 files with this file's same name (and diff numbers after) already exist, 
-		//tell the user to pick a new name
-		return null;
+		return(copyFile(original, destination));
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -133,27 +175,6 @@ public class FileHelper {
 		Path destination = Paths.get(progDir, PHOTO_DIR);
 		
 		return (copyFile(original, destination));
-		/*
-		Path orginalPath = original.toPath();
-		Path newPath = destination.resolve(orginalPath.getFileName());
-		String newFileName;
-				//
-		for(int i=0; i<100; i++){
-			try {
-				destination = Files.copy(orginalPath, newPath);
-				return destination;
-			} catch (FileAlreadyExistsException e){
-				Path p = orginalPath.getFileName();
-				newFileName = p.toString() + i + "";
-				newPath = Paths.get(newFileName);
-			} catch (IOException x) {
-		                System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
-		    }
-		}
-		//100 files with this file's same name (and diff numbers after) already exist, 
-		//tell the user to pick a new name
-		return null;
-		*/
 		
 	}
 //-----------------------------------------------------------------------------
@@ -169,26 +190,7 @@ public class FileHelper {
 		Path destination = Paths.get(progDir, VIDEO_DIR);
 		
 		return (copyFile(original, destination));
-		/*
-		Path orginalPath = original.toPath();
-		Path newPath = destination.resolve(orginalPath.getFileName());
-		String newFileName;
-				//
-		for(int i=0; i<100; i++){
-			try {
-				destination = Files.copy(orginalPath, newPath);
-				return destination;
-			} catch (FileAlreadyExistsException e){
-				Path p = orginalPath.getFileName();
-				newFileName = p.toString() + i + "";
-				newPath = Paths.get(newFileName);
-			} catch (IOException x) {
-		                System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
-		    }
-		}
-		//100 files with this file's same name (and diff numbers after) already exist, 
-		//tell the user to pick a new name
-		return null;*/
+
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -202,25 +204,7 @@ public class FileHelper {
 		//Specifies a system independent path
 		Path destination = Paths.get(progDir, VIDEO_DIR, ANNOUN_SUB_DIR);
 		
-		Path orginalPath = original.toPath();
-		Path newPath = destination.resolve(orginalPath.getFileName());
-		String newFileName;
-				//
-		for(int i=0; i<100; i++){
-			try {
-				destination = Files.copy(orginalPath, newPath);
-				return destination;
-			} catch (FileAlreadyExistsException e){
-				Path p = orginalPath.getFileName();
-				newFileName = p.toString() + i + "";
-				newPath = Paths.get(newFileName);
-			} catch (IOException x) {
-		                System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
-		    }
-		}
-		//100 files with this file's same name (and diff numbers after) already exist, 
-		//tell the user to pick a new name
-		return null;
+		return(copyFile(original, destination));
 		
 	}
 //-----------------------------------------------------------------------------

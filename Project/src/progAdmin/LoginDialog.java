@@ -149,7 +149,7 @@ private static final long serialVersionUID = 1L;
 	 */
 	  public int authenticateUser() {
 		  String caneID = caneIdField.getText().trim();
-		  String password = passwordField.getText().trim();
+//		  String password = passwordField.getText().trim();
 		  Employee user = null;
 		  
 		  //Get the employee object that matches the given caneID

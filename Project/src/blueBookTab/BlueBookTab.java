@@ -82,7 +82,7 @@ private static final long serialVersionUID = 1L;
 		JTextField nameField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
 		
 		String[] statusStrings = { "Need to Identify", "Identified", "Arrested" };
-		JComboBox statusList = new JComboBox(statusStrings);
+		JComboBox<String> statusList = new JComboBox<String>(statusStrings);
 		statusList.setSelectedIndex(0);
 
 		searchPanel.add(caseNumLabel, "alignx left");
