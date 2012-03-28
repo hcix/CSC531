@@ -53,7 +53,9 @@ public class Core extends JFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setPreferredSize(new Dimension(1275,1000));
 		frame.setResizable(true);
-		frame.setLocationRelativeTo(null);
+		
+		//Uses platform specific method for opening frame
+		frame.setLocationByPlatform(true);
 		
 		//Add the dashboard area to the window   
 		frame.add(new DashboardPanel(), BorderLayout.PAGE_START);
