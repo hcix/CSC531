@@ -183,7 +183,7 @@ public class ResourceManager {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * DEBUGER: Print the system environment 
+	 * DEBUGGER: Print the system environment 
 	 */
 	public void printEnv(){
 		//get the syst env

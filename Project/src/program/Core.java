@@ -3,6 +3,8 @@ package program;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.Map;
+import java.util.Set;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -65,7 +67,8 @@ public class Core extends JFrame {
 		
 		//Display the window
 	    frame.pack();
-	    frame.setVisible(true);  
+	    frame.setVisible(true);
+	
 	}
 //-----------------------------------------------------------------------------	
 	/**

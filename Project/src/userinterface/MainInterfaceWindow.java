@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import progAdmin.AdminTab;
 import program.ResourceManager;
+import scheduleTab.ScheduleTab;
 import shiftCdrTab.ShiftCdrTab;
 import utilities.SwingHelper;
 import blueBookTab.BlueBookTab;
@@ -52,7 +53,7 @@ private static final long serialVersionUID = 1L;
         tabbedPane.addTab("Blue Book", blueBookTab);
         tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
         
-        schedTab = SwingHelper.makeTextPanel("Schedule");
+        schedTab = new ScheduleTab(parent);
         tabbedPane.addTab("Schedule", schedTab);
         tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
         

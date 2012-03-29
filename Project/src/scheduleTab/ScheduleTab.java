@@ -24,7 +24,7 @@ public class ScheduleTab extends JPanel implements ActionListener {
 		this.parent = parent;
 		
 	    //resize and change later
-		JButton launchButton = SwingHelper.createImageButton("Launch Scheduler", "icons/launcher.png");
+		JButton launchButton = SwingHelper.createImageButton("Launch Scheduler", "icons/launcher_small.png");
 		launchButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e){
@@ -49,7 +49,7 @@ public class ScheduleTab extends JPanel implements ActionListener {
 	private void launchScheduler() {
 		//launch schedule program
 		try {
-			Process process = Runtime.getRuntime().exec(currentDir + "/bin/UMPatrolSchedule.exe");
+			Process process = Runtime.getRuntime().exec(currentDir + "/PatrolScheduler/UMPatrolScheduler.exe");
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("Could not launch Scheduler");
