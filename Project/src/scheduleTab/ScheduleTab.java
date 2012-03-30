@@ -23,7 +23,7 @@ public class ScheduleTab extends JPanel implements ActionListener {
 		this.setLayout(new BorderLayout());
 		this.parent = parent;
 		
-	    //resize and change later
+	    //create the launch button
 		JButton launchButton = SwingHelper.createImageButton("Launch Scheduler", "icons/launcher_small.png");
 		launchButton.addActionListener(new ActionListener() {
 			

@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.BorderFactory;
@@ -37,6 +38,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	static final String ADD="add";
 	static final String DELETE="delete";
+	static final String SUBMIT="submit";
 	JTable table;
 	DefaultTableModel tableModel;
 	final static int GAP = 10;
@@ -83,8 +85,12 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		JButton deleteButton = SwingHelper.createImageButton("Remove Officer", "icons/delete_48.png");
 		deleteButton.setActionCommand(DELETE);
 		deleteButton.addActionListener(this);
+		JButton submitButton = SwingHelper.createImageButton("Submit Roll Call", "icons/save_48.png");
+		submitButton.addActionListener(this);
+		submitButton.setActionCommand(SUBMIT);
 		buttonPanel.add(addButton);
 		buttonPanel.add(deleteButton);
+		buttonPanel.add(submitButton);
 		
 		// place panes in roll call tab
 		rollCallTab.add(tablePanel, "dock north");
@@ -148,10 +154,40 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 			if(rowIndex>=0){
 				((RollCallTableModel)table.getModel()).deleteRow(rowIndex);
 			}
+		}else if (e.getActionCommand()==SUBMIT) {
+			submitRollCall();
 		}
-		
 	}
 //-----------------------------------------------------------------------------
+	public void submitRollCall() {
+        ArrayList<String> names = new ArrayList<String>();
+	    ArrayList<Boolean> present = new ArrayList<Boolean>();
+		ArrayList<String> times = new ArrayList<String>();
+		ArrayList<String> comments = new ArrayList<String>();
+		
+		int numColumns =  table.getModel().getColumnCount();
+		int numRows = table.getModel().getRowCount();
+		
+		
+		/* TODO unfinished stuff, trying to walk through table
+		 * setting appropriate values in roll call form. 
+		 * Long term: get roll call form, serialize, then 
+		 * push to db. Everything should still run right now
+		 */
+		for (int i = 0; i < numColumns; i++) {
+			for (int j = 0; j < numRows; j++) {
+				
+			}
+		}
+		
+		//set names
+		
+		
+		
+		RollCall rollCall = new RollCall(names, present, times, comments);
+		
+	}
+	//-----------------------------------------------------------------------------
 	public JSpinner createtimeSpinner(){
 		JSpinner timeSpinner;
 		
@@ -290,6 +326,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
              
 */
         }
+       
 //-----------------------------------------------------------------------------
         private void printDebugData() {
             int numRows = getRowCount();
