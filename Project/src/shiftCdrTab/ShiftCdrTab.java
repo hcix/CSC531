@@ -160,31 +160,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	}
 //-----------------------------------------------------------------------------
 	public void submitRollCall() {
-        ArrayList<String> names = new ArrayList<String>();
-	    ArrayList<Boolean> present = new ArrayList<Boolean>();
-		ArrayList<String> times = new ArrayList<String>();
-		ArrayList<String> comments = new ArrayList<String>();
 		
-		int numColumns =  table.getModel().getColumnCount();
-		int numRows = table.getModel().getRowCount();
-		
-		
-		/* TODO unfinished stuff, trying to walk through table
-		 * setting appropriate values in roll call form. 
-		 * Long term: get roll call form, serialize, then 
-		 * push to db. Everything should still run right now
-		 */
-		for (int i = 0; i < numColumns; i++) {
-			for (int j = 0; j < numRows; j++) {
-				
-			}
-		}
-		
-		//set names
-		
-		
-		
-		RollCall rollCall = new RollCall(names, present, times, comments);
 		
 	}
 	//-----------------------------------------------------------------------------

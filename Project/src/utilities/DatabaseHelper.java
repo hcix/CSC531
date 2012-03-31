@@ -169,6 +169,11 @@ public class DatabaseHelper {
 	    return boloList;
 	}
 //-----------------------------------------------------------------------------
+	public static void addRollCall() {
+		
+	
+	}
+//-----------------------------------------------------------------------------
 	/**
 	 * Converts a <code>Date</code> object into a <code>long</code> representing
 	 * the number of seconds elapsed since the epoch. 
