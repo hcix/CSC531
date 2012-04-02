@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
@@ -169,11 +170,81 @@ public class DatabaseHelper {
 	    return boloList;
 	}
 //-----------------------------------------------------------------------------
-	public static void addRollCall() {
+	public static void addPerson(String name, String present, String comment, 
+			String timeArrived, String Cnumber) throws Exception {
 		
-	
+				//Create the connection to the database
+				Class.forName("org.sqlite.JDBC");
+			    Connection conn = DriverManager.getConnection("jdbc:sqlite:umpd.db");
+			    
+			    //insert into person table
+			    PreparedStatement personStatement = conn.prepareStatement(
+			    		"INSERT into Person(Name, Present, Comment, TimeArrived, Cnumber) " +
+			    		"VALUES(?,?,?,?,?);"
+			        );
+			    personStatement.setString(1,name);
+			    personStatement.setString(2,present);
+			    personStatement.setString(3,comment);
+			    personStatement.setString(4,timeArrived);
+			    personStatement.setString(5,Cnumber);
+			    personStatement.addBatch();
+			    
+			  //Create new row in the table for the data
+			    conn.setAutoCommit(false);
+			    personStatement.executeBatch();
+			    conn.setAutoCommit(true);
+			    
+			    //Close the connection
+			    conn.close();
 	}
 //-----------------------------------------------------------------------------
+	public static void addShift(int shiftNumber, String date) throws Exception {
+		//Create the connection to the database
+		Class.forName("org.sqlite.JDBC");
+	    Connection conn = DriverManager.getConnection("jdbc:sqlite:umpd.db");
+	    
+	    //insert into shift table
+	    PreparedStatement shiftStatement = conn.prepareStatement(
+	    		"INSERT into Person(ShiftNumber, Date) " +
+	    		"VALUES(?,?);"
+	        );
+	    shiftStatement.setInt(1,shiftNumber);
+	    shiftStatement.setString(2,date);
+	    shiftStatement.addBatch();
+	    
+	  //Create new row in the table for the data
+	    conn.setAutoCommit(false);
+	    shiftStatement.executeBatch();
+	    conn.setAutoCommit(true);
+	    
+	    //Close the connection
+	    conn.close();
+	}
+//-----------------------------------------------------------------------------
+	public static void addShiftPerson(int shiftNumber, int Cnumber) throws Exception {
+		//Create the connection to the database
+		Class.forName("org.sqlite.JDBC");
+	    Connection conn = DriverManager.getConnection("jdbc:sqlite:umpd.db");
+	    
+	    //insert into shift table
+	    PreparedStatement shiftPersonStatement = conn.prepareStatement(
+	    		"INSERT into Person(ShiftNumber, Cnumber) " +
+	    		"VALUES(?,?);"
+	        );
+	    shiftPersonStatement.setInt(1,shiftNumber);
+	    shiftPersonStatement.setInt(2,Cnumber);
+	    shiftPersonStatement.addBatch();
+	    
+	  //Create new row in the table for the data
+	    conn.setAutoCommit(false);
+	    shiftPersonStatement.executeBatch();
+	    conn.setAutoCommit(true);
+	    
+	    //Close the connection
+	    conn.close();
+	}
+//-----------------------------------------------------------------------------
+
 	/**
 	 * Converts a <code>Date</code> object into a <code>long</code> representing
 	 * the number of seconds elapsed since the epoch. 

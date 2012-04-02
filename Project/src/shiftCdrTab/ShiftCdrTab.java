@@ -160,7 +160,17 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	}
 //-----------------------------------------------------------------------------
 	public void submitRollCall() {
+		int numOfRows, numOfCols, i, j;
 		
+		numOfRows = table.getModel().getRowCount();
+		numOfCols = table.getModel().getColumnCount();
+		
+		for (i = 0; i < numOfRows; i++) {
+			for (j = 0; j < numOfCols; j++) {
+				//TODO Finish implementation, sending info
+				//to the database
+			}
+		}
 		
 	}
 	//-----------------------------------------------------------------------------
@@ -197,14 +207,14 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		private String[] columnNames = {"Name",
                                         "Present",
                                         "Time Arrived",
-                                        "Comment",
+                                        "Comment"
                                         };
 		
 		//JSpinner spinner = createtimeSpinner();
 		
         private Object[][] data={
-        		{"John Doe", new Boolean(true),"12:10 pm", "excused tardy"},
-				{"Jane Roe", new Boolean(true),"11:55 am"," "},
+        		{"John Doe", new Boolean(true),"12:10 pm", "excused tardy" },
+				{"Jane Roe", new Boolean(true),"11:55 am", " "},
 				{"Ray Moe", new Boolean(false)," ","mysteriously late"}
 								};
 //-----------------------------------------------------------------------------
