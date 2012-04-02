@@ -165,8 +165,10 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	public void submitRollCall() {
 		int numOfRows, numOfCols, i, j;
 		DatabaseHelper dbHelper = new DatabaseHelper();
-		String name, present, timeArrived, comment;
-		Date shiftDate;
+		String name, present, timeArrived, comment, shiftDate;
+		Date date;
+		DateFormat format;
+		
 		
 		numOfRows = table.getModel().getRowCount();
 		numOfCols = table.getModel().getColumnCount();
@@ -181,9 +183,12 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 				present = "false";
 			timeArrived = (String)table.getModel().getValueAt(i, j++);
 			comment = (String)table.getModel().getValueAt(i, j++);
-			//get date
+			//get date TODO eventually change to use shift date
 			Calendar cal = Calendar.getInstance();
-			shiftDate = cal.getTime();
+			date = cal.getTime();
+			format = new SimpleDateFormat("ddMMMyy:kk:mm");
+			shiftDate = format.format(date);
+			
 			//push to person
 			try {
 				dbHelper.addRollCall(name, present, comment, timeArrived, shiftDate);
@@ -193,10 +198,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 				e.printStackTrace();
 			}
 		}
-		
-		//TODO push to shift
-		//TODO push to shiftPerson
-		
 	}
 	//-----------------------------------------------------------------------------
 	public JSpinner createtimeSpinner(){

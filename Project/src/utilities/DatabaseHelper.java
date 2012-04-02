@@ -173,7 +173,7 @@ public class DatabaseHelper {
 	}
 //-----------------------------------------------------------------------------
 	public static void addRollCall(String name, String present, String comment, 
-			String timeArrived, Date shiftDate) throws Exception {
+			String timeArrived, String shiftDate) throws Exception {
 		
 				//Create the connection to the database
 				Class.forName("org.sqlite.JDBC");
@@ -185,13 +185,13 @@ public class DatabaseHelper {
 			    		"VALUES(?,?,?,?,?);"
 			        );
 			    
-			    long shiftDateEpoch = convertDateToEpoch(shiftDate);
+			    //long shiftDateEpoch = convertDateToEpoch(shiftDate);
 			    
 			    personStatement.setString(1,name);
 			    personStatement.setString(2,present);
 			    personStatement.setString(3,comment);
 			    personStatement.setString(4,timeArrived);
-			    personStatement.setLong(5,shiftDateEpoch);
+			    personStatement.setString(5,shiftDate);
 			    personStatement.addBatch();
 			    
 			  //Create new row in the table for the data
