@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,6 +34,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
+import utilities.DatabaseHelper;
 import utilities.SwingHelper;
 //-----------------------------------------------------------------------------
 public class ShiftCdrTab extends JPanel implements ActionListener{
@@ -161,16 +164,38 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 //-----------------------------------------------------------------------------
 	public void submitRollCall() {
 		int numOfRows, numOfCols, i, j;
+		DatabaseHelper dbHelper = new DatabaseHelper();
+		String name, present, timeArrived, comment;
+		Date shiftDate;
 		
 		numOfRows = table.getModel().getRowCount();
 		numOfCols = table.getModel().getColumnCount();
 		
 		for (i = 0; i < numOfRows; i++) {
-			for (j = 0; j < numOfCols; j++) {
-				//TODO Finish implementation, sending info
-				//to the database
+			//fill values
+			j = 0;
+			name = (String)table.getModel().getValueAt(i, j++);
+			if ((boolean)table.getModel().getValueAt(i, j++)) 
+				present = "true";
+			else
+				present = "false";
+			timeArrived = (String)table.getModel().getValueAt(i, j++);
+			comment = (String)table.getModel().getValueAt(i, j++);
+			//get date
+			Calendar cal = Calendar.getInstance();
+			shiftDate = cal.getTime();
+			//push to person
+			try {
+				dbHelper.addRollCall(name, present, comment, timeArrived, shiftDate);
+			} catch (Exception e) {
+				//failed to push to person
+				System.out.println("Failed to push to person");
+				e.printStackTrace();
 			}
 		}
+		
+		//TODO push to shift
+		//TODO push to shiftPerson
 		
 	}
 	//-----------------------------------------------------------------------------

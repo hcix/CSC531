@@ -17,6 +17,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import boloTab.Bolo;
@@ -170,23 +172,26 @@ public class DatabaseHelper {
 	    return boloList;
 	}
 //-----------------------------------------------------------------------------
-	public static void addPerson(String name, String present, String comment, 
-			String timeArrived, String Cnumber) throws Exception {
+	public static void addRollCall(String name, String present, String comment, 
+			String timeArrived, Date shiftDate) throws Exception {
 		
 				//Create the connection to the database
 				Class.forName("org.sqlite.JDBC");
-			    Connection conn = DriverManager.getConnection("jdbc:sqlite:umpd.db");
+			    Connection conn = DriverManager.getConnection("jdbc:sqlite:Database/umpd.db");
 			    
 			    //insert into person table
 			    PreparedStatement personStatement = conn.prepareStatement(
-			    		"INSERT into Person(Name, Present, Comment, TimeArrived, Cnumber) " +
+			    		"INSERT into RollCall(Name, Present, Comment, TimeArrived, ShiftDate) " +
 			    		"VALUES(?,?,?,?,?);"
 			        );
+			    
+			    long shiftDateEpoch = convertDateToEpoch(shiftDate);
+			    
 			    personStatement.setString(1,name);
 			    personStatement.setString(2,present);
 			    personStatement.setString(3,comment);
 			    personStatement.setString(4,timeArrived);
-			    personStatement.setString(5,Cnumber);
+			    personStatement.setLong(5,shiftDateEpoch);
 			    personStatement.addBatch();
 			    
 			  //Create new row in the table for the data
@@ -198,6 +203,13 @@ public class DatabaseHelper {
 			    conn.close();
 	}
 //-----------------------------------------------------------------------------
+	/*
+	 * Wrote this code when thinking I needed a many to many relational database
+	 * probably unnecessary now, keeping it just in case
+	 * -BL
+	 */
+	
+	/*
 	public static void addShift(int shiftNumber, String date) throws Exception {
 		//Create the connection to the database
 		Class.forName("org.sqlite.JDBC");
@@ -243,6 +255,7 @@ public class DatabaseHelper {
 	    //Close the connection
 	    conn.close();
 	}
+	*/
 //-----------------------------------------------------------------------------
 
 	/**
