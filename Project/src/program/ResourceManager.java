@@ -219,25 +219,29 @@ public class ResourceManager {
 		else if (currentHour == 6) {
 			if (currentMin <= 30)
 				shiftTime = 6;
+			else
+				shiftTime = 10;
 		}
 		else if (currentHour < 10)
 			shiftTime = 10;
 		else if (currentHour == 10) {
 			if (currentMin <= 30)
 				shiftTime = 10;
+			else 
+				shiftTime = 18;
 		}
 		else if (currentHour < 18)
 			shiftTime = 18;
 		else if (currentHour == 18) {
 			if (currentMin <= 30)
 				shiftTime = 18;
+			else 
+				shiftTime = 22;
 		}
 		else if (currentHour < 22)
 			shiftTime = 22;
-		else if (currentHour == 22) {
-			if (currentMin < 30)
+		else if (currentHour == 22) 
 				shiftTime = 22;
-		}
 		else 
 			shiftTime = 22;
 		return shiftTime;

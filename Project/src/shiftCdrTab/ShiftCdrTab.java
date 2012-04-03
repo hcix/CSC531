@@ -78,10 +78,10 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 		
 		//Create roll call table passing in the list of names
-		JPanel tablePanel = makeTablePanel(null); //currently null because debugging
+		//JPanel tablePanel = makeTablePanel(null); //currently null because debugging
 		// *******************************************
 	    //this will be the final one used, currently debugging
-		//JPanel tablePanel = makeTablePanel(rm.getRollCall());
+		JPanel tablePanel = makeTablePanel(rm.getRollCall());
 		// *******************************************	
 		
 		
@@ -128,11 +128,11 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	    tablePanel.add(tableScrollPane,BorderLayout.CENTER);
 	    
 	    //Set the table model to be the one custom created for this table
-	    table.setModel(new RollCallTableModel());
+	    //table.setModel(new RollCallTableModel());
 	    
 	    // *******************************************
 	    //this will be the final one used, currently debugging
-	    //table.setModel(new RollCallTableModel(names));
+	    table.setModel(new RollCallTableModel(names));
 	    // *******************************************
 	    
 		TableColumn commentColumn = table.getColumnModel().getColumn(3);

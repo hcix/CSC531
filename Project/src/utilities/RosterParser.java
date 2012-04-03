@@ -3,6 +3,7 @@ package utilities;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -16,7 +17,7 @@ public class RosterParser {
 	 * This class will be used to read through the .lst file for each employee,
 	 * in order to determine what shifts they work.
 	 */
-//-----------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------
 
 	public ArrayList<String> getEmployeesOnShift(int shiftTime) {
 		ArrayList<String> Employees = new ArrayList<String>();
@@ -37,7 +38,7 @@ public class RosterParser {
 		 * the shift and adding it to the array list.
 		 */
 		for (File file : files) {
-			// check if employee is on the shift 
+			// check if employee is on the shift
 			if (isOnShift(file, shiftTime, day)) {
 				// check if employee is on the employee list
 				name = getNameFromCNumber(file.getName());
@@ -48,21 +49,22 @@ public class RosterParser {
 		}
 		return Employees;
 	}
-//-----------------------------------------------------------------------------
+
+	// -----------------------------------------------------------------------------
 	public boolean isOnShift(File file, int shiftTime, String day) {
-		String filename, shiftTimeAsString;
+		String filePath, shiftTimeAsString;
 		// check that file is a directory
 		if (!file.isDirectory())
 			return false;
 
-		filename = file.getName() + "/regularschedule.lst";
+		filePath = file.getAbsolutePath() + "\\" + "regularschedule.lst";
 		shiftTimeAsString = ((Integer) shiftTime).toString();
 
 		/*
-		 * open the reader, read each line and check if the time and 
-		 * day match, if so return true, else return false
+		 * open the reader, read each line and check if the time and day match,
+		 * if so return true, else return false
 		 */
-		try (BufferedReader reader = getReader(filename)) {
+		try (BufferedReader reader = getReader(filePath)) {
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				if (line.startsWith(shiftTimeAsString) && line.contains(day)) {
@@ -70,49 +72,51 @@ public class RosterParser {
 				}
 			}
 		} catch (IOException e) {
-			System.out.println("Failed opening the regularschedule file");
-			e.printStackTrace();
+			System.out.println("Employee file " + file.getName()
+					+ " has no regular shifts");
+			// e.printStackTrace();
 		}
 		return false;
 	}
 
-//-----------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------
 
-	public String getNameFromCNumber(String fileName) {
-		//here filename is really the cnumber
-		
+	public String getNameFromCNumber(String Cnumber) {
+		// here filename is really the cnumber
+
 		String employeeFileName, name;
 		String[] splitName;
-		employeeFileName = fileName + "employees.lst";
+		employeeFileName = System.getProperty("user.dir")
+				+ "\\PatrolScheduler\\employee\\employees.lst";
 
 		/*
-		 * Open the employee list file, check for a match
-		 * with the cnumber, and if one occurs, return the
-		 * name
+		 * Open the employee list file, check for a match with the cnumber, and
+		 * if one occurs, return the name
 		 */
 		try (BufferedReader reader = getReader(employeeFileName)) {
 			String line = null;
 			while ((line = reader.readLine()) != null) {
-				if (line.contains(fileName)) {
-					splitName = line.split(" ", 3);
-					name = splitName[0].concat(splitName[1]);
+				if (line.contains(Cnumber)) {
+					splitName = line.split("\t", 3);
+					name = splitName[0].concat(" ");
+					name = name.concat(splitName[1]);
 					return name;
 				}
 			}
 		} catch (IOException e) {
-			System.out.println("failed to open employeeListFile");
-			e.printStackTrace();
+			System.out.println("Employee list does not exist");
+			// e.printStackTrace();
 		}
 		return null;
 	}
 
-//-----------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------
 
 	private BufferedReader getReader(String filename) throws IOException {
 		return newBufferedReader(get(filename), defaultCharset());
 	}
 
-//-----------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------
 
 	private String getDayAsString(int dayAsInt) {
 		String day;
