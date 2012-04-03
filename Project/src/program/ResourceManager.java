@@ -6,12 +6,15 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import utilities.EmailHandler;
 import utilities.FileHelper;
 import utilities.PdfHandler;
+import utilities.RosterParser;
 import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
 /**
@@ -180,6 +183,64 @@ public class ResourceManager {
 	public static void setLatestReportName(String reportFileName){
 		XmlParser.setSystemProperty("UMPD.latestReport", reportFileName);
 		System.setProperty("UMPD.latestReport", "reportFileName");
+	}
+	
+//-----------------------------------------------------------------------------	
+	public static ArrayList<String> getRollCall() {
+		int shiftTime;
+		ArrayList<String> Employees = new ArrayList();
+			
+		shiftTime = getShiftTime();
+		if (shiftTime == -1) {
+			System.out.println("Couldn't get shift time");
+			System.exit(0);
+		}
+			
+		RosterParser parser = new RosterParser();
+		Employees = parser.getEmployeesOnShift(shiftTime);
+		return Employees;
+	}
+//-----------------------------------------------------------------------------	
+	private static int getShiftTime() {
+		int currentHour, currentMin, shiftTime;
+		Calendar cal;
+		
+		/*
+		 * determine the time of the nearest shift, if greater than 
+		 * half an hour past a shift, go to the next one
+		 */
+		shiftTime = -1;
+		cal = Calendar.getInstance();
+		currentHour = cal.get(Calendar.HOUR);
+		currentMin = cal.get(Calendar.MINUTE);
+			
+		if (currentHour < 6) 
+			shiftTime = 6;
+		else if (currentHour == 6) {
+			if (currentMin <= 30)
+				shiftTime = 6;
+		}
+		else if (currentHour < 10)
+			shiftTime = 10;
+		else if (currentHour == 10) {
+			if (currentMin <= 30)
+				shiftTime = 10;
+		}
+		else if (currentHour < 18)
+			shiftTime = 18;
+		else if (currentHour == 18) {
+			if (currentMin <= 30)
+				shiftTime = 18;
+		}
+		else if (currentHour < 22)
+			shiftTime = 22;
+		else if (currentHour == 22) {
+			if (currentMin < 30)
+				shiftTime = 22;
+		}
+		else 
+			shiftTime = 22;
+		return shiftTime;
 	}
 //-----------------------------------------------------------------------------
 	/**

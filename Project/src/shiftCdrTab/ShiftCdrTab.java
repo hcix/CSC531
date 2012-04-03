@@ -77,9 +77,14 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		tabbedPane.addTab("Shift Commander Summary Reports", summaryReportsTab);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 		
-		//Create roll call table
-		JPanel tablePanel = makeTablePanel();
-			  
+		//Create roll call table passing in the list of names
+		JPanel tablePanel = makeTablePanel(null); //currently null because debugging
+		// *******************************************
+	    //this will be the final one used, currently debugging
+		//JPanel tablePanel = makeTablePanel(rm.getRollCall());
+		// *******************************************	
+		
+		
 		//Create button panel
 		JPanel buttonPanel = new JPanel(new FlowLayout());
 		JButton addButton = SwingHelper.createImageButton("Add Officer", "icons/plusSign_48.png");
@@ -105,7 +110,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		//this.add(tabbedPane, "grow, push");
 	}
 //-----------------------------------------------------------------------------
-	JPanel makeTablePanel(){
+	JPanel makeTablePanel(ArrayList<String> names){
 		JPanel tablePanel = new JPanel();
 				
 		//Create initially empty table
@@ -124,6 +129,11 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	    
 	    //Set the table model to be the one custom created for this table
 	    table.setModel(new RollCallTableModel());
+	    
+	    // *******************************************
+	    //this will be the final one used, currently debugging
+	    //table.setModel(new RollCallTableModel(names));
+	    // *******************************************
 	    
 		TableColumn commentColumn = table.getColumnModel().getColumn(3);
 		JTextField commentText = new JTextField();
@@ -230,6 +240,8 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		private static final long serialVersionUID = 1L;
 		private boolean DEBUG = true;
 		
+		private static final int NUM_COLS = 4;
+		private static final int DEFAULT_ROW_NUM = 3;
 		private String[] columnNames = {"Name",
                                         "Present",
                                         "Time Arrived",
@@ -238,11 +250,32 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		
 		//JSpinner spinner = createtimeSpinner();
 		
-        private Object[][] data={
-        		{"John Doe", new Boolean(true),"12:10 pm", "excused tardy" },
-				{"Jane Roe", new Boolean(true),"11:55 am", " "},
-				{"Ray Moe", new Boolean(false)," ","mysteriously late"}
-								};
+        private Object[][] data = {
+		{"John Doe", new Boolean(true),"12:10 pm", "excused tardy" },
+		{"Jane Roe", new Boolean(true),"11:55 am", " "},
+		{"Ray Moe", new Boolean(false)," ","mysteriously late"}
+						};
+//-----------------------------------------------------------------------------
+        public RollCallTableModel() {
+        	
+        	/*data = new Object[DEFAULT_ROW_NUM][NUM_COLS];
+        	
+        	addRowWithName("John Doe");
+        	addRowWithName("Jane Roe");
+        	addRowWithName("Ray Moe");
+        	*/
+        }
+//-----------------------------------------------------------------------------
+        public RollCallTableModel(ArrayList<String> names) {
+        	
+        	/*
+        	 * run through each name, setting the value of the name
+        	 * and all others blank, incrementing as appropriate
+        	 */
+        	for (String name : names) {
+        		addRowWithName(name);
+        	}
+        }
 //-----------------------------------------------------------------------------
         public int getColumnCount() {
         	return columnNames.length;
@@ -315,7 +348,16 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
             data=newData;
             data[curLength]=newRow;
             this.fireTableDataChanged();  
-
+            }  
+      //-----------------------------------------------------------------------------  
+        public void addRowWithName(String name) {  
+            Object[] newRow = {name, new Boolean(false), "", ""};
+            int curLength = this.getRowCount();
+            Object[][] newData = new Object[curLength+1][];
+            System.arraycopy(data, 0, newData, 0, curLength);
+            data=newData;
+            data[curLength]=newRow;
+            this.fireTableDataChanged();  
             }  
 //-----------------------------------------------------------------------------  
         public void deleteRow(int row) {  

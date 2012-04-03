@@ -2,14 +2,17 @@ package program;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
 import userinterface.DashboardPanel;
 import userinterface.MainInterfaceWindow;
+import utilities.RosterParser;
 
 
 public class Core extends JFrame {
@@ -32,12 +35,16 @@ public class Core extends JFrame {
 	        		e.printStackTrace();
 	        	}
 	        	
+	        	//populate rollcall (should be done before or after gui?)
+	        	//populateRollCall();
+	        	
 	        	//Set up and show the login GUI
 	        	//COMMENT NEXT LINE OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
 	        	//MUST ALSO COMMENT OUT 6 LINES IN MAININTERFACEWINDOW AS INDICATED THERE
 	        	//createAndShowLoginGUI();
 	        
 	        	rm = new ResourceManager(frame);
+	        	
 	        	//Set up the UI
 	        	createAndShowMainGUI();
 
@@ -71,6 +78,7 @@ public class Core extends JFrame {
 	
 	}
 //-----------------------------------------------------------------------------	
+
 	/**
 	 * Create the GUI and show it.  For thread safety, this method should be
 	 * invoked from the event dispatch thread.
