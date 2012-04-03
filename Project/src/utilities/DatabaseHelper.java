@@ -155,16 +155,25 @@ public class DatabaseHelper {
 			if(photoPath!=null){ 
 				Path pp = Paths.get(photoPath);
 				bolo.setPhotoFilePath(pp);
+//DEBUG---------------------------------------------------------
+			} else { 
+				System.out.printf("\n photo path is null\n");
 			}
+//---------------------------------------------------------DEBUG				
 			videoPath=allBOLOs.getString("videoPath");
 			if(videoPath!=null){ 
 				Path vp = Paths.get(videoPath);
 				bolo.setVideoFilePath(vp);
+//DEBUG---------------------------------------------------------			
+			} else { 
+
+				System.out.printf("\n photo path is null\n");
 			}
 
 			boloList.add(bolo);
 	    }
-	    
+//---------------------------------------------------------DEBUG	    
+	    	
 	    //Close the connections
 	    allBOLOs.close();
 	    conn.close();

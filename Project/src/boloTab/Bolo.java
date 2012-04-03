@@ -399,7 +399,7 @@ public class Bolo {
 	    prep.setLong(16, prepDate);
 	    prep.setString(17, this.otherDescrip);
 	    prep.setString(18, this.narrative);
-	    
+	    if(this.boloID!=0){ prep.setInt(21, this.boloID); }
 	
 	    if(photoFilePath!=null){
 		    Path absPhotoFilePath = photoFilePath.toAbsolutePath();
@@ -414,7 +414,7 @@ public class Bolo {
 	    } 
 	    prep.setString(20, videoPathName);
 	    
-	    prep.setInt(21, this.boloID);
+
 	    
 	    prep.addBatch();
 	    

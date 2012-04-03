@@ -2,6 +2,8 @@ package blueBookTab;
 
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
@@ -20,6 +22,9 @@ import utilities.SwingHelper;
 //-----------------------------------------------------------------------------
 public class BlueBookForm extends JDialog {
 private static final long serialVersionUID = 1L;
+	BlueBookEntry bbEntry;
+	JTextField caseNumField, nameField, affiliField, addressField, ifYesField;
+	JTextArea locationField, descriptionField, reasonField;
 //-----------------------------------------------------------------------------
 	public BlueBookForm(JFrame parent) {
 		super(parent, "New Blue Book Entry", true);
@@ -27,12 +32,16 @@ private static final long serialVersionUID = 1L;
 		this.setPreferredSize(new Dimension(800,900));
 		this.setSize(new Dimension(800,900));
 		
+		//Create the BlueBookEntry object to add info to
+		bbEntry = new BlueBookEntry();
+		
 		//Create the form
 		JPanel inputPanel = createInputPanel();
 		
 		//Make the form scrollable
 		JScrollPane inputScrollPane = new JScrollPane(inputPanel);
-		inputScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		inputScrollPane.setVerticalScrollBarPolicy(
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		
 		//Change to use parent's dimensions
 		inputScrollPane.setPreferredSize(new Dimension(600, 600)); 
@@ -43,7 +52,7 @@ private static final long serialVersionUID = 1L;
 		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
 		this.addWindowListener(new WindowAdapter( ) {
 			public void windowClosing(WindowEvent e) {
-				closeAndCancel( );
+				closeAndCancel();
 			}
 		});
 		
@@ -75,10 +84,10 @@ private static final long serialVersionUID = 1L;
 		JLabel Reason = new JLabel("Narrative/Reason: ");
 		
 		// create fields
-		JTextField caseNumField = new JTextField(20);
-		JTextField nameField = new JTextField(20);
-		JTextField affiliField = new JTextField(20);
-		JTextField addressField = new JTextField(20);
+		caseNumField = new JTextField(20);
+		nameField = new JTextField(20);
+		affiliField = new JTextField(20);
+		addressField = new JTextField(20);
 
 		/*
 		 * create text areas, embed them in a scroll
@@ -86,22 +95,22 @@ private static final long serialVersionUID = 1L;
 		 * properties
 		 */
 		
-		JTextArea locationField = new JTextArea(5, 20);
+		locationField = new JTextArea(5, 20);
 		locationField.setLineWrap(true);
 		JScrollPane locationScrollPane = new JScrollPane(locationField);
 		locationScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		
-		JTextArea descriptionField = new JTextArea(10, 20);
+		descriptionField = new JTextArea(10, 20);
 		descriptionField.setLineWrap(true);
 		JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
 		locationScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		
-		JTextArea reasonField = new JTextArea(10, 20);
+		reasonField = new JTextArea(10, 20);
 		reasonField.setLineWrap(true);
 		JScrollPane reasonScrollPane = new JScrollPane(reasonField);
 		descriptionScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		
-		JTextField ifYesField = new JTextField(20);
+		ifYesField = new JTextField(20);
 
 		//Create and add photo panel
 		JPanel photoPanel = createPhotoPanel();
@@ -138,15 +147,26 @@ private static final long serialVersionUID = 1L;
 		//Add cancel button
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
-
-	    // Add save button
+		cancelButton.addActionListener(new ActionListener( ) {
+	    	public void actionPerformed(ActionEvent e) {
+	    		closeAndCancel();
+	    	}
+	    });
+		
+	 // Add save button
 	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
-	    saveButton.setToolTipText("Save BOLO");
-
+	    saveButton.setToolTipText("Save bbEntry");
+	    saveButton.addActionListener(new ActionListener( ) {
+	    	public void actionPerformed(ActionEvent e) {
+	    		saveAndClose();
+	    	}
+	    });
+	    
 	    // Add preview button
 	    JButton previewButton = new JButton("<html>Preview<br>  Entry</html>");
 	    previewButton.setToolTipText("Preview and print final Blue Book entry");
-	    	    
+//TODO: Implement Preview button functionality	    	    
+	    
 	    JPanel saveAndCancelButtonsPanel = new JPanel();
 	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
 	    saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
@@ -167,26 +187,160 @@ private static final long serialVersionUID = 1L;
 		photoPanel.add(noPhotoLabel, "span, wrap");
 		
 		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", "icons/camera.png");
-		addPhotoButton.setToolTipText("Attach a photo to this BOLO");
+		addPhotoButton.setToolTipText("Attach a photo to this bbEntry");
 		photoPanel.add(addPhotoButton);
 		
 		return photoPanel;
 	}
 //-----------------------------------------------------------------------------
-	 public void closeAndSave( ) {
-	    // Save font and color information.
-	    //newFont = previewLabel.getFont( );
-	   // newColor = previewLabel.getForeground( );
-
-	    // Close the window.
-	    setVisible(false);
-	  }
+	/**
+	* Save the information input into this form and close the dialog.
+	*/
+	 public void saveAndClose( ) {
+		//place the info from the fields into a bbEntry object
+		 putInfoIntoBlueBookEntry();
+		 
+		 //add the bbEntry object's info to the database
+		 try {
+			bbEntry.addToDB();
+		 } catch (Exception e) {
+			System.out.println("error: unable to add bbEntry to DB");
+			e.printStackTrace();
+		 }
+	
+//TODO: Create a pdf from the input data
+		 
+		 //reset the form
+		 eraseForm();
+		 
+		 //close the window
+		 this.dispose();	
+	}		
 //-----------------------------------------------------------------------------
-	  public void closeAndCancel( ) {
-	    //TODO:Erase any info in the form
-		  
-		  //close the window
-		  setVisible(false);
-	  }
+	 /**
+	  * Places the info from the input fields into the global BlueBook object.
+	  */
+	 public void putInfoIntoBlueBookEntry(){
+		 String caseNumText, nameText, affiliText, addressText, weapon;
+		 String locationText, descritionText, reasonText;
+		 String preparedBy;
+		 
+		 //get the filled in fields in the global bbEntry object
+		 caseNumText = caseNumField.getText();
+		 if(!caseNumText.isEmpty()){ bbEntry.setCaseNum(caseNumText); }
+		 nameText = nameField.getText();
+		 if(!nameText.isEmpty()){ bbEntry.setName(nameText); }
+		 affiliText = affiliField.getText();
+		 if(!affiliText.isEmpty()){ bbEntry.setAffili(affiliText); }
+		 addressText = addressField.getText();
+		 if(!addressText.isEmpty()){ bbEntry.setAddress(addressText); }
+		 weapon=ifYesField.getText();
+		 if(!weapon.isEmpty()){ bbEntry.setWeapon(weapon); }
+		 locationText=locationField.getText();
+		 if(!locationText.isEmpty()){ bbEntry.setLocation(locationText); }
+		 descritionText=descriptionField.getText();
+		 if(!descritionText.isEmpty()){ bbEntry.setCrimeDescrip(descritionText); }
+		 reasonText=reasonField.getText();
+		 if(!reasonText.isEmpty()){ bbEntry.setNarrative(reasonText); }
+		 
+	}
+//-----------------------------------------------------------------------------
+	 /**
+	  * Places the info from the input fields into the global bbEntry object.
+	  */
+	 public void loadFromExistingbbEntry(){
+
+		 //set the form fields to contain info from the bbEntry
+		 caseNumField.setText(bbEntry.getCaseNum());
+		 nameField.setText(bbEntry.getName());
+		 affiliField.setText(bbEntry.getAffili());
+		 addressField.setText(bbEntry.getAddress());
+		 ifYesField.setText(bbEntry.getWeapon());
+		 locationField.setText(bbEntry.getLocation());
+		 descriptionField.setText(bbEntry.getCrimeDescrip());
+		 reasonField.setText(bbEntry.getNarrative());
+
+		 //set picture
+		 ImageIcon photo = 
+				 ImageHandler.getResizableImageIcon(bbEntry.getPhotoFilePath(), 200, 299);
+
+//TODO: place the photo into the form
+		 
+	}
+//-----------------------------------------------------------------------------
+	/* public void chooseAndAddPhoto(JPanel photoPanel){
+		//show choose photo dialog
+		final JFileChooser fc = new JFileChooser();
+		fc.addChoosableFileFilter(FileHelper.getImageFilter());
+		fc.setAcceptAllFileFilterUsed(false);
+		fc.setAccessory(new ImagePreview(fc));
+		int returnVal = fc.showOpenDialog(parent);
+			
+		//if a photo was selected, add it to bbEntry and load into photo area
+		if(returnVal==JFileChooser.APPROVE_OPTION){
+			//copy the chosen photo into the program's 'Photos' directory
+			File file = fc.getSelectedFile();
+			System.out.printf("filepath = %s\n", file.getName(), file.getPath());
+			Path photoPath = FileHelper.copyPhoto(file);
+			//load the image into photo area
+			if(photoPath==null){
+				//report that an error occurred in coping and retrieving the img file
+				return;
+			} else {
+			ImageIcon chosenPhoto = ImageHandler.getResizableImageIcon(photoPath, 200, 299);
+				ResizablePhoto chosenImg = new ResizablePhoto(chosenPhoto);
+				bbEntry.setPhotoFilePath(photoPath);
+	
+				JDialog resizerDialog = new JDialog(this, "Resize Photo", 
+						Dialog.ModalityType.DOCUMENT_MODAL);
+				//resizerDialog.setLocationRelativeTo(null);
+				resizerDialog.setPreferredSize(new Dimension(700, 700));
+				resizerDialog.setSize(new Dimension(700, 700));
+				JPanel p = new JPanel();
+				p.setPreferredSize(new Dimension(700, 700));
+				p.setSize(new Dimension(700, 700));
+				resizerDialog.setLocationRelativeTo(null);
+				p.add(chosenImg.getPhotoFrame());
+							
+				Container cp = resizerDialog.getContentPane();
+				cp.add(p);
+				resizerDialog.setVisible(true);
+				
+
+			}
+		}
+		
+	 }*/
+//-----------------------------------------------------------------------------
+	/**
+	 * Erase any fields in the form that have been filled in and close the
+	 * dialog.
+	 */
+	 public void closeAndCancel( ) {
+		//reset the form
+		eraseForm();
+		
+		//close the dialog
+		this.dispose();	
+	 }
+//-----------------------------------------------------------------------------
+	 public void eraseForm(){
+		//set the text of all the form's fields to null
+		caseNumField.setText(null);
+		nameField.setText(null);
+		affiliField.setText(null);
+		addressField.setText(null);
+		ifYesField.setText(null);
+		locationField.setText(null);
+		descriptionField.setText(null);
+		reasonField.setText(null);
+		
+		/*recreate the photo/video section
+		photoArea.removeAll();
+		ImageIcon noPhotoImage = ImageHandler.createImageIcon("images/unknownPerson.jpeg");
+		JLabel noPhotoLabel = new JLabel(noPhotoImage);
+		photoArea.add(noPhotoLabel);
+		(photoArea.getParent()).validate();*/
+	 }
 //-----------------------------------------------------------------------------
 }

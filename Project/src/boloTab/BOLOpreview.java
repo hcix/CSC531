@@ -214,9 +214,10 @@ public class BOLOpreview extends JDialog {
 		photoVideoPanel.setBackground(Color.WHITE);
 		
 		Path photoPath = bolo.getPhotoFilePath();
-		ImageIcon photo = ImageHandler.getResizableImageIcon(photoPath, 200, 299);
-		
-		photoVideoPanel.add(new JLabel(photo));
+		if(photoPath!=null){
+			ImageIcon photo = ImageHandler.getResizableImageIcon(photoPath, 200, 299);
+			photoVideoPanel.add(new JLabel(photo));
+		}
 		
 		return photoVideoPanel;
 	}
