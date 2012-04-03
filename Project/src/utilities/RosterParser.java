@@ -59,6 +59,10 @@ public class RosterParser {
 
 		filePath = file.getAbsolutePath() + "\\" + "regularschedule.lst";
 		shiftTimeAsString = ((Integer) shiftTime).toString();
+		//append leading 0 if necessary
+		if (shiftTime == 6)
+			shiftTimeAsString = "0".concat(shiftTimeAsString);
+		
 
 		/*
 		 * open the reader, read each line and check if the time and day match,

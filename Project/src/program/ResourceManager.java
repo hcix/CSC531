@@ -211,7 +211,7 @@ public class ResourceManager {
 		 */
 		shiftTime = -1;
 		cal = Calendar.getInstance();
-		currentHour = cal.get(Calendar.HOUR);
+		currentHour = cal.get(Calendar.HOUR_OF_DAY);
 		currentMin = cal.get(Calendar.MINUTE);
 			
 		if (currentHour < 6) 
