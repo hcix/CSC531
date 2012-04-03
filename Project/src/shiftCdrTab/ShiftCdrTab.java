@@ -78,12 +78,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 		
 		//Create roll call table passing in the list of names
-		//JPanel tablePanel = makeTablePanel(null); //currently null because debugging
-		// *******************************************
-	    //this will be the final one used, currently debugging
 		JPanel tablePanel = makeTablePanel(rm.getRollCall());
-		// *******************************************	
-		
 		
 		//Create button panel
 		JPanel buttonPanel = new JPanel(new FlowLayout());
@@ -127,13 +122,11 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	    tablePanel.setLayout(new BorderLayout());
 	    tablePanel.add(tableScrollPane,BorderLayout.CENTER);
 	    
-	    //Set the table model to be the one custom created for this table
-	    //table.setModel(new RollCallTableModel());
-	    
-	    // *******************************************
-	    //this will be the final one used, currently debugging
+	    /*
+	     * Set the table model to be the one custom created for this table
+	     * and passing in the list of names for the shift
+	     */
 	    table.setModel(new RollCallTableModel(names));
-	    // *******************************************
 	    
 		TableColumn commentColumn = table.getColumnModel().getColumn(3);
 		JTextField commentText = new JTextField();
@@ -239,9 +232,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	private class RollCallTableModel extends AbstractTableModel implements TableModelListener {
 		private static final long serialVersionUID = 1L;
 		private boolean DEBUG = true;
-		
-		private static final int NUM_COLS = 4;
-		private static final int DEFAULT_ROW_NUM = 3;
 		private String[] columnNames = {"Name",
                                         "Present",
                                         "Time Arrived",
@@ -250,20 +240,23 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		
 		//JSpinner spinner = createtimeSpinner();
 		
-        private Object[][] data = {
+        private Object[][] data = new Object[0][0];
+        	/*{
 		{"John Doe", new Boolean(true),"12:10 pm", "excused tardy" },
 		{"Jane Roe", new Boolean(true),"11:55 am", " "},
 		{"Ray Moe", new Boolean(false)," ","mysteriously late"}
-						};
+						};*/
 //-----------------------------------------------------------------------------
         public RollCallTableModel() {
         	
-        	/*data = new Object[DEFAULT_ROW_NUM][NUM_COLS];
+        	// initialize the data object
+        	data = new Object[0][0];
         	
+        	// add some default values
         	addRowWithName("John Doe");
         	addRowWithName("Jane Roe");
         	addRowWithName("Ray Moe");
-        	*/
+        	
         }
 //-----------------------------------------------------------------------------
         public RollCallTableModel(ArrayList<String> names) {
