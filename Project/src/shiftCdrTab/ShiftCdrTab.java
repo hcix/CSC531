@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	static final String ADD="add";
 	static final String DELETE="delete";
 	static final String SUBMIT="submit";
+	static final String LAUNCH="launch";
 	JTable table;
 	DefaultTableModel tableModel;
 	final static int GAP = 10;
@@ -91,9 +93,13 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		JButton submitButton = SwingHelper.createImageButton("Submit Roll Call", "icons/save_48.png");
 		submitButton.addActionListener(this);
 		submitButton.setActionCommand(SUBMIT);
+		JButton launchButton = SwingHelper.createImageButton("Launch Scheduler", "icons/launcher_small.png");
+		launchButton.addActionListener(this);
+		launchButton.setActionCommand(LAUNCH);
 		buttonPanel.add(addButton);
 		buttonPanel.add(deleteButton);
 		buttonPanel.add(submitButton);
+		buttonPanel.add(launchButton);
 		
 		// place panes in roll call tab
 		rollCallTab.add(tablePanel, "dock north");
@@ -163,6 +169,9 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		}else if (e.getActionCommand()==SUBMIT) {
 			submitRollCall();
 		}
+		else if (e.getActionCommand()==LAUNCH) {
+			launchScheduler();
+		}
 	}
 //-----------------------------------------------------------------------------
 	public void submitRollCall() {
@@ -202,7 +211,19 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 			}
 		}
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------	
+	private void launchScheduler() {
+		//launch schedule program
+		try {
+			Runtime.getRuntime().exec(System.getProperty("user.dir")
+					+ "/PatrolScheduler/UMPatrolScheduler.exe");
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("Could not launch Scheduler");
+			System.out.println("Attempted to launch in directory currentDir/bin");
+		}
+	}
+//-----------------------------------------------------------------------------
 	public JSpinner createtimeSpinner(){
 		JSpinner timeSpinner;
 		

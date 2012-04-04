@@ -53,9 +53,9 @@ private static final long serialVersionUID = 1L;
         tabbedPane.addTab("Blue Book", blueBookTab);
         tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
         
-        schedTab = new ScheduleTab(parent);
-        tabbedPane.addTab("Schedule", schedTab);
-        tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
+        //schedTab = new ScheduleTab(parent);
+        //tabbedPane.addTab("Schedule", schedTab);
+        //tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
         
       //if user is at least a shift cdr, set up shift cdr tab
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
@@ -63,7 +63,7 @@ private static final long serialVersionUID = 1L;
 //        		PersonnelManager.PERMIS_LEVEL_COMMAND){  	
         	shiftCdrTab = new ShiftCdrTab(rm);
 	        tabbedPane.addTab("Shift Commander", shiftCdrTab);
-	        tabbedPane.setMnemonicAt(5, KeyEvent.VK_6);
+	        tabbedPane.setMnemonicAt(4, KeyEvent.VK_6); //change to 4 from 5?
 	        
 	      //if user is at a supervisor, set up supervisor tab
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
@@ -71,7 +71,7 @@ private static final long serialVersionUID = 1L;
 //	        		PersonnelManager.PERMIS_LEVEL_SUPERVISR){
 		        adminTab = new AdminTab();
 		        tabbedPane.addTab("Administration", adminTab);
-		        tabbedPane.setMnemonicAt(6, KeyEvent.VK_7);
+		        tabbedPane.setMnemonicAt(5, KeyEvent.VK_7); // change from 6 to 5?
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
 //	        }
 //        }

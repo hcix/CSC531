@@ -49,7 +49,7 @@ public class ScheduleTab extends JPanel implements ActionListener {
 	private void launchScheduler() {
 		//launch schedule program
 		try {
-			Process process = Runtime.getRuntime().exec(currentDir + "/PatrolScheduler/UMPatrolScheduler.exe");
+			Runtime.getRuntime().exec(currentDir + "/PatrolScheduler/UMPatrolScheduler.exe");
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("Could not launch Scheduler");
