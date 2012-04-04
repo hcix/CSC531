@@ -44,12 +44,14 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	static final String DELETE="delete";
 	static final String SUBMIT="submit";
 	static final String LAUNCH="launch";
+	int shiftTime;
 	JTable table;
 	DefaultTableModel tableModel;
 	final static int GAP = 10;
 //-----------------------------------------------------------------------------
 	public ShiftCdrTab(ResourceManager rm) {
 		this.setLayout(new BorderLayout());
+		getShiftTime(rm);
 
 		JPanel sidePanel = new JPanel();
 		String label = "Items to Review";
@@ -198,7 +200,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 			//get date TODO eventually change to use shift date
 			Calendar cal = Calendar.getInstance();
 			date = cal.getTime();
-			format = new SimpleDateFormat("ddMMMyy:kk:mm");
+			format = new SimpleDateFormat("ddMMMyyyy:" + shiftTime + ":00");
 			shiftDate = format.format(date);
 			
 			//push to person
@@ -249,6 +251,10 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		
 		return border;
 	}
+//-----------------------------------------------------------------------------
+   public void getShiftTime(ResourceManager rm) {
+	   shiftTime = rm.getShiftTime(); 
+   }
 //=============================================================================
 	private class RollCallTableModel extends AbstractTableModel implements TableModelListener {
 		private static final long serialVersionUID = 1L;
