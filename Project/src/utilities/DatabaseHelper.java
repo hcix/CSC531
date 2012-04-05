@@ -34,7 +34,7 @@ public class DatabaseHelper {
 	 * @param remarks - remarks associated with the crime
 	 * @param status - the crime's status
 	 * @throws Exception
-	 */
+	 *///
 	public void addBOLO(String age,String race,String sex,String height,String weight,String build,
 			String eyes,String hair,Date incidentDate,String reference,String caseNum,String status,
 			String weapon,String preparedBy,String approvedBy,Date prepDate, String otherDescrip,
@@ -188,7 +188,9 @@ public class DatabaseHelper {
 		
 				//Create the connection to the database
 				Class.forName("org.sqlite.JDBC");
-			    Connection conn = DriverManager.getConnection("jdbc:sqlite:Database/umpd.db");
+				Path dbFilePath = Paths.get("Database", "umpd.db");
+				String dbFileName = dbFilePath.toString();
+			    Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
 			    
 			    //insert into person table
 			    PreparedStatement personStatement = conn.prepareStatement(
