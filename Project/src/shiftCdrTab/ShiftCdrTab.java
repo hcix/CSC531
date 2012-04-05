@@ -17,7 +17,9 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -46,12 +48,14 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	static final String LAUNCH="launch";
 	int shiftTime;
 	JTable table;
+	JFrame parent;
 	DefaultTableModel tableModel;
 	final static int GAP = 10;
 //-----------------------------------------------------------------------------
 	public ShiftCdrTab(ResourceManager rm) {
 		this.setLayout(new BorderLayout());
 		getShiftTime(rm);
+		parent = rm.getParent();
 
 		JPanel sidePanel = new JPanel();
 		String label = "Items to Review";
@@ -170,6 +174,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 			}
 		}else if (e.getActionCommand()==SUBMIT) {
 			submitRollCall();
+			JOptionPane.showMessageDialog(parent, "Roll call Sumbitted!");
 		}
 		else if (e.getActionCommand()==LAUNCH) {
 			launchScheduler();

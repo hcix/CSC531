@@ -220,7 +220,8 @@ public class ResourceManager {
 			if (currentMin <= 30)
 				shiftTime = 6;
 			else
-				shiftTime = 10;
+				shiftTime
+				= 10;
 		}
 		else if (currentHour < 10)
 			shiftTime = 10;
@@ -245,6 +246,11 @@ public class ResourceManager {
 		else 
 			shiftTime = 22;
 		return shiftTime;
+	}
+//-----------------------------------------------------------------------------
+
+    public JFrame getParent() {
+		return parent;
 	}
 //-----------------------------------------------------------------------------
 	/**
