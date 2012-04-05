@@ -119,7 +119,12 @@ public class BOLOpreview extends JDialog {
 	  //  pdfv.setColumnHeaderView(buttonsPanel);
 	    contentPane.add(pdfv, "align center");
 	}
-//-----------------------------------------------------------------------------	
+//-----------------------------------------------------------------------------
+	/**
+	 * Creates JPanel for inputing the physical description of a BOLO
+	 * 
+	 * @return JPanel in which a physical description can be entered
+	 */
 	public JPanel createPhysicalDescriptionPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout());
 		infoPanel.setBackground(Color.WHITE);
@@ -148,6 +153,12 @@ public class BOLOpreview extends JDialog {
 		return infoPanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Creates JPanel for inputing the desciption of a BOLOs corresponding
+	 * incident
+	 * 
+	 * @return JPanel in which a incident description can be entered
+	 */
 	public JPanel createIncidentInfoPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout());
 		infoPanel.setBackground(Color.WHITE);
@@ -174,6 +185,12 @@ public class BOLOpreview extends JDialog {
 		return infoPanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Creates JPanel for inputing the desciption of a BOLOs corresponding
+	 * incident
+	 * 
+	 * @return JPanel in which a incident description can be entered
+	 */
 	public JPanel createNarrativePanel(){
 		JPanel narrativePanel = new JPanel(new MigLayout());
 		narrativePanel.setBackground(Color.WHITE);
@@ -185,6 +202,13 @@ public class BOLOpreview extends JDialog {
 		return narrativePanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Creates JPanel pertaining to the administrative details of a BOLO
+	 * <p>
+	 * administrative details include who prepared it and who approved it
+	 * 
+	 * @return JPanel of administrative data
+	 */
 	public JPanel createAdministrativePanel(){
 		JPanel adminPanel = new JPanel(new MigLayout());
 		adminPanel.setBackground(Color.WHITE);
@@ -209,6 +233,12 @@ public class BOLOpreview extends JDialog {
 		return adminPanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Creates JPanel for inputing the desciption of a BOLOs corresponding
+	 * incident
+	 * 
+	 * @return JPanel in which a incident description can be entered
+	 */
 	public JPanel createPhotoVideoPanel(){
 		JPanel photoVideoPanel = new JPanel(new MigLayout());
 		photoVideoPanel.setBackground(Color.WHITE);
@@ -222,6 +252,11 @@ public class BOLOpreview extends JDialog {
 		return photoVideoPanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Creates JPanel for the buttons
+	 * 
+	 * @return
+	 */
 	public JPanel createButtonsPanel(){
 	
 		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
@@ -291,6 +326,9 @@ public class BOLOpreview extends JDialog {
 	    return buttonsPanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Cancels the creation of a BOLO by closing the form and not saving
+	 */
 	  public void closeAndCancel( ) {
 		  setVisible(false);
 	  }

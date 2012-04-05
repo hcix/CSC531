@@ -21,9 +21,10 @@ import net.miginfocom.swing.MigLayout;
 import utilities.DatabaseHelper;
 import utilities.SwingHelper;
 
+/**
+ * Creates BOLO tab
+ */
 public class BOLOtab extends JPanel  implements ActionListener {
-	
-	//TODO Java Docs
 	
 private static final long serialVersionUID = 1L;
 	ArrayList<Bolo> boloList;
@@ -32,7 +33,7 @@ private static final long serialVersionUID = 1L;
 	public BOLOtab(final JFrame parent){
 		this.setLayout(new BorderLayout());
 				
-	//	ArrayList<Bolo> boloList = null;
+	    //ArrayList<Bolo> boloList = null;
 		this.parent = parent;
 		
 		//Create BOLOs tabbed display area
@@ -81,6 +82,7 @@ private static final long serialVersionUID = 1L;
 			}
 		});
 
+		//Add buttons to button panel
         this.add(tabbedPane, BorderLayout.CENTER);
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.add(newBOLOButton);
@@ -90,6 +92,12 @@ private static final long serialVersionUID = 1L;
 		
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Creates a JFrame within which the user can search for a particular BOLO
+	 *  
+	 * @param parent - JFrame parent from which the search dialog is created 
+	 * @return searchDialog 
+	 */
 	JDialog createSearchDialog(JFrame parent){
 		//Create the dialog and set the size
 		JDialog searchDialog = new JDialog(parent, "Search BOLO Database", true);
@@ -131,6 +139,10 @@ private static final long serialVersionUID = 1L;
 		return searchDialog;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Creates a tab containing all recent BOLOS
+	 * @return the JPanel containing the recent BOLOS
+	 */
 	public JPanel createRecentBOLOsTab(){
 		JPanel recentBOLOsPanel = new JPanel(new MigLayout("gapx 30"));
 		JButton boloPanel;

@@ -19,6 +19,9 @@ import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
 import utilities.ImageHandler;
 import utilities.SwingHelper;
+/**
+ * Creates UI for BlueBook input form.
+ */
 //-----------------------------------------------------------------------------
 public class BlueBookForm extends JDialog {
 private static final long serialVersionUID = 1L;
@@ -26,6 +29,7 @@ private static final long serialVersionUID = 1L;
 	JTextField caseNumField, nameField, affiliField, addressField, ifYesField;
 	JTextArea locationField, descriptionField, reasonField;
 //-----------------------------------------------------------------------------
+
 	public BlueBookForm(JFrame parent) {
 		super(parent, "New Blue Book Entry", true);
 		//Set the size of the form

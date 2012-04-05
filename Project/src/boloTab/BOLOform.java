@@ -1,3 +1,6 @@
+/**
+ *  UI for gathering information of a BOLO
+ */
 package boloTab;
 
 import java.awt.Container;

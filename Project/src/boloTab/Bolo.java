@@ -1,5 +1,5 @@
 /**
- * Class representing a BOLO.
+ * Class containing data of a BOLO
  */
 package boloTab;
 

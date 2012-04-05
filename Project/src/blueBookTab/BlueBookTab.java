@@ -15,7 +15,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import utilities.SwingHelper;
-
+/**
+ * Configures UI for the Blue Book Tab
+ */
 //-----------------------------------------------------------------------------	
 public class BlueBookTab extends JPanel implements ActionListener {
 private static final long serialVersionUID = 1L;

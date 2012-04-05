@@ -10,7 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import utilities.SwingHelper;
-
+/**
+ * Generates UI for the schedule tab
+ */
 public class ScheduleTab extends JPanel implements ActionListener {
 
 	static final int BUTTON_PANEL_WIDTH = 200;
@@ -19,6 +21,11 @@ public class ScheduleTab extends JPanel implements ActionListener {
 	JFrame parent;
 	String currentDir = System.getProperty("user.dir");
 	
+	/**
+	 * Creates JFram for the ScheduleTab
+	 * 
+	 * @param parent
+	 */
 	public ScheduleTab(JFrame parent) {
 		this.setLayout(new BorderLayout());
 		this.parent = parent;
@@ -46,6 +53,9 @@ public class ScheduleTab extends JPanel implements ActionListener {
 		
 	}
 
+	/**
+	 * Launches scheduler program
+	 */
 	private void launchScheduler() {
 		//launch schedule program
 		try {

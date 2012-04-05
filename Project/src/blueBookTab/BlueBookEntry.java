@@ -12,12 +12,43 @@ import utilities.ImageHandler;
  * Class representing a BOLO.
  */
 public class BlueBookEntry {
-	private String name, dob, affili, address, crimeDescrip, narrative;
-	private String date, time, location, caseNum, status, weapon;
+	/** Name of individual associated with a BOLO */
+	private String name;
+	/** Date of birth of individual associated with a BOLO*/
+	private String dob;
+	/** Affiliation of individual associated with a BOLO */
+	private String affili;
+	/** Address of a reported BOLO */
+	private String address;
+	/** Description of crime associated with a BOLO */
+	private String crimeDescrip;
+	/** Narrative of individual reporting a BOLO */
+	private String narrative;
+	/** Date BOLO was reported */
+	private String date;
+	/** Time BOLO was reported */
+	private String time;
+	/** Location BOLO was reported at*/
+	private String location;
+	/** BOLO's case number */
+	private String caseNum;
+	/** Status of BOLO */
+	private String status;
+	/** Weapon carried by an individual associated with the BOLO */
+	private String weapon;
+	/** Indicates if associated individual is armed with a weapon */
 	private boolean isArmed=false;
+	/** Officer that prepared the BOLO */
 	private String preparedBy;
-	private Path photoFilePath = null, videoFilePath = null;
-	private String photoFileName = null, videoFileName = null;	
+	/** Path in file system leading to photo pertaining to the BOLO*/
+	private Path photoFilePath = null;
+	/** Path in file system leading to a video pertaining to the BOLO*/
+	private Path videoFilePath = null;
+	/** Name of BOLO's photo */
+	private String photoFileName = null;
+	/** Name of BOLO's video */
+	private String videoFileName = null;
+	/** ID of BOLO in the Blue book*/
 	private int bluebkID=0;
 //-----------------------------------------------------------------------------
 		/**
@@ -28,13 +59,15 @@ public class BlueBookEntry {
 		}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return name - 
+	 * Returns the name on file for the BOLO
+	 * @return name of individual affiliated with this particular BOLO
 	 */
 	public String getName() {
 		return name;
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Sets the name of a BOLO individual
 	 * @param name - the name value to set
 	 */
 	public void setName(String name) {
@@ -42,6 +75,7 @@ public class BlueBookEntry {
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Sets the date of birth for a BOLO individual
 	 * @return dob - 
 	 */
 	public String getDob() {
@@ -49,13 +83,14 @@ public class BlueBookEntry {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param dob - the dob value to set
+	 * @param dob - the date of birth value to set
 	 */
 	public void setDob(String dob) {
 		this.dob = dob;
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Returns affiliation of a BOLO individual
 	 * @return affili - 
 	 */
 	public String getAffili() {
@@ -63,6 +98,7 @@ public class BlueBookEntry {
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Sets affiliation of a BOLO individual
 	 * @param affili - the affili value to set
 	 */
 	public void setAffili(String affili) {
@@ -84,6 +120,7 @@ public class BlueBookEntry {
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Returns description of the crime
 	 * @return crimeDescrip - 
 	 */
 	public String getCrimeDescrip() {
@@ -91,6 +128,7 @@ public class BlueBookEntry {
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Sets description of the crime
 	 * @param crimeDescrip - the crimeDescrip value to set
 	 */
 	public void setCrimeDescrip(String crimeDescrip) {
