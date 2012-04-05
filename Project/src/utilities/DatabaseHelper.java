@@ -15,10 +15,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import boloTab.Bolo;
@@ -104,7 +101,8 @@ public class DatabaseHelper {
 		 
 		//Create the connection to the database
 		Class.forName("org.sqlite.JDBC");
-	    Connection conn = DriverManager.getConnection("jdbc:sqlite:Database/umpd.db");
+		// test change from forward slash to backward slash
+	    Connection conn = DriverManager.getConnection("jdbc:sqlite:Database\\umpd.db");
 	    Statement stat = conn.createStatement();
 	    ResultSet allBOLOs = stat.executeQuery("SELECT * FROM bolo;");
 
@@ -181,7 +179,7 @@ public class DatabaseHelper {
 	    return boloList;
 	}
 //-----------------------------------------------------------------------------
-	public static void addRollCall(String name, String present, String comment, 
+	public void addRollCall(String name, String present, String comment, 
 			String timeArrived, String shiftDate) throws Exception {
 		
 				//Create the connection to the database

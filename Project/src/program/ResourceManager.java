@@ -180,15 +180,15 @@ public class ResourceManager {
 		
 	}
 //-----------------------------------------------------------------------------
-	public static void setLatestReportName(String reportFileName){
+	public void setLatestReportName(String reportFileName){
 		XmlParser.setSystemProperty("UMPD.latestReport", reportFileName);
 		System.setProperty("UMPD.latestReport", "reportFileName");
 	}
 	
 //-----------------------------------------------------------------------------	
-	public static ArrayList<String> getRollCall() {
+	public ArrayList<String> getRollCall() {
 		int shiftTime;
-		ArrayList<String> Employees = new ArrayList();
+		ArrayList<String> Employees = new ArrayList<String>();
 			
 		shiftTime = getShiftTime();
 		if (shiftTime == -1) {
@@ -201,7 +201,7 @@ public class ResourceManager {
 		return Employees;
 	}
 //-----------------------------------------------------------------------------	
-	public static int getShiftTime() {
+	public int getShiftTime() {
 		int currentHour, currentMin, shiftTime;
 		Calendar cal;
 		

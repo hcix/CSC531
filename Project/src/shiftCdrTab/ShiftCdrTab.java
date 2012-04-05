@@ -182,7 +182,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	}
 //-----------------------------------------------------------------------------
 	public void submitRollCall() {
-		int numOfRows, numOfCols, i, j;
+		int numOfRows, i, j;
 		DatabaseHelper dbHelper = new DatabaseHelper();
 		String name, present, timeArrived, comment, shiftDate;
 		Date date;
@@ -190,7 +190,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		
 		
 		numOfRows = table.getModel().getRowCount();
-		numOfCols = table.getModel().getColumnCount();
 		
 		for (i = 0; i < numOfRows; i++) {
 			//fill values
@@ -202,7 +201,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 				present = "false";
 			timeArrived = (String)table.getModel().getValueAt(i, j++);
 			comment = (String)table.getModel().getValueAt(i, j++);
-			//get date TODO eventually change to use shift date
 			Calendar cal = Calendar.getInstance();
 			date = cal.getTime();
 			format = new SimpleDateFormat("ddMMMyyyy:" + shiftTime + ":00");
@@ -279,7 +277,8 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		{"Ray Moe", new Boolean(false)," ","mysteriously late"}
 						};*/
 //-----------------------------------------------------------------------------
-        public RollCallTableModel() {
+        // unneeded I believe 
+        /*public RollCallTableModel() {
         	
         	// initialize the data object
         	data = new Object[0][0];
@@ -289,7 +288,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
         	addRowWithName("Jane Roe");
         	addRowWithName("Ray Moe");
         	
-        }
+        }*/
 //-----------------------------------------------------------------------------
         public RollCallTableModel(ArrayList<String> names) {
         	

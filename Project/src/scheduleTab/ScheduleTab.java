@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 import utilities.SwingHelper;
 
+@SuppressWarnings("serial")
 public class ScheduleTab extends JPanel implements ActionListener {
 
 	static final int BUTTON_PANEL_WIDTH = 200;

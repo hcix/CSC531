@@ -17,7 +17,7 @@ public class BlueBookEntry {
 	private boolean isArmed=false;
 	private String preparedBy;
 	private Path photoFilePath = null, videoFilePath = null;
-	private String photoFileName = null, videoFileName = null;	
+	//private String photoFileName = null, videoFileName = null;	
 	private int bluebkID=0;
 //-----------------------------------------------------------------------------
 		/**

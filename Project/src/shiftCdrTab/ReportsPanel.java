@@ -136,8 +136,9 @@ private static final long serialVersionUID = 1L;
 		
 		String shiftCdrForm = System.getProperty("UMPD.latestReport");
 		 	    
+		@SuppressWarnings("unused")
 		PDFView pdfv = new PDFView(shiftCdrForm, panel, rm);
-
+		//new PDFView(shiftCdrForm, panel, rm);
 		return panel;
 	}
 //-----------------------------------------------------------------------------	

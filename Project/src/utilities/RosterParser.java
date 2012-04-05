@@ -3,9 +3,7 @@ package utilities;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import static java.nio.charset.Charset.defaultCharset;
@@ -123,7 +121,6 @@ public class RosterParser {
 	// -----------------------------------------------------------------------------
 
 	private String getDayAsString(int dayAsInt) {
-		String day;
 
 		switch (dayAsInt) {
 		case 1:
