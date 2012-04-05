@@ -34,7 +34,7 @@ public class DatabaseHelper {
 	 * @param remarks - remarks associated with the crime
 	 * @param status - the crime's status
 	 * @throws Exception
-	 *///
+	 */
 	public void addBOLO(String age,String race,String sex,String height,String weight,String build,
 			String eyes,String hair,Date incidentDate,String reference,String caseNum,String status,
 			String weapon,String preparedBy,String approvedBy,Date prepDate, String otherDescrip,
