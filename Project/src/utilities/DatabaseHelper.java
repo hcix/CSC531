@@ -101,8 +101,12 @@ public class DatabaseHelper {
 		 
 		//Create the connection to the database
 		Class.forName("org.sqlite.JDBC");
-		// test change from forward slash to backward slash
-	    Connection conn = DriverManager.getConnection("jdbc:sqlite:Database\\umpd.db");
+		
+		//test to make database file access syst indep
+		Path dbFilePath = Paths.get("Database", "umpd.db");
+		String dbFileName = dbFilePath.toString();
+	    Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
+	    
 	    Statement stat = conn.createStatement();
 	    ResultSet allBOLOs = stat.executeQuery("SELECT * FROM bolo;");
 

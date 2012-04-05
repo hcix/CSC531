@@ -4,6 +4,7 @@
 package boloTab;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -371,8 +372,12 @@ public class Bolo {
 		String photoPathName = null, videoPathName = null;
 		//Create the connection to the database
 		Class.forName("org.sqlite.JDBC");
-	    Connection conn = DriverManager.getConnection("jdbc:sqlite:Database/umpd.db");
-	
+		//String dbFile = FileHelper.getDatabaseFile();
+		Path dbFilePath = Paths.get("Database", "umpd.db");
+		String dbFileName = dbFilePath.toString();
+	    //Connection conn = DriverManager.getConnection("jdbc:sqlite:Database/umpd.db");
+		Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
+		
 	    //Create a prepared statement to add the crime data
 	    PreparedStatement prep = conn.prepareStatement(
 	      "REPLACE into bolo(age, race, sex, height, weight, build, eyes, hair," +
