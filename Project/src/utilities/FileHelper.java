@@ -147,6 +147,20 @@ public class FileHelper {
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Gets the name of the properties file path, which is used by 
+	 * <code>ResourceManager</code> to load the program's properties.
+	 * @return the absolute path to properties file
+	 */
+	public static String getDatabaseFile(){
+		String progDir = getProgramDirPathName();
+		
+		//Specifies a system independent path
+		Path propFilePath = Paths.get(progDir, "Project", "Database", "umpd.db" );
+		
+		return (propFilePath.toString());
+	}
+//-----------------------------------------------------------------------------
+	/**
 	 * Copies a Shift Commander Summary Report into the UMPD Management Program's
 	 * program files. Makes a copy of the specified file and places the copy into
 	 * the program's Documents/ShiftCdrReports subdirectory.

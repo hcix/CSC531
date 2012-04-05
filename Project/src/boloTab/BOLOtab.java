@@ -32,7 +32,7 @@ private static final long serialVersionUID = 1L;
 	public BOLOtab(final JFrame parent){
 		this.setLayout(new BorderLayout());
 				
-	//	ArrayList<Bolo> boloList = null;
+		//ArrayList<Bolo> boloList = null;
 		this.parent = parent;
 		
 		//Create BOLOs tabbed display area
@@ -47,7 +47,8 @@ private static final long serialVersionUID = 1L;
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_3);
         
 		//Create a button to create a new BOLO 
-		JButton newBOLOButton = SwingHelper.createImageButton("Create BOLO", "icons/plusSign_48.png");
+		JButton newBOLOButton = SwingHelper.createImageButton("Create BOLO", 
+				"icons/plusSign_48.png");
 		newBOLOButton.addActionListener(new ActionListener() {
 			//BOLO form dialog
 			BOLOform formDialog = new BOLOform(parent);
@@ -57,7 +58,8 @@ private static final long serialVersionUID = 1L;
 		});
 
 		//Create a button to import an existing BOLO
-		JButton importBOLOButton = SwingHelper.createImageButton("Import Existing BOLO", "icons/Import.png");
+		JButton importBOLOButton = SwingHelper.createImageButton("Import Existing BOLO", 
+				"icons/Import.png");
 		importBOLOButton.addActionListener(new ActionListener() {
 			//file chooser dialog
 			public void actionPerformed(ActionEvent e){
@@ -72,7 +74,8 @@ private static final long serialVersionUID = 1L;
 		});
 
 		//Create search button
-		JButton searchButton = SwingHelper.createImageButton("Search Records", "icons/search.png");
+		JButton searchButton = SwingHelper.createImageButton("Search Records", 
+				"icons/search.png");
 		searchButton.addActionListener(new ActionListener() {
 			//Search dialog
 			JDialog searchDialog = createSearchDialog(parent);

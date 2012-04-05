@@ -74,7 +74,8 @@ private static final long serialVersionUID = 1L;
 			});
 
 			//Create a button to search existing Reports
-			JButton searchButton = SwingHelper.createImageButton("Search Records", "icons/search.png");
+			JButton searchButton = SwingHelper.createImageButton("Search Records", 
+					"icons/search.png");
 			searchButton.addActionListener(new ActionListener() {
 				//Search dialog
 				JDialog searchDialog = createSearchDialog(parent);
@@ -138,7 +139,7 @@ private static final long serialVersionUID = 1L;
 		 	    
 		@SuppressWarnings("unused")
 		PDFView pdfv = new PDFView(shiftCdrForm, panel, rm);
-		//new PDFView(shiftCdrForm, panel, rm);
+
 		return panel;
 	}
 //-----------------------------------------------------------------------------	
