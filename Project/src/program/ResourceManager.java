@@ -248,7 +248,6 @@ public class ResourceManager {
 		return shiftTime;
 	}
 //-----------------------------------------------------------------------------
-
     public JFrame getParent() {
 		return parent;
 	}
