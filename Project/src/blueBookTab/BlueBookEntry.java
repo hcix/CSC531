@@ -9,7 +9,7 @@ import utilities.ImageHandler;
 
 //-----------------------------------------------------------------------------
 /**
- * Class representing a BOLO.
+ *Class representing a BOLO.
  */
 public class BlueBookEntry {
 	private String name, dob, affili, address, crimeDescrip, narrative;
