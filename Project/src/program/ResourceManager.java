@@ -6,8 +6,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -266,6 +270,38 @@ public class ResourceManager {
 	                          env.get(envName));
 	    }
 	
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Given an epoch time, getTimeStringFromEpoch() returns the time of day
+	 * associated with that epoch time in String format. The date of the epoch
+	 * is irrelevant to this method, thus two epoch values corresponding to, 
+	 * say 3:00pm on completely separate days would generate the same return
+	 * from this method.
+	 * @param epoch - the epoch time which to return the time of day of
+	 */
+	public String getTimeStringFromEpoch(long epoch){
+		Date date = new Date(epoch);
+		
+		return (DateFormat.getTimeInstance(DateFormat.SHORT).format(date));
+
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Given an epoch time, getTimeStringFromEpoch() returns the date
+	 * associated with that epoch time in String format. The time of the epoch
+	 * is irrelevant to this method, thus two epoch values corresponding to the
+	 * same day, but different times, will generate the same return from this 
+	 * method. The string returned is of the format MM/dd/yy.
+	 * @param epoch - the epoch time which to return the date of
+	 */
+	public String getDateStringFromEpoch(long epoch){
+		Format formatter;
+		Date date = new Date(epoch);
+		
+		formatter = new SimpleDateFormat("MM/dd/yy");
+		
+		return(formatter.format(date));
 	}
 //-----------------------------------------------------------------------------
 }

@@ -35,7 +35,7 @@ private static final long serialVersionUID = 1L;
 			
 			//Create a button to create a new Report 
 			JButton newButton = SwingHelper.createImageButton("Create new Report", 
-					"icons/plusSign_48.png");
+					"icons/plusSign_48.png"); 
 			newButton.addActionListener(new ActionListener() {
 				//Shift CDR form dialog
 				ShiftReportForm formDialog = new ShiftReportForm(rm);

@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
+import userinterface.ItemsViewerPanel;
 import utilities.DatabaseHelper;
 import utilities.SwingHelper;
 
@@ -43,7 +44,7 @@ private static final long serialVersionUID = 1L;
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
 	    //Add archived BOLOs tab 
 		JPanel archievedBolosTab = new JPanel();
-		tabbedPane.addTab("Archieved", archievedBolosTab);
+		tabbedPane.addTab("Archived", archievedBolosTab);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_3);
         
 		//Create a button to create a new BOLO 
@@ -139,6 +140,9 @@ private static final long serialVersionUID = 1L;
 		JButton boloPanel;
 		Date prepDate;
 		
+		//
+		ItemsViewerPanel entriesPanel = new ItemsViewerPanel();
+		
 		try {
 			boloList = DatabaseHelper.getBOLOsFromDB();
 		} catch (Exception e) {
@@ -155,11 +159,13 @@ private static final long serialVersionUID = 1L;
 			boloPanel.setActionCommand(listId);
 			boloPanel.addActionListener(this);
 			
-			//TODO: add other stuff
-			
+//TODO: add other stuff
+		
+		//	entriesPanel.addItemToPanel(boloPanel);
 			recentBOLOsPanel.add(boloPanel, "width 10%, height 40%");
 		}
 		
+		recentBOLOsPanel.add(entriesPanel);
 		return recentBOLOsPanel;
 	}
 //-----------------------------------------------------------------------------		

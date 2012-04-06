@@ -35,7 +35,8 @@ import utilities.SwingHelper;
 
 public class BOLOform extends JDialog implements ChangeListener {
 	private static final long serialVersionUID = 1L;
-	JTextField ageField,raceField,sexField,heightField,weightField,buildField,eyesField,hairField;
+	JTextField ageField,raceField,sexField,heightField,weightField,buildField;
+	JTextField eyesField,hairField;
 	JTextField toiField,referenceField,caseNumField,statusField,ifYesField;
 	JTextField preparedByField,approvedByField,dateField,timeField;
 	JTextArea otherDescriptField,narrativeText; 
@@ -102,9 +103,8 @@ public class BOLOform extends JDialog implements ChangeListener {
 	    JPanel adminPanel = createAdministrativePanel();
 	    dialogPanel.add(adminPanel, "align left");
 
-		//TODO: Add standard footer
+//TODO: Add standard footer
 		
-
 
 	    /*Add buttons panel to top of scroll panel as the row header
 	     *(the buttons panel stays at the top of the screen even if the top of the form isn't
@@ -268,7 +268,8 @@ public class BOLOform extends JDialog implements ChangeListener {
 		photoPanel.add(noPhotoLabel);
 		photoVideoPanel.add(photoPanel, "spanx,grow,wrap");
 		
-		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", "icons/camera.png");
+		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", 
+				"icons/camera.png");
 		addPhotoButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae) {
 				chooseAndAddPhoto(photoPanel);
@@ -276,14 +277,14 @@ public class BOLOform extends JDialog implements ChangeListener {
 		});
 		
 		addPhotoButton.setToolTipText("Attach a photo to this BOLO");
-		JButton addVideoButton = SwingHelper.createImageButton("Add a Video", "icons/videoCamera.png");
+		JButton addVideoButton = SwingHelper.createImageButton("Add a Video", 
+				"icons/videoCamera.png");
 		addVideoButton.setToolTipText("Attach a video to this BOLO");
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(addPhotoButton);
 		buttonsPanel.add(addVideoButton);
 		
 		photoVideoPanel.add(buttonsPanel, "dock south");
-
 
 		return photoVideoPanel;
 	}
@@ -293,7 +294,8 @@ public class BOLOform extends JDialog implements ChangeListener {
 		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
 		
 		//Add cancel button
-		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
+		JButton cancelButton = SwingHelper.createImageButton("Cancel", 
+				"icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae) {
@@ -302,7 +304,8 @@ public class BOLOform extends JDialog implements ChangeListener {
 		});
 	
 	    // Add save button
-	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
+	    JButton saveButton = SwingHelper.createImageButton("Save", 
+	    		"icons/save_48.png");
 	    saveButton.setToolTipText("Save BOLO");
 	    saveButton.addActionListener(new ActionListener( ) {
 	    	public void actionPerformed(ActionEvent e) {
@@ -400,6 +403,7 @@ public class BOLOform extends JDialog implements ChangeListener {
 		 if(!otherDescrip.isEmpty()){ bolo.setOtherDescrip(otherDescrip); }
 		 narrative=narrativeText.getText();
 		 if(!narrative.isEmpty()){ bolo.setNarrative(narrative); }
+
 		 
 		 //set the times
 		 bolo.setprepDate(getPrepDateEpoch());
@@ -438,7 +442,8 @@ public class BOLOform extends JDialog implements ChangeListener {
 		 //set the times
 		 
 		 //set picture
-		 ImageIcon photo = ImageHandler.getResizableImageIcon(bolo.getPhotoFilePath(), 200, 299);
+		 ImageIcon photo = ImageHandler.getResizableImageIcon(
+				 bolo.getPhotoFilePath(), 200, 299);
 		 if(photo!=null){
 			photoArea.removeAll();
 			photoArea.add(new JLabel(photo));
@@ -466,9 +471,21 @@ public class BOLOform extends JDialog implements ChangeListener {
 				//report that an error occurred in coping and retrieving the img file
 				return;
 			} else {
-			ImageIcon chosenPhoto = ImageHandler.getResizableImageIcon(photoPath, 200, 299);
-				ResizablePhoto chosenImg = new ResizablePhoto(chosenPhoto);
+				ImageIcon chosenPhoto = ImageHandler.getResizableImageIcon(photoPath, 200, 299);
+			//	if(choosenPhoto!=null){
+					bolo.setPhotoFilePath(photoPath);
+					photoPanel.removeAll();
+
+					photoPanel.add(new JLabel(chosenPhoto));
+
+
+					(photoPanel.getParent()).validate();
+			//	}
+			
+			/*	ResizablePhoto chosenImg = new ResizablePhoto(chosenPhoto);
 				bolo.setPhotoFilePath(photoPath);
+				
+
 	
 				JDialog resizerDialog = new JDialog(this, "Resize Photo", 
 						Dialog.ModalityType.DOCUMENT_MODAL);
@@ -480,11 +497,11 @@ public class BOLOform extends JDialog implements ChangeListener {
 				p.setSize(new Dimension(700, 700));
 				resizerDialog.setLocationRelativeTo(null);
 				p.add(chosenImg.getPhotoFrame());
-							
+						
 				Container cp = resizerDialog.getContentPane();
 				cp.add(p);
 				resizerDialog.setVisible(true);
-				
+				*/	
 
 			}
 		}
@@ -552,7 +569,7 @@ public class BOLOform extends JDialog implements ChangeListener {
   public long getIncidentDateEpoch(){
 		  Date day = new Date();
 		  Date time = new Date();
-		
+		  
 		  Calendar incidentCal = Calendar.getInstance();
 		  Calendar timeCal = Calendar.getInstance();
 		
@@ -564,17 +581,17 @@ public class BOLOform extends JDialog implements ChangeListener {
 		  incidentCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
 		  incidentCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
 		  incidentCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
-			 
+		  
 		  return (incidentCal.getTimeInMillis()/1000); 
 		}
 //-----------------------------------------------------------------------------	
-/* (non-Javadoc)
- * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
- */
-@Override
-public void stateChanged(ChangeEvent arg0) {
-	// TODO Auto-generated method stub
-	
-}
+	/* (non-Javadoc)
+	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+	 */
+	@Override
+	public void stateChanged(ChangeEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 //-----------------------------------------------------------------------------	
 }
