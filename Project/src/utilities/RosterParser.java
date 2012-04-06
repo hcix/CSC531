@@ -26,8 +26,9 @@ public class RosterParser {
 		String name, day;
 		int dayAsInt;
 		// Directory path here
-		Path path = Paths.get("Project","PatrolScheduler", "employee"); // added Project
-		//String path = "PatrolScheduler/employee";
+		//Path path = Paths.get("Project","PatrolScheduler", "employee"); // added Project
+		Path path = Paths.get("PatrolScheduler", "employee"); // added Project
+
 		dayAsInt = cal.get(Calendar.DAY_OF_WEEK);
 		day = getDayAsString(dayAsInt);
 
@@ -92,9 +93,10 @@ public class RosterParser {
 		String employeeFileName, name;
 		String[] splitName;
 		// added project, stop using user.dir!
+		//employeeFileName = System.getProperty("user.dir")
+			//	+ "\\Project\\PatrolScheduler\\employee\\employees.lst";
 		employeeFileName = System.getProperty("user.dir")
-				+ "\\Project\\PatrolScheduler\\employee\\employees.lst";
-
+				+ "\\PatrolScheduler\\employee\\employees.lst";
 		/*
 		 * Open the employee list file, check for a match with the cnumber, and
 		 * if one occurs, return the name

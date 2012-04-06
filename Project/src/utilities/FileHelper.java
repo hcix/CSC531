@@ -118,8 +118,10 @@ public class FileHelper {
   	 */
 	public static String getProgramDirPathName(){
 		String programDir = null;
-		File progDir = new File("."); //changed .. to .?
-	
+		//File progDir = new File("."); //changed .. to .?
+		File progDir = new File(".."); //changed . to ..?
+
+		
 		try {
 			programDir = progDir.getCanonicalPath();
 		} catch (IOException e) {

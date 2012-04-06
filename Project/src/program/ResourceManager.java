@@ -201,6 +201,18 @@ public class ResourceManager {
 		return Employees;
 	}
 //-----------------------------------------------------------------------------	
+	public static ArrayList<String> getRollCall(int shiftTime) throws Exception {
+		ArrayList<String> Employees = new ArrayList<String>();
+				
+		if (shiftTime < 0 || shiftTime > 24 ) {
+			System.out.println("bad shift time");
+			throw new Exception();
+		}
+		RosterParser parser = new RosterParser();
+		Employees = parser.getEmployeesOnShift(shiftTime);
+		return Employees;
+	}
+//-----------------------------------------------------------------------------	
 	public int getShiftTime() {
 		int currentHour, currentMin, shiftTime;
 		Calendar cal;

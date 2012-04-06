@@ -182,11 +182,12 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	}
 //-----------------------------------------------------------------------------
 	public void submitRollCall() {
-		int numOfRows, i, j;
+		int numOfRows, i, j, nextShift;
 		DatabaseHelper dbHelper = new DatabaseHelper();
 		String name, present, timeArrived, comment, shiftDate;
 		Date date;
 		DateFormat format;
+		ArrayList<String> names;
 		
 		
 		numOfRows = table.getModel().getRowCount();
@@ -215,14 +216,32 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 				e.printStackTrace();
 			}
 		}
+		//get the next roll call
+		if (shiftTime == 6 || shiftTime == 18)
+			nextShift = shiftTime + 4;
+		else if (shiftTime == 10)
+			nextShift = 18;
+		else if (shiftTime == 22)
+			nextShift = 6;
+		else
+			System.out.println("couldn't increment shiftTime:line 226 ShiftCdrTab");
+		try {
+			//TODO figure out best functionality for going back and forth shifts
+			//names = ResourceManager.getRollCall(shiftTime);
+			//table.setModel(new RollCallTableModel(names));
+		} catch (Exception e) {
+			System.out.println("couldn't get next roll call");
+		}
 	}
 //-----------------------------------------------------------------------------	
 	private void launchScheduler() {
 		//launch schedule program
 		try {
 			//changed to add project, FIX USER DIR!!!!! TODO
+			//Runtime.getRuntime().exec(System.getProperty("user.dir")
+				//+ "/Project/PatrolScheduler/UMPatrolScheduler.exe");
 			Runtime.getRuntime().exec(System.getProperty("user.dir")
-					+ "/Project/PatrolScheduler/UMPatrolScheduler.exe");
+					+ "/PatrolScheduler/UMPatrolScheduler.exe");		
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("Could not launch Scheduler");
