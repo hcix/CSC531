@@ -315,4 +315,16 @@ public class ResourceManager {
 		return(formatter.format(date));
 	}
 //-----------------------------------------------------------------------------
+   public static String shiftTimeAsString(int shiftTime) {
+	   String time;
+	       if (shiftTime == 6)
+	    	   time = "06";
+	       else 
+	    	   time = ((Integer)shiftTime).toString();
+	   return time;
+   }	
+//-----------------------------------------------------------------------------	
 }
+
+
+

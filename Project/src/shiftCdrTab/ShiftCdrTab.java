@@ -99,7 +99,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		JButton submitButton = SwingHelper.createImageButton("Submit Roll Call", "icons/save_48.png");
 		submitButton.addActionListener(this);
 		submitButton.setActionCommand(SUBMIT);
-		JButton launchButton = SwingHelper.createImageButton("Launch Scheduler", "icons/launcher_small.png");
+		JButton launchButton = SwingHelper.createImageButton("Launch Scheduler", "icons/launcher_48.png");
 		launchButton.addActionListener(this);
 		launchButton.setActionCommand(LAUNCH);
 		buttonPanel.add(addButton);
@@ -107,7 +107,15 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		buttonPanel.add(submitButton);
 		buttonPanel.add(launchButton);
 		
+		//create a label
+		Date date = Calendar.getInstance().getTime();
+		SimpleDateFormat format = new SimpleDateFormat("EEEE,MMMM dd ");
+		JLabel shiftLabel = new JLabel("Shift for " + format.format(date) 
+				+ " at "+ ResourceManager.shiftTimeAsString(shiftTime) + ":00");
+		//change the font at some point shiftLabel.setFont();
+		
 		// place panes in roll call tab
+		rollCallTab.add(shiftLabel, "dock north");
 		rollCallTab.add(tablePanel, "dock north");
 		rollCallTab.add(buttonPanel, "dock south");
 		
