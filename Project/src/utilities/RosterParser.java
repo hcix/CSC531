@@ -3,6 +3,8 @@ package utilities;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -24,11 +26,13 @@ public class RosterParser {
 		String name, day;
 		int dayAsInt;
 		// Directory path here
-		String path = "PatrolScheduler/employee";
+		//Path path = Paths.get("Project","PatrolScheduler", "employee"); // added Project
+		Path path = Paths.get("PatrolScheduler", "employee"); // added Project
+
 		dayAsInt = cal.get(Calendar.DAY_OF_WEEK);
 		day = getDayAsString(dayAsInt);
 
-		File folder = new File(path);
+		File folder = new File(path.toString());
 		Collections.addAll(files, folder.listFiles());
 
 		/*
@@ -88,9 +92,11 @@ public class RosterParser {
 
 		String employeeFileName, name;
 		String[] splitName;
+		// added project, stop using user.dir!
+		//employeeFileName = System.getProperty("user.dir")
+			//	+ "\\Project\\PatrolScheduler\\employee\\employees.lst";
 		employeeFileName = System.getProperty("user.dir")
 				+ "\\PatrolScheduler\\employee\\employees.lst";
-
 		/*
 		 * Open the employee list file, check for a match with the cnumber, and
 		 * if one occurs, return the name

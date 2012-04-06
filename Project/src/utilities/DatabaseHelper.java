@@ -102,8 +102,12 @@ public class DatabaseHelper {
 		//Create the connection to the database
 		Class.forName("org.sqlite.JDBC");
 		
-		
+
+		//test to make database file access syst indep, changed added Project
+		//Path dbFilePath = Paths.get("Project", "Database", "umpd.db");
 		Path dbFilePath = Paths.get("Database", "umpd.db");
+
+		
 		String dbFileName = dbFilePath.toString();
 	    Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
 	    
