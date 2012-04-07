@@ -172,8 +172,7 @@ public class DatabaseHelper {
 				bolo.setVideoFilePath(vp);
 //DEBUG---------------------------------------------------------			
 			} else { 
-
-				System.out.printf("\n photo path is null\n");
+				//System.out.printf("\n video path is null\n");
 			}
 
 			boloList.add(bolo);

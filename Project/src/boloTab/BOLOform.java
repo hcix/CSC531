@@ -30,7 +30,7 @@ import net.miginfocom.swing.MigLayout;
 import utilities.FileHelper;
 import utilities.ImageHandler;
 import utilities.ImagePreview;
-import utilities.ResizablePhoto;
+import utilities.ResizablePhotoDialog;
 import utilities.SwingHelper;
 
 public class BOLOform extends JDialog implements ChangeListener {
@@ -45,9 +45,11 @@ public class BOLOform extends JDialog implements ChangeListener {
 	JFrame parent;
 	JPanel photoArea;
 	JPanel dialogPanel;
+	boolean newBOLOWascreated;
 //-----------------------------------------------------------------------------
 	BOLOform(JFrame parent){
 		super(parent, "New BOLO", true);
+
 		
 		this.parent = parent;
 		//Create the BOLO object to add info to
@@ -70,7 +72,7 @@ public class BOLOform extends JDialog implements ChangeListener {
 		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
 		this.addWindowListener(new WindowAdapter( ) {
 			public void windowClosing(WindowEvent e) {
-				closeAndCancel( );
+				closeAndCancel();
 			}
 		});
 	    
@@ -354,9 +356,16 @@ public class BOLOform extends JDialog implements ChangeListener {
 		 }
 //TODO: Create a pdf from the input data
 		 
+		 
+//tell the BOLO tab to add this new BOLO to the display panel
+	//	 ((BOLOtab)parent).
+		 
 		 //reset the form
 		 eraseForm();
 		 
+		 newBOLOWascreated=true;
+		 
+		 this.setVisible(false);
 		 //close the window
 		 this.dispose();	
 	}
@@ -452,58 +461,37 @@ public class BOLOform extends JDialog implements ChangeListener {
 		 
 	}
 //-----------------------------------------------------------------------------
-	 public void chooseAndAddPhoto(JPanel photoPanel){
+	 public void chooseAndAddPhoto(final JPanel photoPanel){
 		//show choose photo dialog
 		final JFileChooser fc = new JFileChooser();
 		fc.addChoosableFileFilter(FileHelper.getImageFilter());
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.setAccessory(new ImagePreview(fc));
 		int returnVal = fc.showOpenDialog(parent);
-			
+
 		//if a photo was selected, add it to BOLO and load into photo area
 		if(returnVal==JFileChooser.APPROVE_OPTION){
 			//copy the chosen photo into the program's 'Photos' directory
-			File file = fc.getSelectedFile();
-			System.out.printf("filepath = %s\n", file.getName(), file.getPath());
-			Path photoPath = FileHelper.copyPhoto(file);
-			//load the image into photo area
-			if(photoPath==null){
-				//report that an error occurred in coping and retrieving the img file
-				return;
-			} else {
-				ImageIcon chosenPhoto = ImageHandler.getResizableImageIcon(photoPath, 200, 299);
-			//	if(choosenPhoto!=null){
-					bolo.setPhotoFilePath(photoPath);
-					photoPanel.removeAll();
-
-					photoPanel.add(new JLabel(chosenPhoto));
-
-
-					(photoPanel.getParent()).validate();
-			//	}
+			final File file = fc.getSelectedFile();
+			System.out.printf("filepath = %s\n", file.getPath());
 			
-			/*	ResizablePhoto chosenImg = new ResizablePhoto(chosenPhoto);
-				bolo.setPhotoFilePath(photoPath);
-				
+			ImageIcon chosenPhoto = new ImageIcon(file.getPath());
 
+			final ResizablePhotoDialog resizeDialog = new ResizablePhotoDialog(
+						chosenPhoto, this, file.getName());
 	
-				JDialog resizerDialog = new JDialog(this, "Resize Photo", 
-						Dialog.ModalityType.DOCUMENT_MODAL);
-				//resizerDialog.setLocationRelativeTo(null);
-				resizerDialog.setPreferredSize(new Dimension(700, 700));
-				resizerDialog.setSize(new Dimension(700, 700));
-				JPanel p = new JPanel();
-				p.setPreferredSize(new Dimension(700, 700));
-				p.setSize(new Dimension(700, 700));
-				resizerDialog.setLocationRelativeTo(null);
-				p.add(chosenImg.getPhotoFrame());
-						
-				Container cp = resizerDialog.getContentPane();
-				cp.add(p);
-				resizerDialog.setVisible(true);
-				*/	
+			//resizeDialog.setVisible(true);
+			
+			//if the user pressed the set photo button
+			if(resizeDialog.getNewPhotoFilePath()!=null){
+				bolo.setPhotoFilePath(resizeDialog.getNewPhotoFilePath());
+				photoPanel.removeAll();
+			
+				photoPanel.add(new JLabel(resizeDialog.getResizedImgIcon()));
 
+				(photoPanel.getParent()).validate();
 			}
+
 		}
 		
 	 }
@@ -512,10 +500,21 @@ public class BOLOform extends JDialog implements ChangeListener {
 	 * Erase any fields in the form that have been filled in and close the
 	 * dialog.
 	 */
-	 public void closeAndCancel( ) {
+	 public void closeAndCancel() {
 		//reset the form
 		eraseForm();
 		
+	
+		//delete the photo(if any)
+		if(bolo.getPhotoFilePath().toString()!=null){
+			System.out.printf("\nBOLOform: closeAndCancel(): bolo.getPhotoFilePath().toString() " +
+							"= %s\n", bolo.getPhotoFilePath().toString());
+			File f=new File(bolo.getPhotoFilePath().toString());
+			if(f.exists() && f.isFile()){
+				f.delete();
+			}
+		}
+		newBOLOWascreated=false;
 		//close the dialog
 		this.dispose();	
 	 }
@@ -585,6 +584,11 @@ public class BOLOform extends JDialog implements ChangeListener {
 		  return (incidentCal.getTimeInMillis()/1000); 
 		}
 //-----------------------------------------------------------------------------	
+  public boolean isNewBOLOWascreated(){
+	  return this.newBOLOWascreated;
+  }
+//-----------------------------------------------------------------------------	
+  
 	/* (non-Javadoc)
 	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */

@@ -5,6 +5,8 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.ImageIcon;
@@ -29,6 +31,7 @@ public class BOLOtab extends JPanel  implements ActionListener {
 private static final long serialVersionUID = 1L;
 	ArrayList<Bolo> boloList;
 	JFrame parent;
+	JPanel recentBolosTab;
 //-----------------------------------------------------------------------------
 	public BOLOtab(final JFrame parent){
 		this.setLayout(new BorderLayout());
@@ -37,11 +40,12 @@ private static final long serialVersionUID = 1L;
 		this.parent = parent;
 		
 		//Create BOLOs tabbed display area
-		JTabbedPane tabbedPane = new JTabbedPane();
+		final JTabbedPane tabbedPane = new JTabbedPane();
 		//Add recent BOLOs tab
-		JPanel recentBolosTab = createRecentBOLOsTab();
+		recentBolosTab = createRecentBOLOsTab();
 		tabbedPane.addTab("Recent BOLOs", recentBolosTab);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
+		
 	    //Add archived BOLOs tab 
 		JPanel archievedBolosTab = new JPanel();
 		tabbedPane.addTab("Archived", archievedBolosTab);
@@ -54,7 +58,36 @@ private static final long serialVersionUID = 1L;
 			//BOLO form dialog
 			BOLOform formDialog = new BOLOform(parent);
 			public void actionPerformed(ActionEvent e){
-				formDialog.setVisible(true);
+				formDialog.setVisible(true);	
+				
+				//wait for the dialog to be dismissed before continuing
+				formDialog.setModal(true);
+//System.out.printf("\nBOLOtab: BOLOtab(): this shouldn't print too soon");
+
+System.out.printf("\nBOLOtab: BOLOtab(): formDialog.isNewBOLOWascreated() %s\n",
+		formDialog.isNewBOLOWascreated());
+
+				if(formDialog.isNewBOLOWascreated()){
+					recentBolosTab.removeAll();
+				//	recentBolosTab = createRecentBOLOsTab();
+					recentBolosTab.add(createRecentBOLOsTab());
+					//(recentBolosTab.getParent()).validate();
+					tabbedPane.revalidate();
+				}
+				// formDialog.addWindowListener(new WindowAdapter( ) {
+					//public void windowClosing(WindowEvent e) {
+						//if(formDialog.isNewBOLOWascreated()){
+						//recentBolosTab.removeAll();
+				//		while(!formDialog.isVisible()){
+							//System.out.printf("\nBOLOtab: notVisible\n");
+				//		}
+						//System.out.printf("\nBOLOtab: formDialog Window Closed\n");
+						//recentBolosTab = createRecentBOLOsTab();
+						
+						//}
+				//	}
+					
+				//});
 			}
 		});
 
@@ -86,6 +119,7 @@ private static final long serialVersionUID = 1L;
 		});
 
         this.add(tabbedPane, BorderLayout.CENTER);
+        
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.add(newBOLOButton);
         buttonsPanel.add(importBOLOButton);
@@ -136,7 +170,7 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	public JPanel createRecentBOLOsTab(){
-		JPanel recentBOLOsPanel = new JPanel(new MigLayout("gapx 30"));
+		JPanel recentBOLOsPanel = new JPanel(new MigLayout("gapx 30, wrap 4"));
 		JButton boloPanel;
 		Date prepDate;
 		
@@ -166,9 +200,10 @@ private static final long serialVersionUID = 1L;
 		}
 		
 		recentBOLOsPanel.add(entriesPanel);
+		//this.validate();
 		return recentBOLOsPanel;
 	}
-//-----------------------------------------------------------------------------		
+//-----------------------------------------------------------------------------	
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */

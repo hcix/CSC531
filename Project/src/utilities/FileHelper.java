@@ -3,12 +3,17 @@
  */
 package utilities;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.filechooser.FileFilter;
 import org.jpedal.examples.simpleviewer.SimpleViewer;
@@ -192,6 +197,48 @@ public class FileHelper {
 		
 		return (copyFile(original, destination));
 		
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Saves the given image with the specified filename as a photo file into 
+	 * the Photos directory associated with the program.
+	 * @param image - image to save into 'Photos' directory
+	 * @param filename - name to save image file as
+	 */
+	public static Path savePhoto(ImageIcon imgIcn, String filename){
+		String progDir = getProgramDirPathName();
+		
+		System.out.printf("\nFileHelper: savePhoto(): filename = %s\n", filename);
+		
+		//Specifies a system independent path
+		Path destinationFile = Paths.get(progDir, PHOTO_DIR, filename);
+		//Path destinationFile = Paths.get(filename, null);
+		
+		int w = imgIcn.getIconWidth();
+		int h = imgIcn.getIconHeight();
+		BufferedImage imageToSave = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+		 Graphics2D graphics2D = imageToSave.createGraphics();
+            // Graphics g = bi2.getGraphics();
+		 graphics2D.drawImage(imgIcn.getImage(), 0, 0, null);
+           //  g.drawImage(imgIcn.getImage(), 0, 0, null);
+           //  bi = bi2; 
+            	   // Use of BILNEAR filtering to enable smooth scaling
+            	  // graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+            	//RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            	   //graphics2D.drawImage(image, 0, 0, thumbWidth, thumbHeight, null);
+		try {
+		    //File outputfile = new File(destinationFile.toString());
+		    File outputfile = new File(destinationFile.toString());
+		    String extension = getFileExtension(outputfile);
+		    System.out.printf("\nFileHelper: savePhoto(): destinationFile.toString() = %s\n",
+		    		destinationFile.toString());
+		    ImageIO.write(imageToSave, extension, outputfile);
+		} catch (IOException e) {
+			System.out.println("FileHelper: savePhoto(): Problem saving photo. rut row");
+			return null;
+		}
+		
+		return destinationFile;
 	}
 //-----------------------------------------------------------------------------
 	/**
