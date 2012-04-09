@@ -178,9 +178,6 @@ public class ResourceManager {
 	
 		//load the properties from the xml file
 		XmlParser.loadProperties(p);
-
-//DEBUG: print syst env
-		//printEnv();
 		
 	}
 //-----------------------------------------------------------------------------

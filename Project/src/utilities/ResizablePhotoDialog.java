@@ -89,9 +89,7 @@ private static final long serialVersionUID = 1L;
 		saveImgButton.addActionListener(new ActionListener( ) {
 	    	public void actionPerformed(ActionEvent e) {
 	    		saveAndClose(photofilename);
-
-				//bolo.setPhotoFilePath(photoPath);
-				
+				//bolo.setPhotoFilePath(photoPath);	
 	    	}
 		}); 
 		
@@ -162,8 +160,7 @@ private static final long serialVersionUID = 1L;
 	* Save the resized photo and close the dialog.
 	*/
 	public void saveAndClose(String photofilename){
-		Path photoPath = FileHelper.savePhoto(
-				getResizedImgIcon(), photofilename);
+		Path photoPath = FileHelper.savePhoto(getResizedImgIcon(), photofilename);
 		System.out.printf("\nResizablePhotoDialog: ResizablePhotoDialog(): photoPath.toString() = %s\n",
 				photoPath.toString());
 		setNewPhotoFilePath(photoPath);

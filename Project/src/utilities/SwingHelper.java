@@ -18,13 +18,14 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
-import userinterface.MainInterfaceWindow;
 import net.miginfocom.swing.MigLayout;
+import userinterface.MainInterfaceWindow;
 
 public class SwingHelper {
 //-----------------------------------------------------------------------------
@@ -144,6 +145,39 @@ public class SwingHelper {
 		c.add(l, "align left");
 		
 		JTextField text = new JTextField(length);
+		if(wrap){
+			c.add(text, "align left, wrap");
+		} else{
+			c.add(text, "align left");
+		}
+		
+		return text;
+	}
+//-----------------------------------------------------------------------------
+	/** 
+	 * Adds a <code>JTextArea</code> with the specified text as a label
+	 * appearing before the text field to the given <code>JComponent</code>. 
+	 * Assuming the <code>JComponent</code> has the MigLayout set, the label
+	 * and text field are both left aligned within the <code>JComponent</code>.
+	 * If the wrap parameter is set to true, MigLayout's "wrap" attribute will be
+	 * applied to the <code>JTextField</code>, meaning the next component added
+	 * will appear on the next line.
+	 * (Exception: Will not work if MigLayout's flowy layout constraint is applied,
+	 * but it is rarely used MigLayout feature and thus not a common concern; however
+	 * if you have set this layout constraint on your <code>JComponent</code> do not
+	 * attempt to use the wrap option of this method.)
+	 * @param label - the text to appear in front of the text field
+	 * @param rows - the length in rows of the text field 
+	 * @param cols - the length in columns of the text field
+	 * @param wrap - indicates is this component should be the last on the current line
+	 * @return the <code>JTextArea</code> added to the component
+	 */
+	public static JTextArea addLabeledTextArea(JComponent c, String label, int rows,
+			int cols, boolean wrap){
+		JLabel l = new JLabel(label);
+		c.add(l, "align left");
+		
+		JTextArea text = new JTextArea(rows, cols);
 		if(wrap){
 			c.add(text, "align left, wrap");
 		} else{

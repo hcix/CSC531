@@ -26,7 +26,7 @@ private static final long serialVersionUID = 1L;
 		//Create Blue Book tabbed display area
 		JTabbedPane tabbedPane = new JTabbedPane();
 		//Add recent Blue Book Entries tab
-		JPanel entriesTab = new ItemsViewerPanel();
+
 		//tabbedPane.addTab("Blue Book", recentBolosTab);
 		//tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
 				

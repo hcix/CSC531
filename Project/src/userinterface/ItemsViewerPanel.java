@@ -1,42 +1,86 @@
 package userinterface;
 
-import javax.swing.JButton;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
-
 //-----------------------------------------------------------------------------
-
 /**
  * This is a panel that allows the user to toggle between different views to
- * see items within the program and select items to open in a separate dialog.
- * 
+ * see items within the program and select/"click" items. This panel will 
+ * notify the given action listener when a <code>JPanel</code> is "clicked".
  */
-public class ItemsViewerPanel extends JPanel {
+public class ItemsViewerPanel extends JPanel implements MouseListener {
 private static final long serialVersionUID = 1L;
 	JPanel mainPanel;
-	int itemWidth=0, itemHeight=0;
+	int itemWidthPerc=0, itemHeightPerc=0;
+	/** The ActionListener to be notified if a panel is clicked on **/
+	ActionListener l;
+	/** Reference to the JPanel's original color **/
+	Color originalColor;
+	Color pressedColor;
 //-----------------------------------------------------------------------------
-	public ItemsViewerPanel(){
-		mainPanel = new JPanel(new MigLayout("wrap 5"));	
+	public ItemsViewerPanel(JPanel[] items, ActionListener l){
+		this.l=l;
+		
+		mainPanel = new JPanel(new MigLayout("gap 15"));		
 		this.add(mainPanel);
-	}
-//-----------------------------------------------------------------------------
-	public void addItemsToPanel(JPanel itemPanels[]){
-		for(int i=0; i<itemPanels.length; i++){
-			mainPanel.add(itemPanels[i]);
+		addItemsToPanel(items);
+		
+		//save a reference to the original color & set the pressed color
+		if(items.length>0){
+			originalColor = items[0].getBackground();
+			pressedColor = originalColor.darker();
+		} else { 
+			originalColor = this.getBackground();
+			pressedColor = originalColor.darker(); 
 		}
 	}
 //-----------------------------------------------------------------------------
-	public void addItemToPanel(JButton item){
+	public ItemsViewerPanel(JPanel[] items, ActionListener l, int wrap){
+		this.l=l;
+		
+		String wrapString = "wrap " + wrap;
+		mainPanel = new JPanel(new MigLayout("gap 15, " + wrapString));	
+		
+		this.add(mainPanel);
+		addItemsToPanel(items);
+		
+		//save a reference to the original color & set the pressed color
+		if(items.length>0){
+			originalColor = items[0].getBackground();
+			pressedColor = originalColor.darker();
+		} else { 
+			originalColor = this.getBackground();
+			pressedColor = originalColor.darker(); 
+		}
+		
+	}
+//-----------------------------------------------------------------------------
+	public void addItemsToPanel(JPanel items[]){
+		for(int i=0; i<items.length; i++){
+			items[i].setBorder(BorderFactory.createRaisedBevelBorder());
+			items[i].addMouseListener(this);
+			mainPanel.add(items[i]);
+		}
+	}
+//-----------------------------------------------------------------------------
+	public void addItemToPanel(JPanel item){
 		String constraints="";
 		
-		if(itemWidth!=0){
-			constraints = "width " + itemWidth;
+		if(itemWidthPerc!=0){
+			constraints = "width " + itemWidthPerc;
 			//if there's also an itemHeight to be set, add a separator to the string
-			if(itemHeight!=0){ constraints = constraints.concat(", "); }
+			if(itemHeightPerc!=0){ constraints = constraints.concat(", "); }
 		}
-		if(itemHeight!=0){
-			constraints=constraints.concat("height" + itemHeight);
+		if(itemHeightPerc!=0){
+			constraints=constraints.concat("height" + itemHeightPerc);
 		}
 		mainPanel.add(item);
 	}
@@ -50,8 +94,8 @@ private static final long serialVersionUID = 1L;
 	 * @param itemWidth - the percentage of the panel's total width that each item
 	 * should occupy
 	 */
-	public void setItemWidthPercentageVal(int itemWidth){
-		this.itemWidth=itemWidth;
+	public void setItemWidthPercentageVal(int itemWidthPerc){
+		this.itemWidthPerc=itemWidthPerc;
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -63,8 +107,51 @@ private static final long serialVersionUID = 1L;
 	 * @param itemHeight - the percentage of the panel's total height that each item
 	 * should occupy
 	 */
-	public void setItemHeightPercentageVal(int itemHeight){
-		this.itemHeight=itemHeight;
+	public void setItemHeightPercentageVal(int itemHeightPerc){
+		this.itemHeightPerc=itemHeightPerc;
+	}
+//-----------------------------------------------------------------------------
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		//let the ActionListener know who's been clicked
+		
+		String name = ((Component) e.getSource()).getName();
+//DEBUG:
+		System.out.println("ItemsViewerPanel: mouseClicked(): name = "+name);
+		ActionEvent ev = new ActionEvent((e.getSource()), ActionEvent.ACTION_PERFORMED, name);
+//DEBUG:
+		System.out.println("ItemsViewerPanel: mouseClicked(): ev.getActionCommand = "
+		+ ev.getActionCommand());
+		
+		l.actionPerformed(ev);
+	}
+//-----------------------------------------------------------------------------
+	@Override
+	public void mousePressed(MouseEvent e) {
+		//make panel appear pressed like a button would
+	
+		((Component)(e.getSource())).setBackground(pressedColor);
+		((JComponent)(e.getSource())).setBorder(BorderFactory.createLoweredBevelBorder());
+	}
+//-----------------------------------------------------------------------------
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		//make panel appear normal again
+		((Component)(e.getSource())).setBackground(originalColor);
+		((JComponent)(e.getSource())).setBorder(BorderFactory.createRaisedBevelBorder());
+	}
+//-----------------------------------------------------------------------------
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		//TODO highlight panel so user knows it's "selected"
+		
+	}
+//-----------------------------------------------------------------------------
+	@Override
+	public void mouseExited(MouseEvent e) {
+		//make panel appear normal again
+		((Component)(e.getSource())).setBackground(originalColor);
+		((JComponent)(e.getSource())).setBorder(BorderFactory.createRaisedBevelBorder());
 	}
 //-----------------------------------------------------------------------------
 }

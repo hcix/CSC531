@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import org.jpedal.examples.simpleviewer.SimpleViewer;
 
@@ -154,6 +155,20 @@ public class FileHelper {
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Gets the name of the itemsToReview.xml file.
+	 * @return the absolute path to itemsToReview.xml
+	 */
+	public static String getItemsToReviewFile(){
+		String progDir = getProgramDirPathName();
+		
+		//Specifies a system independent path
+		Path itemsFilePath = Paths.get(progDir, "Project", "src",
+				"progAdmin", "itemsToReview.xml");
+		
+		return (itemsFilePath.toString());
+	}
+//-----------------------------------------------------------------------------
+	/**
 	 * Gets the name of the properties file path, which is used by 
 	 * <code>ResourceManager</code> to load the program's properties.
 	 * @return the absolute path to properties file
@@ -217,27 +232,39 @@ public class FileHelper {
 		int w = imgIcn.getIconWidth();
 		int h = imgIcn.getIconHeight();
 		BufferedImage imageToSave = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-		 Graphics2D graphics2D = imageToSave.createGraphics();
-            // Graphics g = bi2.getGraphics();
-		 graphics2D.drawImage(imgIcn.getImage(), 0, 0, null);
-           //  g.drawImage(imgIcn.getImage(), 0, 0, null);
-           //  bi = bi2; 
-            	   // Use of BILNEAR filtering to enable smooth scaling
-            	  // graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-            	//RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            	   //graphics2D.drawImage(image, 0, 0, thumbWidth, thumbHeight, null);
-		try {
-		    //File outputfile = new File(destinationFile.toString());
-		    File outputfile = new File(destinationFile.toString());
-		    String extension = getFileExtension(outputfile);
-		    System.out.printf("\nFileHelper: savePhoto(): destinationFile.toString() = %s\n",
-		    		destinationFile.toString());
-		    ImageIO.write(imageToSave, extension, outputfile);
-		} catch (IOException e) {
-			System.out.println("FileHelper: savePhoto(): Problem saving photo. rut row");
-			return null;
-		}
+		Graphics2D graphics2D = imageToSave.createGraphics();
+		graphics2D.drawImage(imgIcn.getImage(), 0, 0, null);
+     
 		
+	    File outputfile = new File(destinationFile.toString());
+	    String extension = getFileExtension(outputfile);
+	    System.out.printf("\nFileHelper: savePhoto(): destinationFile.toString() = %s\n",
+	    		destinationFile.toString());
+	    
+	    
+	    int i=0;
+	    while(outputfile.exists()){
+	    	i++;
+	    	String name=getNameWithoutExtension(filename);
+	    	name=name+i; 	
+	    	destinationFile = Paths.get(progDir, PHOTO_DIR, name+"."+extension);
+	    	outputfile = new File(destinationFile.toString());
+		    
+	    	System.out.printf("\nFileHelper: savePhoto(): (while loop) " +
+		    		"destinationFile.toString() = %s\n", destinationFile.toString());
+	    //saftey condition to protect against infinite loop
+	    	if(i>100){ System.out.println("ERROR 100 files with this name exist already!"); }
+	    }
+		    
+	    
+	    try { 
+	    	
+	    	ImageIO.write(imageToSave, extension, outputfile);
+	    } catch (IOException e) {
+	    	System.out.println("FileHelper: savePhoto(): Problem saving photo. rut row");
+	    	return null;
+	    }
+	
 		return destinationFile;
 	}
 //-----------------------------------------------------------------------------
@@ -343,6 +370,19 @@ public class FileHelper {
 		}
 		
 		return ext;
+	}
+//-----------------------------------------------------------------------------
+  	/**
+	 * Given a filename, returns the name w/o the extension of the given file.
+	 * @param filename - the filename to remove the extension of
+	 * @return the filename without the .extenstion
+	 */
+	public static String getNameWithoutExtension(String filename) {
+		int i = filename.lastIndexOf('.');
+
+		filename=filename.substring(0, i);
+		System.out.println(filename);
+		return filename;
 	}
 //-----------------------------------------------------------------------------
 	public static void openPDFInComponent(String pdfFile, JComponent c){

@@ -33,11 +33,11 @@ public class BOLOpreview extends JDialog {
 	Bolo bolo;
 	JFrame parent;
 	JPanel dialogPanel;
+	boolean newBOLOWascreated;
 //-----------------------------------------------------------------------------
 	BOLOpreview(JFrame parent, Bolo bolo){
 		super(parent, "BOLO", true);
 
-        
 		//BOLO object to load info from
 		this.bolo = bolo;
 		this.parent = parent;
@@ -60,14 +60,13 @@ public class BOLOpreview extends JDialog {
 		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
 		this.addWindowListener(new WindowAdapter( ) {
 			public void windowClosing(WindowEvent e) {
-				setVisible(false);
+				//setVisible(false);
+				closeAndCancel();
 			}
 		});
 	    
 
-		//Set up the BOLO page
-		
-		
+		/*Set up the BOLO page*/
 		
 		//Add the BOLO "letter head" image to the top
 		ImageIcon boloHeaderIcon = ImageHandler.createImageIcon("images/boloHeader.png");
@@ -99,15 +98,9 @@ public class BOLOpreview extends JDialog {
 		
 		//TODO: Add standard footer
 		
-		
-
-
-	    /*Add buttons panel to top of scroll panel as the row header
-	     *(the buttons panel stays at the top of the screen even if the top of the form isn't
-	    *currently visible) */
+	    //add buttons panel to top of scroll panel
 	    JPanel buttonsPanel = createButtonsPanel();
 	    dialogPanelScroller.setColumnHeaderView(buttonsPanel);
-	    
 	    
 	    //Add the BOLO form scrolling pane dialog to the screen
 	    Container contentPane = getContentPane();
@@ -118,7 +111,102 @@ public class BOLOpreview extends JDialog {
 	 //   		"/Users/heatherciechowski/CSC531/Project/Boloex.pdf", createButtonsPanel());
 	  //  pdfv.setColumnHeaderView(buttonsPanel);
 	 //   contentPane.add(pdfv, "align center");
+	    
 	}
+//-----------------------------------------------------------------------------
+	public JPanel createButtonsPanel(){
+	
+		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
+		
+		//Add cancel button
+		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
+		cancelButton.setToolTipText("Cancel and do not save");
+		cancelButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae) {
+				closeAndCancel();
+			}
+		});
+	
+	    //Add save button
+	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
+	    saveButton.setToolTipText("Save BOLO");
+	    saveButton.addActionListener(new ActionListener( ) {
+	    	public void actionPerformed(ActionEvent e) {
+	    		saveAndClose();
+	    	}
+	    });
+	    
+	    //Add edit button
+	    JButton editButton = 
+	    		SwingHelper.createImageButton("Edit", "icons/edit_48.png");
+	    editButton.setToolTipText("Edit this BOLO");
+	    editButton.addActionListener(new ActionListener( ) {
+	    	public void actionPerformed(ActionEvent e) {
+	    		//BOLO form dialog
+				BOLOform formDialog = new BOLOform(parent, bolo);
+				setVisible(false);
+				formDialog.setVisible(true);
+	    	}
+	    });
+	    
+	    //Add print button
+	    JButton printButton = 
+	    		SwingHelper.createImageButton("Print", "icons/print_48.png");
+	    printButton.setToolTipText("Print this BOLO document");
+	    printButton.addActionListener(new ActionListener( ) {
+	    	public void actionPerformed(ActionEvent e) {
+	 //   		PrintHelper ph = new PrintHelper(dialogPanel);
+	    	}
+	    });
+	    
+	    //Add email button
+	    JButton emailButton = new JButton("<html>Email<br>BOLO</html>");
+	    emailButton.setToolTipText("Email this BOLO document");
+	    emailButton.addActionListener(new ActionListener( ) {
+	    	public void actionPerformed(ActionEvent e) {
+	    		//
+	    	}
+	    });
+	    
+	    
+	    JPanel saveAndCancelButtonsPanel = new JPanel();
+	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
+	    saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
+	    JPanel printAndEmailButtonPanel = new JPanel(new MigLayout("rtl"));
+	    printAndEmailButtonPanel.add(printButton);
+	    printAndEmailButtonPanel.add(emailButton);
+	    printAndEmailButtonPanel.add(editButton);
+	    buttonsPanel.add(saveAndCancelButtonsPanel, "shrinky");
+	    buttonsPanel.add(printAndEmailButtonPanel, "growx, shrinky");
+	   
+	   // SwingHelper.addLineBorder(buttonsPanel);
+	    return buttonsPanel;
+	}
+//-----------------------------------------------------------------------------
+	  public void closeAndCancel() {
+		  newBOLOWascreated=false;
+		  //setVisible(false);
+		  this.dispose();
+	  }
+//-----------------------------------------------------------------------------
+		/**
+		* Save the information input into this form and close the dialog.
+		*/
+		public void saveAndClose(){
+			 
+			 //add the BOLO object's info to the database
+			 try {
+				bolo.addToDB();
+			 } catch (Exception e) {
+				System.out.println("error: unable to add BOLO to DB");
+				e.printStackTrace();
+			 }
+			 
+			 newBOLOWascreated=true;
+			 
+			 //close the window
+			 this.dispose();	
+		}
 //-----------------------------------------------------------------------------	
 	public JPanel createPhysicalDescriptionPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout());
@@ -221,153 +309,10 @@ public class BOLOpreview extends JDialog {
 		
 		return photoVideoPanel;
 	}
-//-----------------------------------------------------------------------------
-	public JPanel createButtonsPanel(){
-	
-		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
-		
-		//Add cancel button
-		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
-		cancelButton.setToolTipText("Cancel and do not save");
-		cancelButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae) {
-				closeAndCancel();
-			}
-		});
-	
-	    //Add save button
-	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
-	    saveButton.setToolTipText("Save BOLO");
-	    saveButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
-	    		saveAndClose();
-	    	}
-	    });
-	    
-	    //Add edit button
-	    JButton editButton = 
-	    		SwingHelper.createImageButton("Edit", "icons/edit_48.png");
-	    editButton.setToolTipText("Edit this BOLO");
-	    editButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
-	    		//BOLO form dialog
-				BOLOform formDialog = new BOLOform(parent, bolo);
-				setVisible(false);
-				formDialog.setVisible(true);
-	    	}
-	    });
-	    
-	    //Add print button
-	    JButton printButton = 
-	    		SwingHelper.createImageButton("Print", "icons/print_48.png");
-	    printButton.setToolTipText("Print this BOLO document");
-	    printButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
-	 //   		PrintHelper ph = new PrintHelper(dialogPanel);
-	    	}
-	    });
-	    
-	    //Add email button
-	    JButton emailButton = new JButton("<html>Email<br>BOLO</html>");
-	    emailButton.setToolTipText("Email this BOLO document");
-	    emailButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
-	    		//
-	    	}
-	    });
-	    
-	    
-	    JPanel saveAndCancelButtonsPanel = new JPanel();
-	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
-	    saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
-	    JPanel printAndEmailButtonPanel = new JPanel(new MigLayout("rtl"));
-	    printAndEmailButtonPanel.add(printButton);
-	    printAndEmailButtonPanel.add(emailButton);
-	    printAndEmailButtonPanel.add(editButton);
-	    buttonsPanel.add(saveAndCancelButtonsPanel, "shrinky");
-	    buttonsPanel.add(printAndEmailButtonPanel, "growx, shrinky");
-	   
-	   // SwingHelper.addLineBorder(buttonsPanel);
-	    return buttonsPanel;
-	}
-//-----------------------------------------------------------------------------
-	  public void closeAndCancel( ) {
-		  setVisible(false);
-	  }
-//-----------------------------------------------------------------------------
-		/**
-		* Save the information input into this form and close the dialog.
-		*/
-		public void saveAndClose(){
-			 
-			 //add the BOLO object's info to the database
-			 try {
-				bolo.addToDB();
-			 } catch (Exception e) {
-				System.out.println("error: unable to add BOLO to DB");
-				e.printStackTrace();
-			 }
-			 
-			 //close the window
-			 this.dispose();	
-		}
-//-----------------------------------------------------------------------------
-/*-----------------------------------------------------------------------------
-	 public void saveAndClose(){
-		 String age, race, sex, height, weight, build, eyes, hair;
-		 String reference, caseNum, status, weapon;
-		 String preparedBy, approvedBy;
-		 String otherDescrip, narrative;
-		 
-		 //get the values in the fields
-		 age = ageField.getText();
-		 race = raceField.getText();
-		 sex = sexField.getText();
-		 height = heightField.getText();
-		 weight=weightField.getText();
-		 build=buildField.getText();
-		 eyes=eyesField.getText();
-		 hair=hairField.getText();
-		 reference=referenceField.getText();
-		 caseNum=caseNumField.getText();
-		 status=statusField.getText();
-		 weapon=ifYesField.getText();
-		 preparedBy= preparedByField.getText();
-		 approvedBy= approvedByField.getText();
-		 otherDescrip= otherDescriptField.getText();
-		 narrative=narrativeText.getText();
-		 
-		 //add the values to the BOLO object created for this form
-		 bolo.setAge(age);
-		 bolo.setRace(race);
-		 bolo.setSex(sex);
-		 bolo.setHeight(height);
-		 bolo.setWeight(weight);
-		 bolo.setBuild(build);
-		 bolo.setEyes(eyes);
-		 bolo.setHair(hair);
-		 bolo.setReference(reference);
-		 bolo.setCaseNum(caseNum);
-		 bolo.setStatus(status);
-		 bolo.setWeapon(weapon);
-		 bolo.setPreparedBy(preparedBy);
-		 bolo.setApprovedBy(approvedBy);
-		 bolo.setOtherDescrip(otherDescrip);
-		 bolo.setNarrative(narrative);
-		 bolo.setprepDate(getPrepDateEpoch());
-		 bolo.setincidentDate(getIncidentDateEpoch());
-		 
-
-		 try {
-			bolo.addToDB();
-		} catch (Exception e) {
-			System.out.println("error: unable to add BOLO to DB");
-			e.printStackTrace();
-		}
-
-	    // Close the window.
-	    setVisible(false);
-	  }
-*///-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------	
+  public boolean isNewBOLOWascreated(){
+	  return newBOLOWascreated;
+  }
+//-----------------------------------------------------------------------------	
 }
 
