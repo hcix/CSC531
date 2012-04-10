@@ -10,6 +10,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.ListCellRenderer;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import net.miginfocom.swing.MigLayout;
 //-----------------------------------------------------------------------------
 /**
@@ -35,6 +37,14 @@ public class ItemRenderer implements ListCellRenderer {
 			JCheckBox cb = new JCheckBox();
 			String num = "" + index;
 			cb.setActionCommand(num);
+			cb.setEnabled(hasFocus);
+			cb.addChangeListener(new ChangeListener(){
+				@Override
+				public void stateChanged(ChangeEvent e) {
+					e.getSource();
+				}	
+			});
+			
 			itemPanel.add(cb, "split");
 			itemPanel.add(new JLabel((item.getTitle())), "wrap");
 			JTextArea details = new JTextArea(220, 60);
@@ -68,10 +78,11 @@ public class ItemRenderer implements ListCellRenderer {
 		return itemPanel;
 	}
 //-----------------------------------------------------------------------------
-	/*	public void itemStateChanged(ItemEvent e) {
+		public void itemStateChanged(ItemEvent e) {
 
 	    Object source = e.getItemSelectable();
 
+	    /*
 	    if (source == chinButton) {
 	        //...make a note of it...
 	    } else if (source == glassesButton) {
@@ -81,12 +92,16 @@ public class ItemRenderer implements ListCellRenderer {
 	    } else if (source == teethButton) {
 	        //...make a note of it...
 	    }
+	    */
 
-	    if (e.getStateChange() == ItemEvent.DESELECTED)
-	        //...make a note of it...
-	    ...
-	    updatePicture();
-	}*/
-//-----------------------------------------------------------------------------*/
+	    if (e.getStateChange() == ItemEvent.DESELECTED){
+	    	//do something
+	    }
+	        
+
+	    	
+	    //update
+	}
+//-----------------------------------------------------------------------------
 
 }
