@@ -290,19 +290,8 @@ public class FileHelper {
 	 */
 	public static Path copyVideoAnnoun(File original){
 		String progDir = getProgramDirPathName();
-		
 		//Specifies a system independent path
 		Path destination = Paths.get(progDir, VIDEO_DIR, ANNOUN_SUB_DIR);
-		
-        // check if files are already there
-		File destinationDir = destination.toFile();
-		File[] destinationFiles = destinationDir.listFiles();
-		
-		for (File file : destinationFiles) {
-			if (file.getName() == original.getName()) {
-				return null;
-			}
-		}
 		
 		return(copyFile(original, destination));
 		
@@ -319,15 +308,19 @@ public class FileHelper {
 			Path orginalPath = source.toPath();
 			Path newPath = target.resolve(orginalPath.getFileName());
 			String newFileName;
-					//
-			for(int i=0; i<100; i++){
+			
+			for(int i=1; i<100; i++){
 				try {
 					target = Files.copy(orginalPath, newPath);
 					return target;
 				} catch (FileAlreadyExistsException e){
 					Path p = orginalPath.getFileName();
-					newFileName = p.toString() + i + "";
-					newPath = Paths.get(newFileName);
+					System.out.println("\n\n copyfile pathp : " + p.toString() + "\n\n");
+					newFileName = getNameWithoutExtension(p.toString()) + i + "."
+							+ getFileExtension(source);
+					System.out.println("\n\n copyfile newFilename : " + newFileName + "\n\n");
+					newPath = Paths.get(target.toString(), newFileName);
+					System.out.println("\n\n copyfile newpath : " + newPath.toString() + "\n\n");
 				} catch (IOException x) {
 			                System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
 			    }

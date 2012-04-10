@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import program.ResourceManager;
+import userinterface.HomeTab;
 import utilities.FileHelper;
 import utilities.SwingHelper;
 import utilities.xml.XmlParser;
@@ -136,16 +137,16 @@ public class AdminTab extends JPanel implements ActionListener {
 			// copy the chosen photo into the program's 'Photos' directory
 			File file = fc.getSelectedFile();
 			Path videoPath = FileHelper.copyVideoAnnoun(file);
-			// load the image into photo area
-			if (videoPath == null) {
-				System.out.println("Video already there");
-			}
+			
 			// set property then write to xml
-			System.out.println(" in admin tab " + videoPath.toString());
+			System.out.println("in admin tab " + videoPath.toString());
 			System.setProperty("UMPD.latestVideo", videoPath.toString());
 			XmlParser.setSystemProperty("UMPD.latestVideo",
 					videoPath.toString());
-
+			
+			// set visability true
+            HomeTab.setVideoVisability(true);
+			
 			// put this after chooser has been closed
 			JOptionPane.showMessageDialog(parent, "Video has been loaded "
 					+ "to the home page!");

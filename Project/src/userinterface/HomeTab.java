@@ -23,7 +23,9 @@ import net.miginfocom.swing.MigLayout;
 
 public class HomeTab extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	static final String LAUNCH = "launch";
+	private static final String LAUNCH = "launch";
+	private static JButton videoButton;
+	private static JLabel videoLabel;
 	private static final Path ANNOUN_DIR = Paths.get(
 			FileHelper.getProgramDirPathName(), "Videos", "Announcements");
 	LinkedList<Object> llo = new LinkedList<Object>();
@@ -66,15 +68,24 @@ public class HomeTab extends JPanel implements ActionListener {
 		 * whatever i'll fix it later jp.add(jsep); }
 		 */
 
-		JLabel videoLabel = new JLabel(
+		videoLabel = new JLabel(
 				"<html><br /><br /><font size =\"6\"> Click here to "
 						+ "launch video announcement");
 		panel.add(videoLabel);
 
-		JButton videoButton = SwingHelper.createImageButton("Launch",
+		videoButton = SwingHelper.createImageButton("Launch",
 				"icons/launcher_48.png");
 		videoButton.addActionListener(this);
 		videoButton.setActionCommand(LAUNCH);
+
+		//System.getenv("UMPD.latestVideo").equals(null)) ||
+		// if no video, set button and label to be invisible
+		if ((System.getenv("UMPD.latestVideo")) == null
+			||(System.getenv("UMPD.latestVideo")).equals("none")) {
+			videoButton.setVisible(false);
+			videoLabel.setVisible(false);
+		}
+
 		panel.add(videoButton, "align center");
 
 		return panel;
@@ -93,7 +104,7 @@ public class HomeTab extends JPanel implements ActionListener {
 
 		// check for null conditions
 		if ((System.getProperty("UMPD.latestVideo") == null)
-				|| (System.getProperty("UMPD.latestVideo") == "none")) {
+				|| (System.getProperty("UMPD.latestVideo").equals("none"))) {
 			System.out.println("No video loaded");
 			return;
 		}
@@ -109,4 +120,16 @@ public class HomeTab extends JPanel implements ActionListener {
 			// e1.printStackTrace();
 		}
 	}
+
+	// -----------------------------------------------------------------------------
+	public static void setVideoVisability(boolean visable) {
+    	if (visable == true) {
+    		videoButton.setVisible(true);
+    		videoLabel.setVisible(true);
+    	} else {
+    		videoButton.setVisible(false);
+    		videoLabel.setVisible(false);
+    	}
+    		
+    }
 }
