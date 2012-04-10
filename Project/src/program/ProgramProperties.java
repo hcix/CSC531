@@ -21,6 +21,9 @@ public class ProgramProperties {
 //-----------------------------------------------------------------------------
 	/**stores the absolute path name of the most recent Shift Cdr Summary Report*/
 	String latestReport;
+	
+	String lastestVideo;
+		
 	/**list of <code>FieldAndval</code> objects representing the set properties*/
 	//(order doesn't matter in this list)
 	 ArrayList<FieldAndVal> setPropsList; 
@@ -74,6 +77,20 @@ public class ProgramProperties {
 		if((this.latestReport).length()>0){
 			setPropsList.add(new FieldAndVal("UMPD.latestReport", this.latestReport));
 		}
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * @return lastestVideo - 
+	 */
+	public String getLastestVideo() {
+		return lastestVideo;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * @param lastestVideo - the lastestVideo value to set
+	 */
+	public void setLastestVideo(String lastestVideo) {
+		this.lastestVideo = lastestVideo;
 	}
 //-----------------------------------------------------------------------------
 }

@@ -7,18 +7,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.nio.file.Path;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import program.ResourceManager;
 import utilities.FileHelper;
-import utilities.ImageHandler;
-import utilities.ImagePreview;
-import program.ResourceManager;
 import utilities.SwingHelper;
 
 /**
@@ -78,7 +73,7 @@ public class AdminTab extends JPanel implements ActionListener {
 		editSystemButton.setActionCommand(EDIT_SYSTEM);
 
 		JButton addNewItemButton = SwingHelper
-				.createImageButton("icons/create_48.png");
+				.createImageButton("icons/plusSign_48.png");
 		addNewItemButton.addActionListener(this);
 		addNewItemButton.setActionCommand(EDIT_SYSTEM);
 
@@ -145,7 +140,6 @@ public class AdminTab extends JPanel implements ActionListener {
 				return;
 			} else {
 				//figure something out TODO
-
 			}
 			// put this after chooser has been closed
 			JOptionPane.showMessageDialog(parent, "Video has been loaded " +

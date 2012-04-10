@@ -209,6 +209,7 @@ public class ResourceManager {
 			System.out.println("bad shift time");
 			throw new Exception();
 		}
+		
 		RosterParser parser = new RosterParser();
 		Employees = parser.getEmployeesOnShift(shiftTime);
 		return Employees;

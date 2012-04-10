@@ -81,7 +81,8 @@ public class BOLOform extends JDialog {
 		//Set up the new BOLO form
 		
 		//Add the BOLO "letter head" image to the top
-		ImageIcon boloHeaderIcon = ImageHandler.createImageIcon("images/FINALBOLOBANNERDONOTMESSWITH.png");
+		ImageIcon boloHeaderIcon = 
+				ImageHandler.createImageIcon("images/boloHeader2.png");
 		JPanel boloHeaderPanel = new JPanel();
 		boloHeaderPanel.add(new JLabel(boloHeaderIcon));
 		dialogPanel.add(boloHeaderPanel, "dock north");

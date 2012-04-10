@@ -362,7 +362,6 @@ public class XmlParser {
 			InputStream in = new FileInputStream(propertiesFile);
 			XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
 
-		
 			while (eventReader.hasNext()) {
 				XMLEvent event = eventReader.nextEvent();
 				String key;
@@ -388,6 +387,7 @@ public class XmlParser {
 				}
 				
 			}
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (XMLStreamException e) {

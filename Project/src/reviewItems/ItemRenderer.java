@@ -7,8 +7,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-import java.awt.event.ItemEvent;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -65,9 +63,15 @@ public class ItemRenderer implements ListCellRenderer, MouseListener {
 			
 			itemPanel.add(details, "align left");
 			
+			//highlight the item if its currently selected
 			if(isSelected){ 
 				itemPanel.setBackground(selectedColor); 
 				details.setBackground(selectedColor);
+			}
+			
+			//if this item has been reviewed, check its checkbox
+			if(item.reviewed){
+				cb.setSelected(true);
 			}
 			
 		}
@@ -109,7 +113,6 @@ System.out.println("ItemRenderer: mouseClicked(): CALLED!!");
 			     ReadItemDialog itemDialog = new ReadItemDialog(parent, ((ItemToReview)item));
 			     itemDialog.setVisible(true);
 	     }
-		
 		
 	}
 //-----------------------------------------------------------------------------
