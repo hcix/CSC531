@@ -23,7 +23,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class HomeTab extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	static final String LAUNCH="launch";
+	static final String LAUNCH = "launch";
 	private static final Path ANNOUN_DIR = Paths.get(
 			FileHelper.getProgramDirPathName(), "Videos", "Announcements");
 	LinkedList<Object> llo = new LinkedList<Object>();
@@ -79,48 +79,31 @@ public class HomeTab extends JPanel implements ActionListener {
 
 		return panel;
 	}
-//-----------------------------------------------------------------------------
+
+	// -----------------------------------------------------------------------------
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == LAUNCH)
 			launchMostRecentVideo();
-		
+
 	}
-//-----------------------------------------------------------------------------
+
+	// -----------------------------------------------------------------------------
 	private static void launchMostRecentVideo() {
-		/*
-		 * get a list of the files in a directory checking if each file
-		 * is a file
-		 */
-		File videoDir = new File(ANNOUN_DIR.toString());
-		File[] listOfFiles = videoDir.listFiles(new FileFilter() {
-			public boolean accept(File file) {
-				return file.isFile();
-			}
-		});
-		// check that the directory is not empty
-		if (listOfFiles.length == 0) {
-			// DEBUG
-			System.out.println("No videos in announcement dir");
+
+		// check for null conditions
+		if ((System.getProperty("UMPD.latestVideo") == null)
+				|| (System.getProperty("UMPD.latestVideo") == "none")) {
+			System.out.println("No video loaded");
 			return;
 		}
 
-		// get the last modified (most recently added file)
-		File newest = null;
-		long lastMod = Long.MIN_VALUE;
-		for (File file : listOfFiles) {
-			System.out.println("\n\n last modified : " + file.lastModified()
-					+ "\n\n");
-			if (file.lastModified() > lastMod) {
-				newest = file;
-				lastMod = file.lastModified();
-			}
-		}
+		File newest = new File(System.getProperty("UMPD.latestVideo"));
+		// System.out.println("in launch newest video" + newest.toString());
 
 		try {
-			Runtime.getRuntime()
-					.exec(new String[] { "cmd.exe", "/C",
-							newest.toString() });
+			Runtime.getRuntime().exec(
+					new String[] { "cmd.exe", "/C", newest.toString() });
 		} catch (IOException e1) {
 			System.out.println("Could not open video player");
 			// e1.printStackTrace();

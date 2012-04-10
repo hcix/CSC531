@@ -294,6 +294,16 @@ public class FileHelper {
 		//Specifies a system independent path
 		Path destination = Paths.get(progDir, VIDEO_DIR, ANNOUN_SUB_DIR);
 		
+        // check if files are already there
+		File destinationDir = destination.toFile();
+		File[] destinationFiles = destinationDir.listFiles();
+		
+		for (File file : destinationFiles) {
+			if (file.getName() == original.getName()) {
+				return null;
+			}
+		}
+		
 		return(copyFile(original, destination));
 		
 	}

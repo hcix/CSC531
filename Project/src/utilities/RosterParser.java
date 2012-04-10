@@ -52,7 +52,7 @@ public class RosterParser {
 		return Employees;
 	}
 
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	public boolean isOnShift(File file, int shiftTime, String day) {
 		String filePath, shiftTimeAsString;
 		// check that file is a directory

@@ -71,7 +71,8 @@ public class BOLOpreview extends JDialog {
 		/*Set up the BOLO page*/
 		
 		//Add the BOLO "letter head" image to the top
-		ImageIcon boloHeaderIcon = ImageHandler.createImageIcon("images/boloHeader.png");
+		ImageIcon boloHeaderIcon = 
+				ImageHandler.createImageIcon("images/boloHeader2.png");
 		JPanel boloHeaderPanel = new JPanel();
 		boloHeaderPanel.setBackground(Color.WHITE);
 		boloHeaderPanel.add(new JLabel(boloHeaderIcon));
@@ -210,10 +211,11 @@ public class BOLOpreview extends JDialog {
 		photoVideoPanel.setBackground(Color.WHITE);
 		
 		Path photoPath = bolo.getPhotoFilePath();
-		ImageIcon photo = ImageHandler.getResizableImageIcon(photoPath, 200, 299);
 		
-		photoVideoPanel.add(new JLabel(photo));
-		
+		if(photoPath!=null){
+			ImageIcon photo = ImageHandler.getResizableImageIcon(photoPath, 200, 299);
+			photoVideoPanel.add(new JLabel(photo));
+		}
 		return photoVideoPanel;
 	}
 //-----------------------------------------------------------------------------

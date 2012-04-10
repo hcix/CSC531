@@ -8,6 +8,7 @@ import utilities.xml.XmlParser;
 public class ItemToReview {
 	String title;
 	String details;
+	boolean reviewed;
 //-----------------------------------------------------------------------------
 	public ItemToReview(){
 		
@@ -44,6 +45,20 @@ public class ItemToReview {
 	 */
 	public void setDetails(String details) {
 		this.details = details;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * @return whether or not this item has been marked as read
+	 */
+	public boolean isReviewed() {
+		return reviewed;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * @param reviewed - the reviewed value to set
+	 */
+	public void setReviewed(boolean reviewed) {
+		this.reviewed = reviewed;
 	}
 //-----------------------------------------------------------------------------
 	/**
