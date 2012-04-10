@@ -115,7 +115,7 @@ public class BOLOpreview extends JDialog {
 	  //  contentPane.add(dialogPanelScroller);
 
 	    JScrollPane pdfv = PDFViewHelper.createZoomablePDFDisplay(
-	    		"/Users/heatherciechowski/CSC531/Project/Boloex.pdf", createButtonsPanel());
+	    		"/CSC531/Project/Boloex.pdf", createButtonsPanel());
 	  //  pdfv.setColumnHeaderView(buttonsPanel);
 	    contentPane.add(pdfv, "align center");
 	}
