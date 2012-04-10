@@ -58,7 +58,16 @@ public class ProgramProperties {
 		//Check which of property to set & set it accordingly
 		if(key.equals("UMPD.latestReport")){
 			this.setLatestReport(value);
+<<<<<<< HEAD
 		} 
+=======
+			return;
+		}  
+		if (key.equals("UMPD.latestVideo")) {
+			this.setLastestVideo(value);
+			return;
+		}
+>>>>>>> 45a14c6cf04ac0844f8d8b43422597ae953e0c42
 	}
 //-----------------------------------------------------------------------------
 	/**

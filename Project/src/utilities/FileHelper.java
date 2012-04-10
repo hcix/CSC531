@@ -294,6 +294,16 @@ public class FileHelper {
 		//Specifies a system independent path
 		Path destination = Paths.get(progDir, VIDEO_DIR, ANNOUN_SUB_DIR);
 		
+        // check if files are already there
+		File destinationDir = destination.toFile();
+		File[] destinationFiles = destinationDir.listFiles();
+		
+		for (File file : destinationFiles) {
+			if (file.getName() == original.getName()) {
+				return null;
+			}
+		}
+		
 		return(copyFile(original, destination));
 		
 	}
@@ -304,9 +314,9 @@ public class FileHelper {
 		 * @param target - absolute path of the location to copy the 
 		 * source file to
 		 */
-		public static Path copyFile(File soure, Path target){
+		public static Path copyFile(File source, Path target){
 			
-			Path orginalPath = soure.toPath();
+			Path orginalPath = source.toPath();
 			Path newPath = target.resolve(orginalPath.getFileName());
 			String newFileName;
 					//
@@ -324,7 +334,7 @@ public class FileHelper {
 			}
 			//100 files with this file's same name (and diff numbers after) already exist, 
 			//tell the user to pick a new name
-			return null;
+			return newPath;
 		}
 //-----------------------------------------------------------------------------
   	/** 

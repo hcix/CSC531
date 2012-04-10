@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import program.ResourceManager;
 import utilities.FileHelper;
 import utilities.SwingHelper;
+import utilities.xml.XmlParser;
 
 /**
  * The Administration Panel allows users with Supervisor privileges to perform
@@ -33,17 +34,19 @@ public class AdminTab extends JPanel implements ActionListener {
 	JFrame parent;
 	private static final long serialVersionUID = 1L;
 	ResourceManager rm;
-//-----------------------------------------------------------------------------
+
+	// -----------------------------------------------------------------------------
 	public AdminTab(ResourceManager rm) {
 		JPanel adminPanel = new JPanel();
 		this.parent = rm.getGuiParent();
-		this.rm=rm;
+		this.rm = rm;
 
 		adminPanel.add(createActionButtons());
 
 		this.add(adminPanel);
 	}
-//-----------------------------------------------------------------------------
+
+	// -----------------------------------------------------------------------------
 	private JPanel createActionButtons() {
 		JPanel buttonsPanel = new JPanel();
 
@@ -56,7 +59,7 @@ public class AdminTab extends JPanel implements ActionListener {
 				.createImageButton("icons/editUser_48.png");
 		editUserButton.addActionListener(this);
 		editUserButton.setActionCommand(EDIT_USER);
-		
+
 		JButton deleteUserButton = SwingHelper
 				.createImageButton("icons/deleteUser_48.png");
 		deleteUserButton.addActionListener(this);
@@ -66,7 +69,7 @@ public class AdminTab extends JPanel implements ActionListener {
 				.createImageButton("icons/videoCamera.png");
 		recordVideoButton.addActionListener(this);
 		recordVideoButton.setActionCommand(LAUNCH_VIDEO);
-		
+
 		JButton editSystemButton = SwingHelper
 				.createImageButton("icons/edit_48.png");
 		editSystemButton.addActionListener(this);
@@ -77,25 +80,27 @@ public class AdminTab extends JPanel implements ActionListener {
 		addNewItemButton.addActionListener(this);
 		addNewItemButton.setActionCommand(EDIT_SYSTEM);
 
-		JButton[] buttonArray = {addNewUserButton, editUserButton, deleteUserButton,
-				addNewItemButton, recordVideoButton, editSystemButton};
-		
-		String[] buttonLabelText = {"<html><h2>Add a new user to the system</h2></html",
-				"<html><h2>Edit an existing user</h2></html", 
-				"<html><h2>Delete an existing user</h2></html", 
-				"<html><h2>Set a new item to be reviewed</h2></html", 
+		JButton[] buttonArray = { addNewUserButton, editUserButton,
+				deleteUserButton, addNewItemButton, recordVideoButton,
+				editSystemButton };
+
+		String[] buttonLabelText = {
+				"<html><h2>Add a new user to the system</h2></html",
+				"<html><h2>Edit an existing user</h2></html",
+				"<html><h2>Delete an existing user</h2></html",
+				"<html><h2>Set a new item to be reviewed</h2></html",
 				"<html><h2>Load a video announcement</h2></html",
-				"<html><h2>Edit system settings</h2></html"
-		};
-		
-		addNewItemButton.addActionListener(new ActionListener(){	
+				"<html><h2>Edit system settings</h2></html" };
+
+		addNewItemButton.addActionListener(new ActionListener() {
 			AddItemDialog itemDialog = new AddItemDialog(rm.getGuiParent());
-			public void actionPerformed(ActionEvent e){
-				itemDialog.setVisible(true);	
+
+			public void actionPerformed(ActionEvent e) {
+				itemDialog.setVisible(true);
 				itemDialog.setModal(true);
 			}
 		});
-	
+
 		SwingHelper.addVerticalLabeledButtons(buttonsPanel, buttonArray,
 				buttonLabelText);
 
@@ -130,20 +135,20 @@ public class AdminTab extends JPanel implements ActionListener {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			// copy the chosen photo into the program's 'Photos' directory
 			File file = fc.getSelectedFile();
-			System.out
-					.printf("filepath = %s\n", file.getName(), file.getPath());
 			Path videoPath = FileHelper.copyVideoAnnoun(file);
 			// load the image into photo area
 			if (videoPath == null) {
-				// report that an error occurred in coping and retrieving the
-				// img file
-				return;
-			} else {
-				//figure something out TODO
+				System.out.println("Video already there");
 			}
+			// set property then write to xml
+			System.out.println(" in admin tab " + videoPath.toString());
+			System.setProperty("UMPD.latestVideo", videoPath.toString());
+			XmlParser.setSystemProperty("UMPD.latestVideo",
+					videoPath.toString());
+
 			// put this after chooser has been closed
-			JOptionPane.showMessageDialog(parent, "Video has been loaded " +
-					"to the home page!");
+			JOptionPane.showMessageDialog(parent, "Video has been loaded "
+					+ "to the home page!");
 
 		}
 
