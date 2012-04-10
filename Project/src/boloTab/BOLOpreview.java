@@ -34,6 +34,7 @@ public class BOLOpreview extends JDialog {
 	JFrame parent;
 	JPanel dialogPanel;
 	boolean newBOLOWascreated;
+
 //-----------------------------------------------------------------------------
 	BOLOpreview(JFrame parent, Bolo bolo){
 		super(parent, "BOLO", true);
@@ -65,6 +66,7 @@ public class BOLOpreview extends JDialog {
 			}
 		});
 	    
+
 
 		/*Set up the BOLO page*/
 		
@@ -215,6 +217,7 @@ public class BOLOpreview extends JDialog {
 		return photoVideoPanel;
 	}
 //-----------------------------------------------------------------------------
+
   public boolean isNewBOLOWascreated(){
 	  return newBOLOWascreated;
   }

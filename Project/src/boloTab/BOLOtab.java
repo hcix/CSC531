@@ -10,6 +10,12 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -23,6 +29,7 @@ import net.miginfocom.swing.MigLayout;
 import userinterface.ItemsViewerPanel;
 import utilities.DatabaseHelper;
 import utilities.ImageHandler;
+import utilities.DatabaseHelper;
 import utilities.SwingHelper;
 
 public class BOLOtab extends JPanel  implements ActionListener {
@@ -36,7 +43,7 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	public BOLOtab(final JFrame parent){
 		this.setLayout(new BorderLayout());
-
+				
 	//	ArrayList<Bolo> boloList = null;
 		this.parent = parent;
 		
@@ -76,6 +83,7 @@ private static final long serialVersionUID = 1L;
 		//Create a button to import an existing BOLO
 		JButton importBOLOButton = SwingHelper.createImageButton("Import Existing BOLO", 
 				"icons/Import.png");
+
 		importBOLOButton.addActionListener(new ActionListener() {
 			//file chooser dialog
 			public void actionPerformed(ActionEvent e){
@@ -92,6 +100,7 @@ private static final long serialVersionUID = 1L;
 		//Create search button
 		JButton searchButton = SwingHelper.createImageButton("Search Records", 
 				"icons/search.png");
+
 		searchButton.addActionListener(new ActionListener() {
 			//Search dialog
 			JDialog searchDialog = createSearchDialog(parent);
@@ -101,7 +110,7 @@ private static final long serialVersionUID = 1L;
 		});
 
         this.add(tabbedPane, BorderLayout.CENTER);
-        
+
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.add(newBOLOButton);
         buttonsPanel.add(importBOLOButton);
@@ -131,6 +140,7 @@ private static final long serialVersionUID = 1L;
 		JTextField caseNumField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
 		JTextField locationField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
 		
+
 		String[] statusStrings = { "Need to Identify", "Identified", "Apprehended", "Cleared" };
 		JComboBox<String> statusList = new JComboBox<String>(statusStrings);
 		statusList.setSelectedIndex(0);
@@ -161,12 +171,13 @@ private static final long serialVersionUID = 1L;
 		//TODO: make scrollable!
 		
 		//ItemsViewerPanel entriesPanel = new ItemsViewerPanel();
-		
+
 		try {
 			boloList = DatabaseHelper.getBOLOsFromDB();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		int listSize = boloList.size();
 		JPanel[] items = new JPanel[listSize];
 		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
@@ -212,18 +223,21 @@ private static final long serialVersionUID = 1L;
 		
 		return recentBOLOsPanel;
 	}
-//-----------------------------------------------------------------------------	
+//-----------------------------------------------------------------------------		
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public void actionPerformed(ActionEvent ev) {
-		
 		String listId = ev.getActionCommand();
-		
-		System.out.println("BOLOTab: actionPerformed(): listID = "+listId);
 		int id = Integer.valueOf(listId);
 		
 		Bolo selectedBOLO = boloList.get(id);
 		BOLOpreview preview = new BOLOpreview(parent, selectedBOLO);
-		preview.setVisible(true);	
+
+		preview.setVisible(true);
+		
+
 	}
 //-----------------------------------------------------------------------------	
 }

@@ -18,6 +18,7 @@ import program.ResourceManager;
 import utilities.FileHelper;
 import utilities.ImageHandler;
 import utilities.ImagePreview;
+import program.ResourceManager;
 import utilities.SwingHelper;
 
 /**
@@ -27,6 +28,7 @@ import utilities.SwingHelper;
  * panel will only be displayed if the current user has Supervisor privileges.
  * 
  */
+
 public class AdminTab extends JPanel implements ActionListener {
 	static final String ADD_USER = "add";
 	static final String EDIT_USER = "edit user";
@@ -36,11 +38,12 @@ public class AdminTab extends JPanel implements ActionListener {
 	JFrame parent;
 	private static final long serialVersionUID = 1L;
 	ResourceManager rm;
-// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	public AdminTab(ResourceManager rm) {
 		JPanel adminPanel = new JPanel();
 		this.parent = rm.getGuiParent();
 		this.rm=rm;
+
 		adminPanel.add(createActionButtons());
 
 		this.add(adminPanel);
@@ -53,7 +56,7 @@ public class AdminTab extends JPanel implements ActionListener {
 				.createImageButton("icons/addUser_48.png");
 		addNewUserButton.addActionListener(this);
 		addNewUserButton.setActionCommand(ADD_USER);
-		
+
 		JButton editUserButton = SwingHelper
 				.createImageButton("icons/editUser_48.png");
 		editUserButton.addActionListener(this);
@@ -63,12 +66,7 @@ public class AdminTab extends JPanel implements ActionListener {
 				.createImageButton("icons/deleteUser_48.png");
 		deleteUserButton.addActionListener(this);
 		deleteUserButton.setActionCommand(DELETE_USER);
-		
-		JButton addNewItemButton = SwingHelper
-				.createImageButton("icons/create_48.png");
-		addNewItemButton.addActionListener(this);
-		addNewItemButton.setActionCommand(EDIT_SYSTEM);
-		
+
 		JButton recordVideoButton = SwingHelper
 				.createImageButton("icons/videoCamera.png");
 		recordVideoButton.addActionListener(this);
@@ -78,6 +76,11 @@ public class AdminTab extends JPanel implements ActionListener {
 				.createImageButton("icons/edit_48.png");
 		editSystemButton.addActionListener(this);
 		editSystemButton.setActionCommand(EDIT_SYSTEM);
+
+		JButton addNewItemButton = SwingHelper
+				.createImageButton("icons/create_48.png");
+		addNewItemButton.addActionListener(this);
+		addNewItemButton.setActionCommand(EDIT_SYSTEM);
 
 		JButton[] buttonArray = {addNewUserButton, editUserButton, deleteUserButton,
 				addNewItemButton, recordVideoButton, editSystemButton};
@@ -97,8 +100,7 @@ public class AdminTab extends JPanel implements ActionListener {
 				itemDialog.setModal(true);
 			}
 		});
-		
-
+	
 		SwingHelper.addVerticalLabeledButtons(buttonsPanel, buttonArray,
 				buttonLabelText);
 
