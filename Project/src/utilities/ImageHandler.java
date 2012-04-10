@@ -102,8 +102,10 @@ public class ImageHandler {
 			System.out.printf("NULL; path \n");
 			return null;
 		}
-		System.out.printf("path = %s\n", path.toString());
 		
+//DEBUG
+System.out.printf("path = %s\n", path.toString());
+
 		path = path.toAbsolutePath();
 		URI imgURI = path.toUri();
 		    

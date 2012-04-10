@@ -72,6 +72,7 @@ public class ItemRenderer implements ListCellRenderer, MouseListener {
 			//if this item has been reviewed, check its checkbox
 			if(item.reviewed){
 				cb.setSelected(true);
+				list.repaint();
 			}
 			
 		}

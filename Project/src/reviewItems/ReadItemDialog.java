@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import utilities.SwingHelper;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -32,6 +33,7 @@ private static final long serialVersionUID = 1L;
 	ReadItemDialog(JFrame parent, ItemToReview item){
 		super(parent, item.getTitle(), true);
 		this.parent=parent;
+		this.item=item;
 		
 		this.setPreferredSize(new Dimension(700,500));
 		this.setSize(new Dimension(700,500));
@@ -48,13 +50,14 @@ private static final long serialVersionUID = 1L;
 	    
 		mainPanel = new JPanel(new MigLayout());
 		
-		titleText = "<html><h2>" + item.getTitle() + "</h2></html>";
+		titleText = item.getTitle();
 		titleTextField = new JTextField();
 		Font titleFont = new Font("Serif", Font.PLAIN, 20);
 		titleTextField.setFont(titleFont);
 		titleTextField.setEditable(false);
 		titleTextField.setText(titleText);
 		titleTextField.setBackground(mainPanel.getBackground());
+		titleTextField.setEditable(false);
 		
 		detailsText = item.getDetails();
 		detailsTextPane = new JTextArea();
@@ -66,7 +69,6 @@ private static final long serialVersionUID = 1L;
 		
 		JPanel buttonPanel = createButtonsPanel();
 		mainPanel.add(buttonPanel, "dock north");
-		
 		mainPanel.add(titleTextField, "alignx center, wrap");
 		mainPanel.add(detailsTextPane, "alignx center");
 		
@@ -76,30 +78,48 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	public JPanel createButtonsPanel(){
 		
-		JButton markAsReadButton = new JButton("Mark Item as Read");
+		JButton markAsReadButton = 
+				SwingHelper.createImageButton("Mark Item as Read", "icons/redCheck_32.png");
 		markAsReadButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				item.setReviewed(true);
 				saveAndClose();
 			 }
 		});
 		
-		JButton editButton = new JButton("Edit Item");
+		JButton markAsUnreadButton = new JButton("Mark Item as Unread");
+				//SwingHelper.createImageButton("Mark Item as Unread", "icons/redCheck_32.png");
+		markAsReadButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				item.setReviewed(false);
+				saveAndClose();
+			 }
+		});
+		
+		JButton editButton = 
+				SwingHelper.createImageButton("Edit Item", "icons/edit_32.png");
 		markAsReadButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				detailsTextPane.setEditable(true);
+				titleTextField.setEditable(true);
+				mainPanel.revalidate();
 				mainPanel.validate();
 			 }
 		});
 		
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.add(markAsReadButton, "align left");
+		if(!item.isReviewed()){
+			buttonPanel.add(markAsReadButton);
+		}else{
+			buttonPanel.add(markAsUnreadButton);
+		}
+		
 		buttonPanel.add(editButton);
 		
 		return buttonPanel;
 	}
 //-----------------------------------------------------------------------------
 	private void saveAndClose(){
-
 		/*
 		if(!titleField.getText().isEmpty()){
 			title=titleField.getText().toString().trim();
@@ -115,8 +135,8 @@ private static final long serialVersionUID = 1L;
 		
 		try{ item.addToXML(); } 
 		catch (Exception ex){ ex.printStackTrace(); }
-	
 	*/
+		
 		this.dispose();
 	}
 //-----------------------------------------------------------------------------
