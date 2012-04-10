@@ -82,7 +82,10 @@ private static final long serialVersionUID = 1L;
 	public void addContentItem(JComponent c){
 		
 		scrollPanel.add(c);
+		
 		//TODO: use MigLayout to make this format all pretty like
+	
+		
 	}
 //-----------------------------------------------------------------------------
 	@Override

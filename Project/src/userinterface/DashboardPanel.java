@@ -11,7 +11,7 @@ public class DashboardPanel extends JPanel {
 	public DashboardPanel(){
 		super();
 		
-		ImageIcon logoIcon = ImageHandler.createImageIcon("images/umpdLogo.gif");
+		ImageIcon logoIcon = ImageHandler.createImageIcon("images/ProgramLogo.png");
 		JLabel logo = new JLabel(logoIcon);
 		
 		add(logo);

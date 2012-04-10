@@ -1,0 +1,33 @@
+#!/bin/bash
+
+git status
+
+if [ -n "$1" ] && [ "$1" == "push" ]; then
+    git push 
+	exit
+fi
+
+
+echo "add and commit?"
+read continue
+
+if [ "$continue" == "y" ] || [ "$continue" == "yes" ]; then 
+    git add -A
+	echo "enter commit message :"
+	read message
+	git commit -m \""$message"\"
+	
+	echo "push?"
+	read push
+	while [ -n "$push" ]; do
+	    if [ "$push" == "y" ] || [ "$push" == "yes" ]; then 
+	        git push
+			break
+        elif [ "$push" == "n" ] || [ "$push" == "no" ]; then
+            exit 	
+	    else 
+	        echo "enter y/n or yes/no :"
+	        read push
+	    fi
+    done
+fi

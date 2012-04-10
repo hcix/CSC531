@@ -58,6 +58,8 @@ public class Crime {
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Getter method for caseNum
+	 * 
 	 * @return the case # associated with this <code>Crime</Code> incident
 	 */
 	public String getCaseNum() {
@@ -65,6 +67,8 @@ public class Crime {
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Setter method for caseNum
+	 * 
 	 * @param caseNum - the case # associated with this <code>Crime</Code> incident
 	 */
 	public void setCaseNum(String caseNum) {
@@ -72,6 +76,8 @@ public class Crime {
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Getter method for locationName
+	 * 
 	 * @return the name of the crime scene
 	 */
 	public String getLocationName() {
@@ -79,6 +85,8 @@ public class Crime {
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Setter method for locationName
+	 * 
 	 * @param locationName - the name of the crime scene
 	 */
 	public void setLocationName(String locationName) {
@@ -86,6 +94,8 @@ public class Crime {
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Getter method for location's FID number
+	 * 
 	 * @return the FID number pertaining to the location
 	 */
 	public String getLocationFID() {
@@ -93,6 +103,8 @@ public class Crime {
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Setter method for location's FID number
+	 * 
 	 * @param locationFID - the FID number pertaining to the location
 	 */
 	public void setLocationFID(String locationFID) {

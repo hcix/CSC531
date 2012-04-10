@@ -5,22 +5,29 @@ package progAdmin;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+<<<<<<< HEAD
 import java.io.File;
 import java.nio.file.Path;
 
 import javax.swing.ImageIcon;
+=======
+>>>>>>> 69f209399dc0409a2e1b4e1398c1050b6f16de51
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+<<<<<<< HEAD
 
 import program.ResourceManager;
 
 import utilities.FileHelper;
 import utilities.ImageHandler;
 import utilities.ImagePreview;
+=======
+import program.ResourceManager;
+>>>>>>> 69f209399dc0409a2e1b4e1398c1050b6f16de51
 import utilities.SwingHelper;
 
 /**
@@ -30,6 +37,7 @@ import utilities.SwingHelper;
  * panel will only be displayed if the current user has Supervisor privileges.
  * 
  */
+<<<<<<< HEAD
 public class AdminTab extends JPanel implements ActionListener {
 	static final String ADD_USER = "add";
 	static final String EDIT_USER = "edit user";
@@ -44,6 +52,17 @@ public class AdminTab extends JPanel implements ActionListener {
 		JPanel adminPanel = new JPanel();
 		this.parent = rm.getGuiParent();
 
+=======
+public class AdminTab extends JPanel {
+private static final long serialVersionUID = 1L;
+	ResourceManager rm;
+//-----------------------------------------------------------------------------
+	public AdminTab(ResourceManager rm){
+		
+		JPanel adminPanel = new JPanel();
+		this.rm=rm;
+		
+>>>>>>> 69f209399dc0409a2e1b4e1398c1050b6f16de51
 		adminPanel.add(createActionButtons());
 
 		this.add(adminPanel);
@@ -58,6 +77,7 @@ public class AdminTab extends JPanel implements ActionListener {
 		addNewUserButton.addActionListener(this);
 		addNewUserButton.setActionCommand(ADD_USER);
 		
+<<<<<<< HEAD
 		JButton editUserButton = SwingHelper
 				.createImageButton("icons/editUser_48.png");
 		editUserButton.addActionListener(this);
@@ -77,6 +97,36 @@ public class AdminTab extends JPanel implements ActionListener {
 				.createImageButton("icons/edit_48.png");
 		editSystemButton.addActionListener(this);
 		editSystemButton.setActionCommand(EDIT_SYSTEM);
+=======
+		JButton addNewUserButton = SwingHelper.createImageButton("icons/addUser_48.png");
+		JButton editUserButton = SwingHelper.createImageButton("icons/editUser_48.png");
+		JButton deleteUserButton = SwingHelper.createImageButton("icons/deleteUser_48.png");
+		JButton addNewItemButton = SwingHelper.createImageButton("icons/addUser_48.png");
+		JButton recordVideoButton = SwingHelper.createImageButton("icons/videoCamera.png");
+		JButton editStdBOLOfooterButton = SwingHelper.createImageButton("icons/edit_48.png");
+		
+		JButton[] buttonArray = {addNewUserButton, editUserButton, deleteUserButton,
+				addNewItemButton, recordVideoButton, editStdBOLOfooterButton};
+		
+		String[] buttonLabelText = {"<html><h2>Add a new user to the system</h2></html",
+				"<html><h2>Edit an existing user</h2></html", 
+				"<html><h2>Delete an existing user</h2></html", 
+				"<html><h2>Set a new item to be reviewed</h2></html", 
+				"<html><h2>Load a video announcement</h2></html",
+				"<html><h2>Edit system settings</h2></html"
+		};
+		
+		addNewItemButton.addActionListener(new ActionListener(){	
+			AddItemDialog itemDialog = new AddItemDialog(rm.getGuiParent());
+			public void actionPerformed(ActionEvent e){
+				itemDialog.setVisible(true);	
+				itemDialog.setModal(true);
+			}
+		});
+		
+		
+		SwingHelper.addVerticalLabeledButtons(buttonsPanel, buttonArray, buttonLabelText);
+>>>>>>> 69f209399dc0409a2e1b4e1398c1050b6f16de51
 		
 		JButton[] buttonArray = { addNewUserButton, editUserButton,
 				deleteUserButton, recordVideoButton, editSystemButton };

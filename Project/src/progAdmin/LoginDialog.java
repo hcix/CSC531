@@ -35,7 +35,12 @@ private static final long serialVersionUID = 1L;
 	private static final int ERROR_USR_DNE = 2;
 	JLabel retryLabel;
 	JTextField caneIdField, passwordField;
-//-----------------------------------------------------------------------------	
+//-----------------------------------------------------------------------------
+	/**
+	 * Creates Login JFrame
+	 * 
+	 * @param frame
+	 */
 	public LoginDialog(final JFrame frame){
 		super(frame, "UMPD Login", true);
 		
@@ -65,6 +70,11 @@ private static final long serialVersionUID = 1L;
 		contentPane.add(dialogPanel);
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Creates input fields for user to input their caneID and password
+	 * 
+	 * @return
+	 */
 	public JPanel createInputPanel(){
 		JPanel inputPanel = new JPanel(new MigLayout());
 		
@@ -77,6 +87,12 @@ private static final long serialVersionUID = 1L;
 		return inputPanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Creates buttons for logon panel
+	 * Buttons include "Login", "Cancel", and "Help"
+	 * 
+	 * @return
+	 */
 	public JPanel createButtonsPanel(){
 		JPanel buttonsPanel = new JPanel(new MigLayout("fillx"));
 		
@@ -116,7 +132,7 @@ private static final long serialVersionUID = 1L;
 	
 /* *****************************************************************************
 * TODO: 1.Find and play a login sound upon success. 
-* 		2.Create and display spash screen.
+* TODO: 2.Create and display spash screen.
 * Since the program takes a few seconds to load, should play a login tone and
 * show a splash screen to let user know that their login has been successful
 * and the program is loading.
@@ -160,10 +176,10 @@ private static final long serialVersionUID = 1L;
 			  return ERROR_USR_DNE; 
 		  }
 		  
-//DEBUG--------------------------------		  
+//DEBUG: 
 		  System.out.println("caneID field = " + caneIdField.getText() + " and user" +
 		  		"caneID = "  + user.getCaneID());
-//--------------------------------DEBUG		  
+	  
 		  
 		  //Set the current user to be the employee that just logged in 
 		  CurrentUser.setCurrentUser(user);
@@ -182,6 +198,12 @@ private static final long serialVersionUID = 1L;
 		  return loginSuccessful;
 	  }
 //-----------------------------------------------------------------------------
+	  /**
+	   * Displays a dialog box indicating there has been an error while
+	   * attempting to login
+	   * 
+	   * @param errorID
+	   */
 	  public void displayRetryLabel(int errorID) {
 		  //Display the error corresponding to the gven error code
 		  switch(errorID){

@@ -112,12 +112,12 @@ public class BOLOpreview extends JDialog {
 	    //Add the BOLO form scrolling pane dialog to the screen
 	    Container contentPane = getContentPane();
 	    contentPane.setLayout(new MigLayout());
-	    contentPane.add(dialogPanelScroller);
+	  //  contentPane.add(dialogPanelScroller);
 
-	 //   JScrollPane pdfv = PDFViewHelper.createZoomablePDFDisplay(
-	 //   		"/Users/heatherciechowski/CSC531/Project/Boloex.pdf", createButtonsPanel());
+	    JScrollPane pdfv = PDFViewHelper.createZoomablePDFDisplay(
+	    		"/Users/heatherciechowski/CSC531/Project/Boloex.pdf", createButtonsPanel());
 	  //  pdfv.setColumnHeaderView(buttonsPanel);
-	 //   contentPane.add(pdfv, "align center");
+	    contentPane.add(pdfv, "align center");
 	}
 //-----------------------------------------------------------------------------	
 	public JPanel createPhysicalDescriptionPanel(){
@@ -214,10 +214,9 @@ public class BOLOpreview extends JDialog {
 		photoVideoPanel.setBackground(Color.WHITE);
 		
 		Path photoPath = bolo.getPhotoFilePath();
-		if(photoPath!=null){
-			ImageIcon photo = ImageHandler.getResizableImageIcon(photoPath, 200, 299);
-			photoVideoPanel.add(new JLabel(photo));
-		}
+		ImageIcon photo = ImageHandler.getResizableImageIcon(photoPath, 200, 299);
+		
+		photoVideoPanel.add(new JLabel(photo));
 		
 		return photoVideoPanel;
 	}

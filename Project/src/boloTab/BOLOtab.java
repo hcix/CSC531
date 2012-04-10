@@ -5,8 +5,6 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.ImageIcon;
@@ -20,80 +18,46 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
-import userinterface.ItemsViewerPanel;
 import utilities.DatabaseHelper;
 import utilities.SwingHelper;
 
 public class BOLOtab extends JPanel  implements ActionListener {
 	
-//TODO Java Docs
+	//TODO Java Docs
 	
 private static final long serialVersionUID = 1L;
 	ArrayList<Bolo> boloList;
 	JFrame parent;
-	JPanel recentBolosTab;
 //-----------------------------------------------------------------------------
 	public BOLOtab(final JFrame parent){
 		this.setLayout(new BorderLayout());
 				
-		//ArrayList<Bolo> boloList = null;
+	//	ArrayList<Bolo> boloList = null;
 		this.parent = parent;
 		
 		//Create BOLOs tabbed display area
-		final JTabbedPane tabbedPane = new JTabbedPane();
+		JTabbedPane tabbedPane = new JTabbedPane();
 		//Add recent BOLOs tab
-		recentBolosTab = createRecentBOLOsTab();
+		JPanel recentBolosTab = createRecentBOLOsTab();
 		tabbedPane.addTab("Recent BOLOs", recentBolosTab);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
-		
 	    //Add archived BOLOs tab 
 		JPanel archievedBolosTab = new JPanel();
-		tabbedPane.addTab("Archived", archievedBolosTab);
+		tabbedPane.addTab("Archieved", archievedBolosTab);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_3);
         
 		//Create a button to create a new BOLO 
-		JButton newBOLOButton = SwingHelper.createImageButton("Create BOLO", 
-				"icons/plusSign_48.png");
+		JButton newBOLOButton = SwingHelper.createImageButton("Create BOLO", "icons/plusSign_48.png");
 		newBOLOButton.addActionListener(new ActionListener() {
 			//BOLO form dialog
 			BOLOform formDialog = new BOLOform(parent);
 			public void actionPerformed(ActionEvent e){
-				formDialog.setVisible(true);	
-				
-				//wait for the dialog to be dismissed before continuing
-				formDialog.setModal(true);
-//System.out.printf("\nBOLOtab: BOLOtab(): this shouldn't print too soon");
-
-System.out.printf("\nBOLOtab: BOLOtab(): formDialog.isNewBOLOWascreated() %s\n",
-		formDialog.isNewBOLOWascreated());
-
-				if(formDialog.isNewBOLOWascreated()){
-					recentBolosTab.removeAll();
-				//	recentBolosTab = createRecentBOLOsTab();
-					recentBolosTab.add(createRecentBOLOsTab());
-					//(recentBolosTab.getParent()).validate();
-					tabbedPane.revalidate();
-				}
-				// formDialog.addWindowListener(new WindowAdapter( ) {
-					//public void windowClosing(WindowEvent e) {
-						//if(formDialog.isNewBOLOWascreated()){
-						//recentBolosTab.removeAll();
-				//		while(!formDialog.isVisible()){
-							//System.out.printf("\nBOLOtab: notVisible\n");
-				//		}
-						//System.out.printf("\nBOLOtab: formDialog Window Closed\n");
-						//recentBolosTab = createRecentBOLOsTab();
-						
-						//}
-				//	}
-					
-				//});
+				formDialog.setVisible(true);
 			}
 		});
 
 		//Create a button to import an existing BOLO
-		JButton importBOLOButton = SwingHelper.createImageButton("Import Existing BOLO", 
-				"icons/Import.png");
+		JButton importBOLOButton = SwingHelper.createImageButton("Import Existing BOLO", "icons/Import.png");
 		importBOLOButton.addActionListener(new ActionListener() {
 			//file chooser dialog
 			public void actionPerformed(ActionEvent e){
@@ -108,8 +72,7 @@ System.out.printf("\nBOLOtab: BOLOtab(): formDialog.isNewBOLOWascreated() %s\n",
 		});
 
 		//Create search button
-		JButton searchButton = SwingHelper.createImageButton("Search Records", 
-				"icons/search.png");
+		JButton searchButton = SwingHelper.createImageButton("Search Records", "icons/search.png");
 		searchButton.addActionListener(new ActionListener() {
 			//Search dialog
 			JDialog searchDialog = createSearchDialog(parent);
@@ -119,7 +82,6 @@ System.out.printf("\nBOLOtab: BOLOtab(): formDialog.isNewBOLOWascreated() %s\n",
 		});
 
         this.add(tabbedPane, BorderLayout.CENTER);
-        
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.add(newBOLOButton);
         buttonsPanel.add(importBOLOButton);
@@ -170,12 +132,9 @@ System.out.printf("\nBOLOtab: BOLOtab(): formDialog.isNewBOLOWascreated() %s\n",
 	}
 //-----------------------------------------------------------------------------
 	public JPanel createRecentBOLOsTab(){
-		JPanel recentBOLOsPanel = new JPanel(new MigLayout("gapx 30, wrap 4"));
+		JPanel recentBOLOsPanel = new JPanel(new MigLayout("gapx 30"));
 		JButton boloPanel;
 		Date prepDate;
-		
-		//
-		ItemsViewerPanel entriesPanel = new ItemsViewerPanel();
 		
 		try {
 			boloList = DatabaseHelper.getBOLOsFromDB();
@@ -193,17 +152,14 @@ System.out.printf("\nBOLOtab: BOLOtab(): formDialog.isNewBOLOWascreated() %s\n",
 			boloPanel.setActionCommand(listId);
 			boloPanel.addActionListener(this);
 			
-//TODO: add other stuff
-		
-		//	entriesPanel.addItemToPanel(boloPanel);
+			//TODO: add other stuff
+			
 			recentBOLOsPanel.add(boloPanel, "width 10%, height 40%");
 		}
 		
-		recentBOLOsPanel.add(entriesPanel);
-		//this.validate();
 		return recentBOLOsPanel;
 	}
-//-----------------------------------------------------------------------------	
+//-----------------------------------------------------------------------------		
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */

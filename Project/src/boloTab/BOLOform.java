@@ -1,14 +1,15 @@
+/**
+ *  UI for gathering information of a BOLO
+ */
 package boloTab;
 
 import java.awt.Container;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.ImageIcon;
@@ -33,7 +34,7 @@ import utilities.ImagePreview;
 import utilities.ResizablePhotoDialog;
 import utilities.SwingHelper;
 
-public class BOLOform extends JDialog implements ChangeListener {
+public class BOLOform extends JDialog {
 	private static final long serialVersionUID = 1L;
 	JTextField ageField,raceField,sexField,heightField,weightField,buildField;
 	JTextField eyesField,hairField;
@@ -50,8 +51,8 @@ public class BOLOform extends JDialog implements ChangeListener {
 	BOLOform(JFrame parent){
 		super(parent, "New BOLO", true);
 
-		
 		this.parent = parent;
+		 	
 		//Create the BOLO object to add info to
 		bolo = new Bolo();
 		
@@ -76,11 +77,11 @@ public class BOLOform extends JDialog implements ChangeListener {
 			}
 		});
 	    
-
+		
 		//Set up the new BOLO form
 		
 		//Add the BOLO "letter head" image to the top
-		ImageIcon boloHeaderIcon = ImageHandler.createImageIcon("images/boloHeader.png");
+		ImageIcon boloHeaderIcon = ImageHandler.createImageIcon("images/FINALBOLOBANNERDONOTMESSWITH.png");
 		JPanel boloHeaderPanel = new JPanel();
 		boloHeaderPanel.add(new JLabel(boloHeaderIcon));
 		dialogPanel.add(boloHeaderPanel, "dock north");
@@ -260,7 +261,7 @@ public class BOLOform extends JDialog implements ChangeListener {
 	}
 //-----------------------------------------------------------------------------
 	public JPanel createPhotoVideoPanel(){
-		JPanel photoVideoPanel = new JPanel(new MigLayout());
+		JPanel photoVideoPanel = new JPanel(new MigLayout("fill"));
 		
 		//Create initial no-photo place holder photo
 		final JPanel photoPanel = new JPanel();
@@ -272,13 +273,15 @@ public class BOLOform extends JDialog implements ChangeListener {
 		
 		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", 
 				"icons/camera.png");
+		addPhotoButton.setToolTipText("Attach a photo to this BOLO");
 		addPhotoButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae) {
 				chooseAndAddPhoto(photoPanel);
 			}
 		});
+	
 		
-		addPhotoButton.setToolTipText("Attach a photo to this BOLO");
+		
 		JButton addVideoButton = SwingHelper.createImageButton("Add a Video", 
 				"icons/videoCamera.png");
 		addVideoButton.setToolTipText("Attach a video to this BOLO");
@@ -316,14 +319,23 @@ public class BOLOform extends JDialog implements ChangeListener {
 	    });
 	    
 	    // Add preview button
-	    JButton previewButton = new JButton("<html>Preview<br>  BOLO</html>");
+	    JButton previewButton = new JButton("Preview");
 	    previewButton.setToolTipText("Preview and print final BOLO document");
 	    previewButton.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		setVisible(false);
+	    		//setVisible(false);
 	    		putInfoIntoBoloObject();
 	    		BOLOpreview preview = new BOLOpreview(parent, bolo);
 	    		preview.setVisible(true);
+	    		preview.setModal(true);
+	    		if(preview.isNewBOLOWascreated()){
+	    			setVisible(false);
+	    			newBOLOWascreated=true;
+	    			eraseForm();
+	    		} else{
+	    			newBOLOWascreated=false;
+	    			setVisible(true);
+	    		}
 	    	}
 	    });
 	    
@@ -335,7 +347,6 @@ public class BOLOform extends JDialog implements ChangeListener {
 	    previewButtonPanel.add(previewButton, "tag right");
 	    buttonsPanel.add(saveAndCancelButtonsPanel, "shrinky");
 	    buttonsPanel.add(previewButtonPanel, "growx, shrinky");
-	   // SwingHelper.addLineBorder(buttonsPanel);
 	    return buttonsPanel;
 	}
 //-----------------------------------------------------------------------------
@@ -354,12 +365,9 @@ public class BOLOform extends JDialog implements ChangeListener {
 			System.out.println("error: unable to add BOLO to DB");
 			e.printStackTrace();
 		 }
+		 
 //TODO: Create a pdf from the input data
-		 
-		 
-//tell the BOLO tab to add this new BOLO to the display panel
-	//	 ((BOLOtab)parent).
-		 
+
 		 //reset the form
 		 eraseForm();
 		 
@@ -424,11 +432,6 @@ public class BOLOform extends JDialog implements ChangeListener {
 	  * Places the info from the input fields into the global BOLO object.
 	  */
 	 public void loadFromExistingBOLO(){
-	/*	 String age, race, sex, height, weight, build, eyes, hair;
-		 String reference, caseNum, status, weapon;
-		 String preparedBy, approvedBy;
-		 String otherDescrip, narrative;*/
-		 
 		 //set the filled in fields in the global BOLO object
 		 ageField.setText(bolo.getAge());
 		 
@@ -479,14 +482,12 @@ public class BOLOform extends JDialog implements ChangeListener {
 
 			final ResizablePhotoDialog resizeDialog = new ResizablePhotoDialog(
 						chosenPhoto, this, file.getName());
-	
-			//resizeDialog.setVisible(true);
-			
+
 			//if the user pressed the set photo button
 			if(resizeDialog.getNewPhotoFilePath()!=null){
 				bolo.setPhotoFilePath(resizeDialog.getNewPhotoFilePath());
 				photoPanel.removeAll();
-			
+				
 				photoPanel.add(new JLabel(resizeDialog.getResizedImgIcon()));
 
 				(photoPanel.getParent()).validate();
@@ -503,17 +504,22 @@ public class BOLOform extends JDialog implements ChangeListener {
 	 public void closeAndCancel() {
 		//reset the form
 		eraseForm();
-		
 	
 		//delete the photo(if any)
-		if(bolo.getPhotoFilePath().toString()!=null){
-			System.out.printf("\nBOLOform: closeAndCancel(): bolo.getPhotoFilePath().toString() " +
+		if(bolo.getPhotoFilePath()!=null){
+			
+//DEBUG:
+			System.out.printf("\nBOLOform: closeAndCancel(): deleting " +
+					"bolo.getPhotoFilePath().toString() " +
 							"= %s\n", bolo.getPhotoFilePath().toString());
+
 			File f=new File(bolo.getPhotoFilePath().toString());
 			if(f.exists() && f.isFile()){
 				f.delete();
 			}
 		}
+		
+		
 		newBOLOWascreated=false;
 		//close the dialog
 		this.dispose();	
@@ -587,15 +593,5 @@ public class BOLOform extends JDialog implements ChangeListener {
   public boolean isNewBOLOWascreated(){
 	  return this.newBOLOWascreated;
   }
-//-----------------------------------------------------------------------------	
-  
-	/* (non-Javadoc)
-	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
-	 */
-	@Override
-	public void stateChanged(ChangeEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 //-----------------------------------------------------------------------------	
 }

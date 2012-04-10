@@ -15,7 +15,9 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import userinterface.ItemsViewerPanel;
 import utilities.SwingHelper;
-
+/**
+ * Configures UI for the Blue Book Tab
+ */
 //-----------------------------------------------------------------------------	
 public class BlueBookTab extends JPanel implements ActionListener {
 private static final long serialVersionUID = 1L;
@@ -26,7 +28,7 @@ private static final long serialVersionUID = 1L;
 		//Create Blue Book tabbed display area
 		JTabbedPane tabbedPane = new JTabbedPane();
 		//Add recent Blue Book Entries tab
-		JPanel entriesTab = new ItemsViewerPanel();
+
 		//tabbedPane.addTab("Blue Book", recentBolosTab);
 		//tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
 				
