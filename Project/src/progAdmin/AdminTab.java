@@ -140,11 +140,11 @@ public class AdminTab extends JPanel implements ActionListener {
 			Path videoPath = FileHelper.copyVideoAnnoun(file);
 			// load the image into photo area
 			if (videoPath == null) {
-				// report that an error occurred in coping and retrieving the
-				// img file
+				System.out.println("Coulnd't get video path");
 				return;
 			} else {
-				//figure something out TODO
+				// set property then write to xml
+				System.setProperty("UMPD.latestVideo", videoPath.toString());
 
 			}
 			// put this after chooser has been closed

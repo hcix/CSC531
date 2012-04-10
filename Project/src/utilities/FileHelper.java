@@ -304,9 +304,9 @@ public class FileHelper {
 		 * @param target - absolute path of the location to copy the 
 		 * source file to
 		 */
-		public static Path copyFile(File soure, Path target){
+		public static Path copyFile(File source, Path target){
 			
-			Path orginalPath = soure.toPath();
+			Path orginalPath = source.toPath();
 			Path newPath = target.resolve(orginalPath.getFileName());
 			String newFileName;
 					//
@@ -324,7 +324,7 @@ public class FileHelper {
 			}
 			//100 files with this file's same name (and diff numbers after) already exist, 
 			//tell the user to pick a new name
-			return null;
+			return newPath;
 		}
 //-----------------------------------------------------------------------------
   	/** 
