@@ -1,12 +1,6 @@
 package reviewItems;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import utilities.xml.XmlParser;
-
 //-----------------------------------------------------------------------------
 /**
  * 
@@ -63,5 +57,18 @@ public class ItemToReview {
 	public void addToXML() throws Exception{
 		XmlParser.addItemToReview(this);
 	}
+//-----------------------------------------------------------------------------
+	@Override 
+	public String toString() {
+	    StringBuilder result = new StringBuilder();//slightly faster
+
+	    result.append(this.getClass().getName() + " Object {\n");
+	    result.append(" Title: " + this.title + "\n");
+	    result.append(" Details: " + this.details + "\n");
+	    result.append("}");
+
+	    return (result.toString());
+	  }
+
 //-----------------------------------------------------------------------------
 }

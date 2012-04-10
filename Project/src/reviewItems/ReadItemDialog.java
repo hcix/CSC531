@@ -1,4 +1,4 @@
-package progAdmin;
+package reviewItems;
 
 import java.awt.Container;
 import java.awt.Dimension;
@@ -13,21 +13,21 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import reviewItems.ItemToReview;
 import net.miginfocom.swing.MigLayout;
-import utilities.SwingHelper;
 //-----------------------------------------------------------------------------
+
 /**
- *
+ * 
  */
-public class AddItemDialog extends JDialog {
+public class ReadItemDialog extends JDialog {
 private static final long serialVersionUID = 1L;
 	JFrame parent;
 	ItemToReview item;
 	JTextField titleField;
 	JTextArea textArea;
+	JPanel mainPanel;
 //-----------------------------------------------------------------------------
-	public AddItemDialog(JFrame parent){
+	ReadItemDialog(JFrame parent, ItemToReview item){
 		super(parent, "New Item", true);
 		this.parent=parent;
 		
@@ -44,42 +44,61 @@ private static final long serialVersionUID = 1L;
 			}
 		});
 	    
-		item=new ItemToReview();
+		mainPanel = new JPanel(new MigLayout());
 		
-		//JPanel mainPanel = new JPanel(new MigLayout("", "[][]", "[][][]"));
-		JPanel mainPanel = new JPanel(new MigLayout());
+		String titleText = "<html><h2>" + item.getTitle() + "</h2></html>";
+		JLabel titleLabel = new JLabel(titleText);
 		
-		JLabel titleLabel = new JLabel("Item Title: ");
-		JLabel detailsLabel = new JLabel("Description: ");
-		
-		titleField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
-		
+		//String detailsText = "<html>" + item.getDetails() + "</html>";
+		String detailsText = item.getDetails();
+		//JLabel detailsLabel = new JLabel(detailsText);
+
 		textArea = new JTextArea(100, 20);
+		textArea.setText(detailsText);
+		textArea.setEditable(false);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
-
+		textArea.setBackground(mainPanel.getBackground());
 		
-		JButton addItem = new JButton("Add Item");
-		addItem.addActionListener(new ActionListener(){
+		JPanel buttonPanel = createButtonsPanel();
+		mainPanel.add(buttonPanel, "dock north");
+		
+		mainPanel.add(titleLabel, "align left");
+//		mainPanel.add(titleField, "align left, wrap");
+		mainPanel.add(textArea, "align left");
+		mainPanel.add(textArea, "align left, wrap");
+		
+	    Container contentPane = getContentPane();
+	    contentPane.add(mainPanel);	
+	}
+//-----------------------------------------------------------------------------
+	public JPanel createButtonsPanel(){
+		JButton markAsReadButton = new JButton("Mark Item as Read");
+		markAsReadButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				saveAndClose();
 			 }
 		});
 		
-		mainPanel.add(titleLabel, "align left");
-		mainPanel.add(titleField, "align left, wrap");
-		mainPanel.add(detailsLabel, "align left");
-		mainPanel.add(textArea, "align left, wrap");
-		mainPanel.add(addItem, "align left");
+		JButton editButton = new JButton("Edit Item");
+		markAsReadButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				textArea.setEditable(true);
+				mainPanel.validate();
+			 }
+		});
 		
-	    Container contentPane = getContentPane();
-	    contentPane.add(mainPanel);
-
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(markAsReadButton, "align left");
+		buttonPanel.add(editButton);
+		
+		return buttonPanel;
 	}
 //-----------------------------------------------------------------------------
 	private void saveAndClose(){
 		String title="", details="";
-		
+
+		/*
 		if(!titleField.getText().isEmpty()){
 			title=titleField.getText().toString().trim();
 			System.out.println("AddItemDialog: AddItemDialog(): title = "+title);
@@ -91,14 +110,16 @@ private static final long serialVersionUID = 1L;
 			item.setDetails(details);
 		}
 		
+		
 		try{ item.addToXML(); } 
 		catch (Exception ex){ ex.printStackTrace(); }
 	
+	*/
 		this.dispose();
 	}
 //-----------------------------------------------------------------------------
 	private void closeAndCancel(){
-		titleField.setText("");
+		//titleField.setText("");
 		textArea.setText("");
 		
 		this.dispose();

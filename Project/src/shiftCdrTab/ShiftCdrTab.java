@@ -289,8 +289,11 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		
 		ItemsListModel itemsModel = new ItemsListModel(items);
 		JList itemsList = new JList(itemsModel);
-		itemsList.setCellRenderer(new ItemRenderer());
-		  
+
+		ItemRenderer itemRenderer = new ItemRenderer(parent, itemsList);
+		itemsList.setCellRenderer(itemRenderer);
+		itemsList.addMouseListener(itemRenderer);
+
 //DEBUG: fix the layout for this; its real ugly
 		
 		/*for(ItemToReview item : items){
