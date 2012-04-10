@@ -9,9 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import progAdmin.AdminTab;
 import program.ResourceManager;
-import scheduleTab.ScheduleTab;
 import shiftCdrTab.ShiftCdrTab;
-import utilities.SwingHelper;
 import blueBookTab.BlueBookTab;
 import boloTab.BOLOtab;
 
@@ -69,7 +67,7 @@ private static final long serialVersionUID = 1L;
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
 //	        if(CurrentUser.getCurrentUser().getLevel()>=
 //	        		PersonnelManager.PERMIS_LEVEL_SUPERVISR){
-		        adminTab = new AdminTab();
+		        adminTab = new AdminTab(rm);
 		        tabbedPane.addTab("Administration", adminTab);
 		        tabbedPane.setMnemonicAt(5, KeyEvent.VK_7); // change from 6 to 5?
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES

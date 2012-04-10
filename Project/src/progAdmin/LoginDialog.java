@@ -132,7 +132,7 @@ private static final long serialVersionUID = 1L;
 	
 /* *****************************************************************************
 * TODO: 1.Find and play a login sound upon success. 
-* 		2.Create and display spash screen.
+* TODO: 2.Create and display spash screen.
 * Since the program takes a few seconds to load, should play a login tone and
 * show a splash screen to let user know that their login has been successful
 * and the program is loading.
@@ -176,10 +176,10 @@ private static final long serialVersionUID = 1L;
 			  return ERROR_USR_DNE; 
 		  }
 		  
-//DEBUG--------------------------------		  
+//DEBUG: 
 		  System.out.println("caneID field = " + caneIdField.getText() + " and user" +
 		  		"caneID = "  + user.getCaneID());
-//--------------------------------DEBUG		  
+	  
 		  
 		  //Set the current user to be the employee that just logged in 
 		  CurrentUser.setCurrentUser(user);

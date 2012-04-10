@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -41,6 +43,7 @@ import org.jpedal.external.Options;
 import org.jpedal.utils.LogWriter;
 import org.jpedal.utils.Messages;
 import program.ResourceManager;
+import utilities.FileHelper;
 
 public class PDFView {
 //-----------------------------------------------------------------------------
@@ -97,11 +100,14 @@ public class PDFView {
 		//enable error messages which are OFF by default
 		PdfDecoder.showErrorMessages=true;
 		  
-		String prefFile = "/Users/heatherciechowski/CSC531/Project/src/utilities/pdf/properties/pdf_reportsTab.xml";
-
+		//String prefFile = "/Users/heatherciechowski/CSC531/Project/src/utilities/pdf/properties/pdf_reportsTab.xml";
+		String progDir = FileHelper.getProgramDirPathName();
+		Path prefFile = Paths.get(progDir, "Project", "src", "utilities", 
+				"pdf", "properties", "pdf_reportsTab.xml"); 
+		//System.out.println(prefFile.toString());
 		  if(prefFile != null){
-		    properties.loadProperties(prefFile);
-		  }else{
+		    properties.loadProperties(prefFile.toString());
+		  }else {
 		    properties.loadProperties();
 		  }
 		  
@@ -347,6 +353,8 @@ public class PDFView {
 	public void setupViewer() {
 		//also allow messages to be suppressed with JVM option
 		String flag=System.getProperty("org.jpedal.suppressViewerPopups");
+		
+		@SuppressWarnings("unused")
 		boolean suppressViewerPopups = false;
 		if(flag!=null && flag.toLowerCase().equals("true")){
 			suppressViewerPopups = true;

@@ -227,7 +227,7 @@ private static final long serialVersionUID = 1L;
 	 public void putInfoIntoBlueBookEntry(){
 		 String caseNumText, nameText, affiliText, addressText, weapon;
 		 String locationText, descritionText, reasonText;
-		 String preparedBy;
+		 //String preparedBy;
 		 
 		 //get the filled in fields in the global bbEntry object
 		 caseNumText = caseNumField.getText();
@@ -265,8 +265,8 @@ private static final long serialVersionUID = 1L;
 		 reasonField.setText(bbEntry.getNarrative());
 
 		 //set picture
-		 ImageIcon photo = 
-				 ImageHandler.getResizableImageIcon(bbEntry.getPhotoFilePath(), 200, 299);
+		 //ImageIcon photo = 
+			//	 ImageHandler.getResizableImageIcon(bbEntry.getPhotoFilePath(), 200, 299);
 
 //TODO: place the photo into the form
 		 

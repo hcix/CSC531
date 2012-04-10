@@ -19,6 +19,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import progAdmin.Employee;
 import program.ProgramProperties;
+import reviewItems.ItemToReview;
 import utilities.FileHelper;
 import utilities.pdf.FieldAndVal;
 
@@ -40,6 +41,10 @@ public class XmlParser {
 	static final String EMAIL = "email";
 	static final String PERMISSIONS = "permissions";
 	static final String FIRSTNAME = "firstname";
+	
+	static final String ITEM = "item";
+	static final String TITLE = "title";
+	static final String DETAILS = "details";
 
 	static String rosterFile; //TODO: set up method in FileHelper to get these
 	static String propertiesFile;//so they can be final vars
@@ -189,7 +194,7 @@ public class XmlParser {
 		eventWriter.add(end);
 	}
 //-----------------------------------------------------------------------------	 
-	private void createInnerNode(XMLEventWriter eventWriter, String name,
+	private static void createInnerNode(XMLEventWriter eventWriter, String name,
 			String value) throws XMLStreamException {
 
 		XMLEventFactory eventFactory = XMLEventFactory.newInstance();
@@ -231,6 +236,27 @@ public class XmlParser {
 			
 		eventWriter.add(tab);
 		eventWriter.add(eventFactory.createEndElement("", "", "employee"));
+		eventWriter.add(end);
+		
+	}
+//-----------------------------------------------------------------------------	
+	private static void addItemNode(XMLEventWriter eventWriter, ItemToReview item)
+	throws Exception {
+		XMLEventFactory eventFactory = XMLEventFactory.newInstance();
+		XMLEvent end = eventFactory.createDTD("\n");
+		XMLEvent tab = eventFactory.createDTD("\t");
+		
+		// Create config open tag
+		StartElement configStartElement = eventFactory.createStartElement("","", ITEM);
+		eventWriter.add(tab);
+		eventWriter.add(configStartElement);
+		eventWriter.add(end);
+				
+		createInnerNode(eventWriter, TITLE, item.getTitle());
+		createInnerNode(eventWriter, DETAILS, item.getDetails());
+			
+		eventWriter.add(tab);
+		eventWriter.add(eventFactory.createEndElement("", "", ITEM));
 		eventWriter.add(end);
 		
 	}
@@ -370,25 +396,22 @@ public class XmlParser {
 
 	}
 //-----------------------------------------------------------------------------	 
-	public static void addItemToReview(String title, String description){
+	public static void addItemToReview(ItemToReview newItem){
 		//load the existing list
 		
-		//loadItemsToReviewList(FileHelper.getPropertiesFile());
-		
+		ArrayList<ItemToReview> itemsList = loadItemsToReviewList();
 		
 		//add the specified item to the list
-		
-		//programProperties.setProp(key, value);
-		
+		itemsList.add(newItem);
+
 		//re-save the list
 		try { 
-		//	saveProperties(programProperties.getSetPropsList(), 
-		//	FileHelper.getPropertiesFile()); 
+			saveItemsToReviewList(itemsList, FileHelper.getItemsToReviewFile());
 		} catch (Exception e) { e.printStackTrace(); }
 		
 	}
 //-----------------------------------------------------------------------------	 
-	public static void saveItemsToReviewList(ArrayList<FieldAndVal> itemsList, 
+	public static void saveItemsToReviewList(ArrayList<ItemToReview> itemsList, 
 			String itemsToReviewFile)throws Exception {
 		//Create a XMLOutputFactory
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
@@ -403,15 +426,18 @@ public class XmlParser {
 		StartDocument startDocument = eventFactory.createStartDocument();
 		eventWriter.add(startDocument);
 		eventWriter.add(end);
-
+		
 		// Create config open tag
 		StartElement configStartElement = eventFactory.createStartElement("",
 				"", "UMPD.itemsList");
 		eventWriter.add(configStartElement);
 		eventWriter.add(end);
-
-		for(FieldAndVal prop : itemsList){
-			createNode(eventWriter, prop.getField(), prop.getVal());
+		
+		// Write the different nodes
+		for (ItemToReview item : itemsList) {
+			try{
+				addItemNode(eventWriter, item);
+			} catch(Exception e){ e.printStackTrace(); }	
 		}
 		
 		eventWriter.add(eventFactory.createEndElement("", "", "UMPD.itemsList"));
@@ -419,10 +445,13 @@ public class XmlParser {
 		eventWriter.add(end);
 		eventWriter.add(eventFactory.createEndDocument());
 		eventWriter.close();
+		
 	}	
 //-----------------------------------------------------------------------------
-	public static void loadItemsToReviewList(String itemsToReviewFile) {
-		//ArrayList<Item> itemsList = new ArrayList<Item>();
+	public static ArrayList<ItemToReview> loadItemsToReviewList(){
+		ArrayList<ItemToReview> itemsList = new ArrayList<ItemToReview>();
+		String itemsToReviewFile = FileHelper.getItemsToReviewFile();
+		
 		try {
 			// First create a new XMLInputFactory
 			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -430,37 +459,52 @@ public class XmlParser {
 			InputStream in = new FileInputStream(itemsToReviewFile);
 			XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
 		
+			
+			ItemToReview item=null;
+			
 			while (eventReader.hasNext()) {
 				XMLEvent event = eventReader.nextEvent();
-				String title;
-				String description;
 				
 				if (event.isStartElement()) {
-					System.out.println("event.asStartElement().getName().getLocalPart() = "
-							+ event.asStartElement().getName().getLocalPart());
-					//store the field's name as the key 
-					title = event.asStartElement().getName().getLocalPart();
-					event = eventReader.nextEvent();
-					//store the associated data as the value
-					description = event.asCharacters().getData();
-					//add the key-value pair to the list
-					programProperties.setProp(title, description);
-					continue;
-				}
+					StartElement startElement = event.asStartElement();
+					// If we have a item element we create a new item
+					if (startElement.getName().getLocalPart() == (ITEM)) {
+						item = new ItemToReview();
+					}
+	
+					if (event.isStartElement()) {
+						if (event.asStartElement().getName().getLocalPart()
+								.equals(TITLE)) {
+							event = eventReader.nextEvent();
+							item.setTitle(event.asCharacters().getData());
+							continue;
+						}
+					}
 					
-				//When we reach the end of the file, exit the loop
+					if (event.asStartElement().getName().getLocalPart()
+							.equals(DETAILS)) {
+						event = eventReader.nextEvent();
+						item.setDetails(event.asCharacters().getData());
+						continue;
+					}
+					
+				}
+				// If we reach the end of an item element we add it to the list
 				if (event.isEndElement()) {
 					EndElement endElement = event.asEndElement();
-					if ((endElement.getName().getLocalPart()).equals("UMPD.itemsList")) {
-						break;
-					}			
+					if (endElement.getName().getLocalPart() == (ITEM)) {
+						itemsList.add(item);
+					}
 				}
+	
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
+	
+		return itemsList;
 	}
 //-----------------------------------------------------------------------------	
 }

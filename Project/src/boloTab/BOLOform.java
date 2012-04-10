@@ -4,14 +4,12 @@
 package boloTab;
 
 import java.awt.Container;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.ImageIcon;
@@ -33,12 +31,13 @@ import net.miginfocom.swing.MigLayout;
 import utilities.FileHelper;
 import utilities.ImageHandler;
 import utilities.ImagePreview;
-import utilities.ResizablePhoto;
+import utilities.ResizablePhotoDialog;
 import utilities.SwingHelper;
 
-public class BOLOform extends JDialog implements ChangeListener {
+public class BOLOform extends JDialog {
 	private static final long serialVersionUID = 1L;
-	JTextField ageField,raceField,sexField,heightField,weightField,buildField,eyesField,hairField;
+	JTextField ageField,raceField,sexField,heightField,weightField,buildField;
+	JTextField eyesField,hairField;
 	JTextField toiField,referenceField,caseNumField,statusField,ifYesField;
 	JTextField preparedByField,approvedByField,dateField,timeField;
 	JTextArea otherDescriptField,narrativeText; 
@@ -47,11 +46,13 @@ public class BOLOform extends JDialog implements ChangeListener {
 	JFrame parent;
 	JPanel photoArea;
 	JPanel dialogPanel;
+	boolean newBOLOWascreated;
 //-----------------------------------------------------------------------------
 	BOLOform(JFrame parent){
 		super(parent, "New BOLO", true);
-		
+
 		this.parent = parent;
+		 	
 		//Create the BOLO object to add info to
 		bolo = new Bolo();
 		
@@ -72,11 +73,11 @@ public class BOLOform extends JDialog implements ChangeListener {
 		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
 		this.addWindowListener(new WindowAdapter( ) {
 			public void windowClosing(WindowEvent e) {
-				closeAndCancel( );
+				closeAndCancel();
 			}
 		});
 	    
-
+		
 		//Set up the new BOLO form
 		
 		//Add the BOLO "letter head" image to the top
@@ -105,9 +106,8 @@ public class BOLOform extends JDialog implements ChangeListener {
 	    JPanel adminPanel = createAdministrativePanel();
 	    dialogPanel.add(adminPanel, "align left");
 
-		//TODO: Add standard footer
+//TODO: Add standard footer
 		
-
 
 	    /*Add buttons panel to top of scroll panel as the row header
 	     *(the buttons panel stays at the top of the screen even if the top of the form isn't
@@ -261,7 +261,7 @@ public class BOLOform extends JDialog implements ChangeListener {
 	}
 //-----------------------------------------------------------------------------
 	public JPanel createPhotoVideoPanel(){
-		JPanel photoVideoPanel = new JPanel(new MigLayout());
+		JPanel photoVideoPanel = new JPanel(new MigLayout("fill"));
 		
 		//Create initial no-photo place holder photo
 		final JPanel photoPanel = new JPanel();
@@ -271,22 +271,25 @@ public class BOLOform extends JDialog implements ChangeListener {
 		photoPanel.add(noPhotoLabel);
 		photoVideoPanel.add(photoPanel, "spanx,grow,wrap");
 		
-		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", "icons/camera.png");
+		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", 
+				"icons/camera.png");
+		addPhotoButton.setToolTipText("Attach a photo to this BOLO");
 		addPhotoButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae) {
 				chooseAndAddPhoto(photoPanel);
 			}
 		});
+	
 		
-		addPhotoButton.setToolTipText("Attach a photo to this BOLO");
-		JButton addVideoButton = SwingHelper.createImageButton("Add a Video", "icons/videoCamera.png");
+		
+		JButton addVideoButton = SwingHelper.createImageButton("Add a Video", 
+				"icons/videoCamera.png");
 		addVideoButton.setToolTipText("Attach a video to this BOLO");
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(addPhotoButton);
 		buttonsPanel.add(addVideoButton);
 		
 		photoVideoPanel.add(buttonsPanel, "dock south");
-
 
 		return photoVideoPanel;
 	}
@@ -296,7 +299,8 @@ public class BOLOform extends JDialog implements ChangeListener {
 		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
 		
 		//Add cancel button
-		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
+		JButton cancelButton = SwingHelper.createImageButton("Cancel", 
+				"icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae) {
@@ -305,7 +309,8 @@ public class BOLOform extends JDialog implements ChangeListener {
 		});
 	
 	    // Add save button
-	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
+	    JButton saveButton = SwingHelper.createImageButton("Save", 
+	    		"icons/save_48.png");
 	    saveButton.setToolTipText("Save BOLO");
 	    saveButton.addActionListener(new ActionListener( ) {
 	    	public void actionPerformed(ActionEvent e) {
@@ -314,14 +319,23 @@ public class BOLOform extends JDialog implements ChangeListener {
 	    });
 	    
 	    // Add preview button
-	    JButton previewButton = new JButton("<html>Preview<br>  BOLO</html>");
+	    JButton previewButton = new JButton("Preview");
 	    previewButton.setToolTipText("Preview and print final BOLO document");
 	    previewButton.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		setVisible(false);
+	    		//setVisible(false);
 	    		putInfoIntoBoloObject();
 	    		BOLOpreview preview = new BOLOpreview(parent, bolo);
 	    		preview.setVisible(true);
+	    		preview.setModal(true);
+	    		if(preview.isNewBOLOWascreated()){
+	    			setVisible(false);
+	    			newBOLOWascreated=true;
+	    			eraseForm();
+	    		} else{
+	    			newBOLOWascreated=false;
+	    			setVisible(true);
+	    		}
 	    	}
 	    });
 	    
@@ -333,7 +347,6 @@ public class BOLOform extends JDialog implements ChangeListener {
 	    previewButtonPanel.add(previewButton, "tag right");
 	    buttonsPanel.add(saveAndCancelButtonsPanel, "shrinky");
 	    buttonsPanel.add(previewButtonPanel, "growx, shrinky");
-	   // SwingHelper.addLineBorder(buttonsPanel);
 	    return buttonsPanel;
 	}
 //-----------------------------------------------------------------------------
@@ -352,11 +365,15 @@ public class BOLOform extends JDialog implements ChangeListener {
 			System.out.println("error: unable to add BOLO to DB");
 			e.printStackTrace();
 		 }
-//TODO: Create a pdf from the input data
 		 
+//TODO: Create a pdf from the input data
+
 		 //reset the form
 		 eraseForm();
 		 
+		 newBOLOWascreated=true;
+		 
+		 this.setVisible(false);
 		 //close the window
 		 this.dispose();	
 	}
@@ -403,6 +420,7 @@ public class BOLOform extends JDialog implements ChangeListener {
 		 if(!otherDescrip.isEmpty()){ bolo.setOtherDescrip(otherDescrip); }
 		 narrative=narrativeText.getText();
 		 if(!narrative.isEmpty()){ bolo.setNarrative(narrative); }
+
 		 
 		 //set the times
 		 bolo.setprepDate(getPrepDateEpoch());
@@ -414,11 +432,6 @@ public class BOLOform extends JDialog implements ChangeListener {
 	  * Places the info from the input fields into the global BOLO object.
 	  */
 	 public void loadFromExistingBOLO(){
-	/*	 String age, race, sex, height, weight, build, eyes, hair;
-		 String reference, caseNum, status, weapon;
-		 String preparedBy, approvedBy;
-		 String otherDescrip, narrative;*/
-		 
 		 //set the filled in fields in the global BOLO object
 		 ageField.setText(bolo.getAge());
 		 
@@ -441,7 +454,8 @@ public class BOLOform extends JDialog implements ChangeListener {
 		 //set the times
 		 
 		 //set picture
-		 ImageIcon photo = ImageHandler.getResizableImageIcon(bolo.getPhotoFilePath(), 200, 299);
+		 ImageIcon photo = ImageHandler.getResizableImageIcon(
+				 bolo.getPhotoFilePath(), 200, 299);
 		 if(photo!=null){
 			photoArea.removeAll();
 			photoArea.add(new JLabel(photo));
@@ -450,46 +464,35 @@ public class BOLOform extends JDialog implements ChangeListener {
 		 
 	}
 //-----------------------------------------------------------------------------
-	 public void chooseAndAddPhoto(JPanel photoPanel){
+	 public void chooseAndAddPhoto(final JPanel photoPanel){
 		//show choose photo dialog
 		final JFileChooser fc = new JFileChooser();
 		fc.addChoosableFileFilter(FileHelper.getImageFilter());
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.setAccessory(new ImagePreview(fc));
 		int returnVal = fc.showOpenDialog(parent);
-			
+
 		//if a photo was selected, add it to BOLO and load into photo area
 		if(returnVal==JFileChooser.APPROVE_OPTION){
 			//copy the chosen photo into the program's 'Photos' directory
-			File file = fc.getSelectedFile();
-			System.out.printf("filepath = %s\n", file.getName(), file.getPath());
-			Path photoPath = FileHelper.copyPhoto(file);
-			//load the image into photo area
-			if(photoPath==null){
-				//report that an error occurred in coping and retrieving the img file
-				return;
-			} else {
-			ImageIcon chosenPhoto = ImageHandler.getResizableImageIcon(photoPath, 200, 299);
-				ResizablePhoto chosenImg = new ResizablePhoto(chosenPhoto);
-				bolo.setPhotoFilePath(photoPath);
-	
-				JDialog resizerDialog = new JDialog(this, "Resize Photo", 
-						Dialog.ModalityType.DOCUMENT_MODAL);
-				//resizerDialog.setLocationRelativeTo(null);
-				resizerDialog.setPreferredSize(new Dimension(700, 700));
-				resizerDialog.setSize(new Dimension(700, 700));
-				JPanel p = new JPanel();
-				p.setPreferredSize(new Dimension(700, 700));
-				p.setSize(new Dimension(700, 700));
-				resizerDialog.setLocationRelativeTo(null);
-				p.add(chosenImg.getPhotoFrame());
-							
-				Container cp = resizerDialog.getContentPane();
-				cp.add(p);
-				resizerDialog.setVisible(true);
-				
+			final File file = fc.getSelectedFile();
+			System.out.printf("filepath = %s\n", file.getPath());
+			
+			ImageIcon chosenPhoto = new ImageIcon(file.getPath());
 
+			final ResizablePhotoDialog resizeDialog = new ResizablePhotoDialog(
+						chosenPhoto, this, file.getName());
+
+			//if the user pressed the set photo button
+			if(resizeDialog.getNewPhotoFilePath()!=null){
+				bolo.setPhotoFilePath(resizeDialog.getNewPhotoFilePath());
+				photoPanel.removeAll();
+				
+				photoPanel.add(new JLabel(resizeDialog.getResizedImgIcon()));
+
+				(photoPanel.getParent()).validate();
 			}
+
 		}
 		
 	 }
@@ -498,10 +501,26 @@ public class BOLOform extends JDialog implements ChangeListener {
 	 * Erase any fields in the form that have been filled in and close the
 	 * dialog.
 	 */
-	 public void closeAndCancel( ) {
+	 public void closeAndCancel() {
 		//reset the form
 		eraseForm();
+	
+		//delete the photo(if any)
+		if(bolo.getPhotoFilePath()!=null){
+			
+//DEBUG:
+			System.out.printf("\nBOLOform: closeAndCancel(): deleting " +
+					"bolo.getPhotoFilePath().toString() " +
+							"= %s\n", bolo.getPhotoFilePath().toString());
+
+			File f=new File(bolo.getPhotoFilePath().toString());
+			if(f.exists() && f.isFile()){
+				f.delete();
+			}
+		}
 		
+		
+		newBOLOWascreated=false;
 		//close the dialog
 		this.dispose();	
 	 }
@@ -555,7 +574,7 @@ public class BOLOform extends JDialog implements ChangeListener {
   public long getIncidentDateEpoch(){
 		  Date day = new Date();
 		  Date time = new Date();
-		
+		  
 		  Calendar incidentCal = Calendar.getInstance();
 		  Calendar timeCal = Calendar.getInstance();
 		
@@ -567,17 +586,12 @@ public class BOLOform extends JDialog implements ChangeListener {
 		  incidentCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
 		  incidentCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
 		  incidentCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
-			 
+		  
 		  return (incidentCal.getTimeInMillis()/1000); 
 		}
 //-----------------------------------------------------------------------------	
-/* (non-Javadoc)
- * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
- */
-@Override
-public void stateChanged(ChangeEvent arg0) {
-	// TODO Auto-generated method stub
-	
-}
+  public boolean isNewBOLOWascreated(){
+	  return this.newBOLOWascreated;
+  }
 //-----------------------------------------------------------------------------	
 }

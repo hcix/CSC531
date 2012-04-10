@@ -17,17 +17,21 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
-import javax.swing.border.Border;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
@@ -35,8 +39,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
+import reviewItems.ItemRenderer;
+import reviewItems.ItemToReview;
+import reviewItems.ItemsListModel;
 import utilities.DatabaseHelper;
 import utilities.SwingHelper;
+import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
 public class ShiftCdrTab extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;
@@ -44,29 +52,35 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	static final String DELETE="delete";
 	static final String SUBMIT="submit";
 	static final String LAUNCH="launch";
+	int shiftTime;
 	JTable table;
+	JFrame parent;
 	DefaultTableModel tableModel;
 	final static int GAP = 10;
 //-----------------------------------------------------------------------------
 	public ShiftCdrTab(ResourceManager rm) {
 		this.setLayout(new BorderLayout());
+		getShiftTime(rm);
+		parent = rm.getParent();
 
-		JPanel sidePanel = new JPanel();
-		String label = "Items to Review";
-		JPanel scrollPanel = new JPanel();
+		JPanel sidePanel = new JPanel(new MigLayout());
+		String label = "<html><h3>Items to Review</h3></html>";
+		/*JPanel scrollPanel = new JPanel(new MigLayout("ins 0, gap 0"));
 		
 		JScrollPane scroller = new JScrollPane(scrollPanel,
-			ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+			ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
+		scrollPanel.setLayout(new MigLayout("flowy"));
+		*/
 		JLabel titleLabel = new JLabel(label,JLabel.CENTER);
 		
-		sidePanel.setPreferredSize(new Dimension(270,625));		
+		sidePanel.setPreferredSize(new Dimension(300,625));		
 		sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));		
-		sidePanel.setBorder(makeSidePanelBorder());
 		
-		sidePanel.add(titleLabel);
-		sidePanel.add(scroller); 
+		sidePanel.add(titleLabel, "alignx center, wrap");
+		//sidePanel.add(scroller); 
+
+		addItemsToReview(sidePanel);
 		
 		//Create Shift CDR tabbed display area
 		JTabbedPane tabbedPane = new JTabbedPane();
@@ -84,16 +98,20 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		
 		//Create button panel
 		JPanel buttonPanel = new JPanel(new FlowLayout());
-		JButton addButton = SwingHelper.createImageButton("Add Officer", "icons/plusSign_48.png");
+		JButton addButton = SwingHelper.createImageButton("Add Officer", 
+				"icons/plusSign_48.png");
 		addButton.setActionCommand(ADD);
 		addButton.addActionListener(this);
-		JButton deleteButton = SwingHelper.createImageButton("Remove Officer", "icons/delete_48.png");
+		JButton deleteButton = SwingHelper.createImageButton("Remove Officer", 
+				"icons/delete_48.png");
 		deleteButton.setActionCommand(DELETE);
 		deleteButton.addActionListener(this);
-		JButton submitButton = SwingHelper.createImageButton("Submit Roll Call", "icons/save_48.png");
+		JButton submitButton = SwingHelper.createImageButton("Submit Roll Call", 
+				"icons/save_48.png");
 		submitButton.addActionListener(this);
 		submitButton.setActionCommand(SUBMIT);
-		JButton launchButton = SwingHelper.createImageButton("Launch Scheduler", "icons/launcher_small.png");
+		JButton launchButton = SwingHelper.createImageButton("Launch Scheduler", 
+				"icons/launcher_48.png");
 		launchButton.addActionListener(this);
 		launchButton.setActionCommand(LAUNCH);
 		buttonPanel.add(addButton);
@@ -101,14 +119,20 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		buttonPanel.add(submitButton);
 		buttonPanel.add(launchButton);
 		
+		//create a label
+		Date date = Calendar.getInstance().getTime();
+		SimpleDateFormat format = new SimpleDateFormat("EEEE,MMMM dd ");
+		JLabel shiftLabel = new JLabel("Shift for " + format.format(date) 
+				+ " at "+ ResourceManager.shiftTimeAsString(shiftTime) + ":00");
+		//change the font at some point shiftLabel.setFont();
+		
 		// place panes in roll call tab
+		rollCallTab.add(shiftLabel, "dock north");
 		rollCallTab.add(tablePanel, "dock north");
 		rollCallTab.add(buttonPanel, "dock south");
 		
-		//rollCallTab.setPreferredSize(new Dimension(900, 1000));
 		 this.add(tabbedPane, BorderLayout.CENTER);
 		 this.add(sidePanel, BorderLayout.EAST);
-		//this.add(tabbedPane, "grow, push");
 	}
 //-----------------------------------------------------------------------------
 	JPanel makeTablePanel(ArrayList<String> names){
@@ -154,9 +178,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	    return tablePanel;
 	}
 //-----------------------------------------------------------------------------
-	/* (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand()==ADD){
@@ -168,6 +189,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 			}
 		}else if (e.getActionCommand()==SUBMIT) {
 			submitRollCall();
+			JOptionPane.showMessageDialog(parent, "Roll call Sumbitted!");
 		}
 		else if (e.getActionCommand()==LAUNCH) {
 			launchScheduler();
@@ -175,15 +197,15 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 	}
 //-----------------------------------------------------------------------------
 	public void submitRollCall() {
-		int numOfRows, numOfCols, i, j;
+		int numOfRows, i, j, nextShift;
 		DatabaseHelper dbHelper = new DatabaseHelper();
 		String name, present, timeArrived, comment, shiftDate;
 		Date date;
 		DateFormat format;
+		ArrayList<String> names;
 		
 		
 		numOfRows = table.getModel().getRowCount();
-		numOfCols = table.getModel().getColumnCount();
 		
 		for (i = 0; i < numOfRows; i++) {
 			//fill values
@@ -195,10 +217,9 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 				present = "false";
 			timeArrived = (String)table.getModel().getValueAt(i, j++);
 			comment = (String)table.getModel().getValueAt(i, j++);
-			//get date TODO eventually change to use shift date
 			Calendar cal = Calendar.getInstance();
 			date = cal.getTime();
-			format = new SimpleDateFormat("ddMMMyy:kk:mm");
+			format = new SimpleDateFormat("ddMMMyyyy:" + shiftTime + ":00");
 			shiftDate = format.format(date);
 			
 			//push to person
@@ -210,13 +231,32 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 				e.printStackTrace();
 			}
 		}
+		//get the next roll call
+		if (shiftTime == 6 || shiftTime == 18)
+			nextShift = shiftTime + 4;
+		else if (shiftTime == 10)
+			nextShift = 18;
+		else if (shiftTime == 22)
+			nextShift = 6;
+		else
+			System.out.println("couldn't increment shiftTime:line 226 ShiftCdrTab");
+		try {
+			//TODO figure out best functionality for going back and forth shifts
+			//names = ResourceManager.getRollCall(shiftTime);
+			//table.setModel(new RollCallTableModel(names));
+		} catch (Exception e) {
+			System.out.println("couldn't get next roll call");
+		}
 	}
 //-----------------------------------------------------------------------------	
 	private void launchScheduler() {
 		//launch schedule program
 		try {
+			//TODO changed to add project, FIX USER DIR!!!!! 
+			//Runtime.getRuntime().exec(System.getProperty("user.dir")
+				//+ "/Project/PatrolScheduler/UMPatrolScheduler.exe");
 			Runtime.getRuntime().exec(System.getProperty("user.dir")
-					+ "/PatrolScheduler/UMPatrolScheduler.exe");
+					+ "/PatrolScheduler/UMPatrolScheduler.exe");		
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("Could not launch Scheduler");
@@ -242,13 +282,45 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		return timeSpinner;
 	}
 //-----------------------------------------------------------------------------
-	public Border makeSidePanelBorder(){
-		Border spaceBorder = BorderFactory.createEmptyBorder(GAP/2,GAP,GAP/2,GAP);
-		Border lineBorder = BorderFactory.createLineBorder(new Color(0x000000));
-		Border border = BorderFactory.createCompoundBorder(spaceBorder, lineBorder);
+
+//-----------------------------------------------------------------------------
+	public void addItemsToReview(JPanel scrollPanel){
+		ArrayList<ItemToReview> items = XmlParser.loadItemsToReviewList();
 		
-		return border;
+		ItemsListModel itemsModel = new ItemsListModel(items);
+		JList itemsList = new JList(itemsModel);
+		itemsList.setCellRenderer(new ItemRenderer());
+		  
+//DEBUG: fix the layout for this; its real ugly
+		
+		/*for(ItemToReview item : items){
+			JPanel itemPanel = new JPanel(new MigLayout());
+			itemPanel.setSize(new Dimension(280, 110));
+			itemPanel.setPreferredSize(new Dimension(280, 110));
+			JCheckBox cb = new JCheckBox();
+			itemPanel.add(cb, "split");
+			itemPanel.add(new JLabel(item.getTitle()), "wrap");
+			JTextArea details = new JTextArea(220, 60);
+			details.setBackground(itemPanel.getBackground());
+			details.setLineWrap(true);
+			details.setWrapStyleWord(true);
+			details.setEditable(false);
+			details.setMaximumSize(new Dimension(240, 100));
+			details.setText(item.getDetails());
+			itemPanel.add(details);
+			
+			scrollPanel.add(itemPanel);
+			itemPanel.setBorder(BorderFactory.createRaisedBevelBorder());
+		}
+		*/
+		
+		scrollPanel.add(itemsList);
+		
 	}
+//-----------------------------------------------------------------------------
+   public void getShiftTime(ResourceManager rm) {
+	   shiftTime = rm.getShiftTime(); 
+   }
 //=============================================================================
 	private class RollCallTableModel extends AbstractTableModel implements TableModelListener {
 		private static final long serialVersionUID = 1L;
@@ -268,7 +340,8 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		{"Ray Moe", new Boolean(false)," ","mysteriously late"}
 						};*/
 //-----------------------------------------------------------------------------
-        public RollCallTableModel() {
+        // unneeded I believe 
+        /*public RollCallTableModel() {
         	
         	// initialize the data object
         	data = new Object[0][0];
@@ -278,7 +351,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
         	addRowWithName("Jane Roe");
         	addRowWithName("Ray Moe");
         	
-        }
+        }*/
 //-----------------------------------------------------------------------------
         public RollCallTableModel(ArrayList<String> names) {
         	

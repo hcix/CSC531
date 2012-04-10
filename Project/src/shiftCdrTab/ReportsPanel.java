@@ -35,7 +35,7 @@ private static final long serialVersionUID = 1L;
 			
 			//Create a button to create a new Report 
 			JButton newButton = SwingHelper.createImageButton("Create new Report", 
-					"icons/plusSign_48.png");
+					"icons/plusSign_48.png"); 
 			newButton.addActionListener(new ActionListener() {
 				//Shift CDR form dialog
 				ShiftReportForm formDialog = new ShiftReportForm(rm);
@@ -74,7 +74,8 @@ private static final long serialVersionUID = 1L;
 			});
 
 			//Create a button to search existing Reports
-			JButton searchButton = SwingHelper.createImageButton("Search Records", "icons/search.png");
+			JButton searchButton = SwingHelper.createImageButton("Search Records", 
+					"icons/search.png");
 			searchButton.addActionListener(new ActionListener() {
 				//Search dialog
 				JDialog searchDialog = createSearchDialog(parent);
@@ -136,6 +137,7 @@ private static final long serialVersionUID = 1L;
 		
 		String shiftCdrForm = System.getProperty("UMPD.latestReport");
 		 	    
+		@SuppressWarnings("unused")
 		PDFView pdfv = new PDFView(shiftCdrForm, panel, rm);
 
 		return panel;

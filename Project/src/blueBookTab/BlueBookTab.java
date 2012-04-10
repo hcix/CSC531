@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -14,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
+import userinterface.ItemsViewerPanel;
 import utilities.SwingHelper;
 /**
  * Configures UI for the Blue Book Tab
@@ -27,14 +27,15 @@ private static final long serialVersionUID = 1L;
 		
 		//Create Blue Book tabbed display area
 		JTabbedPane tabbedPane = new JTabbedPane();
-		//Add recent BOLOs tab
-		JPanel recentBolosTab = new JPanel();
-		tabbedPane.addTab("Blue Book", recentBolosTab);
-		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
+		//Add recent Blue Book Entries tab
+
+		//tabbedPane.addTab("Blue Book", recentBolosTab);
+		//tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
 				
 		//Create a button to create a new Blue Book entry 
 		JButton newEntryButton = 
-				SwingHelper.createImageButton("Create new Blue Book entry", "icons/plusSign_48.png");
+				SwingHelper.createImageButton("Create new Blue Book entry", 
+						"icons/plusSign_48.png");
 		newEntryButton.addActionListener(new ActionListener() {
 			//Create new Blue Book entry form dialog
 			BlueBookForm formDialog = new BlueBookForm(parent);
@@ -44,7 +45,8 @@ private static final long serialVersionUID = 1L;
 		});
 
 		//Create search button
-		JButton searchButton = SwingHelper.createImageButton("Search Blue Book", "icons/search.png");
+		JButton searchButton = SwingHelper.createImageButton("Search Blue Book", 
+				"icons/search.png");
 		searchButton.addActionListener(new ActionListener() {
 			//Search dialog
 			JDialog searchDialog = createSearchDialog(parent);

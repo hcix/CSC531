@@ -6,8 +6,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -174,21 +178,18 @@ public class ResourceManager {
 	
 		//load the properties from the xml file
 		XmlParser.loadProperties(p);
-
-//DEBUG: print syst env
-		//printEnv();
 		
 	}
 //-----------------------------------------------------------------------------
-	public static void setLatestReportName(String reportFileName){
+	public void setLatestReportName(String reportFileName){
 		XmlParser.setSystemProperty("UMPD.latestReport", reportFileName);
 		System.setProperty("UMPD.latestReport", "reportFileName");
 	}
 	
 //-----------------------------------------------------------------------------	
-	public static ArrayList<String> getRollCall() {
+	public ArrayList<String> getRollCall() {
 		int shiftTime;
-		ArrayList<String> Employees = new ArrayList();
+		ArrayList<String> Employees = new ArrayList<String>();
 			
 		shiftTime = getShiftTime();
 		if (shiftTime == -1) {
@@ -201,7 +202,19 @@ public class ResourceManager {
 		return Employees;
 	}
 //-----------------------------------------------------------------------------	
-	private static int getShiftTime() {
+	public static ArrayList<String> getRollCall(int shiftTime) throws Exception {
+		ArrayList<String> Employees = new ArrayList<String>();
+				
+		if (shiftTime < 0 || shiftTime > 24 ) {
+			System.out.println("bad shift time");
+			throw new Exception();
+		}
+		RosterParser parser = new RosterParser();
+		Employees = parser.getEmployeesOnShift(shiftTime);
+		return Employees;
+	}
+//-----------------------------------------------------------------------------	
+	public int getShiftTime() {
 		int currentHour, currentMin, shiftTime;
 		Calendar cal;
 		
@@ -220,7 +233,8 @@ public class ResourceManager {
 			if (currentMin <= 30)
 				shiftTime = 6;
 			else
-				shiftTime = 10;
+				shiftTime
+				= 10;
 		}
 		else if (currentHour < 10)
 			shiftTime = 10;
@@ -247,6 +261,10 @@ public class ResourceManager {
 		return shiftTime;
 	}
 //-----------------------------------------------------------------------------
+    public JFrame getParent() {
+		return parent;
+	}
+//-----------------------------------------------------------------------------
 	/**
 	 * DEBUGGER: Print the system environment 
 	 */
@@ -262,4 +280,48 @@ public class ResourceManager {
 	
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Given an epoch time, getTimeStringFromEpoch() returns the time of day
+	 * associated with that epoch time in String format. The date of the epoch
+	 * is irrelevant to this method, thus two epoch values corresponding to, 
+	 * say 3:00pm on completely separate days would generate the same return
+	 * from this method.
+	 * @param epoch - the epoch time which to return the time of day of
+	 */
+	public String getTimeStringFromEpoch(long epoch){
+		Date date = new Date(epoch);
+		
+		return (DateFormat.getTimeInstance(DateFormat.SHORT).format(date));
+
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Given an epoch time, getTimeStringFromEpoch() returns the date
+	 * associated with that epoch time in String format. The time of the epoch
+	 * is irrelevant to this method, thus two epoch values corresponding to the
+	 * same day, but different times, will generate the same return from this 
+	 * method. The string returned is of the format MM/dd/yy.
+	 * @param epoch - the epoch time which to return the date of
+	 */
+	public String getDateStringFromEpoch(long epoch){
+		Format formatter;
+		Date date = new Date(epoch);
+		
+		formatter = new SimpleDateFormat("MM/dd/yy");
+		
+		return(formatter.format(date));
+	}
+//-----------------------------------------------------------------------------
+   public static String shiftTimeAsString(int shiftTime) {
+	   String time;
+	       if (shiftTime == 6)
+	    	   time = "06";
+	       else 
+	    	   time = ((Integer)shiftTime).toString();
+	   return time;
+   }	
+//-----------------------------------------------------------------------------	
 }
+
+
+

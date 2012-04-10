@@ -15,10 +15,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import boloTab.Bolo;
@@ -37,7 +34,7 @@ public class DatabaseHelper {
 	 * @param remarks - remarks associated with the crime
 	 * @param status - the crime's status
 	 * @throws Exception
-	 */
+	 
 	public void addBOLO(String age,String race,String sex,String height,String weight,String build,
 			String eyes,String hair,Date incidentDate,String reference,String caseNum,String status,
 			String weapon,String preparedBy,String approvedBy,Date prepDate, String otherDescrip,
@@ -85,7 +82,7 @@ public class DatabaseHelper {
 	    
 	    //Close the connection
 	    conn.close();
-	}
+	}*/
 //-----------------------------------------------------------------------------
 	/**
 	 * Retrives all the BOLOs from the database and places them into an 
@@ -104,7 +101,16 @@ public class DatabaseHelper {
 		 
 		//Create the connection to the database
 		Class.forName("org.sqlite.JDBC");
-	    Connection conn = DriverManager.getConnection("jdbc:sqlite:Database/umpd.db");
+		
+
+		//test to make database file access syst indep, changed added Project
+		//Path dbFilePath = Paths.get("Project", "Database", "umpd.db");
+		Path dbFilePath = Paths.get("Database", "umpd.db");
+
+		
+		String dbFileName = dbFilePath.toString();
+	    Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
+	    
 	    Statement stat = conn.createStatement();
 	    ResultSet allBOLOs = stat.executeQuery("SELECT * FROM bolo;");
 
@@ -155,24 +161,22 @@ public class DatabaseHelper {
 			if(photoPath!=null){ 
 				Path pp = Paths.get(photoPath);
 				bolo.setPhotoFilePath(pp);
-//DEBUG---------------------------------------------------------
+//DEBUG:
 			} else { 
 				System.out.printf("\n photo path is null\n");
 			}
-//---------------------------------------------------------DEBUG				
+			
 			videoPath=allBOLOs.getString("videoPath");
 			if(videoPath!=null){ 
 				Path vp = Paths.get(videoPath);
 				bolo.setVideoFilePath(vp);
-//DEBUG---------------------------------------------------------			
+//DEBUG:			
 			} else { 
-
-				System.out.printf("\n photo path is null\n");
+				//System.out.printf("\n video path is null\n");
 			}
 
 			boloList.add(bolo);
 	    }
-//---------------------------------------------------------DEBUG	    
 	    	
 	    //Close the connections
 	    allBOLOs.close();
@@ -181,12 +185,14 @@ public class DatabaseHelper {
 	    return boloList;
 	}
 //-----------------------------------------------------------------------------
-	public static void addRollCall(String name, String present, String comment, 
+	public void addRollCall(String name, String present, String comment, 
 			String timeArrived, String shiftDate) throws Exception {
 		
 				//Create the connection to the database
 				Class.forName("org.sqlite.JDBC");
-			    Connection conn = DriverManager.getConnection("jdbc:sqlite:Database/umpd.db");
+				Path dbFilePath = Paths.get("Database", "umpd.db");
+				String dbFileName = dbFilePath.toString();
+			    Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
 			    
 			    //insert into person table
 			    PreparedStatement personStatement = conn.prepareStatement(

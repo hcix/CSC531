@@ -4,6 +4,7 @@
 package boloTab;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -18,7 +19,7 @@ public class Bolo {
 	private String otherDescrip = null, narrative = null;
 	private Path photoFilePath = null, videoFilePath = null;
 	//private String photoFileName = null, videoFileName = null;
-	private long incidentDate = 0, prepDate = 0;
+	private long incidentDate=0, incidentTime=0, prepDate=0, prepTime=0;
 	private String[] fieldArray;
 	private int boloID;
 //-----------------------------------------------------------------------------
@@ -301,6 +302,20 @@ public class Bolo {
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * @return the incidentTime
+	 */
+	public long getincidentTime() {
+		return incidentTime;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * @param incidentTime the incidentTime to set
+	 */
+	public void setincidentTime(long incidentTime) {
+		this.incidentTime = incidentTime;
+	}
+//-----------------------------------------------------------------------------
+	/**
 	 * @return the prepDate
 	 */
 	public long getprepDate() {
@@ -312,6 +327,20 @@ public class Bolo {
 	 */
 	public void setprepDate(long prepDate) {
 		this.prepDate = prepDate;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * @return the prepTime
+	 */
+	public long getPrepTime() {
+		return prepTime;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * @param prepTime the prepTime to set
+	 */
+	public void setPrepTime(long prepTime) {
+		this.prepTime = prepTime;
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -371,14 +400,18 @@ public class Bolo {
 		String photoPathName = null, videoPathName = null;
 		//Create the connection to the database
 		Class.forName("org.sqlite.JDBC");
+		//String dbFile = FileHelper.getDatabaseFile();
+		Path dbFilePath = Paths.get("Database", "umpd.db");
+		String dbFileName = dbFilePath.toString();
 	    Connection conn = DriverManager.getConnection("jdbc:sqlite:Database/umpd.db");
-	
+		//Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
+		
 	    //Create a prepared statement to add the crime data
 	    PreparedStatement prep = conn.prepareStatement(
 	      "REPLACE into bolo(age, race, sex, height, weight, build, eyes, hair," +
 	      " incidentDate, reference, caseNum, status, weapon, prepedBy, approvedBy, prepdate," +
-	      " description, narrative, photoPath, videoPath, bolo_id)" + 
-	      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+	      " description, narrative, photoPath, videoPath, bolo_id, incidentTime, prepTime)" + 
+	      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
 	
 	    //Add the data to the prepared statement
 	    prep.setString(1, this.age);
@@ -389,21 +422,23 @@ public class Bolo {
 	    prep.setString(6, this.build);
 	    prep.setString(7, this.eyes);
 	    prep.setString(8, this.hair);
-	    prep.setLong(9, incidentDate);
+	    prep.setLong(9, this.incidentDate);
 	    prep.setString(10, this.reference);
 	    prep.setString(11, this.caseNum);
 	    prep.setString(12, this.status);
 	    prep.setString(13, this.weapon);
 	    prep.setString(14, this.preparedBy);
 	    prep.setString(15, this.approvedBy);
-	    prep.setLong(16, prepDate);
+	    prep.setLong(16, this.prepDate);
 	    prep.setString(17, this.otherDescrip);
 	    prep.setString(18, this.narrative);
 	    if(this.boloID!=0){ prep.setInt(21, this.boloID); }
+	    prep.setLong(22, this.incidentTime);
+	    prep.setLong(22, this.prepTime);
 	
 	    if(photoFilePath!=null){
 		    Path absPhotoFilePath = photoFilePath.toAbsolutePath();
-		   // URI imgURI = absPhotoFilePath.toUri();
+		    //URI imgURI = absPhotoFilePath.toUri();
 		    photoPathName = absPhotoFilePath.toString();
 	    }
 	    prep.setString(19, photoPathName);	    
@@ -413,8 +448,6 @@ public class Bolo {
 	    	videoPathName = absVideoFilePath.toString();
 	    } 
 	    prep.setString(20, videoPathName);
-	    
-
 	    
 	    prep.addBatch();
 	    

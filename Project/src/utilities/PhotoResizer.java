@@ -58,15 +58,16 @@ public class PhotoResizer extends MouseAdapter {
 	
 	JLabel photoFrame;
 	ImageIcon originalImgIcon;
+	ResizablePhotoDialog photo;
 //-----------------------------------------------------------------------------
-	PhotoResizer(ResizablePhoto photo){
+	PhotoResizer(ResizablePhotoDialog photo){
 		setDragInsets( dragInsets );
 		setSnapSize( snapSize );
+		this.photo=photo;
 		this.photoFrame = photo.getPhotoFrame();
 		this.originalImgIcon = photo.getOriginalImgIcon();
 		
 		registerComponent(photoFrame);
-
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -387,11 +388,13 @@ public class PhotoResizer extends MouseAdapter {
 			}
 
 			source.setBounds(x, y, width, height);
-			ImageIcon newImgIcon = ImageHandler.getScaledImageIcon(originalImgIcon, width, height);
+			ImageIcon newImgIcon = ImageHandler.getScaledImageIcon(
+					originalImgIcon, width, height);
 			
 			//photoFrame.removeAll();
-			photoFrame.setIcon(newImgIcon);
-
+			//photoFrame.setIcon(newImgIcon);
+			photo.setResizedImgIcon(newImgIcon);
+			
 			source.validate();
 		}
 //-----------------------------------------------------------------------------
