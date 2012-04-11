@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import utilities.SwingHelper;
+import utilities.xml.XmlParser;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -98,14 +99,25 @@ private static final long serialVersionUID = 1L;
 		
 		JButton editButton = 
 				SwingHelper.createImageButton("Edit Item", "icons/edit_32.png");
-		markAsReadButton.addActionListener(new ActionListener(){
+		editButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				detailsTextPane.setEditable(true);
 				titleTextField.setEditable(true);
-				mainPanel.revalidate();
+				System.out.println("detailsTextPane editable: " + detailsTextPane.isEditable()
+						+"titleTextPane editable: " + titleTextField.isEditable());
+				(mainPanel.getParent()).validate();
 				mainPanel.validate();
 			 }
 		});
+		
+		JButton saveItemButton = 
+				SwingHelper.createImageButton("Save Item", "icons/save_32.png");
+		saveItemButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				saveAndClose();
+			 }
+		});
+		
 		
 		JPanel buttonPanel = new JPanel();
 		if(!item.isReviewed()){
@@ -115,27 +127,28 @@ private static final long serialVersionUID = 1L;
 		}
 		
 		buttonPanel.add(editButton);
+		buttonPanel.add(saveItemButton);
 		
 		return buttonPanel;
 	}
 //-----------------------------------------------------------------------------
 	private void saveAndClose(){
-		/*
-		if(!titleField.getText().isEmpty()){
-			title=titleField.getText().toString().trim();
-			System.out.println("AddItemDialog: AddItemDialog(): title = "+title);
-			item.setTitle(title);
+
+		if(!titleTextField.getText().isEmpty()){
+			titleText=titleTextField.getText().toString().trim();
+			System.out.println("AddItemDialog: AddItemDialog(): title = "+titleText);
+			item.setTitle(titleText);
 		}
-		if(!textArea.getText().isEmpty()){
-			details=textArea.getText().toString().trim();
-			System.out.println("AddItemDialog: AddItemDialog(): details = "+details);
-			item.setDetails(details);
+		if(!detailsTextPane.getText().isEmpty()){
+			detailsText=detailsTextPane.getText().toString().trim();
+			System.out.println("AddItemDialog: AddItemDialog(): details = "+detailsText);
+			item.setDetails(detailsText);
 		}
 		
-		
-		try{ item.addToXML(); } 
-		catch (Exception ex){ ex.printStackTrace(); }
-	*/
+		try{ 
+			item.setTitle(titleText);
+			item.setDetails(detailsText);
+		}catch (Exception ex){ ex.printStackTrace(); }
 		
 		this.dispose();
 	}
