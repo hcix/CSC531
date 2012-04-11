@@ -27,9 +27,10 @@ private static final long serialVersionUID = 1L;
 	PDFView pdfv;
 	ResourceManager rm;
 //-----------------------------------------------------------------------------	
-	public ShiftReportForm(ResourceManager rm){
+	public ShiftReportForm(ResourceManager rm, ShiftCdrReport report){
 		super(rm.getGuiParent(), "New Shift Commander Summary Report", true);
 		this.rm = rm;
+		this.report=report;
 		
 		//Set the size of the form
 		this.setPreferredSize(new Dimension(800,700));
@@ -45,9 +46,11 @@ private static final long serialVersionUID = 1L;
  			}
  		});
  		
- 		
- 		report = new ShiftCdrReport();
- 		
+ 		if(report==null){ //create a new report
+ 			this.report = new ShiftCdrReport();
+ 		} else {//load info into form fields
+ 			loadInfoIntoForm();
+ 		}
  		
  	    JPanel buttonsPanel = createButtonsPanel();
 
@@ -131,6 +134,27 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------	
 	public void closeAndSave() {
 		
+		//get a list of all the filled in fields and their values
+		pdfv.createFormFieldsList();
+		ArrayList<FieldAndVal> formFields = 
+				(ArrayList<FieldAndVal>) pdfv.getAllFormFields(); 
+		
+		//set the corresponding variables in the ShiftCdrReport based on
+		//the text from the form fields
+		putInfoIntoReport(formFields);
+		
+		//save the
+		String reportFileName = report.saveToFileSystem();
+		if (reportFileName!=null){ rm.setLatestReportName(reportFileName); }
+		
+		setVisible(false);
+	}
+	
+//-----------------------------------------------------------------------------	
+	public void loadInfoIntoForm() {
+		
+		report.loadInfoIntoForm();
+		/*
 		pdfv.createFormFieldsList();
 		ArrayList<FieldAndVal> formFields = 
 				(ArrayList<FieldAndVal>) pdfv.getAllFormFields(); 
@@ -140,6 +164,7 @@ private static final long serialVersionUID = 1L;
 		if (reportFileName!=null){ rm.setLatestReportName(reportFileName); }
 		
 		setVisible(false);
+		*/
 	}
 //-----------------------------------------------------------------------------
 	public void putInfoIntoReport(ArrayList<FieldAndVal> formFields){

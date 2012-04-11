@@ -36,7 +36,7 @@ public class AdminTab extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	ResourceManager rm;
 
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	public AdminTab(ResourceManager rm) {
 		JPanel adminPanel = new JPanel();
 		this.parent = rm.getGuiParent();
@@ -46,11 +46,15 @@ public class AdminTab extends JPanel implements ActionListener {
 
 		this.add(adminPanel);
 	}
-
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	private JPanel createActionButtons() {
 		JPanel buttonsPanel = new JPanel();
 
+		JButton editUsrAcctsButton = 
+				SwingHelper.createImageButton("Edit User Accounts", "icons/group_48.png");
+		
+		
+		
 		JButton addNewUserButton = SwingHelper
 				.createImageButton("icons/addUser_48.png");
 		addNewUserButton.addActionListener(this);
@@ -110,7 +114,7 @@ public class AdminTab extends JPanel implements ActionListener {
 		return buttonsPanel;
 	}
 
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == ADD_USER) {
@@ -126,7 +130,7 @@ public class AdminTab extends JPanel implements ActionListener {
 		}
 	}
 
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	public void chooseAndAddVideo() {
 		// show choose photo dialog
 		final JFileChooser fc = new JFileChooser();
@@ -154,5 +158,5 @@ public class AdminTab extends JPanel implements ActionListener {
 		}
 
 	}
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 }
