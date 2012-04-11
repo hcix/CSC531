@@ -215,7 +215,7 @@ public class ResourceManager {
 		return Employees;
 	}
 //-----------------------------------------------------------------------------	
-	public int getShiftTime() {
+	public static int getShiftTime() {
 		int currentHour, currentMin, shiftTime;
 		Calendar cal;
 		

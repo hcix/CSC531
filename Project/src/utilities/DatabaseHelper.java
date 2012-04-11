@@ -18,6 +18,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+
+import shiftCdrTab.RollCall;
 import boloTab.Bolo;
 
 public class DatabaseHelper {	
@@ -215,6 +217,15 @@ public class DatabaseHelper {
 			    //Close the connection
 			    conn.close();
 	}
+
+//-----------------------------------------------------------------------------
+    public RollCall getRollCallFromDatabase(String shiftDate) {
+    	RollCall rollCall = new RollCall();
+    	
+    	// Implement later TODO
+    	
+    	return rollCall;
+    }
 //-----------------------------------------------------------------------------
 	/*
 	 * Wrote this code when thinking I needed a many to many relational database
