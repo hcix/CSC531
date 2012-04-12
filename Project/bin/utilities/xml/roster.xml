@@ -48,12 +48,29 @@
 		<email>?</email>
 		<permissions>supervisor</permissions>
 	</employee>
-		<employee>
+	<employee>
 		<cnumber>?</cnumber>
 		<firstname>Brendan</firstname>
 		<lastname>Loyot</lastname>
 		<caneid>b.loyot</caneid>
 		<email>?</email>
+		<permissions>supervisor</permissions>
+	</employee>
+	<!-- Not sure what Faisal's caneID is so added both possibilities -->
+	<employee>
+		<cnumber>?</cnumber>
+		<firstname>Faisal</firstname>
+		<lastname>Sikder</lastname>
+		<caneid>fsikder</caneid>
+		<email>f.sikder@umiami.edu</email>
+		<permissions>supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>?</cnumber>
+		<firstname>Faisal</firstname>
+		<lastname>Sikder</lastname>
+		<caneid>fsikder</caneid>
+		<email>f.sikder@umiami.edu</email>
 		<permissions>supervisor</permissions>
 	</employee>
 	<employee>

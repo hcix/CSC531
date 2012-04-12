@@ -14,6 +14,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import utilities.FileHelper;
 
 public class PersonnelManager {
 	public static final String PERMIS_NONE="none";
@@ -41,8 +42,9 @@ public class PersonnelManager {
 	 *           If it does not exist, NULL is returned
 	 */
 	public static Employee getEmployeeByCaneID(String caneID){
-		List<Employee> roster = getRoster("src/utilities/xml/roster.xml");
-
+		//List<Employee> roster = getRoster("src/utilities/xml/roster.xml");
+		List<Employee> roster = getRoster(FileHelper.getRosterFilePathName());
+		
 		//Search through the list of employees for a matching cnum
 		for(Employee employee : roster){
 			if(employee.getCaneID().equals(caneID)){

@@ -185,26 +185,22 @@ public class DatabaseHelper {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Retrives all the BOLOs from the database and places them into an 
-	 * <code>Arraylist</code> of BOLO objects, which is returned to the 
+	 * Retrieves the Blue Book from the database and places them into an 
+	 * <code>Arraylist</code> of BlueBookEntry objects, which is returned to the 
 	 * caller.
-	 * @return an arraylist of BOLO objects
+	 * @return an Arraylist of BlueBookEntry objects
 	 * @throws Exception
-	
-	public static ArrayList<Bolo> getBluebookFromDB() throws Exception{
+	 */
+	public static ArrayList<BlueBookEntry> getBluebookFromDB() throws Exception{
 		ArrayList<BlueBookEntry> bluebook = new ArrayList<BlueBookEntry>();
-		//String age, race, sex, height, weight, build, eyes, hair;
-		String narrative, crimeDescrip, location, address, affili, dob;
-		String reference, caseNum, status, weapon;
-		String preparedBy, approvedBy;
-		String otherDescrip, narrative, photoPath, videoPath;
+		String name, caseNum, time, date;
+		String narrative, description, location, address, affili, dob;
+		String preparedBy, approvedBy, photoPath, videoPath;
 		long incidentDate=0, prepDate=0;
-		 
+		
 		//Create the connection to the database
 		Class.forName("org.sqlite.JDBC");
-		
-		//test to make database file access syst indep, changed added Project
-		//Path dbFilePath = Paths.get("Project", "Database", "umpd.db");
+
 		Path dbFilePath = Paths.get("Database", "umpd.db");
 
 		String dbFileName = dbFilePath.toString();
@@ -216,157 +212,75 @@ public class DatabaseHelper {
 	    BlueBookEntry entry;
 	    while (allEntries.next()) {
 	    	entry = new BlueBookEntry();
-	        
 	    	entry.setBluebkID(allEntries.getInt("bbID"));
-	    	 if(isArmed){ prep.setInt(1, 1); } else { prep.setInt(1, 0); }
-	
-	 	    prep.setString(8, this.name);
-	 	    prep.setString(9, this.caseNum);
-	 	    prep.setString(10, this.time);
-	 	    prep.setString(11, this.date);
-	        age = allBOLOs.getString("age");
-	        if(age!=null){ bolo.setAge(age); }
-			race = allBOLOs.getString("race");
-			if(race!=null){ bolo.setRace(race); }
-			sex = allBOLOs.getString("sex");
-			if(sex!=null){ bolo.setSex(sex); }
-			height = allBOLOs.getString("height");
-			if(height!=null){ bolo.setHeight(height); }
-			weight = allBOLOs.getString("weight");
-			if(weight!=null){ bolo.setWeight(weight); }
-			build=allBOLOs.getString("build");
-			if(build!=null){ bolo.setBuild(build); }
-			eyes=allBOLOs.getString("eyes");
-			if(eyes!=null){ bolo.setEyes(eyes); }
-			hair=allBOLOs.getString("hair");
-			if(hair!=null){ bolo.setHair(hair); }
-			reference=allBOLOs.getString("reference");
-			if(reference!=null){ bolo.setReference(reference); }
-			caseNum=allBOLOs.getString("caseNum");
-			if(caseNum!=null){ bolo.setCaseNum(caseNum); }
-			status=allBOLOs.getString("status");
-			if(status!=null){ bolo.setStatus(status); }
-			weapon=allBOLOs.getString("weapon");
-			if(weapon!=null){ bolo.setWeapon(weapon); }
-			preparedBy= allBOLOs.getString("prepedBy");
-			if(preparedBy!=null){ bolo.setPreparedBy(preparedBy); }
-			approvedBy= allBOLOs.getString("approvedBy");
-			if(approvedBy!=null){ bolo.setApprovedBy(approvedBy); }
-			otherDescrip= allBOLOs.getString("description");
-			if(otherDescrip!=null){ bolo.setOtherDescrip(otherDescrip); }
-			narrative=allBOLOs.getString("narrative");
-			if(narrative!=null){ bolo.setNarrative(narrative); }
-			incidentDate = allBOLOs.getLong("incidentDate");
-			if(incidentDate!=0){ bolo.setincidentDate(incidentDate); }
-			prepDate = allBOLOs.getLong("prepdate");
-			if(prepDate!=0){ bolo.setprepDate(prepDate); }
-			
-			photoPath=allBOLOs.getString("photoPath");
-			if(photoPath!=null){ 
+	    	
+	    	name = allEntries.getString("offenderName");
+	        if(name!=null){ entry.setName(name); }
+	        narrative = allEntries.getString("narrartive");
+	        if(narrative!=null){ entry.setNarrative(narrative); }
+	       // preparedBy = allEntries.getString("preparedBy");
+	       // if(preparedBy!=null){ entry.setPreparedBy(preparedBy); }
+	        address = allEntries.getString("address");
+	        if(address!=null){ entry.setAddress(address); }
+	        affili = allEntries.getString("affili");
+	        if(affili!=null){ entry.setAffili(affili); }
+	        caseNum = allEntries.getString("caseNum");
+	        if(caseNum!=null){ entry.setCaseNum(caseNum); }
+	        description = allEntries.getString("description");
+	        if(description!=null){ entry.setCrimeDescrip(description); }
+	        dob = allEntries.getString("dob");
+	        if(dob!=null){ entry.setDob(dob); } 
+	        location = allEntries.getString("location");
+	        if(location!=null){ entry.setLocation(location); }
+	        
+	        photoPath = allEntries.getString("photoFileName");
+	        if(photoPath!=null){ 
 				Path pp = Paths.get(photoPath);
-				bolo.setPhotoFilePath(pp);
-//DEBUG:
-			} else { 
-				System.out.printf("\n photo path is null\n");
-			}
-			
-			videoPath=allBOLOs.getString("videoPath");
-			if(videoPath!=null){ 
-				Path vp = Paths.get(videoPath);
-				bolo.setVideoFilePath(vp);
-//DEBUG:			
-			} else { 
-				//System.out.printf("\n video path is null\n");
-			}
-
-			boloList.add(bolo);
+				entry.setPhotoFilePath(pp);
+	        } else { 
+	        	System.out.printf("\nphoto path is null\n");
+	        }
+	        bluebook.add(entry);
 	    }
 	    	
 	    //Close the connections
-	    allBOLOs.close();
+	    allEntries.close();
 	    conn.close();
 	    
-	    return boloList;
-	    //-----------------------
-
-	
-	    //Create a prepared statement to add the crime data
-	    PreparedStatement prep = conn.prepareStatement(
-	      "REPLACE into bluebook(armed, narrartive, description, location, address, affili," +
-	      " dob, offenderName, caseNum, incidentTime, incidentDate, photoFileName, " +
-	      " videoFileName, bbID)" + 
-	      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
-	
-	    //Add the data to the prepared statement
-	    if(isArmed){ prep.setInt(1, 1); } else { prep.setInt(1, 0); }
-	    prep.setString(2, this.narrative);
-	    prep.setString(3, this.crimeDescrip);
-	    prep.setString(4, this.location);
-	    prep.setString(5, this.address);
-	    prep.setString(6, this.affili);
-	    prep.setString(7, this.dob);
-	    prep.setString(8, this.name);
-	    prep.setString(9, this.caseNum);
-	    prep.setString(10, this.time);
-	    prep.setString(11, this.date);
-	    
-	    if(this.bluebkID!=0){ prep.setInt(14, this.bluebkID); }
-	
-	    if(photoFilePath!=null){
-		    Path absPhotoFilePath = photoFilePath.toAbsolutePath();
-		    photoPathName = absPhotoFilePath.toString();
-		    System.out.println("photoPathName = " + photoPathName);
-	    }
-	    prep.setString(12, photoPathName);	    
-	    
-	    if(videoFilePath!=null){
-	    	Path absVideoFilePath = videoFilePath.toAbsolutePath();
-	    	videoPathName = absVideoFilePath.toString();
-	    } 
-	    prep.setString(13, videoPathName);
-	    
-	    prep.addBatch();
-	    
-	    //Create new row in the table for the data
-	    conn.setAutoCommit(false);
-	    prep.executeBatch();
-	    conn.setAutoCommit(true);
-	    
-	    //Close the connection
-	    conn.close();
-	} */
+	    return bluebook;
+	} 
 //-----------------------------------------------------------------------------
 	public void addRollCall(String name, String present, String comment, 
 			String timeArrived, String shiftDate) throws Exception {
 		
-				//Create the connection to the database
-				Class.forName("org.sqlite.JDBC");
-				Path dbFilePath = Paths.get("Database", "umpd.db");
-				String dbFileName = dbFilePath.toString();
-			    Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
-			    
-			    //insert into person table
-			    PreparedStatement personStatement = conn.prepareStatement(
-			    		"INSERT into RollCall(Name, Present, Comment, TimeArrived, ShiftDate) " +
-			    		"VALUES(?,?,?,?,?);"
-			        );
-			    
-			    //long shiftDateEpoch = convertDateToEpoch(shiftDate);
-			    
-			    personStatement.setString(1,name);
-			    personStatement.setString(2,present);
-			    personStatement.setString(3,comment);
-			    personStatement.setString(4,timeArrived);
-			    personStatement.setString(5,shiftDate);
-			    personStatement.addBatch();
-			    
-			  //Create new row in the table for the data
-			    conn.setAutoCommit(false);
-			    personStatement.executeBatch();
-			    conn.setAutoCommit(true);
-			    
-			    //Close the connection
-			    conn.close();
+		//Create the connection to the database
+		Class.forName("org.sqlite.JDBC");
+		Path dbFilePath = Paths.get("Database", "umpd.db");
+		String dbFileName = dbFilePath.toString();
+		Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
+		
+		//insert into person table
+		PreparedStatement personStatement = conn.prepareStatement(
+				"INSERT into RollCall(Name, Present, Comment, TimeArrived, ShiftDate) " +
+				"VALUES(?,?,?,?,?);"
+		    );
+		
+		//long shiftDateEpoch = convertDateToEpoch(shiftDate);
+		    
+		personStatement.setString(1,name);
+		personStatement.setString(2,present);
+		personStatement.setString(3,comment);
+		personStatement.setString(4,timeArrived);
+		personStatement.setString(5,shiftDate);
+		personStatement.addBatch();
+
+	    //Create new row in the table for the data
+		conn.setAutoCommit(false);
+		personStatement.executeBatch();
+		conn.setAutoCommit(true);
+		
+		//Close the connection
+		conn.close();
 	}
 //-----------------------------------------------------------------------------
 	/*

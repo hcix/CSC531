@@ -40,7 +40,6 @@ public class Core extends JFrame {
 	        	
 	        	//Set up the UI
 	        	createAndShowMainGUI();
-
 	        }
 	    });
 	}

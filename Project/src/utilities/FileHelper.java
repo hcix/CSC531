@@ -70,7 +70,7 @@ public class FileHelper {
 		docName = docPath.toString();
 		
 //DEBUG:	
-		System.out.println("getDocumentPathName = " + docName);	
+//System.out.println("getDocumentPathName = " + docName);	
 		return docName;
 		
 	}
@@ -92,8 +92,31 @@ public class FileHelper {
 		docName = docPath.toString();
 		
 //DEBUG:	
-		System.out.println("getDocumentPathName = " + docName);	
+//System.out.println("getDocumentPathName = " + docName);	
 		return docName;
+		
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * 
+	 */
+	public static String getRosterFilePathName(){
+		File progDir = new File("..");
+		Path rosterPath=null;
+		String rosterFileName=null;
+			
+		try{
+			rosterPath = Paths.get(progDir.getCanonicalPath(), 
+					"Project", "src", "utilities", "xml", "roster.xml");
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		
+		rosterFileName = rosterPath.toString();
+		
+//DEBUG:	
+System.out.println("rosterFileName = " + rosterFileName);	
+		return rosterFileName;
 		
 	}
 //-----------------------------------------------------------------------------
@@ -111,7 +134,7 @@ public class FileHelper {
 		docName = docPath.toString();
 		
 //DEBUG:	
-		System.out.println("getFormTemplatePathName = " + docName);
+//System.out.println("getFormTemplatePathName = " + docName);
 		
 		return docName;
 	}
@@ -124,9 +147,8 @@ public class FileHelper {
   	 */
 	public static String getProgramDirPathName(){
 		String programDir = null;
-		//File progDir = new File("."); //changed .. to .?
-		File progDir = new File(".."); //changed . to ..?
-
+		//File progDir = new File("."); //this one to run in a jar
+		File progDir = new File(".."); //this one to run in Eclipse
 		
 		try {
 			programDir = progDir.getCanonicalPath();
@@ -135,7 +157,9 @@ public class FileHelper {
 		}
 			
 		
-		System.out.println("programDir = " + programDir);	
+//DEBUG
+//System.out.println("programDir = " + programDir);	
+		
 		return programDir;
 	}
 //-----------------------------------------------------------------------------

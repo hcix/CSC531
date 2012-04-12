@@ -163,14 +163,10 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	public JPanel createRecentBOLOsTab(){
 		JPanel recentBOLOsPanel = new JPanel(new MigLayout("gapx 30, wrap 4"));
-		//JButton boloPanel;
 		JPanel boloPanel;
 		Date prepDate;
-		
-		//TODO: Implement this idea into ItemsViewerPanel so can be reused.
+	
 		//TODO: make scrollable!
-		
-		//ItemsViewerPanel entriesPanel = new ItemsViewerPanel();
 
 		try {
 			boloList = DatabaseHelper.getBOLOsFromDB();
@@ -188,7 +184,8 @@ private static final long serialVersionUID = 1L;
 //DEBUG			System.out.printf("listId = %s\n", listId);
 			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
 			
-			JLabel photoLabel = new JLabel(ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
+			JLabel photoLabel = new JLabel(
+					ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
 
 			String date = formatter.format(prepDate);
 			String caseNum = "";

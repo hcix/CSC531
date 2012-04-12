@@ -64,7 +64,7 @@ public class ImageHandler {
 		}catch(Exception e){
 			e.printStackTrace();
 			System.out.println("Unable to find original image");
-			return srcImgIcon;
+			return null;
 		}
 	    BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
 	    Graphics2D g2 = resizedImg.createGraphics();

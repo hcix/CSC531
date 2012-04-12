@@ -117,11 +117,11 @@ private static final long serialVersionUID = 1L;
 		
 		String name = ((Component) e.getSource()).getName();
 //DEBUG:
-		System.out.println("ItemsViewerPanel: mouseClicked(): name = "+name);
+//System.out.println("ItemsViewerPanel: mouseClicked(): name = "+name);
 		ActionEvent ev = new ActionEvent((e.getSource()), ActionEvent.ACTION_PERFORMED, name);
 //DEBUG:
-		System.out.println("ItemsViewerPanel: mouseClicked(): ev.getActionCommand = "
-		+ ev.getActionCommand());
+//System.out.println("ItemsViewerPanel: mouseClicked(): ev.getActionCommand = "
+//		+ ev.getActionCommand());
 		
 		l.actionPerformed(ev);
 	}
