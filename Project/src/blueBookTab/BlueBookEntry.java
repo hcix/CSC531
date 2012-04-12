@@ -279,8 +279,8 @@ public class BlueBookEntry {
 	/**
 	 * @param photoFilePath - the path of the photo associated with this BOLO
 	 */
-	public void setPhotoFilePath(Path photoFilePath) {
-		this.photoFilePath = photoFilePath;
+	public static void setPhotoFilePath(Path p_photoFilePath) {
+		Path photoFilePath = p_photoFilePath;
 	}
 //-----------------------------------------------------------------------------
 	/**

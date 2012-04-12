@@ -7,12 +7,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
+import boloTab.BOLOform;
+import program.ManageItemsDialog;
 import program.ResourceManager;
+import reviewItems.ItemRenderer;
+import reviewItems.ItemToReview;
+import reviewItems.ItemsListModel;
 import userinterface.HomeTab;
 import utilities.FileHelper;
 import utilities.SwingHelper;
@@ -27,15 +37,9 @@ import utilities.xml.XmlParser;
  */
 
 public class AdminTab extends JPanel implements ActionListener {
-	static final String ADD_USER = "add";
-	static final String EDIT_USER = "edit user";
-	static final String DELETE_USER = "delete";
-	static final String LAUNCH_VIDEO = "launch";
-	static final String EDIT_SYSTEM = "edit system";
-	JFrame parent;
 	private static final long serialVersionUID = 1L;
+	JFrame parent;
 	ResourceManager rm;
-
 //-----------------------------------------------------------------------------
 	public AdminTab(ResourceManager rm) {
 		JPanel adminPanel = new JPanel();
@@ -50,86 +54,50 @@ public class AdminTab extends JPanel implements ActionListener {
 	private JPanel createActionButtons() {
 		JPanel buttonsPanel = new JPanel();
 
-		JButton editUsrAcctsButton = 
-				SwingHelper.createImageButton("Edit User Accounts", "icons/group_48.png");
+		JButton editUsrAcctsButton = SwingHelper.createImageButton(
+				"Edit User Accounts", "icons/group_48.png");
+		editUsrAcctsButton.addActionListener(new ActionListener() {
+			//create editUsersDialog
+			EditUsrAccountsDialog usrAcctsDialog = new EditUsrAccountsDialog(parent);
+			public void actionPerformed(ActionEvent e){
+				usrAcctsDialog.setVisible(true);	
+			}
+		});
 		
-		
-		
-		JButton addNewUserButton = SwingHelper
-				.createImageButton("icons/addUser_48.png");
-		addNewUserButton.addActionListener(this);
-		addNewUserButton.setActionCommand(ADD_USER);
-
-		JButton editUserButton = SwingHelper
-				.createImageButton("icons/editUser_48.png");
-		editUserButton.addActionListener(this);
-		editUserButton.setActionCommand(EDIT_USER);
-
-		JButton deleteUserButton = SwingHelper
-				.createImageButton("icons/deleteUser_48.png");
-		deleteUserButton.addActionListener(this);
-		deleteUserButton.setActionCommand(DELETE_USER);
-
-		JButton recordVideoButton = SwingHelper
-				.createImageButton("icons/videoCamera.png");
-		recordVideoButton.addActionListener(this);
-		recordVideoButton.setActionCommand(LAUNCH_VIDEO);
-
-		JButton editSystemButton = SwingHelper
-				.createImageButton("icons/edit_48.png");
-		editSystemButton.addActionListener(this);
-		editSystemButton.setActionCommand(EDIT_SYSTEM);
-
-		JButton addNewItemButton = SwingHelper
-				.createImageButton("icons/plusSign_48.png");
-		addNewItemButton.addActionListener(this);
-		addNewItemButton.setActionCommand(EDIT_SYSTEM);
-
-		JButton[] buttonArray = { addNewUserButton, editUserButton,
-				deleteUserButton, addNewItemButton, recordVideoButton,
-				editSystemButton };
-
-		String[] buttonLabelText = {
-				"<html><h2>Add a new user to the system</h2></html",
-				"<html><h2>Edit an existing user</h2></html",
-				"<html><h2>Delete an existing user</h2></html",
-				"<html><h2>Set a new item to be reviewed</h2></html",
-				"<html><h2>Load a video announcement</h2></html",
-				"<html><h2>Edit system settings</h2></html" };
-
-		addNewItemButton.addActionListener(new ActionListener() {
-			AddItemDialog itemDialog = new AddItemDialog(rm.getGuiParent());
-
-			public void actionPerformed(ActionEvent e) {
-				itemDialog.setVisible(true);
-				itemDialog.setModal(true);
+		JButton manageItemsButton = SwingHelper.createImageButton(
+				"Manage Items to Review", "icons/notepad_48.png");
+		manageItemsButton.addActionListener(new ActionListener() {
+			//create manageItemsDialog
+			ManageItemsDialog manageItemsDialog = new ManageItemsDialog(parent);
+			public void actionPerformed(ActionEvent e){
+				manageItemsDialog.setVisible(true);	
 			}
 		});
 
-		SwingHelper.addVerticalLabeledButtons(buttonsPanel, buttonArray,
-				buttonLabelText);
+		JButton uploadVideoButton = SwingHelper
+				.createImageButton("Upload Video", "icons/videoCamera.png");
+		uploadVideoButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				chooseAndAddVideo();
+			}
+		});
 
-		SwingHelper.addLineBorder(buttonsPanel);
+		JButton editSystemButton = SwingHelper
+				.createImageButton("Edit System Settings", "icons/gear_48.png");
+		editSystemButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				//TODO edit syst setting dialog	
+			}
+		});
 
+		buttonsPanel.add(editUsrAcctsButton);
+		buttonsPanel.add(manageItemsButton);
+		buttonsPanel.add(uploadVideoButton);
+		buttonsPanel.add(editSystemButton); 
+		
+		
 		return buttonsPanel;
 	}
-
-//-----------------------------------------------------------------------------
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand() == ADD_USER) {
-
-		} else if (e.getActionCommand() == EDIT_USER) {
-
-		} else if (e.getActionCommand() == DELETE_USER) {
-
-		} else if (e.getActionCommand() == LAUNCH_VIDEO) {
-			chooseAndAddVideo();
-		} else if (e.getActionCommand() == EDIT_SYSTEM) {
-
-		}
-	}
-
 //-----------------------------------------------------------------------------
 	public void chooseAndAddVideo() {
 		// show choose photo dialog
@@ -157,6 +125,11 @@ public class AdminTab extends JPanel implements ActionListener {
 
 		}
 
+	}
+//-----------------------------------------------------------------------------
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	
 	}
 //-----------------------------------------------------------------------------
 }
