@@ -20,6 +20,7 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -31,6 +32,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
@@ -39,6 +41,9 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
+import com.sun.xml.internal.ws.api.server.Container;
+
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import reviewItems.ItemRenderer;
@@ -144,7 +149,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		rollCallTab.add(shiftLabel, "dock north");
 		rollCallTab.add(tablePanel, "dock north");
 		rollCallTab.add(buttonPanel, "dock south");
-
 		this.add(tabbedPane, BorderLayout.CENTER);
 		this.add(sidePanel, BorderLayout.EAST);
 	}
@@ -291,7 +295,9 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	
 // -----------------------------------------------------------------------------
 	private void editLastRollCall() {
-		final JFrame popup = new JFrame("Edit Roll Call");
+		final JDialog popup = new JDialog(rm.getGuiParent(), "Edit Roll Call");
+		final JPanel mainPanel = new JPanel(new MigLayout());
+		JToolBar toolbar = new JToolBar("Toolbar", JToolBar.HORIZONTAL);
         ArrayList<String> rollNames = new ArrayList<String>();
         Date date = new Date();
         ArrayList<RollCall> rollCall;
@@ -325,7 +331,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
     		table.setValueAt(roll.getComment(), i++, j++);
     	}
     	
-    	JButton finishedButton = SwingHelper.createImageButton("Save and Close", "save_48.png");
+    	JButton finishedButton = SwingHelper.createImageButton("Save and Close", "icons/save_48.png");
     	finishedButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -334,11 +340,14 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 			}
     		
     	});
-    	JPanel buttonPanel = new JPanel(new FlowLayout());
-        buttonPanel.add(finishedButton);
-    	popup.add(tablePanel);
-        popup.add(buttonPanel);
-    	popup.setSize(400, 400); // dynamic sizing??
+
+    	//Container contentPane = getContentPane();
+    	toolbar.add(finishedButton);
+    	mainPanel.add(table, BorderLayout.CENTER);
+    	mainPanel.add(toolbar, BorderLayout.NORTH);
+    	popup.add(mainPanel);
+    	popup.setSize(700, 700); // dynamic sizing??
+    	popup.setLocationRelativeTo(null);
 		popup.setVisible(true);
 	}
 
@@ -362,15 +371,16 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		return timeSpinner;
 	}
 
-// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+	public void addItemsToReview(JPanel scrollPanel){
 
-// -----------------------------------------------------------------------------
-	public void addItemsToReview(JPanel scrollPanel) {
 		ArrayList<ItemToReview> items = XmlParser.loadItemsToReviewList();
 
 		ItemsListModel itemsModel = new ItemsListModel(items);
 
-		JList itemsList = new JList(itemsModel);
+		//JList itemsList = new JList(itemsModel);
+		
+		JList<ItemToReview> itemsList = new JList<ItemToReview>(itemsModel);
 
 		ItemRenderer itemRenderer = new ItemRenderer(parent, itemsList);
 		itemsList.setCellRenderer(itemRenderer);

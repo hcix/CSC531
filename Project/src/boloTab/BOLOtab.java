@@ -235,8 +235,7 @@ private static final long serialVersionUID = 1L;
 		Bolo selectedBOLO = boloList.get(id);
 		BOLOpreview preview = new BOLOpreview(parent, selectedBOLO);
 
-		preview.setVisible(true);
-		
+		preview.setVisible(true);	
 
 	}
 //-----------------------------------------------------------------------------	

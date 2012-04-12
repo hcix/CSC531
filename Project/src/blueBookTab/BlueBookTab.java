@@ -2,8 +2,12 @@ package blueBookTab;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -12,8 +16,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import boloTab.Bolo;
 import net.miginfocom.swing.MigLayout;
 import userinterface.ItemsViewerPanel;
+import utilities.DatabaseHelper;
+import utilities.ImageHandler;
 import utilities.SwingHelper;
 /**
  * Configures UI for the Blue Book Tab
@@ -26,16 +33,16 @@ private static final long serialVersionUID = 1L;
 		this.setLayout(new BorderLayout());
 		
 		//Create Blue Book tabbed display area
-		JTabbedPane tabbedPane = new JTabbedPane();
+		//JTabbedPane tabbedPane = new JTabbedPane();
 		//Add recent Blue Book Entries tab
 
 		//tabbedPane.addTab("Blue Book", recentBolosTab);
 		//tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
 				
+		JPanel entriesPanel = createEntriesPanel();
 		//Create a button to create a new Blue Book entry 
 		JButton newEntryButton = 
-				SwingHelper.createImageButton("Create new Blue Book entry", 
-						"icons/plusSign_48.png");
+				SwingHelper.createImageButton("Create", "icons/plusSign_48.png");
 		newEntryButton.addActionListener(new ActionListener() {
 			//Create new Blue Book entry form dialog
 			BlueBookForm formDialog = new BlueBookForm(parent);
@@ -45,8 +52,7 @@ private static final long serialVersionUID = 1L;
 		});
 
 		//Create search button
-		JButton searchButton = SwingHelper.createImageButton("Search Blue Book", 
-				"icons/search.png");
+		JButton searchButton = SwingHelper.createImageButton("Search", "icons/search.png");
 		searchButton.addActionListener(new ActionListener() {
 			//Search dialog
 			JDialog searchDialog = createSearchDialog(parent);
@@ -56,7 +62,8 @@ private static final long serialVersionUID = 1L;
 		});
 		 
 		//add the components to this panel
-		this.add(tabbedPane, BorderLayout.CENTER);
+		
+		//this.add(tabbedPane, BorderLayout.CENTER);
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(newEntryButton);
 		buttonsPanel.add(searchButton);
@@ -102,7 +109,65 @@ private static final long serialVersionUID = 1L;
 		contentPane.add(searchPanel);
 		return searchDialog;
 	}
-//-----------------------------------------------------------------------------		
+//-----------------------------------------------------------------------------	
+	public JPanel createEntriesPanel(){
+		JPanel panel = new JPanel(new MigLayout("gapx 30, wrap 4"));
+		Date prepDate;
+		
+		//TODO: make scrollable!
+		/*
+		try {
+			boloList = DatabaseHelper.getBOLOsFromDB();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		int listSize = boloList.size();
+		JPanel[] items = new JPanel[listSize];
+		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
+		
+		int i=0;
+		for(Bolo bolo: boloList){
+			String listId = "" + boloList.indexOf(bolo);
+//DEBUG			System.out.printf("listId = %s\n", listId);
+			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
+			
+			JLabel photoLabel = new JLabel(ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
+
+			String date = formatter.format(prepDate);
+			String caseNum = "";
+			if(bolo.getCaseNum()!=null){ caseNum=bolo.getCaseNum(); }
+			String status = "";
+			if(bolo.getStatus()!=null){ status=bolo.getStatus(); }
+			
+			boloPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
+			boloPanel.add(photoLabel);
+			
+			String armedText = "";
+			if(bolo.getWeapon()!=null){ 
+				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
+			}
+			
+			boloPanel.add(new JLabel(armedText, JLabel.CENTER), "alignx center,wrap");
+			
+			boloPanel.add(new JLabel(date), "split 3, aligny top");
+			boloPanel.add(new JLabel("Case#: "+caseNum));
+			boloPanel.add(new JLabel(status));
+			boloPanel.setSize(new Dimension(130, 150));
+			boloPanel.setPreferredSize(new Dimension(130, 150));
+			
+			boloPanel.setName(listId);
+			items[i]=boloPanel;
+			i++;
+		}
+		
+		ItemsViewerPanel entriesPanel = new ItemsViewerPanel(items, this);
+		
+		recentBOLOsPanel.add(entriesPanel);
+		*/
+		return panel;
+	}
+//-----------------------------------------------------------------------------	
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 		

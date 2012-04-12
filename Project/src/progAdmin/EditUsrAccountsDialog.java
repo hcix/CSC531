@@ -13,22 +13,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import reviewItems.ItemToReview;
 import net.miginfocom.swing.MigLayout;
+import reviewItems.ItemToReview;
 import utilities.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
  *
  */
-public class AddItemDialog extends JDialog {
+public class EditUsrAccountsDialog extends JDialog {
 private static final long serialVersionUID = 1L;
 	JFrame parent;
 	ItemToReview item;
 	JTextField titleField;
 	JTextArea textArea;
 //-----------------------------------------------------------------------------
-	public AddItemDialog(JFrame parent){
-		super(parent, "New Item", true);
+	public EditUsrAccountsDialog(JFrame parent){
+		super(parent, "User Accounts", true);
+		
 		this.parent=parent;
 		
 		this.setPreferredSize(new Dimension(700,500));
@@ -43,69 +44,52 @@ private static final long serialVersionUID = 1L;
 				closeAndCancel();
 			}
 		});
-	    
-		item=new ItemToReview();
-		
-		//JPanel mainPanel = new JPanel(new MigLayout("", "[][]", "[][][]"));
+
 		JPanel mainPanel = new JPanel(new MigLayout());
 		
-		JLabel titleLabel = new JLabel("Item Title: ");
-		JLabel detailsLabel = new JLabel("Description: ");
-		
-		titleField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
-		
-		textArea = new JTextArea(100, 20);
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
+		JButton addNewUserButton = SwingHelper
+				.createImageButton("Add", "icons/addUser_48.png");
+		//addNewUserButton.addActionListener(this);
+		//addNewUserButton.setActionCommand(ADD_USER);
 
+		JButton editUserButton = SwingHelper
+				.createImageButton("Edit", "icons/editUser_48.png");
+		//editUserButton.addActionListener(this);
+		//editUserButton.setActionCommand(EDIT_USER);
+
+		JButton deleteUserButton = SwingHelper
+				.createImageButton("Delete", "icons/deleteUser_48.png");
+		//deleteUserButton.addActionListener(this);
+		//deleteUserButton.setActionCommand(DELETE_USER);
 		
-		JButton addItem = new JButton("Add Item");
-		addItem.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				saveAndClose();
-			 }
-		});
 		
-		mainPanel.add(titleLabel, "align left");
-		mainPanel.add(titleField, "align left, wrap");
-		mainPanel.add(detailsLabel, "align left");
-		mainPanel.add(textArea, "align left, wrap");
-		mainPanel.add(addItem, "align left");
+		String[] buttonLabelText = {
+			"<html><h2>Add a new user to the system</h2></html",
+			"<html><h2>Edit an existing user</h2></html",
+			"<html><h2>Delete an existing user</h2></html"
+		};
+		
+		mainPanel.add(addNewUserButton);
+		mainPanel.add(editUserButton);
+		mainPanel.add(deleteUserButton);
 		
 	    Container contentPane = getContentPane();
 	    contentPane.add(mainPanel);
-
 	}
 //-----------------------------------------------------------------------------
 	private void saveAndClose(){
-		String title="", details="";
-		
-		if(!titleField.getText().isEmpty()){
-			title=titleField.getText().toString().trim();
-			System.out.println("AddItemDialog: AddItemDialog(): title = "+title);
-			item.setTitle(title);
-		}
-		
-		if(!textArea.getText().isEmpty()){
-			details=textArea.getText().toString().trim();
-			System.out.println("AddItemDialog: AddItemDialog(): details = "+details);
-			item.setDetails(details);
-		}
-		
-		try{ item.addToXML(); } 
-		catch (Exception ex){ ex.printStackTrace(); }
-	
-		titleField.setText("");
-		textArea.setText("");
 		
 		this.dispose();
 	}
 //-----------------------------------------------------------------------------
 	private void closeAndCancel(){
-		titleField.setText("");
-		textArea.setText("");
-		
+
 		this.dispose();
 	}
 //-----------------------------------------------------------------------------
+	
+	
+//-----------------------------------------------------------------------------
 }
+
+

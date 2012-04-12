@@ -5,9 +5,10 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-
+import progAdmin.LoginDialog;
 import userinterface.DashboardPanel;
 import userinterface.MainInterfaceWindow;
+import utilities.SwingHelper;
 
 
 public class Core extends JFrame {
@@ -74,7 +75,7 @@ public class Core extends JFrame {
 	/**
 	 * Create the GUI and show it.  For thread safety, this method should be
 	 * invoked from the event dispatch thread.
-	 
+	 */
 	private static void createAndShowLoginGUI() {
 	    //Create and set up the frame to place the login window in
 		JFrame loginFrame = new JFrame("UMPD Login");
@@ -91,6 +92,6 @@ public class Core extends JFrame {
 			System.exit(0);
 		}
 	}
-	*/
+	
 //-----------------------------------------------------------------------------	
 }

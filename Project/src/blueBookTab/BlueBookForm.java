@@ -6,9 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,7 +20,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
+import utilities.FileHelper;
 import utilities.ImageHandler;
+import utilities.ImagePreview;
+import utilities.ResizablePhotoDialog;
 import utilities.SwingHelper;
 /**
  * Creates UI for BlueBook input form.
@@ -29,7 +35,6 @@ private static final long serialVersionUID = 1L;
 	JTextField caseNumField, nameField, affiliField, addressField, ifYesField;
 	JTextArea locationField, descriptionField, reasonField;
 //-----------------------------------------------------------------------------
-
 	public BlueBookForm(JFrame parent) {
 		super(parent, "New Blue Book Entry", true);
 		//Set the size of the form
@@ -98,7 +103,6 @@ private static final long serialVersionUID = 1L;
 		 * pand and set the line wrap and scroll 
 		 * properties
 		 */
-		
 		locationField = new JTextArea(5, 20);
 		locationField.setLineWrap(true);
 		JScrollPane locationScrollPane = new JScrollPane(locationField);
@@ -183,7 +187,7 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	private JPanel createPhotoPanel(){
-		JPanel photoPanel = new JPanel(new MigLayout());
+		final JPanel photoPanel = new JPanel(new MigLayout());
 		
 		//Create initial no-photo place holder photo
 		ImageIcon noPhotoImage = ImageHandler.createImageIcon("images/unknownPerson.jpeg");
@@ -192,6 +196,11 @@ private static final long serialVersionUID = 1L;
 		
 		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", "icons/camera.png");
 		addPhotoButton.setToolTipText("Attach a photo to this bbEntry");
+		addPhotoButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae) {
+				chooseAndAddPhoto(photoPanel);
+			}
+		});
 		photoPanel.add(addPhotoButton);
 		
 		return photoPanel;
@@ -272,49 +281,40 @@ private static final long serialVersionUID = 1L;
 		 
 	}
 //-----------------------------------------------------------------------------
-	/* public void chooseAndAddPhoto(JPanel photoPanel){
-		//show choose photo dialog
-		final JFileChooser fc = new JFileChooser();
-		fc.addChoosableFileFilter(FileHelper.getImageFilter());
-		fc.setAcceptAllFileFilterUsed(false);
-		fc.setAccessory(new ImagePreview(fc));
-		int returnVal = fc.showOpenDialog(parent);
-			
-		//if a photo was selected, add it to bbEntry and load into photo area
-		if(returnVal==JFileChooser.APPROVE_OPTION){
-			//copy the chosen photo into the program's 'Photos' directory
-			File file = fc.getSelectedFile();
-			System.out.printf("filepath = %s\n", file.getName(), file.getPath());
-			Path photoPath = FileHelper.copyPhoto(file);
-			//load the image into photo area
-			if(photoPath==null){
-				//report that an error occurred in coping and retrieving the img file
-				return;
-			} else {
-			ImageIcon chosenPhoto = ImageHandler.getResizableImageIcon(photoPath, 200, 299);
-				ResizablePhoto chosenImg = new ResizablePhoto(chosenPhoto);
-				bbEntry.setPhotoFilePath(photoPath);
-	
-				JDialog resizerDialog = new JDialog(this, "Resize Photo", 
-						Dialog.ModalityType.DOCUMENT_MODAL);
-				//resizerDialog.setLocationRelativeTo(null);
-				resizerDialog.setPreferredSize(new Dimension(700, 700));
-				resizerDialog.setSize(new Dimension(700, 700));
-				JPanel p = new JPanel();
-				p.setPreferredSize(new Dimension(700, 700));
-				p.setSize(new Dimension(700, 700));
-				resizerDialog.setLocationRelativeTo(null);
-				p.add(chosenImg.getPhotoFrame());
-							
-				Container cp = resizerDialog.getContentPane();
-				cp.add(p);
-				resizerDialog.setVisible(true);
+	 public void chooseAndAddPhoto(final JPanel photoPanel){
+			//show choose photo dialog
+			final JFileChooser fc = new JFileChooser();
+			System.out.println("Bluebook form chooseAndAddPhoto after file chooser");
+			fc.addChoosableFileFilter(FileHelper.getImageFilter());
+			fc.setAcceptAllFileFilterUsed(false);
+			fc.setAccessory(new ImagePreview(fc));
+			int returnVal = fc.showOpenDialog(getParent());
+
+			//if a photo was selected, add it to BOLO and load into photo area
+			if(returnVal==JFileChooser.APPROVE_OPTION){
+				//copy the chosen photo into the program's 'Photos' directory
+				final File file = fc.getSelectedFile();
 				
+System.out.printf("BlueBookForm: chooseAndAddPhoto: filepath = %s\n", file.getPath());
+
+				ImageIcon chosenPhoto = new ImageIcon(file.getPath());
+				
+				final ResizablePhotoDialog resizeDialog = new ResizablePhotoDialog(
+							chosenPhoto, this, file.getName());
+
+				//if the user pressed the set photo button
+				if(resizeDialog.getNewPhotoFilePath()!=null){
+					bbEntry.setPhotoFilePath(resizeDialog.getNewPhotoFilePath());
+					photoPanel.removeAll();
+					
+					photoPanel.add(new JLabel(resizeDialog.getResizedImgIcon()));
+
+					(photoPanel.getParent()).validate();
+				}
 
 			}
-		}
-		
-	 }*/
+			
+		 }
 //-----------------------------------------------------------------------------
 	/**
 	 * Erase any fields in the form that have been filled in and close the

@@ -279,8 +279,8 @@ public class BlueBookEntry {
 	/**
 	 * @param photoFilePath - the path of the photo associated with this BOLO
 	 */
-	public void setPhotoFilePath(Path photoFilePath) {
-		this.photoFilePath = photoFilePath;
+	public void setPhotoFilePath(Path p_photoFilePath) {
+		Path photoFilePath = p_photoFilePath;
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -348,8 +348,8 @@ public class BlueBookEntry {
 	
 	    if(photoFilePath!=null){
 		    Path absPhotoFilePath = photoFilePath.toAbsolutePath();
-		   // URI imgURI = absPhotoFilePath.toUri();
 		    photoPathName = absPhotoFilePath.toString();
+		    System.out.println("photoPathName = " + photoPathName);
 	    }
 	    prep.setString(12, photoPathName);	    
 	    
@@ -359,7 +359,6 @@ public class BlueBookEntry {
 	    } 
 	    prep.setString(13, videoPathName);
 	    
-
 	    prep.addBatch();
 	    
 	    //Create new row in the table for the data
