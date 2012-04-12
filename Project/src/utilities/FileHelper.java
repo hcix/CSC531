@@ -315,16 +315,17 @@ public class FileHelper {
 					return target;
 				} catch (FileAlreadyExistsException e){
 					Path p = orginalPath.getFileName();
-					System.out.println("\n\n copyfile pathp : " + p.toString() + "\n\n");
+System.out.println("\n\n copyfile pathp : " + p.toString() + "\n\n");
 					newFileName = getNameWithoutExtension(p.toString()) + i + "."
 							+ getFileExtension(source);
-					System.out.println("\n\n copyfile newFilename : " + newFileName + "\n\n");
+System.out.println("\n\n copyfile newFilename : " + newFileName + "\n\n");
 					newPath = Paths.get(target.toString(), newFileName);
-					System.out.println("\n\n copyfile newpath : " + newPath.toString() + "\n\n");
+System.out.println("\n\n copyfile newpath : " + newPath.toString() + "\n\n");
 				} catch (IOException x) {
-			                System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
+					System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
 			    }
 			}
+			
 			//100 files with this file's same name (and diff numbers after) already exist, 
 			//tell the user to pick a new name
 			return newPath;
@@ -393,6 +394,20 @@ public class FileHelper {
 		SimpleViewer viewer = new SimpleViewer();	
 		viewer.setRootContainer(c);
 		viewer.setupViewer();
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @return the absolute file path of the script to check the password
+	 */
+	public static String getPasswordScript(){
+		String progDir = getProgramDirPathName();
+		
+		//Specifies a system independent path
+		Path passwdScript = Paths.get(progDir, "c.py");
+		
+		return passwdScript.toString();
+
 	}
 //-----------------------------------------------------------------------------
 /**

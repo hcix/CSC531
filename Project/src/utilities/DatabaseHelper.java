@@ -18,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
 
 public class DatabaseHelper {	
@@ -182,6 +183,158 @@ public class DatabaseHelper {
 	    
 	    return boloList;
 	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Retrives all the BOLOs from the database and places them into an 
+	 * <code>Arraylist</code> of BOLO objects, which is returned to the 
+	 * caller.
+	 * @return an arraylist of BOLO objects
+	 * @throws Exception
+	
+	public static ArrayList<Bolo> getBluebookFromDB() throws Exception{
+		ArrayList<BlueBookEntry> bluebook = new ArrayList<BlueBookEntry>();
+		//String age, race, sex, height, weight, build, eyes, hair;
+		String narrative, crimeDescrip, location, address, affili, dob;
+		String reference, caseNum, status, weapon;
+		String preparedBy, approvedBy;
+		String otherDescrip, narrative, photoPath, videoPath;
+		long incidentDate=0, prepDate=0;
+		 
+		//Create the connection to the database
+		Class.forName("org.sqlite.JDBC");
+		
+		//test to make database file access syst indep, changed added Project
+		//Path dbFilePath = Paths.get("Project", "Database", "umpd.db");
+		Path dbFilePath = Paths.get("Database", "umpd.db");
+
+		String dbFileName = dbFilePath.toString();
+	    Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
+	    
+	    Statement stat = conn.createStatement();
+	    ResultSet allEntries = stat.executeQuery("SELECT * FROM bluebook;");
+
+	    BlueBookEntry entry;
+	    while (allEntries.next()) {
+	    	entry = new BlueBookEntry();
+	        
+	    	entry.setBluebkID(allEntries.getInt("bbID"));
+	    	 if(isArmed){ prep.setInt(1, 1); } else { prep.setInt(1, 0); }
+	
+	 	    prep.setString(8, this.name);
+	 	    prep.setString(9, this.caseNum);
+	 	    prep.setString(10, this.time);
+	 	    prep.setString(11, this.date);
+	        age = allBOLOs.getString("age");
+	        if(age!=null){ bolo.setAge(age); }
+			race = allBOLOs.getString("race");
+			if(race!=null){ bolo.setRace(race); }
+			sex = allBOLOs.getString("sex");
+			if(sex!=null){ bolo.setSex(sex); }
+			height = allBOLOs.getString("height");
+			if(height!=null){ bolo.setHeight(height); }
+			weight = allBOLOs.getString("weight");
+			if(weight!=null){ bolo.setWeight(weight); }
+			build=allBOLOs.getString("build");
+			if(build!=null){ bolo.setBuild(build); }
+			eyes=allBOLOs.getString("eyes");
+			if(eyes!=null){ bolo.setEyes(eyes); }
+			hair=allBOLOs.getString("hair");
+			if(hair!=null){ bolo.setHair(hair); }
+			reference=allBOLOs.getString("reference");
+			if(reference!=null){ bolo.setReference(reference); }
+			caseNum=allBOLOs.getString("caseNum");
+			if(caseNum!=null){ bolo.setCaseNum(caseNum); }
+			status=allBOLOs.getString("status");
+			if(status!=null){ bolo.setStatus(status); }
+			weapon=allBOLOs.getString("weapon");
+			if(weapon!=null){ bolo.setWeapon(weapon); }
+			preparedBy= allBOLOs.getString("prepedBy");
+			if(preparedBy!=null){ bolo.setPreparedBy(preparedBy); }
+			approvedBy= allBOLOs.getString("approvedBy");
+			if(approvedBy!=null){ bolo.setApprovedBy(approvedBy); }
+			otherDescrip= allBOLOs.getString("description");
+			if(otherDescrip!=null){ bolo.setOtherDescrip(otherDescrip); }
+			narrative=allBOLOs.getString("narrative");
+			if(narrative!=null){ bolo.setNarrative(narrative); }
+			incidentDate = allBOLOs.getLong("incidentDate");
+			if(incidentDate!=0){ bolo.setincidentDate(incidentDate); }
+			prepDate = allBOLOs.getLong("prepdate");
+			if(prepDate!=0){ bolo.setprepDate(prepDate); }
+			
+			photoPath=allBOLOs.getString("photoPath");
+			if(photoPath!=null){ 
+				Path pp = Paths.get(photoPath);
+				bolo.setPhotoFilePath(pp);
+//DEBUG:
+			} else { 
+				System.out.printf("\n photo path is null\n");
+			}
+			
+			videoPath=allBOLOs.getString("videoPath");
+			if(videoPath!=null){ 
+				Path vp = Paths.get(videoPath);
+				bolo.setVideoFilePath(vp);
+//DEBUG:			
+			} else { 
+				//System.out.printf("\n video path is null\n");
+			}
+
+			boloList.add(bolo);
+	    }
+	    	
+	    //Close the connections
+	    allBOLOs.close();
+	    conn.close();
+	    
+	    return boloList;
+	    //-----------------------
+
+	
+	    //Create a prepared statement to add the crime data
+	    PreparedStatement prep = conn.prepareStatement(
+	      "REPLACE into bluebook(armed, narrartive, description, location, address, affili," +
+	      " dob, offenderName, caseNum, incidentTime, incidentDate, photoFileName, " +
+	      " videoFileName, bbID)" + 
+	      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+	
+	    //Add the data to the prepared statement
+	    if(isArmed){ prep.setInt(1, 1); } else { prep.setInt(1, 0); }
+	    prep.setString(2, this.narrative);
+	    prep.setString(3, this.crimeDescrip);
+	    prep.setString(4, this.location);
+	    prep.setString(5, this.address);
+	    prep.setString(6, this.affili);
+	    prep.setString(7, this.dob);
+	    prep.setString(8, this.name);
+	    prep.setString(9, this.caseNum);
+	    prep.setString(10, this.time);
+	    prep.setString(11, this.date);
+	    
+	    if(this.bluebkID!=0){ prep.setInt(14, this.bluebkID); }
+	
+	    if(photoFilePath!=null){
+		    Path absPhotoFilePath = photoFilePath.toAbsolutePath();
+		    photoPathName = absPhotoFilePath.toString();
+		    System.out.println("photoPathName = " + photoPathName);
+	    }
+	    prep.setString(12, photoPathName);	    
+	    
+	    if(videoFilePath!=null){
+	    	Path absVideoFilePath = videoFilePath.toAbsolutePath();
+	    	videoPathName = absVideoFilePath.toString();
+	    } 
+	    prep.setString(13, videoPathName);
+	    
+	    prep.addBatch();
+	    
+	    //Create new row in the table for the data
+	    conn.setAutoCommit(false);
+	    prep.executeBatch();
+	    conn.setAutoCommit(true);
+	    
+	    //Close the connection
+	    conn.close();
+	} */
 //-----------------------------------------------------------------------------
 	public void addRollCall(String name, String present, String comment, 
 			String timeArrived, String shiftDate) throws Exception {

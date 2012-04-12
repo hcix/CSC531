@@ -103,7 +103,6 @@ private static final long serialVersionUID = 1L;
 		 * pand and set the line wrap and scroll 
 		 * properties
 		 */
-		
 		locationField = new JTextArea(5, 20);
 		locationField.setLineWrap(true);
 		JScrollPane locationScrollPane = new JScrollPane(locationField);
@@ -285,7 +284,7 @@ private static final long serialVersionUID = 1L;
 	 public void chooseAndAddPhoto(final JPanel photoPanel){
 			//show choose photo dialog
 			final JFileChooser fc = new JFileChooser();
-			System.out.println("BOLOform chooseAndAddPhoto after file chooser");
+			System.out.println("Bluebook form chooseAndAddPhoto after file chooser");
 			fc.addChoosableFileFilter(FileHelper.getImageFilter());
 			fc.setAcceptAllFileFilterUsed(false);
 			fc.setAccessory(new ImagePreview(fc));
@@ -295,16 +294,17 @@ private static final long serialVersionUID = 1L;
 			if(returnVal==JFileChooser.APPROVE_OPTION){
 				//copy the chosen photo into the program's 'Photos' directory
 				final File file = fc.getSelectedFile();
-				System.out.printf("filepath = %s\n", file.getPath());
 				
-				ImageIcon chosenPhoto = new ImageIcon(file.getPath());
+System.out.printf("BlueBookForm: chooseAndAddPhoto: filepath = %s\n", file.getPath());
 
+				ImageIcon chosenPhoto = new ImageIcon(file.getPath());
+				
 				final ResizablePhotoDialog resizeDialog = new ResizablePhotoDialog(
 							chosenPhoto, this, file.getName());
 
 				//if the user pressed the set photo button
 				if(resizeDialog.getNewPhotoFilePath()!=null){
-					BlueBookEntry.setPhotoFilePath(resizeDialog.getNewPhotoFilePath());
+					bbEntry.setPhotoFilePath(resizeDialog.getNewPhotoFilePath());
 					photoPanel.removeAll();
 					
 					photoPanel.add(new JLabel(resizeDialog.getResizedImgIcon()));

@@ -69,7 +69,6 @@ private static final long serialVersionUID = 1L;
 			"<html><h2>Delete an existing user</h2></html"
 		};
 		
-		
 		mainPanel.add(addNewUserButton);
 		mainPanel.add(editUserButton);
 		mainPanel.add(deleteUserButton);
