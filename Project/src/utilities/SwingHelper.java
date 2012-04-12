@@ -17,6 +17,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -152,6 +153,20 @@ public class SwingHelper {
 		}
 		
 		return text;
+	}
+//-----------------------------------------------------------------------------
+	public static JPasswordField addLabeledPwdField(JComponent c, String label, int length, boolean wrap){
+		JLabel l = new JLabel(label);
+		c.add(l, "align left");
+		
+		JPasswordField pwd = new JPasswordField(length);
+		if(wrap){
+			c.add(pwd, "align left, wrap");
+		} else{
+			c.add(pwd, "align left");
+		}
+		
+		return pwd;
 	}
 //-----------------------------------------------------------------------------
 	/** 

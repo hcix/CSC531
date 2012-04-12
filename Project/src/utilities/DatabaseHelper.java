@@ -16,8 +16,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import shiftCdrTab.RollCall;
 import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
 
@@ -282,6 +285,21 @@ public class DatabaseHelper {
 		//Close the connection
 		conn.close();
 	}
+
+//-----------------------------------------------------------------------------
+    public static ArrayList<RollCall> getRollCallFromDatabase(String shiftTime) {
+    	ArrayList<RollCall> rollCall = new ArrayList<RollCall>();
+    	//Format format = new SimpleDateFormat("ddMMMyyyy:" + shiftTime + ":00");
+    	//String date = 
+    	// Implement later TODO
+    	rollCall.add(new RollCall());
+    	rollCall.add(new RollCall());
+    	rollCall.add(new RollCall());
+    	rollCall.add(new RollCall());
+    	
+    	
+    	return rollCall;
+    }
 //-----------------------------------------------------------------------------
 	/*
 	 * Wrote this code when thinking I needed a many to many relational database

@@ -19,6 +19,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import program.CurrentUser;
@@ -38,7 +39,9 @@ private static final long serialVersionUID = 1L;
 	private static final int ERROR_BAD_PASSWORD = 1;
 	private static final int ERROR_USR_DNE = 2;
 	JLabel retryLabel;
-	JTextField caneIdField, passwordField;
+	JTextField caneIdField;
+	//JTextField passwordField;
+	JPasswordField passwordField;
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates Login JFrame
@@ -86,9 +89,11 @@ private static final long serialVersionUID = 1L;
 				SwingHelper.DEFAULT_TEXT_FIELD_LENGTH, true);
 		
 //TODO make this a password field instead of a JTextField
+		passwordField = SwingHelper.addLabeledPwdField(inputPanel, "Password: ",
+				SwingHelper.DEFAULT_TEXT_FIELD_LENGTH,true);
+		//passwordField = SwingHelper.addLabeledTextField(inputPanel, "Password: ", 
+			//	SwingHelper.DEFAULT_TEXT_FIELD_LENGTH, true);
 		
-		passwordField = SwingHelper.addLabeledTextField(inputPanel, "Password: ", 
-				SwingHelper.DEFAULT_TEXT_FIELD_LENGTH, true);
 		
 		return inputPanel;
 	}
