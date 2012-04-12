@@ -143,7 +143,6 @@ public class BOLOform extends JDialog {
 		JLabel eyesLabel = new JLabel("Eyes");
 		JLabel hairLabel = new JLabel("Hair");
 		JLabel otherDescriptionLabel = new JLabel("Other Description/Info");
-
 		
 		// create fields
 		ageField = new JTextField(4);
@@ -160,7 +159,6 @@ public class BOLOform extends JDialog {
 		otherDescriptScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		ifYesField = new JTextField(SwingHelper.MEDIUM_TEXT_FIELD_LENGTH);
 
-		
 		//add row 1 fields
 		infoPanel.add(ageLabel, "align left");
 		infoPanel.add(ageField, "align left");

@@ -85,6 +85,7 @@ private static final long serialVersionUID = 1L;
 			System.out.println("AddItemDialog: AddItemDialog(): title = "+title);
 			item.setTitle(title);
 		}
+		
 		if(!textArea.getText().isEmpty()){
 			details=textArea.getText().toString().trim();
 			System.out.println("AddItemDialog: AddItemDialog(): details = "+details);
@@ -94,6 +95,9 @@ private static final long serialVersionUID = 1L;
 		try{ item.addToXML(); } 
 		catch (Exception ex){ ex.printStackTrace(); }
 	
+		titleField.setText("");
+		textArea.setText("");
+		
 		this.dispose();
 	}
 //-----------------------------------------------------------------------------

@@ -1,5 +1,6 @@
 package reviewItems;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -7,23 +8,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import utilities.SwingHelper;
-import utilities.xml.XmlParser;
 import net.miginfocom.swing.MigLayout;
 
 /**
- * 
+ *  
  */
 public class ReadItemDialog extends JDialog {
 private static final long serialVersionUID = 1L;
+	private static final int ADMIN_TAB = 1;
+	private static final int SHIFT_CDR_TAB = 2;
 	private JFrame parent;
 	private ItemToReview item;
 	private JTextField titleTextField;
@@ -31,7 +31,7 @@ private static final long serialVersionUID = 1L;
 	private JPanel mainPanel;
 	String detailsText, titleText;
 //-----------------------------------------------------------------------------
-	ReadItemDialog(JFrame parent, ItemToReview item){
+	public ReadItemDialog(JFrame parent, ItemToReview item){
 		super(parent, item.getTitle(), true);
 		this.parent=parent;
 		this.item=item;
@@ -68,6 +68,7 @@ private static final long serialVersionUID = 1L;
 		detailsTextPane.setWrapStyleWord(true);
 		detailsTextPane.setBackground(mainPanel.getBackground());
 		
+		
 		JPanel buttonPanel = createButtonsPanel();
 		mainPanel.add(buttonPanel, "dock north");
 		mainPanel.add(titleTextField, "alignx center, wrap");
@@ -101,12 +102,7 @@ private static final long serialVersionUID = 1L;
 				SwingHelper.createImageButton("Edit Item", "icons/edit_32.png");
 		editButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				detailsTextPane.setEditable(true);
-				titleTextField.setEditable(true);
-				System.out.println("detailsTextPane editable: " + detailsTextPane.isEditable()
-						+"titleTextPane editable: " + titleTextField.isEditable());
-				(mainPanel.getParent()).validate();
-				mainPanel.validate();
+				makeEditable();
 			 }
 		});
 		
@@ -130,6 +126,17 @@ private static final long serialVersionUID = 1L;
 		buttonPanel.add(saveItemButton);
 		
 		return buttonPanel;
+	}
+//-----------------------------------------------------------------------------
+	public void makeEditable(){
+		detailsTextPane.setEditable(true);
+		titleTextField.setEditable(true);
+		titleTextField.setBackground(Color.white);
+		detailsTextPane.setBackground(Color.white);
+		//System.out.println("detailsTextPane editable: " + detailsTextPane.isEditable()
+		//		+"titleTextPane editable: " + titleTextField.isEditable());
+		(mainPanel.getParent()).validate();
+		mainPanel.validate();
 	}
 //-----------------------------------------------------------------------------
 	private void saveAndClose(){

@@ -188,7 +188,8 @@ public class PDFView {
 			System.out.println(name);
 			if(name.equals("ucr_crime_grp")){
 				if ( ((JRadioButton)components[0]).isSelected()) { 
-					System.out.println("selected one is : components[0].toString()"); 
+//DEBUG
+System.out.println("selected one is : components[0].toString()"); 
 				}
 					if(((JRadioButton)components[0]).isSelected()){ text = "true"; }
 					else { text = "false"; }
@@ -209,7 +210,7 @@ public class PDFView {
 
 		}
     	
-//DEBUG:
+//DEBUG
     //	System.out.println("components.toString() = " + components.toString());
     //	System.out.println("components[0].toString() = " + components[0].toString());
     

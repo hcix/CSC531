@@ -131,8 +131,8 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		rollCallTab.add(tablePanel, "dock north");
 		rollCallTab.add(buttonPanel, "dock south");
 		
-		 this.add(tabbedPane, BorderLayout.CENTER);
-		 this.add(sidePanel, BorderLayout.EAST);
+		this.add(tabbedPane, BorderLayout.CENTER);
+		this.add(sidePanel, BorderLayout.EAST);
 	}
 //-----------------------------------------------------------------------------
 	JPanel makeTablePanel(ArrayList<String> names){
@@ -282,43 +282,18 @@ public class ShiftCdrTab extends JPanel implements ActionListener{
 		return timeSpinner;
 	}
 //-----------------------------------------------------------------------------
-
-//-----------------------------------------------------------------------------
 	public void addItemsToReview(JPanel scrollPanel){
 		ArrayList<ItemToReview> items = XmlParser.loadItemsToReviewList();
 		
 		ItemsListModel itemsModel = new ItemsListModel(items);
 		
-		JList itemsList = new JList(itemsModel);
+		JList<ItemToReview> itemsList = new JList<ItemToReview>(itemsModel);
 
 		ItemRenderer itemRenderer = new ItemRenderer(parent, itemsList);
 		itemsList.setCellRenderer(itemRenderer);
 		itemsList.addMouseListener(itemRenderer);
 		itemsModel.addListDataListener(itemRenderer);
-		
-//DEBUG: fix the layout for this; its real ugly
-		
-		/*for(ItemToReview item : items){
-			JPanel itemPanel = new JPanel(new MigLayout());
-			itemPanel.setSize(new Dimension(280, 110));
-			itemPanel.setPreferredSize(new Dimension(280, 110));
-			JCheckBox cb = new JCheckBox();
-			itemPanel.add(cb, "split");
-			itemPanel.add(new JLabel(item.getTitle()), "wrap");
-			JTextArea details = new JTextArea(220, 60);
-			details.setBackground(itemPanel.getBackground());
-			details.setLineWrap(true);
-			details.setWrapStyleWord(true);
-			details.setEditable(false);
-			details.setMaximumSize(new Dimension(240, 100));
-			details.setText(item.getDetails());
-			itemPanel.add(details);
-			
-			scrollPanel.add(itemPanel);
-			itemPanel.setBorder(BorderFactory.createRaisedBevelBorder());
-		}
-		*/
-		
+	
 		scrollPanel.add(itemsList);
 		
 	}

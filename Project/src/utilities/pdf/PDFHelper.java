@@ -45,4 +45,18 @@ public class PDFHelper {
         return stamper;   
 	}
 //-----------------------------------------------------------------------------
+	public static PdfStamper getPdfStampler(String form){
+		PdfReader reader = null;
+		PdfStamper stamper = null;
+		
+        try {
+			reader = new PdfReader(form);
+			stamper = new PdfStamper(reader, new FileOutputStream(form));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+        return stamper;   
+	}
+//-----------------------------------------------------------------------------
 }

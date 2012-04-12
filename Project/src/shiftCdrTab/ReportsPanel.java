@@ -38,8 +38,12 @@ private static final long serialVersionUID = 1L;
 					"icons/plusSign_48.png"); 
 			newButton.addActionListener(new ActionListener() {
 				//Shift CDR form dialog
-				ShiftReportForm formDialog = new ShiftReportForm(rm);
+				//ShiftReportForm formDialog = new ShiftReportForm(rm, null);
 				public void actionPerformed(ActionEvent e){
+					//TODO: create new ShiftCdrReport object
+					//TODO fill in w/e fields
+					//ShiftReportForm formDialog = new ShiftReportForm(rm, shiftcdrreport);
+					ShiftReportForm formDialog = new ShiftReportForm(rm, null);
 					formDialog.setVisible(true);
 				}
 			});
