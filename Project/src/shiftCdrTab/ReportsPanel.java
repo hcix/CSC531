@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.nio.file.Path;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -17,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
+import utilities.DatabaseHelper;
 import utilities.FileHelper;
 import utilities.ImagePreview;
 import utilities.SwingHelper;
@@ -38,8 +41,15 @@ private static final long serialVersionUID = 1L;
 					"icons/plusSign_48.png"); 
 			newButton.addActionListener(new ActionListener() {
 				//Shift CDR form dialog
-				ShiftReportForm formDialog = new ShiftReportForm(rm);
+				//ShiftReportForm formDialog = new ShiftReportForm(rm, null);
 				public void actionPerformed(ActionEvent e){
+					ArrayList<RollCall> rollCall;
+					//TODO: create new ShiftCdrReport object
+					ShiftCdrReport shiftReport = new ShiftCdrReport();
+					//TODO fill in w/e fields
+					rollCall = DatabaseHelper.getRollCallFromDatabase(null);
+					//ShiftReportForm formDialog = new ShiftReportForm(rm, shiftcdrreport);
+					ShiftReportForm formDialog = new ShiftReportForm(rm, null);
 					formDialog.setVisible(true);
 				}
 			});

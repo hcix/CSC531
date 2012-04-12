@@ -202,7 +202,7 @@ public class ResourceManager {
 		return Employees;
 	}
 //-----------------------------------------------------------------------------	
-	public static ArrayList<String> getRollCall(int shiftTime) throws Exception {
+	public ArrayList<String> getRollCall(int shiftTime) throws Exception {
 		ArrayList<String> Employees = new ArrayList<String>();
 				
 		if (shiftTime < 0 || shiftTime > 24 ) {

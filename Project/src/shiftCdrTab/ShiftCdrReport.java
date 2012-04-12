@@ -1,5 +1,6 @@
 package shiftCdrTab;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,11 +40,27 @@ public class ShiftCdrReport {
 	String shiftCode;
 	Date timeRecieved;
 	boolean ucrCrimeOccurred = false;
+	/** the filename that this report will be saved as **/
+	String saveAs;	
+	/** the path name of the original form template **/
+	String formPathName;
 //-----------------------------------------------------------------------------
 	ShiftCdrReport(){
+		//create the filename the saved form will have
+		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getDateInstance();
+		dateFormat.applyPattern("MM_dd_yyyy_HH_mm");
+		Date date = new Date(System.currentTimeMillis());
+		String dateTime = dateFormat.format(date);
+		saveAs = FileHelper.getReportPathName("ShiftCDRSumReport" + dateTime + ".pdf");
+		
+		//get the form template to save the info in
+		formPathName = FileHelper.getFormTemplatePathName("ShiftCDRSumReport.pdf");
+		
+		//initialize the lists
 		assignmentsList = new ArrayList<OfficerAssignment>();
 		attendanceList = new ArrayList<AttendanceRecord>();
 		patrols = new ArrayList<PatrolActivity>();
+		
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -239,34 +256,62 @@ public class ShiftCdrReport {
 	 * 
 	 */
 	public String saveToFileSystem(){
-		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getDateInstance();
-		dateFormat.applyPattern("MM_dd_yyyy_HH_mm");
-		String dateTime = dateFormat.format(timeRecieved);
+		//used to save text to the form
+		File saveAsFile = new File(saveAs);
+		PdfStamper stamper;
 		
-		String formPathName = FileHelper.getFormTemplatePathName("ShiftCDRSumReport.pdf");
-		String saveAs = FileHelper.getReportPathName("ShiftCDRSumReport" + dateTime + ".pdf");
+		if(saveAsFile.exists()){
+			stamper = PDFHelper.getPdfStampler(saveAs);
+		} else{
+			stamper = PDFHelper.getPdfStampler(formPathName, saveAs);
+		}
 		
-		PdfStamper stamper = PDFHelper.getPdfStampler(formPathName, saveAs);
+		fill(stamper);
 		
-		fill(stamper.getAcroFields());
-		
+		//flattens the form so fields cannot be edited
 		stamper.setFormFlattening(true);
 		
 		try{ stamper.close(); return saveAs; } 
 		catch(Exception e){ e.printStackTrace(); return null; }
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Save this ShiftCdrReport's information in a pdf on the file system
+	 * 
+	 */
+	public void loadInfoIntoForm(){
+		//used to put text into the form
+		PdfStamper stamper = PDFHelper.getPdfStampler(formPathName, saveAs);
+		
+		fill(stamper);
+		
+		//flattens the form so fields cannot be edited
+		stamper.setFormFlattening(false);
+		
+		try{ stamper.close(); } 
+		catch(Exception e){ e.printStackTrace(); }
+	}
+//-----------------------------------------------------------------------------
     /**
      * Fill out the fields using this ShiftCdrReport's info.
      * @param form - the form object
      */
-    public void fill(AcroFields form) {
+    public void fill(PdfStamper stamper) {
+    	AcroFields form = stamper.getAcroFields();
+    	
     	try{
-	    	form.setField("shift_date", this.getShiftDate());
-	        form.setField("shift_code", this.getShiftCode());
-	        form.setField("completed_by", this.getCompletedBy());
-	        form.setField("remarks_box", this.getRemarks());
+    		if(this.shiftDate!=null)
+    			form.setField("shift_date", this.getShiftDate()); 
+	    	if(this.shiftCode!=null)
+	    		form.setField("shift_code", this.getShiftCode());
+	        if(this.completedBy!=null)
+	        	form.setField("completed_by", this.getCompletedBy());
+	        if(this.remarks!=null)
+	        	form.setField("remarks_box", this.getRemarks());
 	        
+	        for(OfficerAssignment assignment:assignmentsList){
+	        	//form.setField(name, value)
+	        }
 	     // ...
 	        
     	} catch(Exception e){

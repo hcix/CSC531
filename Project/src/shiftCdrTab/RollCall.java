@@ -13,29 +13,28 @@ public class RollCall {
 		comment = "unknown";
 	}
 	
-	public static String getName() {
+	public String getName() {
 		return name;
 	}
-	public static void setName(String name) {
+	public void setName(String name) {
 		RollCall.name = name;
 	}
-	public static String getPresent() {
+	public String getPresent() {
 		return present;
 	}
-	public static void setPresent(String present) {
+	public void setPresent(String present) {
 		RollCall.present = present;
 	}
-	public static String getTimeArrived() {
+	public String getTimeArrived() {
 		return timeArrived;
 	}
-	public static void setTimeArrived(String timeArrived) {
+	public void setTimeArrived(String timeArrived) {
 		RollCall.timeArrived = timeArrived;
 	}
-	public static String getComment() {
+	public String getComment() {
 		return comment;
 	}
-	public static void setComment(String comment) {
+	public void setComment(String comment) {
 		RollCall.comment = comment;
 	}
-
 }

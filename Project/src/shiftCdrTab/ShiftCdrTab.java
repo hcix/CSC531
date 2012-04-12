@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.Format;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,7 +58,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	static final String LAUNCH = "launch";
 	int shiftTime;
 	DatabaseHelper dbHelper = new DatabaseHelper();
-	JTable table;
+	JTable table, editTable;
 	JFrame parent;
 	ResourceManager rm;
 	DefaultTableModel tableModel;
@@ -290,24 +291,57 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	
 // -----------------------------------------------------------------------------
 	private void editLastRollCall() {
-		JFrame popup = new JFrame("Edit Roll Call");
-        JTable editTable = new JTable();
+		final JFrame popup = new JFrame("Edit Roll Call");
+        ArrayList<String> rollNames = new ArrayList<String>();
+        Date date = new Date();
+        ArrayList<RollCall> rollCall;
+        
+        //get formatted date, and get rollCall from db
+        Format format = new SimpleDateFormat("ddMMMyyyy:" + shiftTime + ":00");
+        rollCall = DatabaseHelper.getRollCallFromDatabase(format.format(date));
+        
+        for (RollCall roll : rollCall) {
+        	rollNames.add(roll.getName());
+        }
         // temp get roll call, change later TODO
-        editTable.setModel(new RollCallTableModel(rm.getRollCall()));
-		popup.setSize(editTable.getSize());
+        //editTable.setModel(new RollCallTableModel(rollNames));
+    	JPanel tablePanel = makeTablePanel(rollNames);
+        
+    	int i = 0;
+    	int j;
+    	for (RollCall roll : rollCall) {
+    		j = 1;
+    		//convert to boolean
+    		if (roll.getPresent().equals("true")) 
+    		    table.setValueAt(true, i, j++);
+    		else if (roll.getPresent().equals("false"))
+    			table.setValueAt(false, i, j++);
+    		else  {
+    			//debug
+    			System.out.println("value unkown, set to false");
+    			table.setValueAt(false, i, j++);
+    		}
+       		table.setValueAt(roll.getTimeArrived(), i, j++);
+    		table.setValueAt(roll.getComment(), i++, j++);
+    	}
+    	
+    	JButton finishedButton = SwingHelper.createImageButton("Save and Close", "save_48.png");
+    	finishedButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			    popup.dispose();
+			}
+    		
+    	});
+    	JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(finishedButton);
+    	popup.add(tablePanel);
+        popup.add(buttonPanel);
+    	popup.setSize(400, 400); // dynamic sizing??
 		popup.setVisible(true);
-		
 	}
 
-// -----------------------------------------------------------------------------
-    private void queryByDate(Date shiftDate) {
-    	RollCall rollCall;
-		Format format = new SimpleDateFormat("ddMMMyyyy:" + shiftTime + ":00");
-		rollCall = dbHelper.getRollCallFromDatabase(format.format(shiftDate));
-    	
-    	//TODO
-    }
-	
 // -----------------------------------------------------------------------------
 	public JSpinner createtimeSpinner() {
 		JSpinner timeSpinner;
