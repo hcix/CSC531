@@ -95,6 +95,9 @@ private static final long serialVersionUID = 1L;
 		try{ item.addToXML(); } 
 		catch (Exception ex){ ex.printStackTrace(); }
 	
+		titleField.setText("");
+		textArea.setText("");
+		
 		this.dispose();
 	}
 //-----------------------------------------------------------------------------
