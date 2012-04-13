@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import org.jpedal.PdfDecoder;
-import utilities.SwingHelper;
+import utilities.ui.SwingHelper;
 
 
 public class ZoomControls extends JPanel {

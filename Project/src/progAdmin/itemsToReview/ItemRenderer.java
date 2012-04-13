@@ -1,4 +1,4 @@
-package reviewItems;
+package progAdmin.itemsToReview;
 
 import java.awt.Color;
 import java.awt.Component;

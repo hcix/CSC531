@@ -24,7 +24,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import program.CurrentUser;
 import utilities.FileHelper;
-import utilities.SwingHelper;
+import utilities.ui.SwingHelper;
 
 //-----------------------------------------------------------------------------
 public class LoginDialog extends JDialog implements ActionListener {

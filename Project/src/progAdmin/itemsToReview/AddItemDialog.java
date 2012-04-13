@@ -1,4 +1,4 @@
-package progAdmin;
+package progAdmin.itemsToReview;
 
 import java.awt.Container;
 import java.awt.Dimension;
@@ -13,9 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import reviewItems.ItemToReview;
 import net.miginfocom.swing.MigLayout;
-import utilities.SwingHelper;
+import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
  *

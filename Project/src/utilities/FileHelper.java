@@ -187,7 +187,7 @@ System.out.println("rosterFileName = " + rosterFileName);
 		
 		//Specifies a system independent path
 		Path itemsFilePath = Paths.get(progDir, "Project", "src",
-				"progAdmin", "itemsToReview.xml");
+				"progAdmin", "itemsToReview", "itemsToReview.xml");
 		
 		return (itemsFilePath.toString());
 	}

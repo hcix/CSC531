@@ -22,10 +22,10 @@ import javax.swing.ScrollPaneConstants;
 import com.itextpdf.text.pdf.events.IndexEvents.Entry;
 import net.miginfocom.swing.MigLayout;
 import utilities.FileHelper;
-import utilities.ImageHandler;
-import utilities.ImagePreview;
-import utilities.ResizablePhotoDialog;
-import utilities.SwingHelper;
+import utilities.ui.ImageHandler;
+import utilities.ui.ImagePreview;
+import utilities.ui.ResizablePhotoDialog;
+import utilities.ui.SwingHelper;
 /**
  * Creates UI for BlueBook input form.
  */

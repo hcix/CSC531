@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <progProperties>
-<<<<<<< HEAD
-	<UMPD.latestReport>C:\Users\Brendan\workspace\CSC531\Documents\ShiftReports\ShiftCDRSumReport04_11_2012_11_54.pdf</UMPD.latestReport>
-=======
-	<UMPD.latestReport>/Users/heatherciechowski/CSC531/Documents/ShiftReports/ShiftCDRSumReport04_11_2012_12_57.pdf</UMPD.latestReport>
-<<<<<<< HEAD
-	<UMPD.latestVideo>/Users/heatherciechowski/CSC531/Videos/Announcements/ULTRA - Tiesto Vid.MOV</UMPD.latestVideo>
-=======
->>>>>>> d09f25e640a162ec9201a051ced0e97e4c0cfe36
-	<UMPD.latestVideo>C:\Documents and Settings\Brendan\workspace\CSC531\Videos\Announcements\sample_iTunes.mov</UMPD.latestVideo>
->>>>>>> 144facb8d096136cc0a798c4dca3a09784a3ba4d
+	<UMPD.latestReport>/Users/heatherciechowski/CSC531/Documents/ShiftReports/ShiftCDRSumReport04_06_2012_19_54.pdf</UMPD.latestReport>
+	<UMPD.latestVideo>none</UMPD.latestVideo>
 </progProperties>
+
+	

@@ -41,16 +41,13 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-
-import com.sun.xml.internal.ws.api.server.Container;
-
 import net.miginfocom.swing.MigLayout;
+import progAdmin.itemsToReview.ItemRenderer;
+import progAdmin.itemsToReview.ItemToReview;
+import progAdmin.itemsToReview.ItemsListModel;
 import program.ResourceManager;
-import reviewItems.ItemRenderer;
-import reviewItems.ItemToReview;
-import reviewItems.ItemsListModel;
 import utilities.DatabaseHelper;
-import utilities.SwingHelper;
+import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
 
 //-----------------------------------------------------------------------------
@@ -68,8 +65,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	ResourceManager rm;
 	DefaultTableModel tableModel;
 	final static int GAP = 10;
-
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	public ShiftCdrTab(ResourceManager rm) {
 		this.setLayout(new BorderLayout());
 		this.rm = rm;
@@ -153,7 +149,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		this.add(sidePanel, BorderLayout.EAST);
 	}
 
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	JPanel makeTablePanel(ArrayList<String> names) {
 		JPanel tablePanel = new JPanel();
 
@@ -198,7 +194,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		return tablePanel;
 	}
 
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == ADD) {

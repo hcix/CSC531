@@ -1,4 +1,4 @@
-package reviewItems;
+package progAdmin.itemsToReview;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import utilities.SwingHelper;
+import utilities.ui.SwingHelper;
 import net.miginfocom.swing.MigLayout;
 
 /**

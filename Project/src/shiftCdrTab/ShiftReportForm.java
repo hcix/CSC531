@@ -16,9 +16,9 @@ import javax.swing.JScrollPane;
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import utilities.FileHelper;
-import utilities.SwingHelper;
 import utilities.pdf.FieldAndVal;
 import utilities.pdf.PDFView;
+import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------	
 public class ShiftReportForm extends JDialog {
 private static final long serialVersionUID = 1L;

@@ -26,11 +26,11 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
-import userinterface.ItemsViewerPanel;
 import utilities.DatabaseHelper;
-import utilities.ImageHandler;
 import utilities.DatabaseHelper;
-import utilities.SwingHelper;
+import utilities.ui.ImageHandler;
+import utilities.ui.ItemsViewerPanel;
+import utilities.ui.SwingHelper;
 
 public class BOLOtab extends JPanel  implements ActionListener {
 	
@@ -162,7 +162,7 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	public JPanel createRecentBOLOsTab(){
-		JPanel recentBOLOsPanel = new JPanel(new MigLayout("gapx 30, wrap 4"));
+		JPanel recentBOLOsPanel = new JPanel(new MigLayout());
 		JPanel boloPanel;
 		Date prepDate;
 	
@@ -214,7 +214,7 @@ private static final long serialVersionUID = 1L;
 			i++;
 		}
 		
-		ItemsViewerPanel entriesPanel = new ItemsViewerPanel(items, this);
+		ItemsViewerPanel entriesPanel = new ItemsViewerPanel(items, this, 4);
 		
 		recentBOLOsPanel.add(entriesPanel);
 		

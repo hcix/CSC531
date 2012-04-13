@@ -1,4 +1,4 @@
-package userinterface;
+package utilities.ui;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -18,39 +18,46 @@ import net.miginfocom.swing.MigLayout;
  */
 public class ItemsViewerPanel extends JPanel implements MouseListener {
 private static final long serialVersionUID = 1L;
+	private static final int DEFAULT_GAP_VAL = 15;
+	private static final int DEFAULT_WRAP_VAL = 4;
+	
 	JPanel mainPanel;
 	int itemWidthPerc=0, itemHeightPerc=0;
-	/** The ActionListener to be notified if a panel is clicked on **/
+	/** the ActionListener to be notified if a panel is clicked on **/
 	ActionListener l;
-	/** Reference to the JPanel's original color **/
+	/** reference to the JPanel's original color **/
 	Color originalColor;
+	/** the color that should be displayed when usr clicks panel **/
 	Color pressedColor;
+	/** the gap to place between components **/
+	int gap=DEFAULT_GAP_VAL;
+	/** the wrap value to indicate the number of components per row **/
+	int wrap=DEFAULT_WRAP_VAL;
 //-----------------------------------------------------------------------------
 	public ItemsViewerPanel(JPanel[] items, ActionListener l){
 		this.l=l;
-		
-		mainPanel = new JPanel(new MigLayout("gap 15"));		
-		this.add(mainPanel);
-		addItemsToPanel(items);
-		
-		//save a reference to the original color & set the pressed color
-		if(items.length>0){
-			originalColor = items[0].getBackground();
-			pressedColor = originalColor.darker();
-		} else { 
-			originalColor = this.getBackground();
-			pressedColor = originalColor.darker(); 
-		}
+		createMainPanel(items);
 	}
 //-----------------------------------------------------------------------------
 	public ItemsViewerPanel(JPanel[] items, ActionListener l, int wrap){
+		this.wrap=wrap;
 		this.l=l;
-		
+		createMainPanel(items);
+	}
+//-----------------------------------------------------------------------------
+	public ItemsViewerPanel(JPanel[] items, ActionListener l, int wrap, int gap){
+		this.wrap=wrap;
+		this.l=l;
+		this.gap=gap;
+		createMainPanel(items);
+	}
+//-----------------------------------------------------------------------------
+	private void createMainPanel(JPanel items[]){
+		String gapString = "gap " + gap;
 		String wrapString = "wrap " + wrap;
-		mainPanel = new JPanel(new MigLayout("gap 15, " + wrapString));	
-		
+		mainPanel = new JPanel(new MigLayout(gapString + ", " + wrapString));		
 		this.add(mainPanel);
-		addItemsToPanel(items);
+		this.addItemsToPanel(items);
 		
 		//save a reference to the original color & set the pressed color
 		if(items.length>0){
@@ -60,7 +67,6 @@ private static final long serialVersionUID = 1L;
 			originalColor = this.getBackground();
 			pressedColor = originalColor.darker(); 
 		}
-		
 	}
 //-----------------------------------------------------------------------------
 	public void addItemsToPanel(JPanel items[]){
@@ -118,11 +124,9 @@ private static final long serialVersionUID = 1L;
 		String name = ((Component) e.getSource()).getName();
 //DEBUG:
 //System.out.println("ItemsViewerPanel: mouseClicked(): name = "+name);
-		ActionEvent ev = new ActionEvent((e.getSource()), ActionEvent.ACTION_PERFORMED, name);
-//DEBUG:
-//System.out.println("ItemsViewerPanel: mouseClicked(): ev.getActionCommand = "
-//		+ ev.getActionCommand());
 		
+		ActionEvent ev = new ActionEvent((e.getSource()), ActionEvent.ACTION_PERFORMED, name);
+	
 		l.actionPerformed(ev);
 	}
 //-----------------------------------------------------------------------------
@@ -143,7 +147,7 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		//TODO highlight panel so user knows it's "selected"
+		//TODO highlight outline on panel so user knows it's "selected"
 		
 	}
 //-----------------------------------------------------------------------------

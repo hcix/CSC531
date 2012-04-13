@@ -12,11 +12,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import program.ManageItemsDialog;
+import progAdmin.itemsToReview.ManageItemsDialog;
 import program.ResourceManager;
 import userinterface.HomeTab;
 import utilities.FileHelper;
-import utilities.SwingHelper;
+import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
 
 /**

@@ -21,9 +21,9 @@ import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import utilities.DatabaseHelper;
 import utilities.FileHelper;
-import utilities.ImagePreview;
-import utilities.SwingHelper;
 import utilities.pdf.PDFView;
+import utilities.ui.ImagePreview;
+import utilities.ui.SwingHelper;
 
 
 public class ReportsPanel extends JPanel {

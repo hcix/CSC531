@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import utilities.SwingHelper;
+import utilities.ui.SwingHelper;
 /**
  * Generates UI for the schedule tab
  */

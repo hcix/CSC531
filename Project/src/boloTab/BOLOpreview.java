@@ -20,9 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
-import utilities.ImageHandler;
-import utilities.SwingHelper;
 import utilities.pdf.PDFViewHelper;
+import utilities.ui.ImageHandler;
+import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 public class BOLOpreview extends JDialog {
 	private static final long serialVersionUID = 1L;

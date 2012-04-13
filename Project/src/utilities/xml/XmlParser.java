@@ -18,8 +18,8 @@ import javax.xml.stream.events.StartDocument;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import progAdmin.Employee;
+import progAdmin.itemsToReview.ItemToReview;
 import program.ProgramProperties;
-import reviewItems.ItemToReview;
 import utilities.FileHelper;
 import utilities.pdf.FieldAndVal;
 

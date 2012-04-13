@@ -20,8 +20,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
-import utilities.ImageHandler;
-import utilities.SwingHelper;
+import utilities.ui.ImageHandler;
+import utilities.ui.SwingHelper;
 import boloTab.Bolo;
 
 

@@ -16,10 +16,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
-import userinterface.ItemsViewerPanel;
 import utilities.DatabaseHelper;
-import utilities.ImageHandler;
-import utilities.SwingHelper;
+import utilities.ui.ImageHandler;
+import utilities.ui.ItemsViewerPanel;
+import utilities.ui.SwingHelper;
 /**
  * Configures UI for the Blue Book Tab
  */
@@ -32,13 +32,7 @@ private static final long serialVersionUID = 1L;
 	public BlueBookTab(final JFrame parent){
 		this.setLayout(new BorderLayout());
 		this.parent=parent;
-		//Create Blue Book tabbed display area
-		//JTabbedPane tabbedPane = new JTabbedPane();
-		//Add recent Blue Book Entries tab
 
-		//tabbedPane.addTab("Blue Book", recentBolosTab);
-		//tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
-				
 		JPanel entriesPanel = createEntriesPanel();
 		//Create a button to create a new Blue Book entry 
 		JButton newEntryButton = 

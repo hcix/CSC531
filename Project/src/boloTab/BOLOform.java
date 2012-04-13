@@ -29,10 +29,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.miginfocom.swing.MigLayout;
 import utilities.FileHelper;
-import utilities.ImageHandler;
-import utilities.ImagePreview;
-import utilities.ResizablePhotoDialog;
-import utilities.SwingHelper;
+import utilities.ui.ImageHandler;
+import utilities.ui.ImagePreview;
+import utilities.ui.ResizablePhotoDialog;
+import utilities.ui.SwingHelper;
 
 public class BOLOform extends JDialog {
 	private static final long serialVersionUID = 1L;

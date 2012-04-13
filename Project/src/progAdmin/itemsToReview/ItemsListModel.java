@@ -1,4 +1,4 @@
-package reviewItems;
+package progAdmin.itemsToReview;
 
 import java.util.ArrayList;
 import javax.swing.ListModel;

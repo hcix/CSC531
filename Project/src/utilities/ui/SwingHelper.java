@@ -1,4 +1,4 @@
-package utilities;
+package utilities.ui;
 
 import java.awt.Color;
 import java.awt.Container;
