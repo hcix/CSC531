@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -21,6 +22,8 @@ import utilities.ui.SwingHelper;
  */
 public class AddItemDialog extends JDialog {
 private static final long serialVersionUID = 1L;
+private static String  ADD_ITEM_ERROR = "Add Item Error";
+	private static String NO_TITLE_ERROR_MESSAGE = "Item must have title";
 	JFrame parent;
 	ItemToReview item;
 	JTextField titleField;
@@ -58,7 +61,8 @@ private static final long serialVersionUID = 1L;
 		textArea.setWrapStyleWord(true);
 
 		
-		JButton addItem = new JButton("Add Item");
+		//JButton addItem = new JButton("Add Item");
+		JButton addItem = SwingHelper.createImageButton("Add Item", "icons/plusSign_48.png");
 		addItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				saveAndClose();
@@ -91,13 +95,18 @@ private static final long serialVersionUID = 1L;
 			item.setDetails(details);
 		}
 		
-		try{ item.addToXML(); } 
-		catch (Exception ex){ ex.printStackTrace(); }
+		if(!title.isEmpty()){
+			try{ item.addToXML(); } 
+			catch (Exception ex){ ex.printStackTrace(); }
+			titleField.setText("");
+			textArea.setText("");
+			
+			this.dispose();
+		} else{
+			JOptionPane.showMessageDialog(parent, NO_TITLE_ERROR_MESSAGE, 
+					ADD_ITEM_ERROR, JOptionPane.ERROR_MESSAGE);
+		}
 	
-		titleField.setText("");
-		textArea.setText("");
-		
-		this.dispose();
 	}
 //-----------------------------------------------------------------------------
 	private void closeAndCancel(){

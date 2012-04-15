@@ -3,6 +3,8 @@ package program;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,13 +15,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
+import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import utilities.EmailHandler;
 import utilities.FileHelper;
 import utilities.PdfHandler;
 import utilities.RosterParser;
-import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
 /**
  * The <code>ResourceManager</code> class manages the programs resources.
@@ -40,6 +42,7 @@ public class ResourceManager {
     JFrame parent;
     PdfHandler pdfHandler;
     EmailHandler emailHandler;
+    Properties progProps;
 //-----------------------------------------------------------------------------
     protected ResourceManager(JFrame parent){
     	this.parent = parent;
@@ -55,8 +58,10 @@ public class ResourceManager {
         }
     	
     	//Load the properties from the progProperties.xml file
-    	loadProperties();
-    	
+		progProps = new Properties();
+    	try{ loadProperties();
+    	}catch (Exception e){ e.printStackTrace(); }
+    		
     }
 //-----------------------------------------------------------------------------
 	/**
@@ -173,20 +178,64 @@ public class ResourceManager {
 	/**
 	 * Load the additional Properties from the progProperties.xml file.
 	 */
-	public void loadProperties(){
-		String p = FileHelper.getPropertiesFile();
-	
-		//load the properties from the xml file
-		XmlParser.loadProperties(p);
-		
+	public void loadProperties() throws Exception{
+		//set up new properties object 
+        FileInputStream propFile = new FileInputStream(FileHelper.getPropertiesFile());
+        progProps.loadFromXML(propFile);
+        Properties p = new Properties(System.getProperties());
+        p.putAll(progProps);
+        //p.load(propFile);
+
+        //set the system properties
+        System.setProperties(p);
+        // display new properties
+        
+//DEBUG Displays new properties list       
+//System.getProperties().list(System.out);
+
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Set the UMPD.latestReport property to the specified value.
+	 * 
+	 * @param reportFileName - the value to set for the UMPD.latestReport 
+	 * property
+	 */
 	public void setLatestReportName(String reportFileName){
-		XmlParser.setSystemProperty("UMPD.latestReport", reportFileName);
-		System.setProperty("UMPD.latestReport", "reportFileName");
+		progProps.setProperty("UMPD.latestReport", reportFileName);
+		System.setProperty("UMPD.latestReport", reportFileName);
+		//save the system properties again now in case of an error later
+		saveProperties();
 	}
-	
 //-----------------------------------------------------------------------------	
+	/**
+	 * Set the UMPD.latestVideo property to the specified value.
+	 * 
+	 * @param videoPath - the value to set for the UMPD.videoPath property
+	 */
+	public void setLastestVideoName(String videoPath){
+		progProps.setProperty("UMPD.latestVideo", videoPath);
+		System.setProperty("UMPD.latestVideo", videoPath);
+		//save the system properties again now in case of an error later
+		saveProperties();
+	}	
+//-----------------------------------------------------------------------------	
+	/**
+	 * JDOC
+	 */
+	public void saveProperties(){
+		try{
+			FileOutputStream out = new FileOutputStream(FileHelper.getPropertiesFile());
+			progProps.storeToXML(out, "<!-- No comment--!>");
+			out.close();
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+//-----------------------------------------------------------------------------	
+	/**
+	 * JDOC
+	 */
 	public ArrayList<String> getRollCall() {
 		int shiftTime;
 		ArrayList<String> Employees = new ArrayList<String>();
@@ -202,6 +251,9 @@ public class ResourceManager {
 		return Employees;
 	}
 //-----------------------------------------------------------------------------	
+	/**
+	 * JDOC
+	 */
 	public ArrayList<String> getRollCall(int shiftTime) throws Exception {
 		ArrayList<String> Employees = new ArrayList<String>();
 				
@@ -215,6 +267,9 @@ public class ResourceManager {
 		return Employees;
 	}
 //-----------------------------------------------------------------------------	
+	/**
+	 * JDOC
+	 */
 	public static int getShiftTime() {
 		int currentHour, currentMin, shiftTime;
 		Calendar cal;
@@ -262,12 +317,8 @@ public class ResourceManager {
 		return shiftTime;
 	}
 //-----------------------------------------------------------------------------
-    public JFrame getParent() {
-		return parent;
-	}
-//-----------------------------------------------------------------------------
 	/**
-	 * DEBUGGER: Print the system environment 
+	 * DEBUG prints the system environment. 
 	 */
 	public void printEnv(){
 		//get the syst env
@@ -313,6 +364,9 @@ public class ResourceManager {
 		return(formatter.format(date));
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * JDOC
+	 */
    public static String shiftTimeAsString(int shiftTime) {
 	   String time;
 	       if (shiftTime == 6)

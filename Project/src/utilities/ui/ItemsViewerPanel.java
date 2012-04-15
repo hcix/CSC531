@@ -122,7 +122,7 @@ private static final long serialVersionUID = 1L;
 		//let the ActionListener know who's been clicked
 		
 		String name = ((Component) e.getSource()).getName();
-//DEBUG:
+//DEBUG
 //System.out.println("ItemsViewerPanel: mouseClicked(): name = "+name);
 		
 		ActionEvent ev = new ActionEvent((e.getSource()), ActionEvent.ACTION_PERFORMED, name);

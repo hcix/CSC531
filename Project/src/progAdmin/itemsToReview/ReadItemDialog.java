@@ -22,8 +22,6 @@ import net.miginfocom.swing.MigLayout;
  */
 public class ReadItemDialog extends JDialog {
 private static final long serialVersionUID = 1L;
-	private static final int ADMIN_TAB = 1;
-	private static final int SHIFT_CDR_TAB = 2;
 	private JFrame parent;
 	private ItemToReview item;
 	private JTextField titleTextField;

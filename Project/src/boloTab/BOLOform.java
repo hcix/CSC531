@@ -475,7 +475,8 @@ public class BOLOform extends JDialog {
 		if(returnVal==JFileChooser.APPROVE_OPTION){
 			//copy the chosen photo into the program's 'Photos' directory
 			final File file = fc.getSelectedFile();
-			System.out.printf("filepath = %s\n", file.getPath());
+			
+//DEBUG System.out.printf("filepath = %s\n", file.getPath());
 			
 			ImageIcon chosenPhoto = new ImageIcon(file.getPath());
 
@@ -507,7 +508,7 @@ public class BOLOform extends JDialog {
 		//delete the photo(if any)
 		if(bolo.getPhotoFilePath()!=null){
 			
-//DEBUG:
+//DEBUG
 			System.out.printf("\nBOLOform: closeAndCancel(): deleting " +
 					"bolo.getPhotoFilePath().toString() " +
 							"= %s\n", bolo.getPhotoFilePath().toString());

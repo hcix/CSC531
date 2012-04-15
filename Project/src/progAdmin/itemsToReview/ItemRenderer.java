@@ -3,6 +3,7 @@ package progAdmin.itemsToReview;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JCheckBox;
@@ -25,10 +26,13 @@ public class ItemRenderer implements ListCellRenderer, MouseListener, ListDataLi
 	private Color selectedColor;
 	private JFrame parent;
 	private JList<ItemToReview> itemsList;
+	ListModel listModel;
 //-----------------------------------------------------------------------------
 	public ItemRenderer(JFrame parent, JList<ItemToReview> itemsList){	
 		this.parent=parent;
 		this.itemsList=itemsList;
+		
+		listModel = itemsList.getModel();
 	}
 //-----------------------------------------------------------------------------
 	public Component getListCellRendererComponent(JList list,Object value,int index,
@@ -82,25 +86,9 @@ public class ItemRenderer implements ListCellRenderer, MouseListener, ListDataLi
 		return itemPanel;
 	}
 //-----------------------------------------------------------------------------
-	/*	public void itemStateChanged(ItemEvent e) {
+	public void itemStateChanged(ItemEvent e) {
 
-	    Object source = e.getItemSelectable();
-
-	    if (source == chinButton) {
-	        //...make a note of it...
-	    } else if (source == glassesButton) {
-	        //...make a note of it...
-	    } else if (source == hairButton) {
-	        //...make a note of it...
-	    } else if (source == teethButton) {
-	        //...make a note of it...
-	    }
-
-	    if (e.getStateChange() == ItemEvent.DESELECTED)
-	        //...make a note of it...
-	    ...
-	    updatePicture();
-	}*/
+	}
 //-----------------------------------------------------------------------------*/
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -109,16 +97,17 @@ System.out.println("ItemRenderer: mouseClicked(): CALLED!!");
 		
 		if(e.getClickCount() == 2){ //double click
 			     int index = itemsList.locationToIndex(e.getPoint());
-			     ListModel listModel = itemsList.getModel();
+			     
 			     Object item = listModel.getElementAt(index);
 			     itemsList.ensureIndexIsVisible(index);
-			     //System.out.println("Double clicked on " + item.toString());
 			     ReadItemDialog itemDialog = new ReadItemDialog(parent, ((ItemToReview)item));
 			     itemDialog.setVisible(true);
 			     itemDialog.setModal(true);
-			     
+			     //int selected = itemsList.getSelectedIndex();
+			    itemsList.repaint();
+			    // (itemsList.getModel()).a
 			     try{
-			    	 
+			
 			    	// itemsList.
 			    //	 XmlParser.saveItemsToReviewList(itemsList, FileHelper.getItemsToReviewFile());
 			     
@@ -163,7 +152,7 @@ System.out.println("ItemRenderer: mouseClicked(): CALLED!!");
 //-----------------------------------------------------------------------------
 	@Override
 	public void contentsChanged(ListDataEvent e) {
-		//((ItemToReview)e.getSource()).
+		//((ItemToReview)e.getIndex0()).
 	}
 //-----------------------------------------------------------------------------
 }

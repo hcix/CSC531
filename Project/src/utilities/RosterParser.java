@@ -12,13 +12,15 @@ import static java.nio.charset.Charset.defaultCharset;
 import static java.nio.file.Files.newBufferedReader;
 import static java.nio.file.Paths.get;
 
+/**
+ * This class will be used to read through the .lst file for each employee,
+ * in order to determine what shifts they work.
+ */
 public class RosterParser {
+//-----------------------------------------------------------------------------
 	/**
-	 * This class will be used to read through the .lst file for each employee,
-	 * in order to determine what shifts they work.
+	 * JDOC
 	 */
-	// -----------------------------------------------------------------------------
-
 	public ArrayList<String> getEmployeesOnShift(int shiftTime) {
 		ArrayList<String> Employees = new ArrayList<String>();
 		ArrayList<File> files = new ArrayList<File>();
@@ -26,8 +28,8 @@ public class RosterParser {
 		String name, day;
 		int dayAsInt;
 		// Directory path here
-		//Path path = Paths.get("Project","PatrolScheduler", "employee"); // added Project
-		Path path = Paths.get("PatrolScheduler", "employee"); // added Project
+		//Path path = Paths.get("Project","PatrolScheduler", "employee"); //ECLIPSE
+		Path path = Paths.get("PatrolScheduler", "employee"); //JAR
 
 		dayAsInt = cal.get(Calendar.DAY_OF_WEEK);
 		day = getDayAsString(dayAsInt);
@@ -36,8 +38,8 @@ public class RosterParser {
 		Collections.addAll(files, folder.listFiles());
 
 		/*
-		 * run through each directory, getting the name if the employee is on
-		 * the shift and adding it to the array list.
+		 * Run through each directory, getting the name if the employee is on
+		 * the shift and adding it to the ArrayList.
 		 */
 		for (File file : files) {
 			// check if employee is on the shift
@@ -53,6 +55,9 @@ public class RosterParser {
 	}
 
 //-----------------------------------------------------------------------------
+	/**
+	 * JDOC
+	 */
 	public boolean isOnShift(File file, int shiftTime, String day) {
 		String filePath, shiftTimeAsString;
 		// check that file is a directory
@@ -67,7 +72,7 @@ public class RosterParser {
 		
 
 		/*
-		 * open the reader, read each line and check if the time and day match,
+		 * Open the reader, read each line and check if the time and day match,
 		 * if so return true, else return false
 		 */
 		try (BufferedReader reader = getReader(filePath)) {
@@ -78,25 +83,28 @@ public class RosterParser {
 				}
 			}
 		} catch (IOException e) {
-			System.out.println("Employee file " + file.getName()
-					+ " has no regular shifts");
-			// e.printStackTrace();
+//DEBUG
+//System.out.println("Employee file " + file.getName() + " has no regular shifts");
+
 		}
 		return false;
 	}
 
-	// -----------------------------------------------------------------------------
-
+//-----------------------------------------------------------------------------
+	/**
+	 * JDOC
+	 */
 	public String getNameFromCNumber(String Cnumber) {
-		// here filename is really the cnumber
+		//here filename is really the cnumber
 
 		String employeeFileName, name;
 		String[] splitName;
-		// added project, stop using user.dir!
-		//employeeFileName = System.getProperty("user.dir")
-			//	+ "\\Project\\PatrolScheduler\\employee\\employees.lst";
+		//TODO fix this to not use user.dir
 		employeeFileName = System.getProperty("user.dir")
-				+ "\\PatrolScheduler\\employee\\employees.lst";
+				+ "\\Project\\PatrolScheduler\\employee\\employees.lst";//ECLIPSE
+		//employeeFileName = System.getProperty("user.dir")
+		//		+ "\\PatrolScheduler\\employee\\employees.lst";//JAR
+		
 		/*
 		 * Open the employee list file, check for a match with the cnumber, and
 		 * if one occurs, return the name
@@ -118,14 +126,21 @@ public class RosterParser {
 		return null;
 	}
 
-	// -----------------------------------------------------------------------------
-
+//-----------------------------------------------------------------------------
+	/**
+	 * Gets a <code>BufferedReader</code> to read the given file.
+	 * 
+	 * @param filename - the filename to return a <code>BufferedReader</code>
+	 * for
+	 * @return a <code>BufferedReader</code> for the specified filename 
+	 */
 	private BufferedReader getReader(String filename) throws IOException {
 		return newBufferedReader(get(filename), defaultCharset());
 	}
-
-	// -----------------------------------------------------------------------------
-
+//-----------------------------------------------------------------------------
+	/**
+	 * JDOC
+	 */
 	private String getDayAsString(int dayAsInt) {
 
 		switch (dayAsInt) {
@@ -147,4 +162,5 @@ public class RosterParser {
 			return null;
 		}
 	}
+//-----------------------------------------------------------------------------
 }

@@ -70,7 +70,7 @@ public class ManageItemsDialog  extends JDialog implements MouseListener{
 			public void actionPerformed(ActionEvent e) {
 				itemDialog.setVisible(true);
 				itemDialog.setModal(true);
-				refreshList();
+				//refreshList();
 				
 			}
 		});
@@ -86,7 +86,7 @@ public class ManageItemsDialog  extends JDialog implements MouseListener{
 				}
 				items.remove(rowIndex);
 				try{
-					XmlParser.saveItemsToReviewList(items, FileHelper.getItemsToReviewFile());
+					XmlParser.saveItemsToReviewList(items);
 				}catch(Exception ex){
 					ex.printStackTrace();
 				}
@@ -138,8 +138,9 @@ public class ManageItemsDialog  extends JDialog implements MouseListener{
 //-----------------------------------------------------------------------------
 	public void refreshList(){
 		items = XmlParser.loadItemsToReviewList();
-		System.out.println("ManageItemsDialog: addNewItemButton ActionListener called");
-		System.out.println("ManageItemsDialog: addNewItemButton ActionListener: items.size() = " + items.size());
+//DEBUG
+//System.out.println("ManageItemsDialog: addNewItemButton ActionListener called");
+//System.out.println("ManageItemsDialog: addNewItemButton ActionListener: items.size() = " + items.size());
 
 		//tell the table to update
 		((AbstractTableModel) table.getModel()).fireTableDataChanged();

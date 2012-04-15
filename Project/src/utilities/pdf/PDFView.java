@@ -3,6 +3,8 @@ package utilities.pdf;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -44,16 +46,59 @@ import org.jpedal.utils.LogWriter;
 import org.jpedal.utils.Messages;
 import program.ResourceManager;
 import utilities.FileHelper;
+/**
+ * This class is a modified version of SimpleViewer.java class from 
+ * the JPedal library. Below is the original class description of
+ * that class.
+ * 
+ * ===========================================
+ * Java Pdf Extraction Decoding Access Library
+ * ===========================================
+ *
+ * Project Info:  http://www.jpedal.org
+ * (C) Copyright 1997-2008, IDRsolutions and Contributors.
+ *
+ * 	This file is part of JPedal
+ *
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
+ *
+ * ---------------
+ * SimpleViewer.java
+ * ---------------
+ */
 public class PDFView {
 //-----------------------------------------------------------------------------
 	public static boolean showMessages=false;
 	protected Values commonValues=new Values();
 	protected Printer currentPrinter=new Printer();
 	protected PdfDecoder decode_pdf = new PdfDecoder(true);
+	
 	protected GUIThumbnailPanel thumbnails=new SwingThumbnailPanel(commonValues,decode_pdf);
+	
+	//protected GUIThumbnailPanel thumbnails=new MySwingThumbnailPanel(commonValues,decode_pdf);
+	//protected GUIThumbnailPanel thumbnails=new DirViewThumbnailPanel(commonValues,FileHelper.getReportsDir());
+	
+	//protected GUIThumbnailPanel thumbnails=new DirViewThumbnailPanel(FileHelper.getReportsDir());
+	
 	private PropertiesFile properties=new PropertiesFile();
+	
 	public SwingGUI currentGUI=new SwingGUI(decode_pdf,commonValues,thumbnails,properties);
+	//public MySwingGUI currentGUI=new MySwingGUI(decode_pdf,commonValues,thumbnails,properties);
+
 	private GUISearchWindow searchFrame=new SwingSearchWindow(currentGUI);
 	protected Commands currentCommands=new Commands(commonValues,currentGUI,decode_pdf,
       thumbnails,properties,searchFrame,currentPrinter);
@@ -65,7 +110,12 @@ public class PDFView {
     private JPanel topButtonPanel = null;
     org.jpedal.objects.acroforms.rendering.AcroRenderer formRenderer = null;
 
+    ResourceManager rm;
     ArrayList<FieldAndVal> allFormFields;
+    String progDir = FileHelper.getProgramDirPathName();
+    /** the path of the preference file **/
+	Path prefFile = Paths.get(progDir, "Project", "src", "utilities", 
+			"pdf", "properties", "pdf_reportsTab.xml"); 
 //-----------------------------------------------------------------------------
     /**
      * Create a new <code>PDFView</code>.
@@ -74,57 +124,113 @@ public class PDFView {
 		//enable error messages which are OFF by default
 		PdfDecoder.showErrorMessages=true;
 
-		properties.loadProperties();
+		this.rm = rm;
+		//properties.loadProperties(prefFile.toString());
   
 		this.setRootContainer(comp);
 		this.setupViewer();
 		this.openPdfFile(doc);
 		  
+		//currentGUI.setIsDirOfFiles(true);
+		//currentGUI.setDirName(FileHelper.getReportsDir());
+		
 		formRenderer = decode_pdf.getFormRenderer();
 		
 		if(formRenderer==null) { 
-			rm.showErrorDialog("File I/O", "An error occured when attempting to display" +
-					"the document.");
-			System.out.println("fail"); 
+			rm.showErrorDialog("File I/O", 
+					"An error occured when attempting to display the document.");
+//DEBUG			
+			System.out.println("\nPDFView: PDFView: formRenderer==null; FAIL\n"); 
 		}
      
     }
 //-----------------------------------------------------------------------------
     /**
-     * Create a new <code>PDFView</code> with the preferences set in the specified
-     * properties xml file.
-     * @param prefsFile - the absolute path of the file containing the preferences 
-     * to use for this <code>PDFView</code>.
+     * Create a new <code>PDFView</code>.
      */
-    public PDFView(String doc, Container comp, ResourceManager rm, String prefsFile) {
+    public PDFView(String doc, String dir, Container comp, ResourceManager rm) {
 		//enable error messages which are OFF by default
 		PdfDecoder.showErrorMessages=true;
-		  
-		//String prefFile = "/Users/heatherciechowski/CSC531/Project/src/utilities/pdf/properties/pdf_reportsTab.xml";
-		String progDir = FileHelper.getProgramDirPathName();
-		Path prefFile = Paths.get(progDir, "Project", "src", "utilities", 
-				"pdf", "properties", "pdf_reportsTab.xml"); 
-		//System.out.println(prefFile.toString());
-		  if(prefFile != null){
-		    properties.loadProperties(prefFile.toString());
-		  }else {
-		    properties.loadProperties();
-		  }
-		  
+
+		this.rm = rm;
+		properties.loadProperties(prefFile.toString());
+  
 		this.setRootContainer(comp);
 		this.setupViewer();
+		//this.openPdfFilledDir(dir);
+		
 		this.openPdfFile(doc);
-		  
+		
 		formRenderer = decode_pdf.getFormRenderer();
 		
 		if(formRenderer==null) { 
-			rm.showErrorDialog("File I/O", "An error occured when attempting to display" +
-					"the document.");
-			System.out.println("fail"); 
+			rm.showErrorDialog("File I/O", 
+					"An error occured when attempting to display the document.");
+//DEBUG			
+			System.out.println("\nPDFView: PDFView: formRenderer==null; FAIL\n"); 
 		}
+		
+		//addFileSelectionListener();
      
     }
 //-----------------------------------------------------------------------------
+    /**
+     * Create a new <code>PDFView</code>.
+     */
+    public PDFView(String doc, String dir, Container comp, ResourceManager rm, 
+    		JPanel topButtonPanel) {
+		//enable error messages which are OFF by default
+		PdfDecoder.showErrorMessages=true;
+
+		properties.loadProperties(prefFile.toString());
+		
+		this.rm = rm;
+		// this.topButtonPanel= topButtonPanel;
+		this.setRootContainer(comp);
+		this.setupViewer();
+		
+		
+		this.openPdfFile(doc);
+		
+		formRenderer = decode_pdf.getFormRenderer();
+		
+		if(formRenderer==null) { 
+			rm.showErrorDialog("File I/O", 
+					"An error occured when attempting to display the document.");
+//DEBUG			
+			System.out.println("\nPDFView: PDFView: formRenderer==null; FAIL\n"); 
+		}
+		
+		//addFileSelectionListener();
+     
+    }
+//-----------------------------------------------------------------------------
+/*	public void addFileSelectionListener(){
+	    Object[] buttons=thumbnails.getButtons();
+	    
+		int files = ((DirViewThumbnailPanel)thumbnails).getFilesInDirCount();
+		final ArrayList<String> fileNames = ((DirViewThumbnailPanel)thumbnails).getAbsfileNames();
+		String actCmd;
+		
+			for(int i=0;i<files;i++){
+				actCmd = "" + i;
+				((JButton)buttons[i]).setActionCommand(actCmd);
+				((JButton)buttons[i]).addActionListener(new ActionListener(){
+					@Override
+					public void actionPerformed(ActionEvent e) {
+
+						String indx = e.getActionCommand();
+						int clicked = Integer.valueOf(indx);
+						
+						openPdfFile(fileNames.get(clicked));
+//DEBUG
+System.out.println("PDFView: addFileSelectionListener: clicked = "+fileNames.get(clicked));
+					}
+				});
+			}
+
+	}*/
+//-----------------------------------------------------------------------------	
     /**
      * Create a new <code>PDFView</code>.
      * This constructor is to be used by JScrollPanes with top button panels.
@@ -159,8 +265,7 @@ public class PDFView {
         this.setupViewer();
         this.openPdfFile(doc);
         
-        formRenderer
-        	= decode_pdf.getFormRenderer();
+        formRenderer = decode_pdf.getFormRenderer();
 
         if(formRenderer==null) { System.out.println("fail"); }
    
@@ -274,6 +379,8 @@ System.out.println("selected one is : components[0].toString()");
                 	}
                 }else{
                 	try {
+//DEBUG               		
+System.out.println("PDVView: openPdfFile: file = "+file);
                 		currentCommands.openFile(file);
                 	} catch (PdfException e) { 
                 		currentGUI.showMessageDialog("File: " + file + '\n' + "File cannot be opened."); 
@@ -353,14 +460,15 @@ System.out.println("selected one is : components[0].toString()");
 	 */
 	public void setupViewer() {
 		//also allow messages to be suppressed with JVM option
-		String flag=System.getProperty("org.jpedal.suppressViewerPopups");
+	/*	String flag=System.getProperty("org.jpedal.suppressViewerPopups");
 		
 		@SuppressWarnings("unused")
 		boolean suppressViewerPopups = false;
 		if(flag!=null && flag.toLowerCase().equals("true")){
 			suppressViewerPopups = true;
 		}
-	  
+	  */
+		
 		/**
 		 *  set search window position here to ensure
 		 *  that gui has correct value
@@ -393,7 +501,8 @@ System.out.println("selected one is : components[0].toString()");
         String customBundle=System.getProperty("org.jpedal.bundleLocation");
 
         if(customBundle!=null){
-        	System.out.println("System property: org.jpedal.bundleLocation = "+customBundle);
+        	rm.showErrorDialog("PDFView", 
+        			"System property: org.jpedal.bundleLocation = "+customBundle);
         	
             BufferedReader input_stream = null;
             ClassLoader loader = Messages.class.getClassLoader();

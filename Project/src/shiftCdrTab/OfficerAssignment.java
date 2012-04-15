@@ -1,6 +1,7 @@
 package shiftCdrTab;
 
 import java.util.ArrayList;
+import shiftCdrTab.reports.ShiftCdrReport;
 
 //-----------------------------------------------------------------------------	
 /**
@@ -38,7 +39,7 @@ public class OfficerAssignment {
 	/**
 	 * Creates a new <code>OfficerAssignment</code> object
 	 */
-	OfficerAssignment(){
+	public OfficerAssignment(){
 		patrolAssignments = new ArrayList<PatrolAssignment>();
 		buildingChecks = new ArrayList<String>();
 	}

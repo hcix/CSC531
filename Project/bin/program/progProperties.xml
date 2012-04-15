@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml version="1.0"?>
-<progProperties>
-	<UMPD.latestReport>/Users/heatherciechowski/CSC531/Documents/ShiftReports/ShiftCDRSumReport04_06_2012_19_54.pdf</UMPD.latestReport>
-	<UMPD.latestVideo>none</UMPD.latestVideo>
-</progProperties>
-
-	
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>&lt;!-- No comment--!&gt;</comment>
+<entry key="UMPD.latestReport">/Users/heatherciechowski/CSC531/Documents/ShiftReports/ShiftCDRSumReport04_14_2012_23_20.pdf</entry>
+<entry key="UMPD.latestVideo">none</entry>
+</properties>

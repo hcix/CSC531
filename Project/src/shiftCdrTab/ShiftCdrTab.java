@@ -46,6 +46,7 @@ import progAdmin.itemsToReview.ItemRenderer;
 import progAdmin.itemsToReview.ItemToReview;
 import progAdmin.itemsToReview.ItemsListModel;
 import program.ResourceManager;
+import shiftCdrTab.reports.ReportsPanel;
 import utilities.DatabaseHelper;
 import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
@@ -70,25 +71,22 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		this.setLayout(new BorderLayout());
 		this.rm = rm;
 		getShiftTime(rm);
-		parent = rm.getParent();
+		parent = rm.getGuiParent();
 
-		JPanel sidePanel = new JPanel(new MigLayout());
 		String label = "<html><h3>Items to Review</h3></html>";
-		/*
-		 * JPanel scrollPanel = new JPanel(new MigLayout("ins 0, gap 0"));
-		 * 
-		 * JScrollPane scroller = new JScrollPane(scrollPanel,
-		 * ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-		 * ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		 * scrollPanel.setLayout(new MigLayout("flowy"));
-		 */
+		
+		JPanel sidePanel = new JPanel(new MigLayout("ins 0, gap 0"));
+	
+		JScrollPane scroller = new JScrollPane(sidePanel,
+				  ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+				  ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		sidePanel.setLayout(new MigLayout("flowy"));
+		 
 		JLabel titleLabel = new JLabel(label, JLabel.CENTER);
 
 		sidePanel.setPreferredSize(new Dimension(300, 625));
-		sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
 
-		sidePanel.add(titleLabel, "alignx center, wrap");
-		// sidePanel.add(scroller);
+		sidePanel.add(titleLabel, "alignx center");
 
 		addItemsToReview(sidePanel);
 
@@ -146,9 +144,8 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		rollCallTab.add(tablePanel, "dock north");
 		rollCallTab.add(buttonPanel, "dock south");
 		this.add(tabbedPane, BorderLayout.CENTER);
-		this.add(sidePanel, BorderLayout.EAST);
+		this.add(scroller, BorderLayout.EAST);
 	}
-
 //-----------------------------------------------------------------------------
 	JPanel makeTablePanel(ArrayList<String> names) {
 		JPanel tablePanel = new JPanel();
@@ -214,7 +211,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		}
 	}
 
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	public void submitRollCall() {
 		int numOfRows, i, j, nextShift;
 		String name, present, timeArrived, comment, shiftDate;
@@ -257,8 +254,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		else if (shiftTime == 22)
 			nextShift = 6;
 		else {
-			System.out
-					.println("couldn't increment shiftTime:line 226 ShiftCdrTab");
+			System.out.println("couldn't increment shiftTime:line 226 ShiftCdrTab");
 			return;
 		}
 		try {
@@ -271,25 +267,27 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		}
 	}
 
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	private void launchScheduler() {
 		// launch schedule program
 		try {
 			// TODO changed to add project, FIX USER DIR!!!!!
 			// Runtime.getRuntime().exec(System.getProperty("user.dir")
-			// + "/Project/PatrolScheduler/UMPatrolScheduler.exe");
+			// + "/Project/PatrolScheduler/UMPatrolScheduler.exe");//JAR
 			Runtime.getRuntime().exec(
 					System.getProperty("user.dir")
-							+ "/PatrolScheduler/UMPatrolScheduler.exe");
+							+ "/PatrolScheduler/UMPatrolScheduler.exe");//ECLIPSE
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("Could not launch Scheduler");
 			System.out
 					.println("Attempted to launch in directory currentDir/bin");
+//TODO Tell usr w/ a dialog that sched prog couldn't be launched
+	//JOptionPane.showMessageDialog(parentComponent, message, title, messageType);
 		}
 	}
 	
-// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	private void editLastRollCall() {
 		final JDialog popup = new JDialog(rm.getGuiParent(), "Edit Roll Call");
 		final JPanel mainPanel = new JPanel(new MigLayout());
@@ -327,7 +325,8 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
     		table.setValueAt(roll.getComment(), i++, j++);
     	}
     	
-    	JButton finishedButton = SwingHelper.createImageButton("Save and Close", "icons/save_48.png");
+    	JButton finishedButton = SwingHelper.createImageButton("Save and Close", 
+    			"icons/save_48.png");
     	finishedButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -373,8 +372,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		ArrayList<ItemToReview> items = XmlParser.loadItemsToReviewList();
 
 		ItemsListModel itemsModel = new ItemsListModel(items);
-
-		//JList itemsList = new JList(itemsModel);
 		
 		JList<ItemToReview> itemsList = new JList<ItemToReview>(itemsModel);
 
@@ -383,232 +380,162 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		itemsList.addMouseListener(itemRenderer);
 		itemsModel.addListDataListener(itemRenderer);
 
-		// DEBUG: fix the layout for this; its real ugly
-
-		/*
-		 * for(ItemToReview item : items){ JPanel itemPanel = new JPanel(new
-		 * MigLayout()); itemPanel.setSize(new Dimension(280, 110));
-		 * itemPanel.setPreferredSize(new Dimension(280, 110)); JCheckBox cb =
-		 * new JCheckBox(); itemPanel.add(cb, "split"); itemPanel.add(new
-		 * JLabel(item.getTitle()), "wrap"); JTextArea details = new
-		 * JTextArea(220, 60); details.setBackground(itemPanel.getBackground());
-		 * details.setLineWrap(true); details.setWrapStyleWord(true);
-		 * details.setEditable(false); details.setMaximumSize(new Dimension(240,
-		 * 100)); details.setText(item.getDetails()); itemPanel.add(details);
-		 * 
-		 * scrollPanel.add(itemPanel);
-		 * itemPanel.setBorder(BorderFactory.createRaisedBevelBorder()); }
-		 */
-
 		scrollPanel.add(itemsList);
 
 	}
-
-// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	public void getShiftTime(ResourceManager rm) {
 		shiftTime = rm.getShiftTime();
 	}
+// =============================================================================
+private class RollCallTableModel extends AbstractTableModel implements
+		TableModelListener {
+	private static final long serialVersionUID = 1L;
+	private boolean DEBUG = true;
+	private String[] columnNames = { "Name", "Present", "Time Arrived",
+			"Comment" };
 
-	// =============================================================================
-	private class RollCallTableModel extends AbstractTableModel implements
-			TableModelListener {
-		private static final long serialVersionUID = 1L;
-		private boolean DEBUG = true;
-		private String[] columnNames = { "Name", "Present", "Time Arrived",
-				"Comment" };
+	// JSpinner spinner = createtimeSpinner();
 
-		// JSpinner spinner = createtimeSpinner();
-
-		private Object[][] data = new Object[0][0];
+	private Object[][] data = new Object[0][0];
+//-----------------------------------------------------------------------------
+	public RollCallTableModel(ArrayList<String> names) {
 
 		/*
-		 * { {"John Doe", new Boolean(true),"12:10 pm", "excused tardy" },
-		 * {"Jane Roe", new Boolean(true),"11:55 am", " "}, {"Ray Moe", new
-		 * Boolean(false)," ","mysteriously late"} };
+		 * Run through each name, setting the value of the name and all
+		 * others blank, & incrementing as appropriate
 		 */
-		// -----------------------------------------------------------------------------
-		// unneeded I believe
-		/*
-		 * public RollCallTableModel() {
-		 * 
-		 * // initialize the data object data = new Object[0][0];
-		 * 
-		 * // add some default values addRowWithName("John Doe");
-		 * addRowWithName("Jane Roe"); addRowWithName("Ray Moe");
-		 * 
-		 * }
-		 */
-		// -----------------------------------------------------------------------------
-		public RollCallTableModel(ArrayList<String> names) {
-
-			/*
-			 * run through each name, setting the value of the name and all
-			 * others blank, incrementing as appropriate
-			 */
-			for (String name : names) {
-				addRowWithName(name);
-			}
-		}
-
-		// -----------------------------------------------------------------------------
-		public int getColumnCount() {
-			return columnNames.length;
-		}
-
-		// -----------------------------------------------------------------------------
-		public int getRowCount() {
-			return data.length;
-		}
-
-		// -----------------------------------------------------------------------------
-		public String getColumnName(int col) {
-			return columnNames[col];
-		}
-
-		// -----------------------------------------------------------------------------
-		public Object getValueAt(int row, int col) {
-			return data[row][col];
-		}
-
-		// -----------------------------------------------------------------------------
-		/*
-		 * JTable uses this method to determine the default renderer/ editor for
-		 * each cell. If we didn't implement this method, then the 'present'
-		 * column would contain text ("true"/"false"), rather than a check box.
-		 */
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public Class getColumnClass(int c) {
-			return getValueAt(0, c).getClass();
-		}
-
-		// -----------------------------------------------------------------------------
-		/*
-		 * Don't need to implement this method unless your table's editable.
-		 */
-		public boolean isCellEditable(int row, int col) {
-			return true;
-		}
-
-		// -----------------------------------------------------------------------------
-		/*
-		 * Don't need to implement this method unless your table's data can
-		 * change.
-		 */
-		public void setValueAt(Object value, int row, int col) {
-			if (DEBUG) {
-				System.out.println("Setting value at " + row + "," + col
-						+ " to " + value + " (an instance of "
-						+ value.getClass() + ")");
-			}
-
-			data[row][col] = value;
-
-			if (col == 1) {
-				if (!((Boolean) value)) {
-					data[row][2] = "";
-				}
-			}
-
-			this.fireTableDataChanged();
-
-			if (DEBUG) {
-				System.out.println("New value of data:");
-				printDebugData();
-			}
-		}
-
-		// -----------------------------------------------------------------------------
-		public void addRow() {
-			Object[] newRow = { "Officer", new Boolean(false), "", "" };
-			int curLength = this.getRowCount();
-			Object[][] newData = new Object[curLength + 1][];
-			System.arraycopy(data, 0, newData, 0, curLength);
-			data = newData;
-			data[curLength] = newRow;
-			this.fireTableDataChanged();
-		}
-
-		// -----------------------------------------------------------------------------
-		public void addRowWithName(String name) {
-			Object[] newRow = { name, new Boolean(false), "", "" };
-			int curLength = this.getRowCount();
-			Object[][] newData = new Object[curLength + 1][];
-			System.arraycopy(data, 0, newData, 0, curLength);
-			data = newData;
-			data[curLength] = newRow;
-			this.fireTableDataChanged();
-		}
-
-		// -----------------------------------------------------------------------------
-		public void deleteRow(int row) {
-			int curLength = this.getRowCount();
-			Object[][] newData = new Object[curLength - 1][];
-			System.arraycopy(data, 0, newData, 0, row);
-			System.arraycopy(data, row + 1, newData, row,
-					((data.length - 1) - row));
-			data = newData;
-			this.fireTableDataChanged();
-		}
-
-		// -----------------------------------------------------------------------------
-		public void tableChanged(TableModelEvent e) {
-			/*
-			 * int row = e.getFirstRow(); int column = e.getColumn(); TableModel
-			 * model = (TableModel)e.getSource(); String columnName =
-			 * model.getColumnName(column); Object value = model.getValueAt(row,
-			 * column);
-			 * 
-			 * // Do something with the data...
-			 */
-		}
-
-		// -----------------------------------------------------------------------------
-		private void printDebugData() {
-			int numRows = getRowCount();
-			int numCols = getColumnCount();
-
-			for (int i = 0; i < numRows; i++) {
-				System.out.print("    row " + i + ":");
-				for (int j = 0; j < numCols; j++) {
-					System.out.print("  " + data[i][j]);
-				}
-				System.out.println();
-			}
-			System.out.println("--------------------------");
+		for (String name : names) {
+			addRowWithName(name);
 		}
 	}
-	// =============================================================================
+
+//-----------------------------------------------------------------------------
+	public int getColumnCount() {
+		return columnNames.length;
+	}
+
+//-----------------------------------------------------------------------------
+	public int getRowCount() {
+		return data.length;
+	}
+
+//-----------------------------------------------------------------------------
+	public String getColumnName(int col) {
+		return columnNames[col];
+	}
+
+//-----------------------------------------------------------------------------
+	public Object getValueAt(int row, int col) {
+		return data[row][col];
+	}
+
+//-----------------------------------------------------------------------------
 	/*
-	 * public class SpinnerEditor extends AbstractCellEditor implements
-	 * TableCellEditor { private static final long serialVersionUID = 1L; final
-	 * JSpinner spinner = new JSpinner();
-	 * 
-	 * // Initializes the spinner. public SpinnerEditor() { //Set up times
-	 * Calendar calendar = Calendar.getInstance();
-	 * calendar.set(Calendar.HOUR_OF_DAY, 1); calendar.set(Calendar.MINUTE, 0);
-	 * Date initTime = calendar.getTime(); calendar.set(Calendar.HOUR_OF_DAY,
-	 * 24); calendar.set(Calendar.MINUTE, 59); Date finalTime =
-	 * calendar.getTime();
-	 * 
-	 * String[] values = new String[]{"item1", "item2", "item3"}; SpinnerModel
-	 * timeModel = new
-	 * SpinnerDateModel(initTime,initTime,finalTime,Calendar.HOUR);
-	 * spinner.setModel(new SpinnerListModel(java.util.Arrays.asList(values)));
-	 * //spinner.setModel(timeModel); }
-	 * 
-	 * // Prepares the spinner component and returns it. public Component
-	 * getTableCellEditorComponent(JTable table, Object value, boolean
-	 * isSelected, int row, int column) { spinner.setValue(value); return
-	 * spinner; }
-	 * 
-	 * // Enables the editor only for double-clicks. public boolean
-	 * isCellEditable(EventObject evt) { if (evt instanceof MouseEvent) { return
-	 * ((MouseEvent)evt).getClickCount() >= 2; } return true; }
-	 * 
-	 * // Returns the spinners current value. public Object getCellEditorValue()
-	 * { return spinner.getValue(); }
-	 * 
-	 * }
+	 * JTable uses this method to determine the default renderer/ editor for
+	 * each cell. If we didn't implement this method, then the 'present'
+	 * column would contain text ("true"/"false"), rather than a check box.
 	 */
-	// =============================================================================
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public Class getColumnClass(int c) {
+		return getValueAt(0, c).getClass();
+	}
+
+//-----------------------------------------------------------------------------
+	/*
+	 * Don't need to implement this method unless your table's editable.
+	 */
+	public boolean isCellEditable(int row, int col) {
+		return true;
+	}
+
+//-----------------------------------------------------------------------------
+	/*
+	 * Don't need to implement this method unless your table's data can
+	 * change.
+	 */
+	public void setValueAt(Object value, int row, int col) {
+		if (DEBUG) {
+			System.out.println("Setting value at " + row + "," + col
+					+ " to " + value + " (an instance of "
+					+ value.getClass() + ")");
+		}
+
+		data[row][col] = value;
+
+		if (col == 1) {
+			if (!((Boolean) value)) {
+				data[row][2] = "";
+			}
+		}
+
+		this.fireTableDataChanged();
+
+		if (DEBUG) {
+			System.out.println("New value of data:");
+			printDebugData();
+		}
+	}
+
+//-----------------------------------------------------------------------------
+	public void addRow() {
+		Object[] newRow = { "Officer", new Boolean(false), "", "" };
+		int curLength = this.getRowCount();
+		Object[][] newData = new Object[curLength + 1][];
+		System.arraycopy(data, 0, newData, 0, curLength);
+		data = newData;
+		data[curLength] = newRow;
+		this.fireTableDataChanged();
+	}
+
+//-----------------------------------------------------------------------------
+	public void addRowWithName(String name) {
+		Object[] newRow = { name, new Boolean(false), "", "" };
+		int curLength = this.getRowCount();
+		Object[][] newData = new Object[curLength + 1][];
+		System.arraycopy(data, 0, newData, 0, curLength);
+		data = newData;
+		data[curLength] = newRow;
+		this.fireTableDataChanged();
+	}
+
+//-----------------------------------------------------------------------------
+	public void deleteRow(int row) {
+		int curLength = this.getRowCount();
+		Object[][] newData = new Object[curLength - 1][];
+		System.arraycopy(data, 0, newData, 0, row);
+		System.arraycopy(data, row + 1, newData, row,
+				((data.length - 1) - row));
+		data = newData;
+		this.fireTableDataChanged();
+	}
+
+//-----------------------------------------------------------------------------
+	public void tableChanged(TableModelEvent e) {
+		/*
+		 * int row = e.getFirstRow(); int column = e.getColumn(); TableModel
+		 * model = (TableModel)e.getSource(); String columnName =
+		 * model.getColumnName(column); Object value = model.getValueAt(row,
+		 * column);
+		 * 
+		 * // Do something with the data...
+		 */
+	}
+
+//-----------------------------------------------------------------------------
+	private void printDebugData() {
+		int numRows = getRowCount();
+		int numCols = getColumnCount();
+
+		for (int i = 0; i < numRows; i++) {
+			System.out.print("    row " + i + ":");
+			for (int j = 0; j < numCols; j++) {
+				System.out.print("  " + data[i][j]);
+			}
+			System.out.println();
+		}
+		System.out.println("--------------------------");
+	}
+}
+//=============================================================================
 }

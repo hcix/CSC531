@@ -132,10 +132,10 @@ public class BOLOpreview extends JDialog {
 		//put each existing attribute's name and value into the panel(bolo fields 0-8)
 		for(int i=0; i<9; i++){
 			if(fieldsArray[i]!=null){ 
-//DEBUG:
+//DEBUG
 				//System.out.printf("index %d of fieldsArray = %s\n", i, fieldsArray[i]);
 				labels[i] = labels[i].concat(fieldsArray[i]); 
-//DEBUG:
+//DEBUG
 				//System.out.printf("index %d of labels = %s\n", i, labels[i]);
 				label = new JLabel(labels[i]);
 				infoPanel.add(label, "align, wrap"); 
@@ -158,10 +158,10 @@ public class BOLOpreview extends JDialog {
 		//put each existing attribute's name and value into the panel(bolo fields 9-11)
 		for(int i=9; i<12; i++){
 			if(fieldsArray[i]!=null){ 
-//DEBUG:
+//DEBUG
 				//System.out.printf("index %d of fieldsArray = %s\n", i, fieldsArray[i]);
 				labels[i-9] = labels[i-9].concat(fieldsArray[i]); 
-//DEBUG:
+//DEBUG
 				//System.out.printf("index %d of labels = %s\n", i, labels[i-9]);
 				label = new JLabel(labels[i-9]);
 				infoPanel.add(label, "align, wrap"); 
@@ -306,6 +306,7 @@ public class BOLOpreview extends JDialog {
 			 try {
 				bolo.addToDB();
 			 } catch (Exception e) {
+				 //TODO change println below into error message for user
 				System.out.println("error: unable to add BOLO to DB");
 				e.printStackTrace();
 			 }

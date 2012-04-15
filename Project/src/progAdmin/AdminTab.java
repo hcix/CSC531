@@ -103,13 +103,13 @@ public class AdminTab extends JPanel implements ActionListener {
 			File file = fc.getSelectedFile();
 			Path videoPath = FileHelper.copyVideoAnnoun(file);
 			
-			// set property then write to xml
+			//set property then write to xml
 			System.out.println("in admin tab " + videoPath.toString());
 			System.setProperty("UMPD.latestVideo", videoPath.toString());
-			XmlParser.setSystemProperty("UMPD.latestVideo",
-					videoPath.toString());
-			
-			// set visability true
+			//XmlParser.setSystemProperty("UMPD.latestVideo",
+			//		videoPath.toString());
+			rm.setLastestVideoName(videoPath.toString());
+			//set visability true
             HomeTab.setVideoVisability(true);
 			
 			// put this after chooser has been closed

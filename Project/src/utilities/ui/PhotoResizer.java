@@ -18,14 +18,21 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 //-----------------------------------------------------------------------------
 /**
- *
+ * The <code>PhotoResizer</code> class is an adapted version of a class called
+ * <code>ComponentResizer</code> written by:
+ * Rob Camick
+ * http://tips4java.wordpress.com/2009/09/13/resizing-components/
  */
 public class PhotoResizer extends MouseAdapter {
 //-----------------------------------------------------------------------------
-	private final static Dimension MINIMUM_SIZE = new Dimension(10, 10);
-	private final static Dimension MAXIMUM_SIZE =
+	private static final Dimension MIN_SIZE = new Dimension(10, 10);
+	private static final Dimension MAX_SIZE =
 		new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
-
+	private static final int NORTH = 1;
+	private static final int WEST = 2;
+	private static final int SOUTH = 4;
+	private static final int EAST = 8;
+	
 	private static Map<Integer, Integer> cursors = new HashMap<Integer, Integer>();
 	{
 		cursors.put(1,  Cursor.N_RESIZE_CURSOR);
@@ -42,10 +49,7 @@ public class PhotoResizer extends MouseAdapter {
 	private Dimension snapSize = new Dimension(1, 1);
 
 	private int direction;
-	protected static final int NORTH = 1;
-	protected static final int WEST = 2;
-	protected static final int SOUTH = 4;
-	protected static final int EAST = 8;
+
 
 	private Cursor sourceCursor;
 	private boolean resizing;
@@ -53,8 +57,8 @@ public class PhotoResizer extends MouseAdapter {
 	private Point pressed;
 	private boolean autoscrolls;
 
-	private Dimension minimumSize = MINIMUM_SIZE;
-	private Dimension maximumSize = MAXIMUM_SIZE;
+	private Dimension minimumSize = MIN_SIZE;
+	private Dimension maximumSize = MAX_SIZE;
 	
 	JLabel photoFrame;
 	ImageIcon originalImgIcon;

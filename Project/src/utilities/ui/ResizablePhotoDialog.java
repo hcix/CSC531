@@ -35,24 +35,21 @@ private static final long serialVersionUID = 1L;
 		originalImgIcon = imgIcon;
 		resizedImgIcon = imgIcon;
 		
-		
-		
-		//JDialog resizerDialog = new JDialog(this, "Resize Photo", 
-		//		Dialog.ModalityType.DOCUMENT_MODAL);
-		
 		//default width and height values for the dialog
 		int w=700, h=700;
+		
 		//get the screen size
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		
 		//if the img is bigger than the default dialog size, make the dialog bigger 
 		if(originalImgIcon.getIconWidth()>500){
 			w=originalImgIcon.getIconWidth();
 			if(w>screenSize.width){
 				//if the img is bigger than the screen, make the dialog just a little 
 				//smaller than the screen and the img just a little smaller the dialog
-				w=screenSize.width-10;
+				w=screenSize.width-20;
 				originalImgIcon=ImageHandler.getScaledImageIcon(
-						originalImgIcon, (w-10), originalImgIcon.getIconHeight());
+						originalImgIcon, (w-20), originalImgIcon.getIconHeight());
 				resizedImgIcon=originalImgIcon;
 			}
 		}
@@ -61,9 +58,9 @@ private static final long serialVersionUID = 1L;
 			if(h>screenSize.height){
 				//if the img is bigger than the screen, make the dialog just a little 
 				//smaller than the screen and the img just a little smaller the dialog
-				w=screenSize.height-10;
+				h=screenSize.height-20;
 				originalImgIcon=ImageHandler.getScaledImageIcon(
-						originalImgIcon, originalImgIcon.getIconWidth(), (h-10));
+						originalImgIcon, originalImgIcon.getIconWidth(), (h-20));
 				resizedImgIcon=originalImgIcon;
 			}
 		}
@@ -162,17 +159,17 @@ private static final long serialVersionUID = 1L;
 	*/
 	public void saveAndClose(String photofilename){
 		Path photoPath = FileHelper.savePhoto(getResizedImgIcon(), photofilename);
-		System.out.printf("\nResizablePhotoDialog: ResizablePhotoDialog(): photoPath.toString() = %s\n",
-				photoPath.toString());
+//DEBUG
+//System.out.printf("\nResizablePhotoDialog: ResizablePhotoDialog(): photoPath.toString() = %s\n",photoPath.toString());
 		setNewPhotoFilePath(photoPath);
 		
 		this.setVisible(false);
 		 //close the window
-		//this.dispose();	
+		this.dispose();	
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * TODO: javadoc comment
+	 * JDOC
 	 */
 	 public void closeAndCancel( ) {
 //dispose of all resources used

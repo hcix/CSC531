@@ -19,6 +19,7 @@ public class ImageHandler {
 	 * package.
 	 * @param path - the image's path relative to the <code>userinterface</code> package
 	 * @return an <code>ImageIcon</code> or <code>null</code> if the path was invalid 
+	 * @deprecated use <code>getImageIcon()</code> or getProgramImgIcon instead
 	 */
 	public static ImageIcon createImageIcon(String path) {
 	    java.net.URL imgURL = MainInterfaceWindow.class.getResource(path);
@@ -28,6 +29,31 @@ public class ImageHandler {
 	        System.err.println("Couldn't find file: " + path);
 	        return null;
 	    }
+	}
+//-----------------------------------------------------------------------------
+	/** 
+	 * Creates an <code>ImageIcon</code> form the specified image path 
+	 * resource within the program. Image path should be given relative to the
+	 * <code>userinterface</code> package.
+	 * @param path - the image's path relative to the <code>userinterface</code> package
+	 * @return an <code>ImageIcon</code> or <code>null</code> if the path was invalid 
+	 */
+	public static ImageIcon getProgramImgIcon(String path) {
+	    java.net.URL imgURL = MainInterfaceWindow.class.getResource(path);
+	    if (imgURL != null) {
+	        return new ImageIcon(imgURL);
+	    } else {
+	        System.err.println("Couldn't find file: " + path);
+	        return null;
+	    }
+	}
+//-----------------------------------------------------------------------------
+	/** 
+	 * JDOC
+	 */
+	public static ImageIcon getImageIcon(String absFileName){
+		ImageIcon imgIcon = new ImageIcon(absFileName);
+		return imgIcon;
 	}
 //-----------------------------------------------------------------------------
 	/** 
@@ -103,8 +129,7 @@ public class ImageHandler {
 			return null;
 		}
 		
-//DEBUG
-System.out.printf("path = %s\n", path.toString());
+//DEBUG System.out.printf("path = %s\n", path.toString());
 
 		path = path.toAbsolutePath();
 		URI imgURI = path.toUri();
@@ -158,6 +183,19 @@ System.out.printf("path = %s\n", path.toString());
 		}
 		
 		return thumbnail;
+	}
+//-----------------------------------------------------------------------------
+	public static BufferedImage getBufferedImage(String path, int w, int h){
+		// Create an image, and wait for it to load
+		ImageIcon imgIcn = getImageIcon(path);
+		ImageIcon scaledImgIcn = getScaledImageIcon(imgIcn, w, h);
+		
+		BufferedImage buffImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+		
+		Graphics2D g = buffImg.createGraphics();
+		g.drawImage(scaledImgIcn.getImage(), 0, 0, null);
+
+		return(buffImg);
 	}
 //-----------------------------------------------------------------------------
 }

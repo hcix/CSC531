@@ -10,12 +10,6 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Date;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -27,15 +21,14 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import utilities.DatabaseHelper;
-import utilities.DatabaseHelper;
 import utilities.ui.ImageHandler;
 import utilities.ui.ItemsViewerPanel;
 import utilities.ui.SwingHelper;
-
+//-----------------------------------------------------------------------------
+/**
+ * JDOC
+ */
 public class BOLOtab extends JPanel  implements ActionListener {
-	
-	//TODO Java Docs
-	
 private static final long serialVersionUID = 1L;
 	ArrayList<Bolo> boloList;
 	JFrame parent;
@@ -44,7 +37,6 @@ private static final long serialVersionUID = 1L;
 	public BOLOtab(final JFrame parent){
 		this.setLayout(new BorderLayout());
 				
-	//	ArrayList<Bolo> boloList = null;
 		this.parent = parent;
 		
 		//Create BOLOs tabbed display area
@@ -181,7 +173,8 @@ private static final long serialVersionUID = 1L;
 		int i=0;
 		for(Bolo bolo: boloList){
 			String listId = "" + boloList.indexOf(bolo);
-//DEBUG			System.out.printf("listId = %s\n", listId);
+//DEBUG	prints list ID of the Bolo bolo: bololist
+//System.out.printf("listId = %s\n", listId);
 			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
 			
 			JLabel photoLabel = new JLabel(
