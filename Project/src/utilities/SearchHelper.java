@@ -169,15 +169,11 @@ public class SearchHelper {
 	private static ArrayList<RollCall> fillRollCall(ResultSet allEntries) throws SQLException {
     	ArrayList<RollCall> rollCallList = new ArrayList<RollCall>();
     	RollCall rollCall;
-	    while (allEntries.next()) { //BUG same as in DBHelper
-    	    rollCall = new RollCall();
-    	    
-    	    rollCall.setName(allEntries.getString("Name")); 
-    	    rollCall.setPresent(allEntries.getString("Present"));
-    	    rollCall.setComment(allEntries.getString("Comment"));
-    	    rollCall.setTimeArrived(allEntries.getString("TimeArrived"));
-    	    rollCallList.add(rollCall);
-    	    
+	    while (allEntries.next()) {  	
+	    	//hack-fu
+	    	rollCallList.add(new RollCall(allEntries.getString("Name"),
+	    			allEntries.getString("Present"), allEntries.getString("TimeArrived"),
+	    			allEntries.getString("Comment")));    	    
 	    }
 	   
 	    for (RollCall testrollCall : rollCallList) {   	

@@ -179,6 +179,7 @@ public class ResourceManager {
 	public JFrame getGuiParent(){
 		return parent;
 	}
+
 //-----------------------------------------------------------------------------
 	/**
 	 * @return items - 
@@ -300,6 +301,18 @@ i++;
 		saveProperties();
 	}	
 //-----------------------------------------------------------------------------	
+	public void setLatestShiftTime(int shiftTime) {
+		String timeAsString;
+		if (shiftTime == 6) 
+			timeAsString = "0" + ((Integer)shiftTime).toString();
+		else
+			timeAsString = ((Integer)shiftTime).toString();
+		progProps.setProperty("UMPD.latestShiftTime", timeAsString);
+		System.setProperty("UMPD.latestShiftTime", timeAsString);
+		saveProperties();
+	}
+//-----------------------------------------------------------------------------	
+
 	/**
 	 * JDOC
 	 */

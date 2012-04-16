@@ -206,7 +206,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 			// fill values
 			j = 0;
 			name = (String) table.getModel().getValueAt(i, j++);
-			if ((boolean) table.getModel().getValueAt(i, j++))
+			if ((Boolean) table.getModel().getValueAt(i, j++))
 				present = "true";
 			else
 				present = "false";
@@ -246,7 +246,8 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		} catch (Exception e) {
 			System.out.println("couldn't get next roll call");
 		}
-		mostRecentShift = shiftTime;
+		//mostRecentShift = shiftTime;
+		rm.setLatestShiftTime(shiftTime);
 		//TODO push to xml eventually
 	}
 
@@ -281,9 +282,14 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
         ArrayList<RollCall> rollCallList = new ArrayList<RollCall>();
         
         //get formatted date, and get rollCall from db
-        mostRecentShiftAsString = ((Integer)mostRecentShift).toString();
-        if (mostRecentShiftAsString.equals("6"))
-			mostRecentShiftAsString = "06"; // append leading zero
+        mostRecentShiftAsString = System.getProperty("UMPD.latestShiftTime");
+        
+        //check that a rollcall has been submitted
+        if (mostRecentShiftAsString.equals("none")){
+        	JOptionPane.showMessageDialog(rm.getGuiParent(), "No shift has been submitted yet.");
+        	return;
+        }
+   
         Format format = new SimpleDateFormat("ddMMMyyyy:" + mostRecentShiftAsString + ":00");
         try {
 			rollCallList = dbHelper.getRollCallFromDatabase(format.format(date));

@@ -23,6 +23,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -63,25 +64,30 @@ private static final long serialVersionUID = 1L;
 				//Shift CDR form dialog
 				//ShiftReportForm formDialog = new ShiftReportForm(rm, null);
 				public void actionPerformed(ActionEvent e){
-					String mostRecentShift = ((Integer)ShiftCdrTab.getMostRecentShift()).toString();
+					String mostRecentShift = System.getProperty("UMPD.latestShiftTime");
 					ArrayList<RollCall> rollCall;
 					//TODO: create new ShiftCdrReport object
 					ShiftCdrReport shiftReport = new ShiftCdrReport();
 					//TODO fill in w/e fields
-					if (mostRecentShift.equals("6"))
-						mostRecentShift = "06"; // append leading zero
-					Format format = new SimpleDateFormat("ddMMMyyyy:" + mostRecentShift + ":00");
-					Date date = new Date();
-					try {
-						rollCall = dbHelper.getRollCallFromDatabase(format.format(date));
-					} catch (Exception e1) {
-						System.out.println("Couldn't get rollCall from db in reportsPanel");
-						//e1.printStackTrace();
-					}
-					//ShiftReportForm formDialog = new ShiftReportForm(rm, shiftcdrreport);
-					ShiftReportForm formDialog = new ShiftReportForm(rm, null);
-					formDialog.setVisible(true);
-				}
+					
+					//check that a rollcall has been submitted
+			        if (mostRecentShift.equals("none")){
+			        	JOptionPane.showMessageDialog(rm.getGuiParent(), "No shift has been submitted yet.");
+			        }
+			        else {
+					    Format format = new SimpleDateFormat("ddMMMyyyy:" + mostRecentShift + ":00");
+					    Date date = new Date();
+					    try {
+						    rollCall = dbHelper.getRollCallFromDatabase(format.format(date));
+					    } catch (Exception e1) {
+						    System.out.println("Couldn't get rollCall from db in reportsPanel");
+					    	//e1.printStackTrace();
+					    }
+					    //ShiftReportForm formDialog = new ShiftReportForm(rm, shiftcdrreport);
+					    ShiftReportForm formDialog = new ShiftReportForm(rm, null);
+					    formDialog.setVisible(true);
+				    }
+			    }
 			});
 
 			//Button to import an existing report

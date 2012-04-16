@@ -23,6 +23,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+
+import javax.swing.JOptionPane;
+
+import program.ResourceManager;
 import shiftCdrTab.RollCall;
 import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
@@ -265,6 +269,14 @@ public class DatabaseHelper {
 		String dbFileName = dbFilePath.toString();
 		Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
 		
+		//check for already existing shift
+		Statement stat = conn.createStatement();
+		ResultSet allEntries = stat.executeQuery("SELECT 1 FROM RollCall WHERE ShiftDate = shiftDate;");
+		//if (!allEntries.getString("Name").equals(null)) {    
+			//JOptionPane.showMessageDialog(null, "Shift already submitted for this date.");
+			//return;
+		//}
+		
 		//insert into person table
 		PreparedStatement personStatement = conn.prepareStatement(
 				"INSERT into RollCall(Name, Present, Comment, TimeArrived, ShiftDate) " +
@@ -335,29 +347,16 @@ public class DatabaseHelper {
 	    Collections.addAll(rollCallList, rollCallArray);
 	    */
 	    
-	    //right method, that doesn't fucking work! //BUG
+	    //right method, that doesn't fucking work! 
+	    //Update, works, but not the way I originally wanted it to / it should
 	    RollCall rollCall;
 	    while (allEntries.next()) {
 	    	
-	    	//System.out.println(allEntries.getString("Name"));
-    	    rollCall = new RollCall();
-    	    
-    	    rollCall.setName(allEntries.getString("Name")); 
-    	    rollCall.setPresent(allEntries.getString("Present"));
-    	    rollCall.setComment(allEntries.getString("Comment"));
-    	    rollCall.setTimeArrived(allEntries.getString("TimeArrived"));
-    	    System.out.println(rollCall.getName());
-    	    rollCallList.add(rollCall);
-    	    
-    	    System.out.println("***************");
-    	   // System.out.println(rollCallList.toString());
-    	    
-    	    //for (RollCall testrollCall : rollCallList) {   	
-            	//System.out.println(testrollCall.getName());
-            //}
-
-    	    System.out.println("***************");
-
+	    	//hack-fu
+	    rollCallList.add(new RollCall(allEntries.getString("Name"),
+	    			allEntries.getString("Present"), allEntries.getString("TimeArrived"),
+	    			allEntries.getString("Comment")));
+	    	
 	    }
 	    allEntries.close();
 	    conn.close();
