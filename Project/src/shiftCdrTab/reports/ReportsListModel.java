@@ -9,18 +9,19 @@ import javax.swing.ListModel;
  *
  */
 public class ReportsListModel extends DefaultListModel implements ListModel{
-	private ArrayList<ShiftCdrReport> reportList;
+	//private ArrayList<ShiftCdrReport> reportList;
+	private ArrayList<ReportFile> reportFileList;
 //-----------------------------------------------------------------------------
-	public ReportsListModel(ArrayList<ShiftCdrReport> reportList) {
-	    this.reportList = reportList;
+	public ReportsListModel(ArrayList<ReportFile> reportFileList) {
+	    this.reportFileList = reportFileList;
 	}
 //-----------------------------------------------------------------------------
 	public Object getElementAt(int index) {
-		return(reportList.get(index));
+		return(reportFileList.get(index));
 	}
 //-----------------------------------------------------------------------------
 	public int getSize() {
-		return(reportList.size());
+		return(reportFileList.size());
 	}
 //-----------------------------------------------------------------------------
 	//public void addListDataListener(ListDataListener l){
@@ -33,8 +34,8 @@ public class ReportsListModel extends DefaultListModel implements ListModel{
 		//to remove them from the xml file
 //	}
 //=============================================================================
-	//Report
-	
+	//ReportFile
+
 //=============================================================================
 }
 

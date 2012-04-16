@@ -7,6 +7,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -32,11 +34,14 @@ import utilities.ui.ImagePreview;
 import utilities.ui.SwingHelper;
 
 
-public class ReportsPanel extends JPanel {
+public class ReportsPanel extends JPanel implements MouseListener {
 private static final long serialVersionUID = 1L;
 	final ResourceManager rm;
 	PDFView pdfv;
-	ArrayList<ShiftCdrReport> reports = new ArrayList<ShiftCdrReport>();
+	ArrayList<ReportFile> reportsFileArrayList = new ArrayList<ReportFile>();
+	JList<ReportFile> reportsJList;
+	ReportsListModel reportsModel;
+	ReportFile currDisplayed;
 //-----------------------------------------------------------------------------
 		public ReportsPanel(final ResourceManager rm){
 			this.setLayout(new MigLayout("fill"));
@@ -44,7 +49,7 @@ private static final long serialVersionUID = 1L;
 			
 			final JFrame parent = rm.getGuiParent();
 			
-			//Create a button to create a new Report 
+			//Button to create a new report 
 			JButton newButton = SwingHelper.createImageButton("Create new Report", 
 					"icons/plusSign_48.png"); 
 			newButton.addActionListener(new ActionListener() {
@@ -62,7 +67,7 @@ private static final long serialVersionUID = 1L;
 				}
 			});
 
-			//Create a button to import an existing Report
+			//Button to import an existing report
 			JButton importButton = SwingHelper.createImageButton("Import Existing Report", 
 					"icons/Import.png");
 			importButton.addActionListener(new ActionListener() {
@@ -80,8 +85,7 @@ private static final long serialVersionUID = 1L;
 						//copy the chosen report into the program's 'ShiftCdrReports' directory
 						File file = fc.getSelectedFile();
 						
-//DEBUG						
-System.out.printf("filepath = %s\n", file.getName(), file.getPath());
+//DEBUG	System.out.printf("filepath = %s\n", file.getName(), file.getPath());
 
 						Path filePath = FileHelper.copyShiftCdrReport(file);
 						//load the report's info into the program
@@ -94,7 +98,7 @@ System.out.printf("filepath = %s\n", file.getName(), file.getPath());
 				}
 			});
 
-			//Create a button to search existing Reports
+			//Button to search existing reports
 			JButton searchButton = SwingHelper.createImageButton("Search Records", 
 					"icons/search.png");
 			searchButton.addActionListener(new ActionListener() {
@@ -102,12 +106,11 @@ System.out.printf("filepath = %s\n", file.getName(), file.getPath());
 				JDialog searchDialog = createSearchDialog(parent);
 				public void actionPerformed(ActionEvent e){
 					searchDialog.setVisible(true);
+					//TODO Implement Search
 				}
 			});
 
-			JScrollPane reportsScroller = new JScrollPane();
-			loadInLastReport(reportsScroller);
-
+			//List of Reports area
 			JPanel itemsPanel = new JPanel(new MigLayout("ins 0, gap 0"));
 			JScrollPane itemsScroller = new JScrollPane(itemsPanel,
 					  ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
@@ -116,6 +119,9 @@ System.out.printf("filepath = %s\n", file.getName(), file.getPath());
 			itemsPanel.setPreferredSize(new Dimension(300, 625));
 			addReportsList(itemsPanel);
 
+			//Display report area
+			JScrollPane reportsScroller = new JScrollPane();
+			loadInLastReport(reportsScroller);
 			
 			//Create a split pane with the two scroll panes in it.
 			JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
@@ -134,35 +140,59 @@ System.out.printf("filepath = %s\n", file.getName(), file.getPath());
 	        this.add(buttonsPanel, "dock south");
 		}
 //-----------------------------------------------------------------------------
-	public void addReportsList(JPanel itemPanel){
+	/**
+	 * Load the most recent report into the PDF view
+	 * JDOC
+	 */
+	public void loadInLastReport(JComponent comp){
+		//String shiftCdrForm = System.getProperty("UMPD.latestReport");
+	
+		ReportFile mostRecent = reportsFileArrayList.get(0);
+		
+		//get the latest report from the list
+		for(ReportFile r : reportsFileArrayList){
+			if(r.getDateCreated().after(mostRecent.getDateCreated())){ 
+				mostRecent = r; 
+			}
+		}
+	    
+		//display the lastest report
+		currDisplayed = mostRecent;
+		mostRecent.setCurrentlyDisplayed(true);
+		pdfv = new PDFView(mostRecent.getFilename(), comp, rm);
 
+}
+//-----------------------------------------------------------------------------
+	/**
+	 * JDOC
+	 */
+	public void addReportsList(JPanel itemPanel){
+	
 		File folder = new File(FileHelper.getReportsDir());
 	    File[] listOfFiles = folder.listFiles();
-
+	
 	    for (int i = 0; i < listOfFiles.length; i++) {
-	    	if (listOfFiles[i].isFile() && !(listOfFiles[i].getName().startsWith(".")) ) {
-//DEBUG 
-System.out.println("File " + listOfFiles[i].getName());
-reports.add(new ShiftCdrReport(FileHelper.getDocumentPathName(listOfFiles[i].getName()))); 
-	    	} else if (listOfFiles[i].isDirectory()) {
+	    	//check that the listing is a visible file
+	    	if (listOfFiles[i].isFile() && !(listOfFiles[i].getName().startsWith("."))){
+	    		//create a new report object from the listing and load it
+	    		reportsFileArrayList.add(new ReportFile(
+	    				FileHelper.getReportPathName(listOfFiles[i].getName())));
+//DEBUG System.out.println("File " + listOfFiles[i].getName());	    	
+	    	} 
+	    	//else if (listOfFiles[i].isDirectory()) {
 //DEBUG System.out.println("Directory " + listOfFiles[i].getName());
-	    	}
+	    	//}
 	    }
 	    
-
-		ReportsListModel reportsModel = new ReportsListModel(reports);
+	    reportsModel = new ReportsListModel(reportsFileArrayList);
+		reportsJList = new JList<ReportFile>(reportsModel);
 		
-		JList<ShiftCdrReport> reportsList = new JList<ShiftCdrReport>(reportsModel);
-
-		
-		
-		ReportListRenderer reportRenderer = new ReportListRenderer(rm.getGuiParent(), reportsList);
-		reportsList.setCellRenderer(reportRenderer);
-		reportsList.addMouseListener(reportRenderer);
+		ReportListRenderer reportRenderer = new ReportListRenderer(rm.getGuiParent(), reportsJList);
+		reportsJList.setCellRenderer(reportRenderer);
+		reportsJList.addMouseListener(this);
 		reportsModel.addListDataListener(reportRenderer);
 		
-		itemPanel.add(reportsList);
-
+		itemPanel.add(reportsJList);
 	}
 //-----------------------------------------------------------------------------
 	JDialog createSearchDialog(JFrame parent){
@@ -197,24 +227,12 @@ reports.add(new ShiftCdrReport(FileHelper.getDocumentPathName(listOfFiles[i].get
 		contentPane.add(searchPanel);
 		return searchDialog;
 	}
-//-----------------------------------------------------------------------------
-	/**
-	 * Load the most recent report into the PDF view
-	 */
-	public void loadInLastReport(JComponent comp){
-		String shiftCdrForm = 
-				 System.getProperty("UMPD.latestReport");
-
-        
-		pdfv = new PDFView(shiftCdrForm, comp, rm);
-
-	}
 //-----------------------------------------------------------------------------		
-	public JPanel createButtonsPanel(){
+	private JPanel createButtonsPanel(){
 	
 		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
 		
-		//Add cancel button
+		//Cancel button
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
@@ -223,7 +241,7 @@ reports.add(new ShiftCdrReport(FileHelper.getDocumentPathName(listOfFiles[i].get
 			}
 		});
 	
-	    // Add save button
+	    //Save button
 	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
 	    saveButton.setToolTipText("Save Report");
 	    saveButton.addActionListener(new ActionListener( ) {
@@ -232,7 +250,8 @@ reports.add(new ShiftCdrReport(FileHelper.getDocumentPathName(listOfFiles[i].get
 	    	}
 	    });
 	      
-
+	    
+	    //add save & cancel buttons to panel
 	    JPanel saveAndCancelButtonsPanel = new JPanel();
 	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
 	    saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
@@ -240,9 +259,48 @@ reports.add(new ShiftCdrReport(FileHelper.getDocumentPathName(listOfFiles[i].get
 	    return buttonsPanel;
 	}
 //-----------------------------------------------------------------------------	
-	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+//DEBUG
+System.out.println("ReportListRenderer: mouseClicked(): CALLED!!");
+		
+		if(e.getClickCount() == 2){ //double click
+			     int index = reportsJList.locationToIndex(e.getPoint());
+			     
+			     Object item = reportsModel.getElementAt(index);
+			     reportsJList.ensureIndexIsVisible(index);
+			     
+			     ReportFile rf = (ReportFile)item;
+			     pdfv.openPdfFile(rf.getFilename());
+			     
+			     currDisplayed.setCurrentlyDisplayed(false);
+			     
+			     currDisplayed=rf;
+			     rf.setCurrentlyDisplayed(true);
+			     reportsJList.repaint();
+		}
+		
+	}
 //-----------------------------------------------------------------------------
-	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		//System.out.println("ItemRenderer: mousePressed(): CALLED!!");
+	}
+//-----------------------------------------------------------------------------
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		//System.out.println("ItemRenderer: mouseReleased(): CALLED!!");
+	}
+//-----------------------------------------------------------------------------
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		//System.out.println("ItemRenderer: mouseEntered(): CALLED!!");	
+	}
+//-----------------------------------------------------------------------------
+	@Override
+	public void mouseExited(MouseEvent e) {
+		//System.out.println("ItemRenderer: mouseExited(): CALLED!!");	
+	}
 //-----------------------------------------------------------------------------	
 }
 

@@ -145,7 +145,7 @@ public class XmlParser {
 	 * into the itemsToReview.xml file. Note that this method rewrites the
 	 * itemsToReview.xml file with the item contents of the given list.
 	 * 
-	 * @param itemsList - the ArrayList of <code>ItemToReview</code> objects
+	 * @param itemsJList - the ArrayList of <code>ItemToReview</code> objects
 	 * to save to the itemsToReview.xml file
 	 */
 	public void saveRoster() throws Exception {

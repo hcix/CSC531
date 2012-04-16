@@ -8,4 +8,8 @@
 		<title>Coffee machine out of order</title>
 		<details>Please don't use the coffee machine, it has been acting strange. We are in the process of getting it replaced.</details>
 	</item>
+	<item>
+		<title>new</title>
+		<details>item</details>
+	</item>
 </UMPD.itemsList>

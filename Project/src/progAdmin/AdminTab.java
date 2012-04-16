@@ -47,7 +47,7 @@ public class AdminTab extends JPanel implements ActionListener {
 
 		JButton editUsrAcctsButton = SwingHelper.createImageButton("icons/group_48.png");
 		editUsrAcctsButton.addActionListener(new ActionListener() {
-			//create editUsersDialog
+			//Create dialog to edit user accounts
 			EditUsrAccountsDialog usrAcctsDialog = new EditUsrAccountsDialog(parent);
 			public void actionPerformed(ActionEvent e){
 				usrAcctsDialog.setVisible(true);	
@@ -57,7 +57,7 @@ public class AdminTab extends JPanel implements ActionListener {
 		JButton manageItemsButton = SwingHelper.createImageButton("icons/notepad_48.png");
 		manageItemsButton.addActionListener(new ActionListener() {
 			//create manageItemsDialog
-			ManageItemsDialog manageItemsDialog = new ManageItemsDialog(parent);
+			ManageItemsDialog manageItemsDialog = new ManageItemsDialog(rm);
 			public void actionPerformed(ActionEvent e){
 				manageItemsDialog.setVisible(true);	
 			}

@@ -54,7 +54,8 @@ private static final long serialVersionUID = 1L;
 			
 		JPanel buttonsPanel = createButtonsPanel();
 		 
-		String shiftCdrForm = FileHelper.getFormTemplatePathName("ShiftCDRSumReport.pdf");
+		//String shiftCdrForm = FileHelper.getFormTemplatePathName("ShiftCDRSumReport.pdf");
+		String shiftCdrForm = FileHelper.getFormTemplatePathName("form.pdf");
 		JScrollPane scroller = new JScrollPane();
 		    
 		pdfv = new PDFView(shiftCdrForm, scroller, buttonsPanel);

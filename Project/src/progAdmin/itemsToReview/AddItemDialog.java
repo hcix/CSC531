@@ -8,13 +8,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
+import program.ResourceManager;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
@@ -22,17 +22,17 @@ import utilities.ui.SwingHelper;
  */
 public class AddItemDialog extends JDialog {
 private static final long serialVersionUID = 1L;
-private static String  ADD_ITEM_ERROR = "Add Item Error";
+private static String  ADD_ITEM_ERROR = "Item Error";
 	private static String NO_TITLE_ERROR_MESSAGE = "Item must have title";
-	JFrame parent;
 	ItemToReview item;
 	JTextField titleField;
-	JTextArea textArea;
+	JTextArea detailsTextArea;
+	ResourceManager rm;
 //-----------------------------------------------------------------------------
-	public AddItemDialog(JFrame parent){
-		super(parent, "New Item", true);
-		this.parent=parent;
+	public AddItemDialog(ResourceManager rm){
+		super(rm.getGuiParent(), "New Item", true);
 		
+		this.rm=rm;
 		this.setPreferredSize(new Dimension(700,500));
 		this.setSize(new Dimension(700,500));
 
@@ -56,13 +56,13 @@ private static String  ADD_ITEM_ERROR = "Add Item Error";
 		
 		titleField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
 		
-		textArea = new JTextArea(100, 20);
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
+		detailsTextArea = new JTextArea(100, 20);
+		detailsTextArea.setLineWrap(true);
+		detailsTextArea.setWrapStyleWord(true);
 
-		
-		//JButton addItem = new JButton("Add Item");
-		JButton addItem = SwingHelper.createImageButton("Add Item", "icons/plusSign_48.png");
+		//Add item button
+		JButton addItem = SwingHelper.createImageButton("Add Item", 
+				"icons/plusSign_48.png");
 		addItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				saveAndClose();
@@ -72,7 +72,7 @@ private static String  ADD_ITEM_ERROR = "Add Item Error";
 		mainPanel.add(titleLabel, "align left");
 		mainPanel.add(titleField, "align left, wrap");
 		mainPanel.add(detailsLabel, "align left");
-		mainPanel.add(textArea, "align left, wrap");
+		mainPanel.add(detailsTextArea, "align left, wrap");
 		mainPanel.add(addItem, "align left");
 		
 	    Container contentPane = getContentPane();
@@ -85,25 +85,27 @@ private static String  ADD_ITEM_ERROR = "Add Item Error";
 		
 		if(!titleField.getText().isEmpty()){
 			title=titleField.getText().toString().trim();
-			System.out.println("AddItemDialog: AddItemDialog(): title = "+title);
+//DEBUG System.out.println("AddItemDialog: AddItemDialog(): title = "+title);
 			item.setTitle(title);
 		}
 		
-		if(!textArea.getText().isEmpty()){
-			details=textArea.getText().toString().trim();
-			System.out.println("AddItemDialog: AddItemDialog(): details = "+details);
+		if(!detailsTextArea.getText().isEmpty()){
+			details=detailsTextArea.getText().toString().trim();
+//DEBUG System.out.println("AddItemDialog: AddItemDialog(): details = "+details);
 			item.setDetails(details);
 		}
 		
+		//ensure item has a tile, then add to the program's item list
 		if(!title.isEmpty()){
-			try{ item.addToXML(); } 
+			try{ rm.addItem(item); } 
 			catch (Exception ex){ ex.printStackTrace(); }
 			titleField.setText("");
-			textArea.setText("");
+			detailsTextArea.setText("");
 			
 			this.dispose();
 		} else{
-			JOptionPane.showMessageDialog(parent, NO_TITLE_ERROR_MESSAGE, 
+			//display error telling user that items must have titles!
+			JOptionPane.showMessageDialog(rm.getGuiParent(), NO_TITLE_ERROR_MESSAGE, 
 					ADD_ITEM_ERROR, JOptionPane.ERROR_MESSAGE);
 		}
 	
@@ -111,7 +113,7 @@ private static String  ADD_ITEM_ERROR = "Add Item Error";
 //-----------------------------------------------------------------------------
 	private void closeAndCancel(){
 		titleField.setText("");
-		textArea.setText("");
+		detailsTextArea.setText("");
 		
 		this.dispose();
 	}

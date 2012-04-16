@@ -434,7 +434,9 @@ return dirName;
 		int i = filename.lastIndexOf('.');
 
 		filename=filename.substring(0, i);
-		System.out.println(filename);
+		
+//DEBUG System.out.println("FileHelper: getNameWithoutExtension: filename = " + filename);
+		
 		return filename;
 	}
 //-----------------------------------------------------------------------------

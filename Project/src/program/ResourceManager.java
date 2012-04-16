@@ -18,10 +18,12 @@ import java.util.Map;
 import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import progAdmin.itemsToReview.ItemToReview;
 import utilities.EmailHandler;
 import utilities.FileHelper;
 import utilities.PdfHandler;
 import utilities.RosterParser;
+import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
 /**
  * The <code>ResourceManager</code> class manages the programs resources.
@@ -38,11 +40,12 @@ import utilities.RosterParser;
 public class ResourceManager {
 	private Desktop desktop;
     private Desktop.Action action = Desktop.Action.OPEN;
-    
+    //JDOC
     JFrame parent;
     PdfHandler pdfHandler;
     EmailHandler emailHandler;
     Properties progProps;
+    ArrayList<ItemToReview> items;
 //-----------------------------------------------------------------------------
     protected ResourceManager(JFrame parent){
     	this.parent = parent;
@@ -61,6 +64,8 @@ public class ResourceManager {
 		progProps = new Properties();
     	try{ loadProperties();
     	}catch (Exception e){ e.printStackTrace(); }
+    	
+    	loadItemsList();
     		
     }
 //-----------------------------------------------------------------------------
@@ -174,26 +179,108 @@ public class ResourceManager {
 	public JFrame getGuiParent(){
 		return parent;
 	}
+//-----------------------------------------------------------------------------
+	/**
+	 * @return items - 
+	 */
+	public ArrayList<ItemToReview> getItems() {
+//DEBUG
+System.out.println("=====================================================================");
+System.out.println("\nReturning:");
+int i=0;
+for(ItemToReview item : items){
+System.out.printf("item %d: %s\n", i, item.toString());
+i++;
+}System.out.println("=====================================================================");
+
+		return items;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * @param items - the items value to set
+	 */
+/*	public void setItems(ArrayList<ItemToReview> items) {
+		this.items = items;
+		saveItemsList();
+	}*/
+//-----------------------------------------------------------------------------
+	/**
+	 * JDOC
+	 */
+	public void removeItem(int index) {
+//DEBUG
+System.out.println("DELETE: Resourcemanager: removeItem: curListSize = " + 
+items.size() + "; index to delete= " +index);
+		
+		items.remove(index);	
+		saveItemsList();
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * JDOC
+	 */
+	public void addItem(ItemToReview newItem) {
+//DEBUG
+System.out.println("ADD: Resourcemanager: addItem: curListSize = " + 
+items.size() + "; newItem.getTitle = " + newItem.getTitle());
+		items.add(newItem);
+		saveItemsList();
+	}
 //-----------------------------------------------------------------------------	 
 	/**
-	 * Load the additional Properties from the progProperties.xml file.
+	 * JDOC
 	 */
-	public void loadProperties() throws Exception{
-		//set up new properties object 
-        FileInputStream propFile = new FileInputStream(FileHelper.getPropertiesFile());
-        progProps.loadFromXML(propFile);
-        Properties p = new Properties(System.getProperties());
-        p.putAll(progProps);
-        //p.load(propFile);
-
-        //set the system properties
-        System.setProperties(p);
-        // display new properties
-        
-//DEBUG Displays new properties list       
-//System.getProperties().list(System.out);
-
+	private void loadItemsList(){
+		//populate the items list from the itemsToReview.xml file
+		try{
+			this.items = XmlParser.loadItemsToReviewList();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
+//-----------------------------------------------------------------------------	
+	/**
+	 * JDOC
+	 */
+	private void saveItemsList(){
+//DEBUG
+System.out.println("--------------------------------------------------------------------");
+System.out.println("\nThe list about to be saved:");
+int i=0;
+for(ItemToReview item : items){
+System.out.printf("item %d: %s\n", i, item.toString());
+i++;
+}System.out.println("--------------------------------------------------------------------");
+			
+		//save the items list to the xml file
+		try{
+			XmlParser.saveItemsToReviewList(items);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		items = XmlParser.loadItemsToReviewList();
+	}
+//-----------------------------------------------------------------------------	 
+		/**
+		 * Load the additional Properties from the progProperties.xml file.
+		 */
+		public void loadProperties() throws Exception{
+			//set up new properties object 
+	        FileInputStream propFile = new FileInputStream(FileHelper.getPropertiesFile());
+	        progProps.loadFromXML(propFile);
+	        Properties p = new Properties(System.getProperties());
+	        p.putAll(progProps);
+	        //p.load(propFile);
+
+	        //set the system properties
+	        System.setProperties(p);
+	        // display new properties
+	        
+	//DEBUG Displays new properties list       
+	//System.getProperties().list(System.out);
+
+		}	
 //-----------------------------------------------------------------------------
 	/**
 	 * Set the UMPD.latestReport property to the specified value.

@@ -379,8 +379,7 @@ System.out.println("selected one is : components[0].toString()");
                 	}
                 }else{
                 	try {
-//DEBUG               		
-System.out.println("PDVView: openPdfFile: file = "+file);
+//DEBUG System.out.println("PDVView: openPdfFile: file = "+file);
                 		currentCommands.openFile(file);
                 	} catch (PdfException e) { 
                 		currentGUI.showMessageDialog("File: " + file + '\n' + "File cannot be opened."); 

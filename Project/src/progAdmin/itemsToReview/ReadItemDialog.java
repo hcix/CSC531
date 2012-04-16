@@ -18,7 +18,7 @@ import utilities.ui.SwingHelper;
 import net.miginfocom.swing.MigLayout;
 
 /**
- *  
+ * JDOC 
  */
 public class ReadItemDialog extends JDialog {
 private static final long serialVersionUID = 1L;
@@ -28,6 +28,8 @@ private static final long serialVersionUID = 1L;
 	private JTextArea detailsTextPane;
 	private JPanel mainPanel;
 	String detailsText, titleText;
+	JPanel buttonPanel;
+	JButton saveButton, editButton;
 //-----------------------------------------------------------------------------
 	public ReadItemDialog(JFrame parent, ItemToReview item){
 		super(parent, item.getTitle(), true);
@@ -65,9 +67,8 @@ private static final long serialVersionUID = 1L;
 		detailsTextPane.setLineWrap(true);
 		detailsTextPane.setWrapStyleWord(true);
 		detailsTextPane.setBackground(mainPanel.getBackground());
-		
-		
-		JPanel buttonPanel = createButtonsPanel();
+				
+		buttonPanel = createButtonsPanel();
 		mainPanel.add(buttonPanel, "dock north");
 		mainPanel.add(titleTextField, "alignx center, wrap");
 		mainPanel.add(detailsTextPane, "alignx center");
@@ -79,7 +80,8 @@ private static final long serialVersionUID = 1L;
 	public JPanel createButtonsPanel(){
 		
 		JButton markAsReadButton = 
-				SwingHelper.createImageButton("Mark Item as Read", "icons/redCheck_32.png");
+				SwingHelper.createImageButton("Mark Item as Read", 
+						"icons/redCheck_32.png");
 		markAsReadButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				item.setReviewed(true);
@@ -96,17 +98,23 @@ private static final long serialVersionUID = 1L;
 			 }
 		});
 		
-		JButton editButton = 
-				SwingHelper.createImageButton("Edit Item", "icons/edit_32.png");
+		editButton = SwingHelper.createImageButton("Edit Item", 
+				"icons/edit_32.png");
 		editButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				editButton.setVisible(false);
+				editButton.setEnabled(false);
 				makeEditable();
+				saveButton.setVisible(true);
+				saveButton.setEnabled(true);
+				buttonPanel.validate();
+				//buttonPanel.repaint();
 			 }
 		});
 		
-		JButton saveItemButton = 
-				SwingHelper.createImageButton("Save Item", "icons/save_32.png");
-		saveItemButton.addActionListener(new ActionListener(){
+		saveButton = SwingHelper.createImageButton("Save Item", 
+				"icons/save_32.png");
+		saveButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				saveAndClose();
 			 }
@@ -121,7 +129,7 @@ private static final long serialVersionUID = 1L;
 		}
 		
 		buttonPanel.add(editButton);
-		buttonPanel.add(saveItemButton);
+		//buttonPanel.add(saveItemButton);
 		
 		return buttonPanel;
 	}
@@ -133,6 +141,8 @@ private static final long serialVersionUID = 1L;
 		detailsTextPane.setBackground(Color.white);
 		//System.out.println("detailsTextPane editable: " + detailsTextPane.isEditable()
 		//		+"titleTextPane editable: " + titleTextField.isEditable());
+		buttonPanel.remove(editButton);
+		buttonPanel.add(saveButton);
 		(mainPanel.getParent()).validate();
 		mainPanel.validate();
 	}
@@ -141,12 +151,13 @@ private static final long serialVersionUID = 1L;
 
 		if(!titleTextField.getText().isEmpty()){
 			titleText=titleTextField.getText().toString().trim();
-			System.out.println("AddItemDialog: AddItemDialog(): title = "+titleText);
+
+//DEBUG System.out.println("AddItemDialog: AddItemDialog(): title = "+titleText);
 			item.setTitle(titleText);
 		}
 		if(!detailsTextPane.getText().isEmpty()){
 			detailsText=detailsTextPane.getText().toString().trim();
-			System.out.println("AddItemDialog: AddItemDialog(): details = "+detailsText);
+//DEBUG	System.out.println("AddItemDialog: AddItemDialog(): details = "+detailsText);
 			item.setDetails(detailsText);
 		}
 		
@@ -162,6 +173,10 @@ private static final long serialVersionUID = 1L;
 		detailsTextPane.setText("");
 		titleTextField.setText("");
 		this.dispose();
+	}
+//-----------------------------------------------------------------------------
+	public ItemToReview getLastItemDisplayed(){
+		return item;
 	}
 //-----------------------------------------------------------------------------
 }

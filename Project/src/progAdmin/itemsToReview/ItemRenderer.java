@@ -82,18 +82,20 @@ public class ItemRenderer implements ListCellRenderer, MouseListener, ListDataLi
 			}
 			
 		}
-		
+		list.repaint();
 		return itemPanel;
 	}
 //-----------------------------------------------------------------------------
 	public void itemStateChanged(ItemEvent e) {
-
+//DEBUG
+System.out.println("ItemRenderer: itemStateChanged: called");
+		itemsList.repaint();
 	}
 //-----------------------------------------------------------------------------*/
 	@Override
 	public void mouseClicked(MouseEvent e) {
 
-System.out.println("ItemRenderer: mouseClicked(): CALLED!!");
+//DEBUG System.out.println("ItemRenderer: mouseClicked(): CALLED!!");
 		
 		if(e.getClickCount() == 2){ //double click
 			     int index = itemsList.locationToIndex(e.getPoint());
@@ -140,19 +142,20 @@ System.out.println("ItemRenderer: mouseClicked(): CALLED!!");
 //=============================================================================
 	@Override
 	public void intervalAdded(ListDataEvent e) {
-		
-		
+//DEBUG
+System.out.println("ItemRenderer: intervalAdded: called");		
 	}
 //-----------------------------------------------------------------------------
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
-		
-		
+//DEBUG
+System.out.println("ItemRenderer: intervalRemoved: called");	
 	}
 //-----------------------------------------------------------------------------
 	@Override
 	public void contentsChanged(ListDataEvent e) {
-		//((ItemToReview)e.getIndex0()).
+//DEBUG
+System.out.println("ItemRenderer: contentsChanged: called");	
 	}
 //-----------------------------------------------------------------------------
 }

@@ -72,24 +72,8 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		this.rm = rm;
 		getShiftTime(rm);
 		parent = rm.getGuiParent();
-
-		String label = "<html><h3>Items to Review</h3></html>";
+		JScrollPane itemsScroller = new ItemsSidePanel(rm);
 		
-		JPanel sidePanel = new JPanel(new MigLayout("ins 0, gap 0"));
-	
-		JScrollPane scroller = new JScrollPane(sidePanel,
-				  ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-				  ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		sidePanel.setLayout(new MigLayout("flowy"));
-		 
-		JLabel titleLabel = new JLabel(label, JLabel.CENTER);
-
-		sidePanel.setPreferredSize(new Dimension(300, 625));
-
-		sidePanel.add(titleLabel, "alignx center");
-
-		addItemsToReview(sidePanel);
-
 		// Create Shift CDR tabbed display area
 		JTabbedPane tabbedPane = new JTabbedPane();
 		// Add roll call table
@@ -144,7 +128,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		rollCallTab.add(tablePanel, "dock north");
 		rollCallTab.add(buttonPanel, "dock south");
 		this.add(tabbedPane, BorderLayout.CENTER);
-		this.add(scroller, BorderLayout.EAST);
+		this.add(itemsScroller, BorderLayout.EAST);
 	}
 //-----------------------------------------------------------------------------
 	JPanel makeTablePanel(ArrayList<String> names) {
@@ -170,11 +154,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		 */
 		table.setModel(new RollCallTableModel(names));
 
-		TableColumn commentColumn = table.getColumnModel().getColumn(3);
-		JTextField commentText = new JTextField();
-		commentColumn.setCellEditor(new DefaultCellEditor(commentText));
-
-		// Resize the columns
+		//Resize the columns
 		TableColumn col;
 		int[] sizes = { 150, 50, 100, 400 };
 
@@ -364,24 +344,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		timeSpinner = new JSpinner(timeModel);
 		timeSpinner.setEditor(new JSpinner.DateEditor(timeSpinner, "hh:mm a"));
 		return timeSpinner;
-	}
-
-//-----------------------------------------------------------------------------
-	public void addItemsToReview(JPanel scrollPanel){
-
-		ArrayList<ItemToReview> items = XmlParser.loadItemsToReviewList();
-
-		ItemsListModel itemsModel = new ItemsListModel(items);
-		
-		JList<ItemToReview> itemsList = new JList<ItemToReview>(itemsModel);
-
-		ItemRenderer itemRenderer = new ItemRenderer(parent, itemsList);
-		itemsList.setCellRenderer(itemRenderer);
-		itemsList.addMouseListener(itemRenderer);
-		itemsModel.addListDataListener(itemRenderer);
-
-		scrollPanel.add(itemsList);
-
 	}
 //-----------------------------------------------------------------------------
 	public void getShiftTime(ResourceManager rm) {

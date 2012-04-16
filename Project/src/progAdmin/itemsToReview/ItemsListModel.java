@@ -1,8 +1,8 @@
 package progAdmin.itemsToReview;
 
-import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
+import program.ResourceManager;
 
 //-----------------------------------------------------------------------------
 
@@ -10,18 +10,23 @@ import javax.swing.ListModel;
  *
  */
 public class ItemsListModel extends DefaultListModel implements ListModel  {
-	private ArrayList<ItemToReview> itemsList;
+	//private ArrayList<ItemToReview> itemsList;
+	ResourceManager rm;
 //-----------------------------------------------------------------------------
-	public ItemsListModel(ArrayList<ItemToReview> itemsList) {
-	    this.itemsList = itemsList;
+	public ItemsListModel(ResourceManager rm) {
+		this.rm=rm;
+	    //this.itemsList = itemsList;
+		//rm.getItems();
 	}
 //-----------------------------------------------------------------------------
 	public Object getElementAt(int index) {
-		return(itemsList.get(index));
+		//return(itemsList.get(index));
+		return(rm.getItems().get(index));
 	}
 //-----------------------------------------------------------------------------
 	public int getSize() {
-		return(itemsList.size());
+		//return(itemsList.size());
+		return(rm.getItems().size());
 	}
 //-----------------------------------------------------------------------------
 	//public void addListDataListener(ListDataListener l){
