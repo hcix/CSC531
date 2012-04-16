@@ -19,6 +19,7 @@ import java.sql.Statement;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import shiftCdrTab.RollCall;
 import blueBookTab.BlueBookEntry;
@@ -287,18 +288,47 @@ public class DatabaseHelper {
 	}
 
 //-----------------------------------------------------------------------------
-    public static ArrayList<RollCall> getRollCallFromDatabase(String shiftTime) {
-    	ArrayList<RollCall> rollCall = new ArrayList<RollCall>();
-    	//Format format = new SimpleDateFormat("ddMMMyyyy:" + shiftTime + ":00");
-    	//String date = 
+    public static ArrayList<RollCall> getRollCallFromDatabase(String shiftDate) throws Exception {
+    	ArrayList<RollCall> rollCallList = new ArrayList<RollCall>();
     	// Implement later TODO
-    	rollCall.add(new RollCall());
-    	rollCall.add(new RollCall());
-    	rollCall.add(new RollCall());
-    	rollCall.add(new RollCall());
     	
+    	//Create the connection to the database
+    	Class.forName("org.sqlite.JDBC");
+    			
+    	//test to make database file access syst indep, changed added Project
+    	//Path dbFilePath = Paths.get("Project", "Database", "umpd.db");
+    	Path dbFilePath = Paths.get("Database", "umpd.db");
+
+    	String dbFileName = dbFilePath.toString();
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
     	
-    	return rollCall;
+        Statement stat = conn.createStatement();
+	    ResultSet allEntries = stat.executeQuery("SELECT * FROM RollCall WHERE ShiftDate = shiftDate;");
+    	
+	    RollCall rollCall;
+	    while (allEntries.next()) {
+    	    rollCall = new RollCall();
+    	    System.out.println("/***********************************************************************");
+    	    System.out.println("/***********************************************************************");
+
+    	    System.out.println(allEntries.getString("Name"));
+    	    rollCall.setName(allEntries.getString("Name"));
+    	    System.out.println(allEntries.getString("Present"));
+    	    rollCall.setPresent(allEntries.getString("Present"));
+    	    System.out.println(allEntries.getString("Comment"));
+    	    rollCall.setComment(allEntries.getString("Comment"));
+    	    System.out.println(allEntries.getString("TimeArrived"));
+    	    rollCall.setTimeArrived(allEntries.getString("TimeArrived"));
+    	    
+    	    System.out.println("/***********************************************************************");
+    	    System.out.println("/***********************************************************************");
+
+    	    rollCallList.add(rollCall);
+	    }
+	    allEntries.close();
+	    conn.close();
+    	
+    	return rollCallList;
     }
 //-----------------------------------------------------------------------------
 	/*

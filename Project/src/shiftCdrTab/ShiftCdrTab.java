@@ -60,6 +60,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	static final String EDIT = "edit";
 	static final String LAUNCH = "launch";
 	int shiftTime;
+	static int mostRecentShift;
 	DatabaseHelper dbHelper = new DatabaseHelper();
 	JTable table, editTable;
 	JFrame parent;
@@ -245,6 +246,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		} catch (Exception e) {
 			System.out.println("couldn't get next roll call");
 		}
+		mostRecentShift = shiftTime;
 	}
 
 //-----------------------------------------------------------------------------
@@ -274,11 +276,20 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		JToolBar toolbar = new JToolBar("Toolbar", JToolBar.HORIZONTAL);
         ArrayList<String> rollNames = new ArrayList<String>();
         Date date = new Date();
-        ArrayList<RollCall> rollCall;
+        String mostRecentShiftAsString;
+        ArrayList<RollCall> rollCall = new ArrayList<RollCall>();
         
         //get formatted date, and get rollCall from db
-        Format format = new SimpleDateFormat("ddMMMyyyy:" + shiftTime + ":00");
-        rollCall = DatabaseHelper.getRollCallFromDatabase(format.format(date));
+        mostRecentShiftAsString = ((Integer)mostRecentShift).toString();
+        if (mostRecentShiftAsString.equals("6"))
+			mostRecentShiftAsString = "06"; // append leading zero
+        Format format = new SimpleDateFormat("ddMMMyyyy:" + mostRecentShiftAsString + ":00");
+        try {
+			rollCall = DatabaseHelper.getRollCallFromDatabase(format.format(date));
+		} catch (Exception e1) {
+			System.out.println("Could not get roll call from db");
+			//e1.printStackTrace();
+		}
         
         for (RollCall roll : rollCall) {
         	rollNames.add(roll.getName());
@@ -348,6 +359,9 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 //-----------------------------------------------------------------------------
 	public void getShiftTime(ResourceManager rm) {
 		shiftTime = rm.getShiftTime();
+	}
+    public static int getMostRecentShift() {
+		return mostRecentShift;
 	}
 // =============================================================================
 private class RollCallTableModel extends AbstractTableModel implements

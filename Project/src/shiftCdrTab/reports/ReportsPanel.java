@@ -11,7 +11,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.nio.file.Path;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -27,6 +31,7 @@ import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import shiftCdrTab.RollCall;
+import shiftCdrTab.ShiftCdrTab;
 import utilities.DatabaseHelper;
 import utilities.FileHelper;
 import utilities.pdf.PDFView;
@@ -56,11 +61,21 @@ private static final long serialVersionUID = 1L;
 				//Shift CDR form dialog
 				//ShiftReportForm formDialog = new ShiftReportForm(rm, null);
 				public void actionPerformed(ActionEvent e){
+					String mostRecentShift = ((Integer)ShiftCdrTab.getMostRecentShift()).toString();
 					ArrayList<RollCall> rollCall;
 					//TODO: create new ShiftCdrReport object
 					ShiftCdrReport shiftReport = new ShiftCdrReport();
 					//TODO fill in w/e fields
-					rollCall = DatabaseHelper.getRollCallFromDatabase(null);
+					if (mostRecentShift.equals("6"))
+						mostRecentShift = "06"; // append leading zero
+					Format format = new SimpleDateFormat("ddMMMyyyy:" + mostRecentShift + ":00");
+					Date date = new Date();
+					try {
+						rollCall = DatabaseHelper.getRollCallFromDatabase(format.format(date));
+					} catch (Exception e1) {
+						System.out.println("Couldn't get rollCall from db in reportsPanel");
+						//e1.printStackTrace();
+					}
 					//ShiftReportForm formDialog = new ShiftReportForm(rm, shiftcdrreport);
 					ShiftReportForm formDialog = new ShiftReportForm(rm, null);
 					formDialog.setVisible(true);
