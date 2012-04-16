@@ -33,11 +33,43 @@
 		<permissions>command</permissions>
 	</employee>
 	<employee>
+		<cnumber>06064695</cnumber>
+		<firstname>Heather</firstname>
+		<lastname>Ciechowski</lastname>
+		<caneid>hciechowski</caneid>
+		<email>h.ciechowski@umiami.edu</email>
+		<permissions>supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>?</cnumber>
+		<firstname>Olivia</firstname>
+		<lastname>Lam</lastname>
+		<caneid>oliviamlam</caneid>
+		<email>?</email>
+		<permissions>supervisor</permissions>
+	</employee>
+		<employee>
+		<cnumber>?</cnumber>
+		<firstname>Brendan</firstname>
+		<lastname>Loyot</lastname>
+		<caneid>b.loyot</caneid>
+		<email>?</email>
+		<permissions>supervisor</permissions>
+	</employee>
+	<employee>
 		<cnumber>1</cnumber>
 		<firstname>Sir/Ma'am</firstname>
 		<lastname>!</lastname>
 		<caneid>demo</caneid>
 		<email>none</email>
+		<permissions>supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>05246876</cnumber>
+		<firstname>Enid</firstname>
+		<lastname>Magari</lastname>
+		<caneid>emagari</caneid>
+		<email>e.magari@umiami.edu</email>
 		<permissions>supervisor</permissions>
 	</employee>
 </roster>

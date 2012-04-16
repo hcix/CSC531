@@ -133,12 +133,7 @@ public class ManageItemsDialog  extends JDialog implements MouseListener{
 		
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setDividerLocation(400);
-
-		//Provide minimum sizes for the two components in the split pane
-		//Dimension minimumSize = new Dimension(690, 50);
-		//mainPanel.setMinimumSize(minimumSize);
-		//itemsPanel.setMinimumSize(minimumSize);
-
+		
 	    Container contentPane = getContentPane();
 	    contentPane.add(toolbar, BorderLayout.NORTH);
 	    contentPane.add(splitPane, BorderLayout.CENTER);
@@ -148,10 +143,10 @@ public class ManageItemsDialog  extends JDialog implements MouseListener{
 		items = XmlParser.loadItemsToReviewList();
 		System.out.println("ManageItemsDialog: addNewItemButton ActionListener called");
 		System.out.println("ManageItemsDialog: addNewItemButton ActionListener: items.size() = " + items.size());
-		//itemsPanel.removeAll();
-		//itemsPanel.add(createItemsPanel(items));
+
+		//tell the table to update
 		((AbstractTableModel) table.getModel()).fireTableDataChanged();
-		//repaint();
+
 	}
 //-----------------------------------------------------------------------------
 	private void saveAndClose(){
@@ -325,7 +320,6 @@ public class ManageItemsDialog  extends JDialog implements MouseListener{
 	    }   
 //-----------------------------------------------------------------------------  
         public void deleteRow(int row) {  
-        	System.out.println("\ndelet roow issss callled!");
 		    int curLength = this.getRowCount();
 		    Object[][] newData = new Object[curLength-1][];
 		    System.arraycopy(data, 0, newData, 0, row);

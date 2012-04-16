@@ -11,14 +11,19 @@ package progAdmin;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileReader;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import program.CurrentUser;
+import utilities.FileHelper;
 import utilities.SwingHelper;
 
 //-----------------------------------------------------------------------------
@@ -34,7 +39,9 @@ private static final long serialVersionUID = 1L;
 	private static final int ERROR_BAD_PASSWORD = 1;
 	private static final int ERROR_USR_DNE = 2;
 	JLabel retryLabel;
-	JTextField caneIdField, passwordField;
+	JTextField caneIdField;
+	//JTextField passwordField;
+	JPasswordField passwordField;
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates Login JFrame
@@ -81,8 +88,12 @@ private static final long serialVersionUID = 1L;
 		caneIdField = SwingHelper.addLabeledTextField(inputPanel, "Cane ID: ", 
 				SwingHelper.DEFAULT_TEXT_FIELD_LENGTH, true);
 		
-		passwordField = SwingHelper.addLabeledTextField(inputPanel, "Password: ", 
-				SwingHelper.DEFAULT_TEXT_FIELD_LENGTH, true);
+//TODO make this a password field instead of a JTextField
+		passwordField = SwingHelper.addLabeledPwdField(inputPanel, "Password: ",
+				SwingHelper.DEFAULT_TEXT_FIELD_LENGTH,true);
+		//passwordField = SwingHelper.addLabeledTextField(inputPanel, "Password: ", 
+			//	SwingHelper.DEFAULT_TEXT_FIELD_LENGTH, true);
+		
 		
 		return inputPanel;
 	}
@@ -164,35 +175,57 @@ private static final long serialVersionUID = 1L;
 	 * login was successful
 	 */
 	  public int authenticateUser() {
-		  String caneID = caneIdField.getText().trim();
-//		  String password = passwordField.getText().trim();
-		  Employee user = null;
-		  
-		  //Get the employee object that matches the given caneID
-		  user = PersonnelManager.getEmployeeByCaneID(caneID);
-		  
-		  if(user==null){ 
-			  //employee matching the given caneID not found in system
-			  return ERROR_USR_DNE; 
-		  }
-		  
+			String caneID = caneIdField.getText().trim();
+			String password = passwordField.getText().trim();
+			Employee user = null;
+			 
+			//Get the employee object that matches the given caneID
+			user = PersonnelManager.getEmployeeByCaneID(caneID);
+			  
+			if(user==null){ 
+				//employee matching the given caneID not found in system
+				return ERROR_USR_DNE; 
+			}
+			  
 //DEBUG: 
-		  System.out.println("caneID field = " + caneIdField.getText() + " and user" +
-		  		"caneID = "  + user.getCaneID());
-	  
+			System.out.println("caneID field = " + caneIdField.getText() + " and user" +
+					"caneID = "  + user.getCaneID());
 		  
-		  //Set the current user to be the employee that just logged in 
-		  CurrentUser.setCurrentUser(user);
-		  
-		  //Authenticate the caneID and password info via UM's web portal
+			  
+			//Set the current user to be the employee that just logged in 
+			CurrentUser.setCurrentUser(user);
+			  
+			//Authenticate the caneID and password info via UM's web portal
 /* *****************************************************************************
 * TODO (BEN) Code to check user name and password against UM's web portal 
 * Currently, the program runs as if it always receives true from 
 * the web portal. 
 *******************************************************************************/
-		  
-		  return NO_ERROR;
-	  }
+			String login_site = "https://caneid.miami.edu/cas/login"; // login url for umiami
+
+			ScriptEngineManager manager = new ScriptEngineManager();
+			ScriptEngine engine = manager.getEngineByName("python");
+			if(engine==null){ System.out.println("engine is null"); }
+			
+			String passwdScript = FileHelper.getPasswordScript();
+			
+			try{
+				FileReader reader = new FileReader(passwdScript);
+				engine.put("path", login_site);
+				engine.put("usr", caneID);
+				engine.put("pw", password);
+				engine.eval(reader);
+				Object result = engine.get("isAccepted");
+				reader.close();
+				if((int)(result) == -1){
+					return ERROR_BAD_PASSWORD;
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			return NO_ERROR;
+		}
 //-----------------------------------------------------------------------------
 	  public boolean isSuccessful() {
 		  return loginSuccessful;
