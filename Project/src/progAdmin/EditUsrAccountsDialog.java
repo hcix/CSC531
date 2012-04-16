@@ -13,9 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import progAdmin.itemsToReview.ItemToReview;
 import net.miginfocom.swing.MigLayout;
-import reviewItems.ItemToReview;
-import utilities.SwingHelper;
+import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
  *

@@ -1,5 +1,7 @@
 package shiftCdrTab;
 
+import shiftCdrTab.reports.ShiftCdrReport;
+
 //-----------------------------------------------------------------------------	
 /**
  * The <code>PatrolActivity</code> class represents a directed patrol activity.

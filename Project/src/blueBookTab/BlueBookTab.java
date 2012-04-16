@@ -7,38 +7,32 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import boloTab.Bolo;
 import net.miginfocom.swing.MigLayout;
-import userinterface.ItemsViewerPanel;
 import utilities.DatabaseHelper;
-import utilities.ImageHandler;
-import utilities.SwingHelper;
+import utilities.ui.ImageHandler;
+import utilities.ui.ItemsViewerPanel;
+import utilities.ui.SwingHelper;
 /**
  * Configures UI for the Blue Book Tab
  */
 //-----------------------------------------------------------------------------	
 public class BlueBookTab extends JPanel implements ActionListener {
 private static final long serialVersionUID = 1L;
+	ArrayList<BlueBookEntry> bluebook;
+	JFrame parent;
 //-----------------------------------------------------------------------------	
 	public BlueBookTab(final JFrame parent){
 		this.setLayout(new BorderLayout());
-		
-		//Create Blue Book tabbed display area
-		//JTabbedPane tabbedPane = new JTabbedPane();
-		//Add recent Blue Book Entries tab
+		this.parent=parent;
 
-		//tabbedPane.addTab("Blue Book", recentBolosTab);
-		//tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
-				
 		JPanel entriesPanel = createEntriesPanel();
 		//Create a button to create a new Blue Book entry 
 		JButton newEntryButton = 
@@ -64,6 +58,7 @@ private static final long serialVersionUID = 1L;
 		//add the components to this panel
 		
 		//this.add(tabbedPane, BorderLayout.CENTER);
+		this.add(entriesPanel, BorderLayout.CENTER); 
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(newEntryButton);
 		buttonsPanel.add(searchButton);
@@ -111,67 +106,69 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------	
 	public JPanel createEntriesPanel(){
-		JPanel panel = new JPanel(new MigLayout("gapx 30, wrap 4"));
-		Date prepDate;
+		JPanel entriesPanel = new JPanel(new MigLayout("gapx 30, wrap 4"));
+		JPanel entryPanel;
+		//Date prepDate;
 		
 		//TODO: make scrollable!
-		/*
+
 		try {
-			boloList = DatabaseHelper.getBOLOsFromDB();
+			bluebook = DatabaseHelper.getBluebookFromDB();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		int listSize = boloList.size();
+		
+		int listSize = bluebook.size();
 		JPanel[] items = new JPanel[listSize];
 		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
 		
 		int i=0;
-		for(Bolo bolo: boloList){
-			String listId = "" + boloList.indexOf(bolo);
-//DEBUG			System.out.printf("listId = %s\n", listId);
-			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
-			
-			JLabel photoLabel = new JLabel(ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
-
-			String date = formatter.format(prepDate);
+		for(BlueBookEntry entry: bluebook){
+			entryPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
+			String listId = "" + bluebook.indexOf(entry);
+			if(entry.getPhotoFilePath()!=null){
+				JLabel photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
+							entry.getPhoto(), 100, 100));
+					entryPanel.add(photoLabel);
+			}
 			String caseNum = "";
-			if(bolo.getCaseNum()!=null){ caseNum=bolo.getCaseNum(); }
+			if(entry.getCaseNum()!=null){ caseNum=entry.getCaseNum(); }
 			String status = "";
-			if(bolo.getStatus()!=null){ status=bolo.getStatus(); }
-			
-			boloPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
-			boloPanel.add(photoLabel);
-			
+			if(entry.getStatus()!=null){ status=entry.getStatus(); }
 			String armedText = "";
-			if(bolo.getWeapon()!=null){ 
+			if(entry.getWeapon()!=null){ 
 				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
 			}
 			
-			boloPanel.add(new JLabel(armedText, JLabel.CENTER), "alignx center,wrap");
+			entryPanel.add(new JLabel(armedText, JLabel.CENTER), "alignx center,wrap");
 			
-			boloPanel.add(new JLabel(date), "split 3, aligny top");
-			boloPanel.add(new JLabel("Case#: "+caseNum));
-			boloPanel.add(new JLabel(status));
-			boloPanel.setSize(new Dimension(130, 150));
-			boloPanel.setPreferredSize(new Dimension(130, 150));
+			entryPanel.add(new JLabel(" "), "split 3, aligny top");
+			entryPanel.add(new JLabel("Case#: "+caseNum));
+			entryPanel.add(new JLabel(status));
+			entryPanel.setSize(new Dimension(130, 150));
+			entryPanel.setPreferredSize(new Dimension(130, 150));
 			
-			boloPanel.setName(listId);
-			items[i]=boloPanel;
+			entryPanel.setName(listId);
+			items[i]=entryPanel;
 			i++;
 		}
 		
-		ItemsViewerPanel entriesPanel = new ItemsViewerPanel(items, this);
+		ItemsViewerPanel itemsPanel = new ItemsViewerPanel(items, this);
 		
-		recentBOLOsPanel.add(entriesPanel);
-		*/
-		return panel;
+		entriesPanel.add(itemsPanel);
+	
+		return entriesPanel;
 	}
 //-----------------------------------------------------------------------------	
 	@Override
 	public void actionPerformed(ActionEvent ev) {
+		String listId = ev.getActionCommand();
+		int id = Integer.valueOf(listId);
+System.out.println("BlueBookTab: actionPerformed: id = " + id);
+		BlueBookEntry selectedEntry = bluebook.get(id);
+		BlueBookForm form = new BlueBookForm(parent, selectedEntry);
 		
-		
+		form.setVisible(true);
 	}
 //-----------------------------------------------------------------------------	
 }

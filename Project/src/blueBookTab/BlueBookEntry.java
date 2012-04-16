@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import javax.swing.ImageIcon;
-import utilities.ImageHandler;
+import utilities.ui.ImageHandler;
 
 //-----------------------------------------------------------------------------
 /**
@@ -44,12 +44,7 @@ public class BlueBookEntry {
 	private Path photoFilePath = null;
 	/** Path in file system leading to a video pertaining to the BOLO*/
 	private Path videoFilePath = null;
-	/** Name of BOLO's photo */
-	private String photoFileName = null;
-	/** Name of BOLO's video */
-	private String videoFileName = null;
 	/** ID of BOLO in the Blue book*/
-
 	private int bluebkID=0;
 //-----------------------------------------------------------------------------
 		/**
@@ -280,7 +275,7 @@ public class BlueBookEntry {
 	 * @param photoFilePath - the path of the photo associated with this BOLO
 	 */
 	public void setPhotoFilePath(Path p_photoFilePath) {
-		Path photoFilePath = p_photoFilePath;
+		this.photoFilePath = p_photoFilePath;
 	}
 //-----------------------------------------------------------------------------
 	/**

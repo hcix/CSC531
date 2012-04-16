@@ -69,14 +69,15 @@ public class FileHelper {
 		
 		docName = docPath.toString();
 		
-//DEBUG:	
-		System.out.println("getDocumentPathName = " + docName);	
+//DEBUG	System.out.println("getDocumentPathName = " + docName);	
 		return docName;
 		
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Gets the absolute file path name of the given report. 
 	 * 
+	 * @param 
 	 */
 	public static String getReportPathName(String reportName){
 		File progDir = new File("..");
@@ -84,21 +85,66 @@ public class FileHelper {
 		String docName=null;
 			
 		try{
-		docPath = Paths.get(progDir.getCanonicalPath(), DOC_DIR, SFT_RPTS_SUBDIR, reportName);
+		docPath = Paths.get(progDir.getCanonicalPath(), 
+				DOC_DIR, SFT_RPTS_SUBDIR, reportName);
 		} catch (IOException e){
 			e.printStackTrace();
 		}
 		
 		docName = docPath.toString();
 		
-//DEBUG:	
-		System.out.println("getDocumentPathName = " + docName);	
+//DEBUG	System.out.println("getDocumentPathName = " + docName);	
 		return docName;
 		
 	}
 //-----------------------------------------------------------------------------
-	public static String getFormTemplatePathName(String form){
+	/**
+	 * JDOC
+	 */
+	public static String getReportsDir(){
+		File progDir = new File(getProgramDirPathName());
+		Path dirPath=null;
+		String dirName=null;
+			
+		try{
+		dirPath = Paths.get(progDir.getCanonicalPath(), 
+				DOC_DIR, SFT_RPTS_SUBDIR);
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		
+		dirName = dirPath.toString();
+		
+//DEBUG System.out.println("FileHelper: getReportsDir: dir = " + dirName);	
+
+return dirName;
+		
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * 
+	 */
+	public static String getRosterFilePathName(){
 		File progDir = new File("..");
+		Path rosterPath=null;
+		String rosterFileName=null;
+			
+		try{
+			rosterPath = Paths.get(progDir.getCanonicalPath(), 
+					"Project", "src", "utilities", "xml", "roster.xml");
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		
+		rosterFileName = rosterPath.toString();
+		
+//DEBUG System.out.println("rosterFileName = " + rosterFileName);	
+		return rosterFileName;
+		
+	}
+//-----------------------------------------------------------------------------
+	public static String getFormTemplatePathName(String form){
+		File progDir = new File(getProgramDirPathName());
 		Path docPath=null;
 		String docName=null;
 			
@@ -110,8 +156,7 @@ public class FileHelper {
 		
 		docName = docPath.toString();
 		
-//DEBUG:	
-		System.out.println("getFormTemplatePathName = " + docName);
+//DEBUG	System.out.println("getFormTemplatePathName = " + docName);
 		
 		return docName;
 	}
@@ -124,9 +169,8 @@ public class FileHelper {
   	 */
 	public static String getProgramDirPathName(){
 		String programDir = null;
-		//File progDir = new File("."); //changed .. to .?
-		File progDir = new File(".."); //changed . to ..?
-
+		//File progDir = new File("."); //this one to run in a jar
+		File progDir = new File(".."); //this one to run in Eclipse
 		
 		try {
 			programDir = progDir.getCanonicalPath();
@@ -135,7 +179,8 @@ public class FileHelper {
 		}
 			
 		
-		System.out.println("programDir = " + programDir);	
+//DEBUG System.out.println("programDir = " + programDir);	
+		
 		return programDir;
 	}
 //-----------------------------------------------------------------------------
@@ -148,9 +193,9 @@ public class FileHelper {
 		String progDir = getProgramDirPathName();
 		
 		//Specifies a system independent path
-		Path propFilePath = Paths.get(progDir, "Project", "src",
-				"program", "progProperties.xml");
-		
+		Path propFilePath = Paths.get(progDir, 
+				"Project", "src","program", "progProperties.xml");
+
 		return (propFilePath.toString());
 	}
 //-----------------------------------------------------------------------------
@@ -163,7 +208,7 @@ public class FileHelper {
 		
 		//Specifies a system independent path
 		Path itemsFilePath = Paths.get(progDir, "Project", "src",
-				"progAdmin", "itemsToReview.xml");
+				"progAdmin", "itemsToReview", "itemsToReview.xml");
 		
 		return (itemsFilePath.toString());
 	}
@@ -253,7 +298,9 @@ public class FileHelper {
 	    	System.out.printf("\nFileHelper: savePhoto(): (while loop) " +
 		    		"destinationFile.toString() = %s\n", destinationFile.toString());
 	    //saftey condition to protect against infinite loop
-	    	if(i>100){ System.out.println("ERROR 100 files with this name exist already!"); }
+	    	if(i>100){ 
+	    		//TODO make the println below into a error/warning message for user
+	    		System.out.println("ERROR 100 files with this name exist already!"); }
 	    }
 		    
 	    
@@ -261,6 +308,7 @@ public class FileHelper {
 	    	
 	    	ImageIO.write(imageToSave, extension, outputfile);
 	    } catch (IOException e) {
+	    	//TODO make the println below into a error/warning message for user
 	    	System.out.println("FileHelper: savePhoto(): Problem saving photo. rut row");
 	    	return null;
 	    }
@@ -315,12 +363,13 @@ public class FileHelper {
 					return target;
 				} catch (FileAlreadyExistsException e){
 					Path p = orginalPath.getFileName();
-System.out.println("\n\n copyfile pathp : " + p.toString() + "\n\n");
+//DEBUG System.out.println("\n\n copyfile pathp : " + p.toString() + "\n\n");
 					newFileName = getNameWithoutExtension(p.toString()) + i + "."
 							+ getFileExtension(source);
-System.out.println("\n\n copyfile newFilename : " + newFileName + "\n\n");
+//DEBUG System.out.println("\n\n copyfile newFilename : " + newFileName + "\n\n");
 					newPath = Paths.get(target.toString(), newFileName);
-System.out.println("\n\n copyfile newpath : " + newPath.toString() + "\n\n");
+
+//DEBUG System.out.println("\n\n copyfile newpath : " + newPath.toString() + "\n\n");
 				} catch (IOException x) {
 					System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
 			    }
@@ -385,7 +434,9 @@ System.out.println("\n\n copyfile newpath : " + newPath.toString() + "\n\n");
 		int i = filename.lastIndexOf('.');
 
 		filename=filename.substring(0, i);
-		System.out.println(filename);
+		
+//DEBUG System.out.println("FileHelper: getNameWithoutExtension: filename = " + filename);
+		
 		return filename;
 	}
 //-----------------------------------------------------------------------------

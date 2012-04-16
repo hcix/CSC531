@@ -19,12 +19,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import com.itextpdf.text.pdf.events.IndexEvents.Entry;
 import net.miginfocom.swing.MigLayout;
 import utilities.FileHelper;
-import utilities.ImageHandler;
-import utilities.ImagePreview;
-import utilities.ResizablePhotoDialog;
-import utilities.SwingHelper;
+import utilities.ui.ImageHandler;
+import utilities.ui.ImagePreview;
+import utilities.ui.ResizablePhotoDialog;
+import utilities.ui.SwingHelper;
 /**
  * Creates UI for BlueBook input form.
  */
@@ -34,6 +35,8 @@ private static final long serialVersionUID = 1L;
 	BlueBookEntry bbEntry;
 	JTextField caseNumField, nameField, affiliField, addressField, ifYesField;
 	JTextArea locationField, descriptionField, reasonField;
+	JPanel photoArea;
+	JPanel inputPanel;
 //-----------------------------------------------------------------------------
 	public BlueBookForm(JFrame parent) {
 		super(parent, "New Blue Book Entry", true);
@@ -45,7 +48,7 @@ private static final long serialVersionUID = 1L;
 		bbEntry = new BlueBookEntry();
 		
 		//Create the form
-		JPanel inputPanel = createInputPanel();
+		inputPanel = createInputPanel();
 		
 		//Make the form scrollable
 		JScrollPane inputScrollPane = new JScrollPane(inputPanel);
@@ -74,6 +77,35 @@ private static final long serialVersionUID = 1L;
 		//Add the Blue Book form dialog to the screen
 	    Container contentPane = getContentPane();
 	    contentPane.add(inputScrollPane);
+	}
+//-----------------------------------------------------------------------------
+	BlueBookForm(JFrame parent, BlueBookEntry entry){
+		this(parent);
+		this.bbEntry = entry;
+		loadFromExistingEntry();
+	}
+//-----------------------------------------------------------------------------
+	 /**
+	  * Places the info from the input fields into the global BlueBookEntry object.
+	  */
+	 public void loadFromExistingEntry(){
+		 //set the filled in fields in the global BlueBookEntry object
+			
+		caseNumField.setText(bbEntry.getCaseNum()); 
+		nameField.setText(bbEntry.getName());
+		affiliField.setText(bbEntry.getAffili());
+		addressField.setText(bbEntry.getAddress());
+		locationField.setText(bbEntry.getLocation());
+		descriptionField.setText(bbEntry.getNarrative());
+	
+		 //set picture
+		 ImageIcon photo = ImageHandler.getResizableImageIcon(
+				 bbEntry.getPhotoFilePath(), 200, 299);
+		 if(photo!=null){
+			photoArea.removeAll();
+			photoArea.add(new JLabel(photo));
+		 }
+		 inputPanel.validate(); 
 	}
 //-----------------------------------------------------------------------------
 	private JPanel createInputPanel() {
@@ -188,7 +220,7 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	private JPanel createPhotoPanel(){
 		final JPanel photoPanel = new JPanel(new MigLayout());
-		
+		photoArea = photoPanel;
 		//Create initial no-photo place holder photo
 		ImageIcon noPhotoImage = ImageHandler.createImageIcon("images/unknownPerson.jpeg");
 		JLabel noPhotoLabel = new JLabel(noPhotoImage);

@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import utilities.FileHelper;
-import utilities.ImageHandler;
+import utilities.ui.ImageHandler;
 
 //-----------------------------------------------------------------------------
 

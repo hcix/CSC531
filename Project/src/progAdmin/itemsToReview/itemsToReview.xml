@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<UMPD.itemsList>
+	<item>
+		<title>vdfvds</title>
+		<details>fdvdfsvsdgfvsdf</details>
+	</item>
+	<item>
+		<title>vdfvds</title>
+		<details>fdvdfsvsdgfvsdf</details>
+	</item>
+<<<<<<< HEAD:Project/bin/progAdmin/itemsToReview.xml
+<<<<<<< HEAD
+	<item>
+		<title>vdfvds</title>
+		<details>fdvdfsvsdgfvsdf</details>
+	</item>
+=======
+>>>>>>> 3aff5fe7b064dbf4fc818c42008d78e08eab7def
+=======
+	<item>
+		<title>new</title>
+		<details>item</details>
+	</item>
+>>>>>>> 754d0ef9f02564b26f81ee68d51128d3c1aac855:Project/src/progAdmin/itemsToReview/itemsToReview.xml
+</UMPD.itemsList>

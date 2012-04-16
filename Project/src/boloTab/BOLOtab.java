@@ -10,12 +10,6 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Date;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -26,16 +20,15 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
-import userinterface.ItemsViewerPanel;
 import utilities.DatabaseHelper;
-import utilities.ImageHandler;
-import utilities.DatabaseHelper;
-import utilities.SwingHelper;
-
+import utilities.ui.ImageHandler;
+import utilities.ui.ItemsViewerPanel;
+import utilities.ui.SwingHelper;
+//-----------------------------------------------------------------------------
+/**
+ * JDOC
+ */
 public class BOLOtab extends JPanel  implements ActionListener {
-	
-	//TODO Java Docs
-	
 private static final long serialVersionUID = 1L;
 	ArrayList<Bolo> boloList;
 	JFrame parent;
@@ -44,7 +37,6 @@ private static final long serialVersionUID = 1L;
 	public BOLOtab(final JFrame parent){
 		this.setLayout(new BorderLayout());
 				
-	//	ArrayList<Bolo> boloList = null;
 		this.parent = parent;
 		
 		//Create BOLOs tabbed display area
@@ -162,15 +154,11 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	public JPanel createRecentBOLOsTab(){
-		JPanel recentBOLOsPanel = new JPanel(new MigLayout("gapx 30, wrap 4"));
-		//JButton boloPanel;
+		JPanel recentBOLOsPanel = new JPanel(new MigLayout());
 		JPanel boloPanel;
 		Date prepDate;
-		
-		//TODO: Implement this idea into ItemsViewerPanel so can be reused.
+	
 		//TODO: make scrollable!
-		
-		//ItemsViewerPanel entriesPanel = new ItemsViewerPanel();
 
 		try {
 			boloList = DatabaseHelper.getBOLOsFromDB();
@@ -185,10 +173,12 @@ private static final long serialVersionUID = 1L;
 		int i=0;
 		for(Bolo bolo: boloList){
 			String listId = "" + boloList.indexOf(bolo);
-//DEBUG			System.out.printf("listId = %s\n", listId);
+//DEBUG	prints list ID of the Bolo bolo: bololist
+//System.out.printf("listId = %s\n", listId);
 			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
 			
-			JLabel photoLabel = new JLabel(ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
+			JLabel photoLabel = new JLabel(
+					ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
 
 			String date = formatter.format(prepDate);
 			String caseNum = "";
@@ -217,7 +207,7 @@ private static final long serialVersionUID = 1L;
 			i++;
 		}
 		
-		ItemsViewerPanel entriesPanel = new ItemsViewerPanel(items, this);
+		ItemsViewerPanel entriesPanel = new ItemsViewerPanel(items, this, 4);
 		
 		recentBOLOsPanel.add(entriesPanel);
 		

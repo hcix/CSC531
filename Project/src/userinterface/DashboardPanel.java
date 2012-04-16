@@ -3,7 +3,7 @@ package userinterface;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import utilities.ImageHandler;
+import utilities.ui.ImageHandler;
 
 public class DashboardPanel extends JPanel {
 	private static final long serialVersionUID = 1L;

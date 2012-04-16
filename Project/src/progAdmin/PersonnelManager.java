@@ -3,17 +3,8 @@
  */
 package progAdmin;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.EndElement;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
+import utilities.xml.XmlParser;
 
 public class PersonnelManager {
 	public static final String PERMIS_NONE="none";
@@ -32,7 +23,7 @@ public class PersonnelManager {
 	static final String EMAIL = "email";
 	static final String PERMISSIONS = "permissions";
 	static final String FIRSTNAME = "firstname";
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * Find's an employee based on their caneID
 	 * 
@@ -41,8 +32,9 @@ public class PersonnelManager {
 	 *           If it does not exist, NULL is returned
 	 */
 	public static Employee getEmployeeByCaneID(String caneID){
-		List<Employee> roster = getRoster("src/utilities/xml/roster.xml");
-
+		//List<Employee> roster = getRoster("src/utilities/xml/roster.xml");
+		List<Employee> roster = XmlParser.getRoster();
+		
 		//Search through the list of employees for a matching cnum
 		for(Employee employee : roster){
 			if(employee.getCaneID().equals(caneID)){
@@ -54,14 +46,14 @@ public class PersonnelManager {
 		return null;
 
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * Gets list of employees in the current roster
 	 * 
 	 * @param - configFile
 	 * @return roster - current employee roster
 	 */
-	public static List<Employee> getRoster(String configFile) {
+/*	public static List<Employee> getRoster(String configFile) {
 		List<Employee> roster = new ArrayList<Employee>();
 		try {
 			// First create a new XMLInputFactory
@@ -142,5 +134,5 @@ public class PersonnelManager {
 		}
 		return roster;
 	}
-	//-----------------------------------------------------------------------------	 
+*///-----------------------------------------------------------------------------	 
 }

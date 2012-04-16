@@ -2,13 +2,14 @@ package program;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import progAdmin.LoginDialog;
 import userinterface.DashboardPanel;
 import userinterface.MainInterfaceWindow;
-import utilities.SwingHelper;
+import utilities.ui.SwingHelper;
 
 
 public class Core extends JFrame {
@@ -34,13 +35,12 @@ public class Core extends JFrame {
 	        	//Set up and show the login GUI
 	        	//COMMENT NEXT LINE OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
 	        	//MUST ALSO COMMENT OUT 6 LINES IN MAININTERFACEWINDOW AS INDICATED THERE
-	        	createAndShowLoginGUI();
+	        	//createAndShowLoginGUI();
 	        
 	        	rm = new ResourceManager(frame);
 	        	
 	        	//Set up the UI
 	        	createAndShowMainGUI();
-
 	        }
 	    });
 	}
@@ -50,10 +50,14 @@ public class Core extends JFrame {
 	 * invoked from the event dispatch thread.
 	 */
 	private static void createAndShowMainGUI() {
+		Toolkit toolkit =  Toolkit.getDefaultToolkit ();
+		Dimension screenDim = toolkit.getScreenSize();
+		  
 	    //Create and set up the main window	
 		frame = new JFrame("UMPD");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension(1275,1000));
+
+		frame.setPreferredSize(screenDim);
 		frame.setResizable(true);
 		
 		//Uses platform specific method for opening frame

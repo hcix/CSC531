@@ -3,6 +3,8 @@ package program;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,8 +15,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
+import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import progAdmin.itemsToReview.ItemToReview;
 import utilities.EmailHandler;
 import utilities.FileHelper;
 import utilities.PdfHandler;
@@ -36,10 +40,12 @@ import utilities.xml.XmlParser;
 public class ResourceManager {
 	private Desktop desktop;
     private Desktop.Action action = Desktop.Action.OPEN;
-    
+    //JDOC
     JFrame parent;
     PdfHandler pdfHandler;
     EmailHandler emailHandler;
+    Properties progProps;
+    ArrayList<ItemToReview> items;
 //-----------------------------------------------------------------------------
     protected ResourceManager(JFrame parent){
     	this.parent = parent;
@@ -55,8 +61,12 @@ public class ResourceManager {
         }
     	
     	//Load the properties from the progProperties.xml file
-    	loadProperties();
+		progProps = new Properties();
+    	try{ loadProperties();
+    	}catch (Exception e){ e.printStackTrace(); }
     	
+    	loadItemsList();
+    		
     }
 //-----------------------------------------------------------------------------
 	/**
@@ -169,24 +179,150 @@ public class ResourceManager {
 	public JFrame getGuiParent(){
 		return parent;
 	}
-//-----------------------------------------------------------------------------	 
+//-----------------------------------------------------------------------------
 	/**
-	 * Load the additional Properties from the progProperties.xml file.
+	 * @return items - 
 	 */
-	public void loadProperties(){
-		String p = FileHelper.getPropertiesFile();
-	
-		//load the properties from the xml file
-		XmlParser.loadProperties(p);
-		
+	public ArrayList<ItemToReview> getItems() {
+//DEBUG
+System.out.println("=====================================================================");
+System.out.println("\nReturning:");
+int i=0;
+for(ItemToReview item : items){
+System.out.printf("item %d: %s\n", i, item.toString());
+i++;
+}System.out.println("=====================================================================");
+
+		return items;
 	}
 //-----------------------------------------------------------------------------
-	public void setLatestReportName(String reportFileName){
-		XmlParser.setSystemProperty("UMPD.latestReport", reportFileName);
-		System.setProperty("UMPD.latestReport", "reportFileName");
+	/**
+	 * @param items - the items value to set
+	 */
+/*	public void setItems(ArrayList<ItemToReview> items) {
+		this.items = items;
+		saveItemsList();
+	}*/
+//-----------------------------------------------------------------------------
+	/**
+	 * JDOC
+	 */
+	public void removeItem(int index) {
+//DEBUG
+System.out.println("DELETE: Resourcemanager: removeItem: curListSize = " + 
+items.size() + "; index to delete= " +index);
+		
+		items.remove(index);	
+		saveItemsList();
 	}
-	
+//-----------------------------------------------------------------------------
+	/**
+	 * JDOC
+	 */
+	public void addItem(ItemToReview newItem) {
+//DEBUG
+System.out.println("ADD: Resourcemanager: addItem: curListSize = " + 
+items.size() + "; newItem.getTitle = " + newItem.getTitle());
+		items.add(newItem);
+		saveItemsList();
+	}
+//-----------------------------------------------------------------------------	 
+	/**
+	 * JDOC
+	 */
+	private void loadItemsList(){
+		//populate the items list from the itemsToReview.xml file
+		try{
+			this.items = XmlParser.loadItemsToReviewList();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 //-----------------------------------------------------------------------------	
+	/**
+	 * JDOC
+	 */
+	private void saveItemsList(){
+//DEBUG
+System.out.println("--------------------------------------------------------------------");
+System.out.println("\nThe list about to be saved:");
+int i=0;
+for(ItemToReview item : items){
+System.out.printf("item %d: %s\n", i, item.toString());
+i++;
+}System.out.println("--------------------------------------------------------------------");
+			
+		//save the items list to the xml file
+		try{
+			XmlParser.saveItemsToReviewList(items);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		items = XmlParser.loadItemsToReviewList();
+	}
+//-----------------------------------------------------------------------------	 
+		/**
+		 * Load the additional Properties from the progProperties.xml file.
+		 */
+		public void loadProperties() throws Exception{
+			//set up new properties object 
+	        FileInputStream propFile = new FileInputStream(FileHelper.getPropertiesFile());
+	        progProps.loadFromXML(propFile);
+	        Properties p = new Properties(System.getProperties());
+	        p.putAll(progProps);
+	        //p.load(propFile);
+
+	        //set the system properties
+	        System.setProperties(p);
+	        // display new properties
+	        
+	//DEBUG Displays new properties list       
+	//System.getProperties().list(System.out);
+
+		}	
+//-----------------------------------------------------------------------------
+	/**
+	 * Set the UMPD.latestReport property to the specified value.
+	 * 
+	 * @param reportFileName - the value to set for the UMPD.latestReport 
+	 * property
+	 */
+	public void setLatestReportName(String reportFileName){
+		progProps.setProperty("UMPD.latestReport", reportFileName);
+		System.setProperty("UMPD.latestReport", reportFileName);
+		//save the system properties again now in case of an error later
+		saveProperties();
+	}
+//-----------------------------------------------------------------------------	
+	/**
+	 * Set the UMPD.latestVideo property to the specified value.
+	 * 
+	 * @param videoPath - the value to set for the UMPD.videoPath property
+	 */
+	public void setLastestVideoName(String videoPath){
+		progProps.setProperty("UMPD.latestVideo", videoPath);
+		System.setProperty("UMPD.latestVideo", videoPath);
+		//save the system properties again now in case of an error later
+		saveProperties();
+	}	
+//-----------------------------------------------------------------------------	
+	/**
+	 * JDOC
+	 */
+	public void saveProperties(){
+		try{
+			FileOutputStream out = new FileOutputStream(FileHelper.getPropertiesFile());
+			progProps.storeToXML(out, "<!-- No comment--!>");
+			out.close();
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+//-----------------------------------------------------------------------------	
+	/**
+	 * JDOC
+	 */
 	public ArrayList<String> getRollCall() {
 		int shiftTime;
 		ArrayList<String> Employees = new ArrayList<String>();
@@ -202,7 +338,10 @@ public class ResourceManager {
 		return Employees;
 	}
 //-----------------------------------------------------------------------------	
-	public static ArrayList<String> getRollCall(int shiftTime) throws Exception {
+	/**
+	 * JDOC
+	 */
+	public ArrayList<String> getRollCall(int shiftTime) throws Exception {
 		ArrayList<String> Employees = new ArrayList<String>();
 				
 		if (shiftTime < 0 || shiftTime > 24 ) {
@@ -215,7 +354,10 @@ public class ResourceManager {
 		return Employees;
 	}
 //-----------------------------------------------------------------------------	
-	public int getShiftTime() {
+	/**
+	 * JDOC
+	 */
+	public static int getShiftTime() {
 		int currentHour, currentMin, shiftTime;
 		Calendar cal;
 		
@@ -262,12 +404,8 @@ public class ResourceManager {
 		return shiftTime;
 	}
 //-----------------------------------------------------------------------------
-    public JFrame getParent() {
-		return parent;
-	}
-//-----------------------------------------------------------------------------
 	/**
-	 * DEBUGGER: Print the system environment 
+	 * DEBUG prints the system environment. 
 	 */
 	public void printEnv(){
 		//get the syst env
@@ -313,6 +451,9 @@ public class ResourceManager {
 		return(formatter.format(date));
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * JDOC
+	 */
    public static String shiftTimeAsString(int shiftTime) {
 	   String time;
 	       if (shiftTime == 6)

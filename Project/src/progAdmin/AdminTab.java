@@ -12,11 +12,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import program.ManageItemsDialog;
+import progAdmin.itemsToReview.ManageItemsDialog;
 import program.ResourceManager;
 import userinterface.HomeTab;
 import utilities.FileHelper;
-import utilities.SwingHelper;
+import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
 
 /**
@@ -47,7 +47,7 @@ public class AdminTab extends JPanel implements ActionListener {
 
 		JButton editUsrAcctsButton = SwingHelper.createImageButton("icons/group_48.png");
 		editUsrAcctsButton.addActionListener(new ActionListener() {
-			//create editUsersDialog
+			//Create dialog to edit user accounts
 			EditUsrAccountsDialog usrAcctsDialog = new EditUsrAccountsDialog(parent);
 			public void actionPerformed(ActionEvent e){
 				usrAcctsDialog.setVisible(true);	
@@ -57,7 +57,7 @@ public class AdminTab extends JPanel implements ActionListener {
 		JButton manageItemsButton = SwingHelper.createImageButton("icons/notepad_48.png");
 		manageItemsButton.addActionListener(new ActionListener() {
 			//create manageItemsDialog
-			ManageItemsDialog manageItemsDialog = new ManageItemsDialog(parent);
+			ManageItemsDialog manageItemsDialog = new ManageItemsDialog(rm);
 			public void actionPerformed(ActionEvent e){
 				manageItemsDialog.setVisible(true);	
 			}
@@ -103,13 +103,13 @@ public class AdminTab extends JPanel implements ActionListener {
 			File file = fc.getSelectedFile();
 			Path videoPath = FileHelper.copyVideoAnnoun(file);
 			
-			// set property then write to xml
+			//set property then write to xml
 			System.out.println("in admin tab " + videoPath.toString());
 			System.setProperty("UMPD.latestVideo", videoPath.toString());
-			XmlParser.setSystemProperty("UMPD.latestVideo",
-					videoPath.toString());
-			
-			// set visability true
+			//XmlParser.setSystemProperty("UMPD.latestVideo",
+			//		videoPath.toString());
+			rm.setLastestVideoName(videoPath.toString());
+			//set visability true
             HomeTab.setVideoVisability(true);
 			
 			// put this after chooser has been closed

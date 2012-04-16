@@ -19,9 +19,9 @@ import javax.swing.JToolBar;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
 import javax.swing.border.Border;
-import utilities.ImageHandler;
-import utilities.ScrollablePicture;
-import utilities.SwingHelper;
+import utilities.ui.ImageHandler;
+import utilities.ui.ScrollablePicture;
+import utilities.ui.SwingHelper;
 
 public class MapTab extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;

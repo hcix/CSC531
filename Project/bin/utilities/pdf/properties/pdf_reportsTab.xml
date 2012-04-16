@@ -6,7 +6,7 @@
   <showfirsttimepopup value="false"/>
   <daysLeft value=""/>
   <showrhinomessage value="false"/>
-  <showsaveformsmessage value="true"/>
+  <showsaveformsmessage value="false"/>
   <showitextmessage value="false"/>
   <showddmessage value="true"/>
   <searchWindowType value="1"/>
@@ -24,41 +24,41 @@
   <maxmultiviewers value="20"/>
   <MenuBarMenu value="false">
     <FileMenu value="false">
-      <OpenMenu value="true">
-        <Open value="true"/>
-        <Openurl value="true"/>
+      <OpenMenu value="false">
+        <Open value="false"/>
+        <Openurl value="false"/>
       </OpenMenu>
-      <Save value="true"/>
-      <Resaveasforms value="true"/>
-      <Find value="true"/>
-      <Documentproperties value="true"/>
-      <Signpdf value="true"/>
-      <Print value="true"/>
-      <Recentdocuments value="true"/>
-      <Exit value="true"/>
+      <Save value="false"/>
+      <Resaveasforms value="false"/>
+      <Find value="false"/>
+      <Documentproperties value="false"/>
+      <Signpdf value="false"/>
+      <Print value="false"/>
+      <Recentdocuments value="false"/>
+      <Exit value="false"/>
     </FileMenu>
     <EditMenu value="false">
-      <Copy value="true"/>
-      <Selectall value="true"/>
-      <Deselectall value="true"/>
-      <Preferences value="true"/>
+      <Copy value="false"/>
+      <Selectall value="false"/>
+      <Deselectall value="false"/>
+      <Preferences value="false"/>
     </EditMenu>
     <ViewMenu value="false">
-      <GotoMenu value="true">
-        <Firstpage value="true"/>
-        <Backpage value="true"/>
-        <Forwardpage value="true"/>
-        <Lastpage value="true"/>
-        <Goto value="true"/>
-        <Previousdocument value="true"/>
-        <Nextdocument value="true"/>
+      <GotoMenu value="false">
+        <Firstpage value="false"/>
+        <Backpage value="false"/>
+        <Forwardpage value="false"/>
+        <Lastpage value="false"/>
+        <Goto value="false"/>
+        <Previousdocument value="false"/>
+        <Nextdocument value="false"/>
       </GotoMenu>
-      <PagelayoutMenu value="true">
-        <Single value="true"/>
-        <Continuous value="true"/>
-        <Facing value="true"/>
-        <Continuousfacing value="true"/>
-        <PageFlow value="true"/>
+      <PagelayoutMenu value="false">
+        <Single value="false"/>
+        <Continuous value="false"/>
+        <Facing value="false"/>
+        <Continuousfacing value="false"/>
+        <PageFlow value="false"/>
       </PagelayoutMenu>
       <separateCover value="true"/>
       <textSelect value="true"/>
@@ -100,10 +100,10 @@
   <ButtonsMenu value="false">
     <Openfilebutton value="false"/>
     <Printbutton value="false"/>
-    <Searchbutton value="true"/>
-    <Propertiesbutton value="true"/>
-    <Aboutbutton value="true"/>
-    <Snapshotbutton value="true"/>
+    <Searchbutton value="false"/>
+    <Propertiesbutton value="false"/>
+    <Aboutbutton value="false"/>
+    <Snapshotbutton value="false"/>
     <CursorButton value="false"/>
     <MouseModeButton value="false"/>
   </ButtonsMenu>
@@ -111,23 +111,23 @@
     <Scalingdisplay value="true"/>
     <Rotationdisplay value="false"/>
     <Imageopdisplay value="true"/>
-    <Progressdisplay value="true"/>
-    <Downloadprogressdisplay value="true"/>
+    <Progressdisplay value="false"/>
+    <Downloadprogressdisplay value="false"/>
   </DisplayOptionsMenu>
   <NavigationBarMenu value="true">
-    <Memorybottom value="true"/>
+    <Memorybottom value="false"/>
     <Firstbottom value="true"/>
     <Back10bottom value="true"/>
     <Backbottom value="true"/>
-    <Gotobottom value="true"/>
+    <Gotobottom value="false"/>
     <Forwardbottom value="true"/>
     <Forward10bottom value="true"/>
-    <Lastbottom value="true"/>
+    <Lastbottom value="false"/>
     <Singlebottom value="true"/>
-    <Continuousbottom value="true"/>
-    <Continuousfacingbottom value="true"/>
-    <Facingbottom value="true"/>
-    <PageFlowbottom value="true"/>
+    <Continuousbottom value="false"/>
+    <Continuousfacingbottom value="false"/>
+    <Facingbottom value="false"/>
+    <PageFlowbottom value="false"/>
   </NavigationBarMenu>
   <SideTabBarMenu value="true">
     <Pagetab value="true"/>
@@ -136,8 +136,8 @@
     <Signaturestab value="false"/>
   </SideTabBarMenu>
   <ShowMenubar value="false"/>
-  <ShowButtons value="true"/>
-  <ShowDisplayoptions value="true"/>
+  <ShowButtons value="false"/>
+  <ShowDisplayoptions value="false"/>
   <ShowNavigationbar value="true"/>
   <ShowSidetabbar value="true"/>
   <highlightBoxColor value="-16777216"/>
@@ -157,13 +157,13 @@
   <allowRightClick value="true"/>
   <allowScrollwheelZoom value="true"/>
   <readOnly value="true"/>
-  <enhancedViewerMode value="true"/>
-  <enhancedFacingMode value="true"/>
+  <enhancedViewerMode value="false"/>
+  <enhancedFacingMode value="false"/>
   <windowTitle value=""/>
   <confirmClose value="false"/>
   <iconLocation value="/org/jpedal/examples/simpleviewer/res/"/>
   <enhancedGUI value="false"/>
-  <showpageflow3dsmessage value="true"/>
+  <showpageflow3dsmessage value="false"/>
   <defaultPrinter value=""/>
   <debugPrinter value="false"/>
   <defaultDPI value="600"/>

@@ -13,7 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import utilities.FileHelper;
-import utilities.SwingHelper;
+import utilities.ui.SwingHelper;
 import net.miginfocom.swing.MigLayout;
 
 //import uk.co.caprica.vlcj.binding.LibVlc;

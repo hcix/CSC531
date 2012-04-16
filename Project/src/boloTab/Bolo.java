@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import javax.swing.ImageIcon;
-import utilities.ImageHandler;
+import utilities.ui.ImageHandler;
 
 //-----------------------------------------------------------------------------
 public class Bolo {

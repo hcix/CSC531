@@ -28,6 +28,7 @@
 package shiftCdrTab;
 
 import java.util.Date;
+import shiftCdrTab.reports.ShiftCdrReport;
 
 public class Crime {
 //-----------------------------------------------------------------------------

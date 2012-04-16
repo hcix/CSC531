@@ -1,4 +1,7 @@
 package shiftCdrTab;
+
+import shiftCdrTab.reports.ShiftCdrReport;
+
 //-----------------------------------------------------------------------------
 /**
  * The <code>PatrolAssignment</code> class represents a patrol route that may
