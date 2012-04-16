@@ -46,11 +46,13 @@ private static final long serialVersionUID = 1L;
 	ArrayList<ReportFile> reportsFileArrayList = new ArrayList<ReportFile>();
 	JList<ReportFile> reportsJList;
 	ReportsListModel reportsModel;
+	DatabaseHelper dbHelper = new DatabaseHelper();
 	ReportFile currDisplayed;
 //-----------------------------------------------------------------------------
 		public ReportsPanel(final ResourceManager rm){
 			this.setLayout(new MigLayout("fill"));
 			this.rm = rm;
+			
 			
 			final JFrame parent = rm.getGuiParent();
 			
@@ -71,7 +73,7 @@ private static final long serialVersionUID = 1L;
 					Format format = new SimpleDateFormat("ddMMMyyyy:" + mostRecentShift + ":00");
 					Date date = new Date();
 					try {
-						rollCall = DatabaseHelper.getRollCallFromDatabase(format.format(date));
+						rollCall = dbHelper.getRollCallFromDatabase(format.format(date));
 					} catch (Exception e1) {
 						System.out.println("Couldn't get rollCall from db in reportsPanel");
 						//e1.printStackTrace();

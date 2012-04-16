@@ -3,9 +3,7 @@ package progAdmin.itemsToReview;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import program.ResourceManager;
-
 //-----------------------------------------------------------------------------
-
 /**
  *
  */

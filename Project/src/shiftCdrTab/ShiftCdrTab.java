@@ -247,6 +247,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 			System.out.println("couldn't get next roll call");
 		}
 		mostRecentShift = shiftTime;
+		//TODO push to xml eventually
 	}
 
 //-----------------------------------------------------------------------------
@@ -277,7 +278,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
         ArrayList<String> rollNames = new ArrayList<String>();
         Date date = new Date();
         String mostRecentShiftAsString;
-        ArrayList<RollCall> rollCall = new ArrayList<RollCall>();
+        ArrayList<RollCall> rollCallList = new ArrayList<RollCall>();
         
         //get formatted date, and get rollCall from db
         mostRecentShiftAsString = ((Integer)mostRecentShift).toString();
@@ -285,14 +286,15 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 			mostRecentShiftAsString = "06"; // append leading zero
         Format format = new SimpleDateFormat("ddMMMyyyy:" + mostRecentShiftAsString + ":00");
         try {
-			rollCall = DatabaseHelper.getRollCallFromDatabase(format.format(date));
+			rollCallList = dbHelper.getRollCallFromDatabase(format.format(date));
 		} catch (Exception e1) {
 			System.out.println("Could not get roll call from db");
 			//e1.printStackTrace();
 		}
         
-        for (RollCall roll : rollCall) {
-        	rollNames.add(roll.getName());
+        for (RollCall rollCall : rollCallList) {
+        	rollNames.add(rollCall.getName());
+        	System.out.println(rollCall.getName());
         }
         // temp get roll call, change later TODO
         //editTable.setModel(new RollCallTableModel(rollNames));
@@ -300,20 +302,20 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
         
     	int i = 0;
     	int j;
-    	for (RollCall roll : rollCall) {
+    	for (RollCall rollCall : rollCallList) {
     		j = 1;
     		//convert to boolean
-    		if (roll.getPresent().equals("true")) 
+    		if (rollCall.getPresent().equals("true")) 
     		    table.setValueAt(true, i, j++);
-    		else if (roll.getPresent().equals("false"))
+    		else if (rollCall.getPresent().equals("false"))
     			table.setValueAt(false, i, j++);
     		else  {
     			//debug
     			System.out.println("value unkown, set to false");
     			table.setValueAt(false, i, j++);
     		}
-       		table.setValueAt(roll.getTimeArrived(), i, j++);
-    		table.setValueAt(roll.getComment(), i++, j++);
+       		table.setValueAt(rollCall.getTimeArrived(), i, j++);
+    		table.setValueAt(rollCall.getComment(), i++, j++);
     	}
     	
     	JButton finishedButton = SwingHelper.createImageButton("Save and Close", 

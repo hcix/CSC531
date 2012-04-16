@@ -9,6 +9,7 @@
  */
 package utilities;
 
+import java.lang.reflect.Array;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -20,6 +21,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import shiftCdrTab.RollCall;
 import blueBookTab.BlueBookEntry;
@@ -288,7 +290,7 @@ public class DatabaseHelper {
 	}
 
 //-----------------------------------------------------------------------------
-    public static ArrayList<RollCall> getRollCallFromDatabase(String shiftDate) throws Exception {
+    public ArrayList<RollCall> getRollCallFromDatabase(String shiftDate) throws Exception {
     	ArrayList<RollCall> rollCallList = new ArrayList<RollCall>();
     	// Implement later TODO
     	
@@ -305,28 +307,64 @@ public class DatabaseHelper {
         Statement stat = conn.createStatement();
 	    ResultSet allEntries = stat.executeQuery("SELECT * FROM RollCall WHERE ShiftDate = shiftDate;");
     	
+	    //RollCall rollCall;
+	    
+	    /*
+	    // hacktastic method
+	    int i = 0;
+	    
+	    int count = 0;
+	    while (allEntries.next()) {
+	    	count++;
+	    }
+	    
+	    ResultSet allEntries2 = stat.executeQuery("SELECT * FROM RollCall WHERE ShiftDate = shiftDate;");
+	    RollCall[] rollCallArray = new RollCall[count];
+	 
+	    int m = 0;
+	    while (allEntries2.next()) {
+	        rollCall = new RollCall();
+	    
+	        rollCall.setName(allEntries.getString("Name")); 
+	        rollCall.setPresent(allEntries.getString("Present"));
+	        rollCall.setComment(allEntries.getString("Comment"));
+	        rollCall.setTimeArrived(allEntries.getString("TimeArrived"));
+	        
+	        rollCallArray[m++] = rollCall;
+	    }
+	    Collections.addAll(rollCallList, rollCallArray);
+	    */
+	    
+	    //right method, that doesn't fucking work! //BUG
 	    RollCall rollCall;
 	    while (allEntries.next()) {
+	    	
+	    	//System.out.println(allEntries.getString("Name"));
     	    rollCall = new RollCall();
-    	    System.out.println("/***********************************************************************");
-    	    System.out.println("/***********************************************************************");
-
-    	    System.out.println(allEntries.getString("Name"));
-    	    rollCall.setName(allEntries.getString("Name"));
-    	    System.out.println(allEntries.getString("Present"));
-    	    rollCall.setPresent(allEntries.getString("Present"));
-    	    System.out.println(allEntries.getString("Comment"));
-    	    rollCall.setComment(allEntries.getString("Comment"));
-    	    System.out.println(allEntries.getString("TimeArrived"));
-    	    rollCall.setTimeArrived(allEntries.getString("TimeArrived"));
     	    
-    	    System.out.println("/***********************************************************************");
-    	    System.out.println("/***********************************************************************");
-
+    	    rollCall.setName(allEntries.getString("Name")); 
+    	    rollCall.setPresent(allEntries.getString("Present"));
+    	    rollCall.setComment(allEntries.getString("Comment"));
+    	    rollCall.setTimeArrived(allEntries.getString("TimeArrived"));
+    	    System.out.println(rollCall.getName());
     	    rollCallList.add(rollCall);
+    	    
+    	    System.out.println("***************");
+    	   // System.out.println(rollCallList.toString());
+    	    
+    	    //for (RollCall testrollCall : rollCallList) {   	
+            	//System.out.println(testrollCall.getName());
+            //}
+
+    	    System.out.println("***************");
+
 	    }
 	    allEntries.close();
 	    conn.close();
+	   
+	    for (RollCall testrollCall : rollCallList) {   	
+        	System.out.println(testrollCall.getName());
+        }
     	
     	return rollCallList;
     }
