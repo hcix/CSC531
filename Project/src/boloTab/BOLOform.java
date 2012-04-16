@@ -35,7 +35,7 @@ import utilities.ui.ResizablePhotoDialog;
 import utilities.ui.SwingHelper;
 
 public class BOLOform extends JDialog {
-	private static final long serialVersionUID = 1L;
+private static final long serialVersionUID = 1L;
 	JTextField ageField,raceField,sexField,heightField,weightField,buildField;
 	JTextField eyesField,hairField;
 	JTextField toiField,referenceField,caseNumField,statusField,ifYesField;

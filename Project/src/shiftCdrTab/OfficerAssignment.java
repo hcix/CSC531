@@ -2,7 +2,6 @@ package shiftCdrTab;
 
 import java.util.ArrayList;
 import shiftCdrTab.reports.ShiftCdrReport;
-
 //-----------------------------------------------------------------------------	
 /**
  * The <code>OfficerAssignment</code> class represents a single officer's assigned
@@ -53,7 +52,7 @@ public class OfficerAssignment {
 	 * @return the name of the officer whom this <code>OfficerAssignment</code> refers to
 	 */
 	public String getOfficer() {
-	return officer;
+		return officer;
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -61,21 +60,21 @@ public class OfficerAssignment {
 	 * <code>OfficerAssignment</code> refers to
 	 */
 	public void setOfficer(String officer) {
-	this.officer = officer;
+		this.officer = officer;
 	}
 //-----------------------------------------------------------------------------
 	/**
 	 * @return a list of the patrols performed by the officer
 	 */
 	public ArrayList<PatrolAssignment> getPatrolAssignments() {
-	return patrolAssignments;
+		return patrolAssignments;
 	}
 //-----------------------------------------------------------------------------
 	/**
 	 * @param patrolAssignments - a list of the patrols performed by the officer
 	 */
 	public void setPatrolAssignments(ArrayList<PatrolAssignment> patrolAssignments) {
-	this.patrolAssignments = patrolAssignments;
+		this.patrolAssignments = patrolAssignments;
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -92,14 +91,14 @@ public class OfficerAssignment {
 	 * @return a list of building checks performed by the officer
 	 */
 	public ArrayList<String> getBuildingChecks() {
-	return buildingChecks;
+		return buildingChecks;
 	}
 //-----------------------------------------------------------------------------	
 	/**
 	 * @param buildingChecks - a list of building checks performed by the officer
 	 */
 	public void setBuildingChecks(ArrayList<String> buildingChecks) {
-	this.buildingChecks = buildingChecks;
+		this.buildingChecks = buildingChecks;
 	}
 //-----------------------------------------------------------------------------	
 	/**
@@ -114,28 +113,28 @@ public class OfficerAssignment {
 	 * @return the id number of the vehicle used by the officer
 	 */
 	public int getVehicleID() {
-	return vehicleID;
+		return vehicleID;
 	}
 //-----------------------------------------------------------------------------
 	/**
 	 * @param vehicleID - the id number of the vehicle used by the officer
 	 */
 	public void setVehicleID(int vehicleID) {
-	this.vehicleID = vehicleID;
+		this.vehicleID = vehicleID;
 	}
 //-----------------------------------------------------------------------------
 	/**
 	 * @return other duties/assignments performed by the officer 
 	 */
 	public String getOtherDuties() {
-	return otherDuties;
+		return otherDuties;
 	}
 //-----------------------------------------------------------------------------
 	/**
 	 * @param otherDuties - other duties/assignments performed by the officer 
 	 */
 	public void setOtherDuties(String otherDuties) {
-	this.otherDuties = otherDuties;
+		this.otherDuties = otherDuties;
 	}
 //-----------------------------------------------------------------------------
 }

@@ -82,6 +82,9 @@ public class ItemRenderer implements ListCellRenderer, MouseListener, ListDataLi
 			}
 			
 		}
+		//list.repaint();
+		
+
 		list.repaint();
 		return itemPanel;
 	}
