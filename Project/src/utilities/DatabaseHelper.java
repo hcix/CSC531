@@ -34,68 +34,6 @@ import boloTab.Bolo;
 public class DatabaseHelper {	
 //-----------------------------------------------------------------------------
 	/**
-	 * Adds a new crime to the crime table in the database. 
-	 * This method adds the most basic data that every crime entry must have.
-	 * @param caseNum - the case number associated with the crime
-	 * @param location - the location of the crime
-	 * @param offCode - the offense code of the crime
-	 * @param incident - the incident associated with the crime
-	 * @param time - the time of the crime occurrence
-	 * @param date - the date of the crime occurrence 
-	 * @param remarks - remarks associated with the crime
-	 * @param status - the crime's status
-	 * @throws Exception
-	 
-	public void addBOLO(String age,String race,String sex,String height,String weight,String build,
-			String eyes,String hair,Date incidentDate,String reference,String caseNum,String status,
-			String weapon,String preparedBy,String approvedBy,Date prepDate, String otherDescrip,
-			String narrative) throws Exception{
-		long incidentEpoch, prepEpoch;
-		//Create the connection to the database
-		Class.forName("org.sqlite.JDBC");
-	    Connection conn = DriverManager.getConnection("jdbc:sqlite:umpd.db");
-	
-	    //Create a prepared statement to add the crime data
-	    PreparedStatement prep = conn.prepareStatement(
-	      "INSERT into bolo(age, race, sex, height, weight, build, eyes, hair," +
-	      " epochTime, reference, caseNum, status, weapon, prepedBy, approvedBy, prepdate," +
-	      " description, narrative)" + 
-	      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
-	
-	    incidentEpoch = convertDateToEpoch(incidentDate);
-	    prepEpoch = convertDateToEpoch(prepDate);
-	    
-	    //Add the data to the prepared statement
-	    prep.setString(1, age);
-	    prep.setString(2, race);
-	    prep.setString(3, sex);
-	    prep.setString(4, height);
-	    prep.setString(5, weight);
-	    prep.setString(6, build);
-	    prep.setString(7, eyes);
-	    prep.setString(8, hair);
-	    prep.setLong(9, incidentEpoch);
-	    prep.setString(10, reference);
-	    prep.setString(11, caseNum);
-	    prep.setString(12, status);
-	    prep.setString(13, weapon);
-	    prep.setString(14, preparedBy);
-	    prep.setString(15, approvedBy);
-	    prep.setLong(16, prepEpoch);
-	    prep.setString(17, otherDescrip);
-	    prep.setString(18, narrative);
-	    prep.addBatch();
-	
-	    //Create new row in the table for the data
-	    conn.setAutoCommit(false);
-	    prep.executeBatch();
-	    conn.setAutoCommit(true);
-	    
-	    //Close the connection
-	    conn.close();
-	}*/
-//-----------------------------------------------------------------------------
-	/**
 	 * Retrives all the BOLOs from the database and places them into an 
 	 * <code>Arraylist</code> of BOLO objects, which is returned to the 
 	 * caller.

@@ -16,8 +16,9 @@ import boloTab.BOLOtab;
 
 public class MainInterfaceWindow extends JPanel{
 private static final long serialVersionUID = 1L;
-	JPanel sidePanel, homeTab, boloTab, rollCallTab, 
-		mapTab, shiftCdrTab, blueBookTab, schedTab, adminTab;
+	JPanel homeTab, boloTab, rollCallTab, blueBookTab;
+	ShiftCdrTab shiftCdrTab;
+	AdminTab adminTab;
 //-----------------------------------------------------------------------------	
 	public MainInterfaceWindow(JFrame parent, ResourceManager rm){
 		super(new GridLayout(1, 1));
@@ -42,34 +43,25 @@ private static final long serialVersionUID = 1L;
         tabbedPane.addTab("BOLOs", boloTab);
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
         
-        mapTab = new MapTab();
-        tabbedPane.addTab("Map", mapTab);
-        mapTab.setPreferredSize(dim);
-        tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
-        
         blueBookTab = new BlueBookTab(parent);
         tabbedPane.addTab("Blue Book", blueBookTab);
-        tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
-        
-        //schedTab = new ScheduleTab(parent);
-        //tabbedPane.addTab("Schedule", schedTab);
-        //tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
+        tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
         
       //if user is at least a shift cdr, set up shift cdr tab
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
 //        	if(CurrentUser.getCurrentUser().getLevel()>=
 //        		PersonnelManager.PERMIS_LEVEL_COMMAND){  	
-        	shiftCdrTab = new ShiftCdrTab(rm);
+        	shiftCdrTab = new ShiftCdrTab(rm, this);
 	        tabbedPane.addTab("Shift Commander", shiftCdrTab);
-	        tabbedPane.setMnemonicAt(4, KeyEvent.VK_6); //change to 4 from 5?
+	        tabbedPane.setMnemonicAt(3, KeyEvent.VK_4); //change to 4 from 5?
 	        
 	      //if user is at a supervisor, set up supervisor tab
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
 //	        if(CurrentUser.getCurrentUser().getLevel()>=
 //	        		PersonnelManager.PERMIS_LEVEL_SUPERVISR){
-		        adminTab = new AdminTab(rm);
+		        adminTab = new AdminTab(rm, this);
 		        tabbedPane.addTab("Administration", adminTab);
-		        tabbedPane.setMnemonicAt(5, KeyEvent.VK_7); // change from 6 to 5?
+		        tabbedPane.setMnemonicAt(4, KeyEvent.VK_5); // change from 6 to 5?
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
 //	        }
 //        }
@@ -80,6 +72,14 @@ private static final long serialVersionUID = 1L;
         //Add the tabbed pane to this main panel.
         add(tabbedPane);
         
+	}
+//-----------------------------------------------------------------------------
+	public void refreshItemsList(){
+		shiftCdrTab.refreshItemsList();
+	}
+//-----------------------------------------------------------------------------
+	public void refreshItemsTable(){
+		adminTab.refreshItemsTable();
 	}
 //-----------------------------------------------------------------------------
 }

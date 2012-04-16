@@ -10,30 +10,21 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.Format;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
 import javax.swing.event.TableModelEvent;
@@ -42,14 +33,11 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import net.miginfocom.swing.MigLayout;
-import progAdmin.itemsToReview.ItemRenderer;
-import progAdmin.itemsToReview.ItemToReview;
-import progAdmin.itemsToReview.ItemsListModel;
 import program.ResourceManager;
 import shiftCdrTab.reports.ReportsPanel;
+import userinterface.MainInterfaceWindow;
 import utilities.DatabaseHelper;
 import utilities.ui.SwingHelper;
-import utilities.xml.XmlParser;
 
 //-----------------------------------------------------------------------------
 public class ShiftCdrTab extends JPanel implements ActionListener {
@@ -66,14 +54,17 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	JFrame parent;
 	ResourceManager rm;
 	DefaultTableModel tableModel;
+	ItemsSidePanel itemsScroller;
+	MainInterfaceWindow mainInterface;
 	final static int GAP = 10;
 //-----------------------------------------------------------------------------
-	public ShiftCdrTab(ResourceManager rm) {
+	public ShiftCdrTab(ResourceManager rm, MainInterfaceWindow mainInterface) {
 		this.setLayout(new BorderLayout());
 		this.rm = rm;
+		this.mainInterface=mainInterface;
 		getShiftTime(rm);
 		parent = rm.getGuiParent();
-		JScrollPane itemsScroller = new ItemsSidePanel(rm);
+		itemsScroller = new ItemsSidePanel(rm, mainInterface);
 		
 		// Create Shift CDR tabbed display area
 		JTabbedPane tabbedPane = new JTabbedPane();
@@ -130,6 +121,10 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		rollCallTab.add(buttonPanel, "dock south");
 		this.add(tabbedPane, BorderLayout.CENTER);
 		this.add(itemsScroller, BorderLayout.EAST);
+	}
+//-----------------------------------------------------------------------------
+	public void refreshItemsList(){
+		itemsScroller.updateItemsList();
 	}
 //-----------------------------------------------------------------------------
 	JPanel makeTablePanel(ArrayList<String> names) {
@@ -505,7 +500,6 @@ private class RollCallTableModel extends AbstractTableModel implements
 		 * // Do something with the data...
 		 */
 	}
-
 //-----------------------------------------------------------------------------
 	private void printDebugData() {
 		int numRows = getRowCount();
