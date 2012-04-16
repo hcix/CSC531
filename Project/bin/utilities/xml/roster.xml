@@ -40,4 +40,12 @@
 		<email>none</email>
 		<permissions>supervisor</permissions>
 	</employee>
+	<employee>
+		<cnumber>05246876</cnumber>
+		<firstname>Enid</firstname>
+		<lastname>Magari</lastname>
+		<caneid>emagari</caneid>
+		<email>e.magari@umiami.edu</email>
+		<permissions>supervisor</permissions>
+	</employee>
 </roster>

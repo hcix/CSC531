@@ -1,17 +1,29 @@
 <?xml version="1.0"?>
 <UMPD.itemsList>
 	<item>
-		<title>Training this Saturday</title>
-		<details>There will be a MANDATORY training session held this Saturday from 11am-12pm, all officers are required to be there.</details>
+		<title>vdfvds</title>
+		<details>fdvdfsvsdgfvsdf</details>
 	</item>
 	<item>
-		<title>Coffee machine out of order</title>
-		<details>Please don't use the coffee machine, it has been acting strange. We are in the process of getting it replaced.</details>
+		<title>vdfvds</title>
+		<details>fdvdfsvsdgfvsdf</details>
 	</item>
+<<<<<<< HEAD:Project/bin/progAdmin/itemsToReview.xml
+<<<<<<< HEAD
+	<item>
+		<title>vdfvds</title>
+		<details>fdvdfsvsdgfvsdf</details>
+	</item>
+=======
+>>>>>>> 3aff5fe7b064dbf4fc818c42008d78e08eab7def
+=======
 	<item>
 		<title>new</title>
 		<details>item</details>
 	</item>
+<<<<<<< HEAD
+>>>>>>> 754d0ef9f02564b26f81ee68d51128d3c1aac855:Project/src/progAdmin/itemsToReview/itemsToReview.xml
+=======
 	<item>
 		<title>1:11</title>
 		<details>i2hh</details>
@@ -32,4 +44,5 @@
 		<title>4444</title>
 		<details>44444</details>
 	</item>
+>>>>>>> 421092ad512b2814dbc5750311809291a0a23e0a
 </UMPD.itemsList>
