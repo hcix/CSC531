@@ -25,10 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-<<<<<<< HEAD
-=======
 import javax.swing.table.TableColumn;
->>>>>>> f637d2ec7ea9564795b4c78f8df00a4443ddd064
 import progAdmin.itemsToReview.ItemToReview;
 import net.miginfocom.swing.MigLayout;
 import utilities.ui.SwingHelper;
@@ -173,11 +170,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		else if(command.equals(DELETE_USER))
 		{
 			int rowIndex = table.getSelectedRow();
-<<<<<<< HEAD
-=======
 			//rm.removeItem(rowIndex);
-
->>>>>>> f637d2ec7ea9564795b4c78f8df00a4443ddd064
 			table.repaint();
 			//TODO:I ALSO WANT A PROMPT CHECKING IF ITS OK TO DELETE USER
 			//JOptionPane.showConfirmDialog(parent, "Are you sure blah blah...?", 
