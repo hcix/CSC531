@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import progAdmin.itemsToReview.ManageItemsDialog;
 import program.ResourceManager;
 import userinterface.HomeTab;
+import userinterface.MainInterfaceWindow;
 import utilities.FileHelper;
 import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
@@ -31,14 +32,21 @@ public class AdminTab extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	JFrame parent;
 	ResourceManager rm;
+	ManageItemsDialog manageItemsDialog;
+	MainInterfaceWindow mainInterface;
 //-----------------------------------------------------------------------------
-	public AdminTab(ResourceManager rm) {
+	public AdminTab(ResourceManager rm, MainInterfaceWindow mainInterface) {
 		JPanel adminPanel = new JPanel();
 		this.parent = rm.getGuiParent();
 		this.rm = rm;
+		this.mainInterface=mainInterface;
 
 		adminPanel.add(createActionButtons());
 
+		//create the initially invisiable dialog that will manage review items
+		manageItemsDialog = new ManageItemsDialog(rm);
+		manageItemsDialog.setVisible(false);
+		
 		this.add(adminPanel);
 	}
 //-----------------------------------------------------------------------------
@@ -56,10 +64,10 @@ public class AdminTab extends JPanel implements ActionListener {
 		
 		JButton manageItemsButton = SwingHelper.createImageButton("icons/notepad_48.png");
 		manageItemsButton.addActionListener(new ActionListener() {
-			//create manageItemsDialog
-			ManageItemsDialog manageItemsDialog = new ManageItemsDialog(rm);
 			public void actionPerformed(ActionEvent e){
 				manageItemsDialog.setVisible(true);	
+				manageItemsDialog.setModal(true);
+				mainInterface.refreshItemsList();
 			}
 		});
 
@@ -118,6 +126,10 @@ public class AdminTab extends JPanel implements ActionListener {
 
 		}
 
+	}
+//-----------------------------------------------------------------------------
+	public void refreshItemsTable(){
+		manageItemsDialog.refreshItemsTable();
 	}
 //-----------------------------------------------------------------------------
 	@Override

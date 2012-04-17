@@ -9,6 +9,7 @@
  */
 package utilities;
 
+import java.lang.reflect.Array;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -19,74 +20,18 @@ import java.sql.Statement;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+
+import javax.swing.JOptionPane;
+
+import program.ResourceManager;
 import shiftCdrTab.RollCall;
 import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
 
 public class DatabaseHelper {	
-//-----------------------------------------------------------------------------
-	/**
-	 * Adds a new crime to the crime table in the database. 
-	 * This method adds the most basic data that every crime entry must have.
-	 * @param caseNum - the case number associated with the crime
-	 * @param location - the location of the crime
-	 * @param offCode - the offense code of the crime
-	 * @param incident - the incident associated with the crime
-	 * @param time - the time of the crime occurrence
-	 * @param date - the date of the crime occurrence 
-	 * @param remarks - remarks associated with the crime
-	 * @param status - the crime's status
-	 * @throws Exception
-	 
-	public void addBOLO(String age,String race,String sex,String height,String weight,String build,
-			String eyes,String hair,Date incidentDate,String reference,String caseNum,String status,
-			String weapon,String preparedBy,String approvedBy,Date prepDate, String otherDescrip,
-			String narrative) throws Exception{
-		long incidentEpoch, prepEpoch;
-		//Create the connection to the database
-		Class.forName("org.sqlite.JDBC");
-	    Connection conn = DriverManager.getConnection("jdbc:sqlite:umpd.db");
-	
-	    //Create a prepared statement to add the crime data
-	    PreparedStatement prep = conn.prepareStatement(
-	      "INSERT into bolo(age, race, sex, height, weight, build, eyes, hair," +
-	      " epochTime, reference, caseNum, status, weapon, prepedBy, approvedBy, prepdate," +
-	      " description, narrative)" + 
-	      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
-	
-	    incidentEpoch = convertDateToEpoch(incidentDate);
-	    prepEpoch = convertDateToEpoch(prepDate);
-	    
-	    //Add the data to the prepared statement
-	    prep.setString(1, age);
-	    prep.setString(2, race);
-	    prep.setString(3, sex);
-	    prep.setString(4, height);
-	    prep.setString(5, weight);
-	    prep.setString(6, build);
-	    prep.setString(7, eyes);
-	    prep.setString(8, hair);
-	    prep.setLong(9, incidentEpoch);
-	    prep.setString(10, reference);
-	    prep.setString(11, caseNum);
-	    prep.setString(12, status);
-	    prep.setString(13, weapon);
-	    prep.setString(14, preparedBy);
-	    prep.setString(15, approvedBy);
-	    prep.setLong(16, prepEpoch);
-	    prep.setString(17, otherDescrip);
-	    prep.setString(18, narrative);
-	    prep.addBatch();
-	
-	    //Create new row in the table for the data
-	    conn.setAutoCommit(false);
-	    prep.executeBatch();
-	    conn.setAutoCommit(true);
-	    
-	    //Close the connection
-	    conn.close();
-	}*/
 //-----------------------------------------------------------------------------
 	/**
 	 * Retrives all the BOLOs from the database and places them into an 
@@ -262,19 +207,29 @@ public class DatabaseHelper {
 		String dbFileName = dbFilePath.toString();
 		Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
 		
+		//check for already existing shift
+		//Statement stat = conn.createStatement();
+		//ResultSet allEntries = stat.executeQuery("SELECT 1 FROM RollCall WHERE ShiftDate = shiftDate;");
+		
+		//if (allEntries.next()) {    
+			//JOptionPane.showMessageDialog(null, "Shift already submitted for this date.");
+			//return;
+		//}
+		
 		//insert into person table
 		PreparedStatement personStatement = conn.prepareStatement(
-				"INSERT into RollCall(Name, Present, Comment, TimeArrived, ShiftDate) " +
-				"VALUES(?,?,?,?,?);"
+				"INSERT into RollCall(roll_call_ID, Name, Present, Comment, TimeArrived, ShiftDate) " +
+				"VALUES(?,?,?,?,?,?);"
 		    );
 		
 		//long shiftDateEpoch = convertDateToEpoch(shiftDate);
 		    
-		personStatement.setString(1,name);
-		personStatement.setString(2,present);
-		personStatement.setString(3,comment);
-		personStatement.setString(4,timeArrived);
-		personStatement.setString(5,shiftDate);
+		personStatement.setString(1, null);
+		personStatement.setString(2,name);
+		personStatement.setString(3,present);
+		personStatement.setString(4,comment);
+		personStatement.setString(5,timeArrived);
+		personStatement.setString(6,shiftDate);
 		personStatement.addBatch();
 
 	    //Create new row in the table for the data
@@ -287,18 +242,70 @@ public class DatabaseHelper {
 	}
 
 //-----------------------------------------------------------------------------
-    public static ArrayList<RollCall> getRollCallFromDatabase(String shiftTime) {
-    	ArrayList<RollCall> rollCall = new ArrayList<RollCall>();
-    	//Format format = new SimpleDateFormat("ddMMMyyyy:" + shiftTime + ":00");
-    	//String date = 
+    public ArrayList<RollCall> getRollCallFromDatabase(String shiftDate) throws Exception {
+    	ArrayList<RollCall> rollCallList = new ArrayList<RollCall>();
     	// Implement later TODO
-    	rollCall.add(new RollCall());
-    	rollCall.add(new RollCall());
-    	rollCall.add(new RollCall());
-    	rollCall.add(new RollCall());
     	
+    	//Create the connection to the database
+    	Class.forName("org.sqlite.JDBC");
+    			
+    	//test to make database file access syst indep, changed added Project
+    	//Path dbFilePath = Paths.get("Project", "Database", "umpd.db");
+    	Path dbFilePath = Paths.get("Database", "umpd.db");
+
+    	String dbFileName = dbFilePath.toString();
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
     	
-    	return rollCall;
+        Statement stat = conn.createStatement();
+	    ResultSet allEntries = stat.executeQuery("SELECT * FROM RollCall WHERE ShiftDate = shiftDate;");
+    	
+	    //RollCall rollCall;
+	    
+	    /*
+	    // hacktastic method
+	    int i = 0;
+	    
+	    int count = 0;
+	    while (allEntries.next()) {
+	    	count++;
+	    }
+	    
+	    ResultSet allEntries2 = stat.executeQuery("SELECT * FROM RollCall WHERE ShiftDate = shiftDate;");
+	    RollCall[] rollCallArray = new RollCall[count];
+	 
+	    int m = 0;
+	    while (allEntries2.next()) {
+	        rollCall = new RollCall();
+	    
+	        rollCall.setName(allEntries.getString("Name")); 
+	        rollCall.setPresent(allEntries.getString("Present"));
+	        rollCall.setComment(allEntries.getString("Comment"));
+	        rollCall.setTimeArrived(allEntries.getString("TimeArrived"));
+	        
+	        rollCallArray[m++] = rollCall;
+	    }
+	    Collections.addAll(rollCallList, rollCallArray);
+	    */
+	    
+	    //right method, that doesn't fucking work! 
+	    //Update, works, but not the way I originally wanted it to / it should
+	    RollCall rollCall;
+	    while (allEntries.next()) {
+	    	
+	    	//hack-fu
+	    rollCallList.add(new RollCall(allEntries.getString("Name"),
+	    			allEntries.getString("Present"), allEntries.getString("TimeArrived"),
+	    			allEntries.getString("Comment")));
+	    	
+	    }
+	    allEntries.close();
+	    conn.close();
+	   
+	    for (RollCall testrollCall : rollCallList) {   	
+        	System.out.println(testrollCall.getName());
+        }
+    	
+    	return rollCallList;
     }
 //-----------------------------------------------------------------------------
 	/*

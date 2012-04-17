@@ -11,7 +11,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.nio.file.Path;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -19,6 +23,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -27,6 +32,7 @@ import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import shiftCdrTab.RollCall;
+import shiftCdrTab.ShiftCdrTab;
 import utilities.DatabaseHelper;
 import utilities.FileHelper;
 import utilities.pdf.PDFView;
@@ -41,11 +47,13 @@ private static final long serialVersionUID = 1L;
 	ArrayList<ReportFile> reportsFileArrayList = new ArrayList<ReportFile>();
 	JList<ReportFile> reportsJList;
 	ReportsListModel reportsModel;
+	DatabaseHelper dbHelper = new DatabaseHelper();
 	ReportFile currDisplayed;
 //-----------------------------------------------------------------------------
 		public ReportsPanel(final ResourceManager rm){
 			this.setLayout(new MigLayout("fill"));
 			this.rm = rm;
+			
 			
 			final JFrame parent = rm.getGuiParent();
 			
@@ -56,15 +64,30 @@ private static final long serialVersionUID = 1L;
 				//Shift CDR form dialog
 				//ShiftReportForm formDialog = new ShiftReportForm(rm, null);
 				public void actionPerformed(ActionEvent e){
+					String mostRecentShift = System.getProperty("UMPD.latestShiftTime");
 					ArrayList<RollCall> rollCall;
 					//TODO: create new ShiftCdrReport object
 					ShiftCdrReport shiftReport = new ShiftCdrReport();
 					//TODO fill in w/e fields
-					rollCall = DatabaseHelper.getRollCallFromDatabase(null);
-					//ShiftReportForm formDialog = new ShiftReportForm(rm, shiftcdrreport);
-					ShiftReportForm formDialog = new ShiftReportForm(rm, null);
-					formDialog.setVisible(true);
-				}
+					
+					//check that a rollcall has been submitted
+			        if (mostRecentShift.equals("none")){
+			        	JOptionPane.showMessageDialog(rm.getGuiParent(), "No shift has been submitted yet.");
+			        }
+			        else {
+					    Format format = new SimpleDateFormat("ddMMMyyyy:" + mostRecentShift + ":00");
+					    Date date = new Date();
+					    try {
+						    rollCall = dbHelper.getRollCallFromDatabase(format.format(date));
+					    } catch (Exception e1) {
+						    System.out.println("Couldn't get rollCall from db in reportsPanel");
+					    	//e1.printStackTrace();
+					    }
+					    //ShiftReportForm formDialog = new ShiftReportForm(rm, shiftcdrreport);
+					    ShiftReportForm formDialog = new ShiftReportForm(rm, null);
+					    formDialog.setVisible(true);
+				    }
+			    }
 			});
 
 			//Button to import an existing report

@@ -16,7 +16,7 @@ import net.miginfocom.swing.MigLayout;
  * see items within the program and select/"click" items. This panel will 
  * notify the given action listener when a <code>JPanel</code> is "clicked".
  */
-public class ItemsViewerPanel extends JPanel implements MouseListener {
+public class DisplayPanel extends JPanel implements MouseListener {
 private static final long serialVersionUID = 1L;
 	private static final int DEFAULT_GAP_VAL = 15;
 	private static final int DEFAULT_WRAP_VAL = 4;
@@ -34,18 +34,18 @@ private static final long serialVersionUID = 1L;
 	/** the wrap value to indicate the number of components per row **/
 	int wrap=DEFAULT_WRAP_VAL;
 //-----------------------------------------------------------------------------
-	public ItemsViewerPanel(JPanel[] items, ActionListener l){
+	public DisplayPanel(JPanel[] items, ActionListener l){
 		this.l=l;
 		createMainPanel(items);
 	}
 //-----------------------------------------------------------------------------
-	public ItemsViewerPanel(JPanel[] items, ActionListener l, int wrap){
+	public DisplayPanel(JPanel[] items, ActionListener l, int wrap){
 		this.wrap=wrap;
 		this.l=l;
 		createMainPanel(items);
 	}
 //-----------------------------------------------------------------------------
-	public ItemsViewerPanel(JPanel[] items, ActionListener l, int wrap, int gap){
+	public DisplayPanel(JPanel[] items, ActionListener l, int wrap, int gap){
 		this.wrap=wrap;
 		this.l=l;
 		this.gap=gap;
@@ -53,6 +53,7 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	private void createMainPanel(JPanel items[]){
+		//TODO: make scrollable!
 		String gapString = "gap " + gap;
 		String wrapString = "wrap " + wrap;
 		mainPanel = new JPanel(new MigLayout(gapString + ", " + wrapString));		

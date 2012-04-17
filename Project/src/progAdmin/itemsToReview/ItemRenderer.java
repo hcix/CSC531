@@ -22,7 +22,7 @@ import net.miginfocom.swing.MigLayout;
  * The <code>ItemRenderer</code> class specifies how a <code>ItemToReview</code>
  * should appear in a <code>JList</code>.
  */
-public class ItemRenderer implements ListCellRenderer, MouseListener, ListDataListener {
+public class ItemRenderer implements ListCellRenderer, ListDataListener {
 	private Color selectedColor;
 	private JFrame parent;
 	private JList<ItemToReview> itemsList;
@@ -94,55 +94,7 @@ public class ItemRenderer implements ListCellRenderer, MouseListener, ListDataLi
 System.out.println("ItemRenderer: itemStateChanged: called");
 		itemsList.repaint();
 	}
-//-----------------------------------------------------------------------------*/
-	@Override
-	public void mouseClicked(MouseEvent e) {
-
-//DEBUG System.out.println("ItemRenderer: mouseClicked(): CALLED!!");
-		
-		if(e.getClickCount() == 2){ //double click
-			     int index = itemsList.locationToIndex(e.getPoint());
-			     
-			     Object item = listModel.getElementAt(index);
-			     itemsList.ensureIndexIsVisible(index);
-			     ReadItemDialog itemDialog = new ReadItemDialog(parent, ((ItemToReview)item));
-			     itemDialog.setVisible(true);
-			     itemDialog.setModal(true);
-			     //int selected = itemsList.getSelectedIndex();
-			    itemsList.repaint();
-			    // (itemsList.getModel()).a
-			     try{
-			
-			    	// itemsList.
-			    //	 XmlParser.saveItemsToReviewList(itemsList, FileHelper.getItemsToReviewFile());
-			     
-			     } catch(Exception ex){
-			    	 ex.printStackTrace();
-			     }
-		}
-		
-	}
 //-----------------------------------------------------------------------------
-	@Override
-	public void mousePressed(MouseEvent e) {
-		//System.out.println("ItemRenderer: mousePressed(): CALLED!!");
-	}
-//-----------------------------------------------------------------------------
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		//System.out.println("ItemRenderer: mouseReleased(): CALLED!!");
-	}
-//-----------------------------------------------------------------------------
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		//System.out.println("ItemRenderer: mouseEntered(): CALLED!!");	
-	}
-//-----------------------------------------------------------------------------
-	@Override
-	public void mouseExited(MouseEvent e) {
-		//System.out.println("ItemRenderer: mouseExited(): CALLED!!");	
-	}
-//=============================================================================
 	@Override
 	public void intervalAdded(ListDataEvent e) {
 //DEBUG

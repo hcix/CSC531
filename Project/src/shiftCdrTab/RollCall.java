@@ -1,10 +1,10 @@
 package shiftCdrTab;
 
 public class RollCall {
-	private static String name;
-	private static String present;
-	private static String timeArrived;
-	private static String comment;
+	private  String name;
+	private  String present;
+	private  String timeArrived;
+	private  String comment;
 	
 	public RollCall() {
 		name = "unknown";
@@ -12,29 +12,35 @@ public class RollCall {
 		timeArrived = "unknown";
 		comment = "unknown";
 	}
+	public RollCall(String name, String present, String timeArrived, String comment) {
+		this.name = name;
+		this.present = present;
+		this.timeArrived = timeArrived;
+		this.comment = comment;
+	}
 	
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
-		RollCall.name = name;
+		this.name = name;
 	}
 	public String getPresent() {
 		return present;
 	}
 	public void setPresent(String present) {
-		RollCall.present = present;
+		this.present = present;
 	}
 	public String getTimeArrived() {
 		return timeArrived;
 	}
 	public void setTimeArrived(String timeArrived) {
-		RollCall.timeArrived = timeArrived;
+		this.timeArrived = timeArrived;
 	}
 	public String getComment() {
 		return comment;
 	}
 	public void setComment(String comment) {
-		RollCall.comment = comment;
+		this.comment = comment;
 	}
 }
