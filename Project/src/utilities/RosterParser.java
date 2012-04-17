@@ -66,7 +66,8 @@ public class RosterParser {
 	/**
 	 * JDOC
 	 */
-	public boolean isOnShift(File file, int shiftTime, String day) {
+	public boolean isOnShift(File file, int shiftTime, String day) 
+	{
 		String filePath, shiftTimeAsString;
 		// check that file is a directory
 		if (!file.isDirectory())
@@ -83,22 +84,26 @@ public class RosterParser {
 		 * Open the reader, read each line and check if the time and day match,
 		 * if so return true, else return false
 		 */
+<<<<<<< HEAD
+=======
+		
+>>>>>>> got rid of overrides that were causing errors for me, other small stuffs
 		try {
 			BufferedReader reader = getReader(filePath);
 			String line = null;
-			while ((line = reader.readLine()) != null) {
+			while ((line = reader.readLine()) != null) 
+			{
 				if (line.startsWith(shiftTimeAsString) && line.contains(day)) {
 					return true;
 				}
 			}
+			
 		} catch (IOException e) {
-//DEBUG
-//System.out.println("Employee file " + file.getName() + " has no regular shifts");
-
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return false;
 	}
-
 //-----------------------------------------------------------------------------
 	/**
 	 * JDOC
@@ -121,7 +126,11 @@ public class RosterParser {
 		 * Open the employee list file, check for a match with the cnumber, and
 		 * if one occurs, return the name
 		 */
+<<<<<<< HEAD
 		try  {
+=======
+		try {
+>>>>>>> got rid of overrides that were causing errors for me, other small stuffs
 			BufferedReader reader = getReader(employeeFileName);
 			String line = null;
 			while ((line = reader.readLine()) != null) {

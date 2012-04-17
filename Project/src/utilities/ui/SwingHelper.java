@@ -520,7 +520,6 @@ public class SwingHelper {
         JLabel armedLabel = new JLabel("Armed?");
 		JCheckBox armedFieldNo = new JCheckBox("No");
 		armedFieldNo.addActionListener(new ActionListener(){
-			@Override
 			public void actionPerformed(ActionEvent ae) {
 				ifYesField.setVisible(false);
 			}
@@ -528,7 +527,6 @@ public class SwingHelper {
 		
 		JCheckBox armedFieldYes = new JCheckBox("Yes");
 		armedFieldYes.addActionListener(new ActionListener(){
-			@Override
 			public void actionPerformed(ActionEvent ae) {
 				ifYesField.setVisible(true);
 			}

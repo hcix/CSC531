@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ItemEvent;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,7 +35,6 @@ public class ItemRenderer implements ListCellRenderer, ListDataListener {
 		listModel = itemsList.getModel();
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public Component getListCellRendererComponent(JList list,Object value,int index,
             boolean isSelected, boolean hasFocus) {
 
@@ -94,19 +95,58 @@ System.out.println("ItemRenderer: itemStateChanged: called");
 		itemsList.repaint();
 	}
 //-----------------------------------------------------------------------------
-	@Override
+	public void mouseClicked(MouseEvent e) {
+
+//DEBUG System.out.println("ItemRenderer: mouseClicked(): CALLED!!");
+		
+		if(e.getClickCount() == 2){ //double click
+			     int index = itemsList.locationToIndex(e.getPoint());
+			     
+			     Object item = listModel.getElementAt(index);
+			     itemsList.ensureIndexIsVisible(index);
+			     ReadItemDialog itemDialog = new ReadItemDialog(parent, ((ItemToReview)item));
+			     itemDialog.setVisible(true);
+			     itemDialog.setModal(true);
+			     //int selected = itemsList.getSelectedIndex();
+			    itemsList.repaint();
+			    // (itemsList.getModel()).a
+			     try{
+			
+			    	// itemsList.
+			    //	 XmlParser.saveItemsToReviewList(itemsList, FileHelper.getItemsToReviewFile());
+			     
+			     } catch(Exception ex){
+			    	 ex.printStackTrace();
+			     }
+		}
+		
+	}
+//-----------------------------------------------------------------------------
+	public void mousePressed(MouseEvent e) {
+		//System.out.println("ItemRenderer: mousePressed(): CALLED!!");
+	}
+//-----------------------------------------------------------------------------
+	public void mouseReleased(MouseEvent e) {
+		//System.out.println("ItemRenderer: mouseReleased(): CALLED!!");
+	}
+//-----------------------------------------------------------------------------
+	public void mouseEntered(MouseEvent e) {
+		//System.out.println("ItemRenderer: mouseEntered(): CALLED!!");	
+	}
+//-----------------------------------------------------------------------------
+	public void mouseExited(MouseEvent e) {
+		//System.out.println("ItemRenderer: mouseExited(): CALLED!!");	
+	}
 	public void intervalAdded(ListDataEvent e) {
 //DEBUG
 System.out.println("ItemRenderer: intervalAdded: called");		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void intervalRemoved(ListDataEvent e) {
 //DEBUG
 System.out.println("ItemRenderer: intervalRemoved: called");	
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void contentsChanged(ListDataEvent e) {
 //DEBUG
 System.out.println("ItemRenderer: contentsChanged: called");	

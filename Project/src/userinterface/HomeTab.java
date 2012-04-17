@@ -93,7 +93,6 @@ public class HomeTab extends JPanel implements ActionListener {
 	}
 
 	// -----------------------------------------------------------------------------
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == LAUNCH)
 			launchMostRecentVideo();

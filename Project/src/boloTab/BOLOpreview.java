@@ -130,7 +130,7 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return infoPanel
 	 */
-	public JPanel createPhysicalDescriptionPanel(){
+	private JPanel createPhysicalDescriptionPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout());
 		infoPanel.setBackground(Color.WHITE);
 		String[] labels = { "Approx. Age: ", "Race", "Sex", "Approx. Height: ", 
@@ -162,7 +162,7 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return infoPanel
 	 */
-	public JPanel createIncidentInfoPanel(){
+	private JPanel createIncidentInfoPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout());
 		infoPanel.setBackground(Color.WHITE);
 		String[] labels = { "Reference: ", "Case #: ", "Status: ", 
@@ -192,7 +192,7 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return narrativePanel
 	 */
-	public JPanel createNarrativePanel(){
+	private JPanel createNarrativePanel(){
 		JPanel narrativePanel = new JPanel(new MigLayout());
 		narrativePanel.setBackground(Color.WHITE);
 		
@@ -207,7 +207,7 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return adminPanel
 	 */
-	public JPanel createAdministrativePanel(){
+	private JPanel createAdministrativePanel(){
 		JPanel adminPanel = new JPanel(new MigLayout());
 		adminPanel.setBackground(Color.WHITE);
         // create labels
@@ -235,7 +235,7 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return photoVideoPanel
 	 */
-	public JPanel createPhotoVideoPanel(){
+	private JPanel createPhotoVideoPanel(){
 		JPanel photoVideoPanel = new JPanel(new MigLayout());
 		photoVideoPanel.setBackground(Color.WHITE);
 		
@@ -260,7 +260,7 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return buttonsPanel
 	 */
-	public JPanel createButtonsPanel(){
+	private JPanel createButtonsPanel(){
 	
 		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
 		
@@ -268,7 +268,6 @@ public class BOLOpreview extends JDialog {
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
-			@Override
 			public void actionPerformed(ActionEvent ae) {
 				closeAndCancel();
 			}
@@ -278,8 +277,7 @@ public class BOLOpreview extends JDialog {
 	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
 	    saveButton.setToolTipText("Save BOLO");
 	    saveButton.addActionListener(new ActionListener( ) {
-	    	@Override
-			public void actionPerformed(ActionEvent e) {
+	    	public void actionPerformed(ActionEvent e) {
 	    		saveAndClose();
 	    	}
 	    });
@@ -289,8 +287,7 @@ public class BOLOpreview extends JDialog {
 	    		SwingHelper.createImageButton("Edit", "icons/edit_48.png");
 	    editButton.setToolTipText("Edit this BOLO");
 	    editButton.addActionListener(new ActionListener( ) {
-	    	@Override
-			public void actionPerformed(ActionEvent e) {
+	    	public void actionPerformed(ActionEvent e) {
 	    		//BOLO form dialog
 				BOLOform formDialog = new BOLOform(parent, bolo);
 				setVisible(false);
@@ -303,8 +300,7 @@ public class BOLOpreview extends JDialog {
 	    		SwingHelper.createImageButton("Print", "icons/print_48.png");
 	    printButton.setToolTipText("Print this BOLO document");
 	    printButton.addActionListener(new ActionListener( ) {
-	    	@Override
-			public void actionPerformed(ActionEvent e) {
+	    	public void actionPerformed(ActionEvent e) {
 	 //   		PrintHelper ph = new PrintHelper(dialogPanel);
 	    	}
 	    });
@@ -313,8 +309,7 @@ public class BOLOpreview extends JDialog {
 	    JButton emailButton = new JButton("<html>Email<br>BOLO</html>");
 	    emailButton.setToolTipText("Email this BOLO document");
 	    emailButton.addActionListener(new ActionListener( ) {
-	    	@Override
-			public void actionPerformed(ActionEvent e) {
+	    	public void actionPerformed(ActionEvent e) {
 	    		//
 	    	}
 	    });

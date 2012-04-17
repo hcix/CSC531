@@ -65,7 +65,6 @@ private static String  ADD_ITEM_ERROR = "Item Error";
 		JButton addItem = SwingHelper.createImageButton("Add Item", 
 				"icons/plusSign_48.png");
 		addItem.addActionListener(new ActionListener(){
-			@Override
 			public void actionPerformed(ActionEvent e){
 				saveAndClose();
 			 }

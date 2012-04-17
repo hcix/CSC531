@@ -196,7 +196,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	}
 
 //-----------------------------------------------------------------------------
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == ADD) {
 			((RollCallTableModel) table.getModel()).addRow();
@@ -420,7 +419,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
     			"icons/save_48.png");
     	finishedButton.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 			    popup.dispose();
 			}
@@ -488,25 +486,21 @@ private class RollCallTableModel extends AbstractTableModel implements
 	}
 
 //-----------------------------------------------------------------------------
-	@Override
 	public int getColumnCount() {
 		return columnNames.length;
 	}
 
 //-----------------------------------------------------------------------------
-	@Override
 	public int getRowCount() {
 		return data.length;
 	}
 
 //-----------------------------------------------------------------------------
-	@Override
 	public String getColumnName(int col) {
 		return columnNames[col];
 	}
 
 //-----------------------------------------------------------------------------
-	@Override
 	public Object getValueAt(int row, int col) {
 		return data[row][col];
 	}
@@ -595,7 +589,6 @@ private class RollCallTableModel extends AbstractTableModel implements
 	}
 
 //-----------------------------------------------------------------------------
-	@Override
 	public void tableChanged(TableModelEvent e) {
 		/*
 		 * int row = e.getFirstRow(); int column = e.getColumn(); TableModel

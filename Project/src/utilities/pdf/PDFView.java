@@ -589,7 +589,6 @@ System.out.println("selected one is : components[0].toString()");
 				decode_pdf.setDisplayView(Display.SINGLE_PAGE, Display.DISPLAY_LEFT_ALIGNED);
 			} else {
 				final Runnable doPaintComponent = new Runnable() {
-					@Override
 					public void run() {
 						decode_pdf.setDisplayView(Display.SINGLE_PAGE, Display.DISPLAY_LEFT_ALIGNED);
 					}
@@ -601,7 +600,6 @@ System.out.println("selected one is : components[0].toString()");
 				decode_pdf.setDisplayView(Display.SINGLE_PAGE, Display.DISPLAY_CENTERED);
 			} else {
 				final Runnable doPaintComponent = new Runnable() {
-					@Override
 					public void run() {
 						decode_pdf.setDisplayView(Display.SINGLE_PAGE, Display.DISPLAY_CENTERED);
 					}
