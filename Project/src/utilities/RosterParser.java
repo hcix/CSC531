@@ -39,7 +39,7 @@ public class RosterParser {
 		    day = getDayAsString(dayAsInt);
 		}
 		else {
-			day = getDayAsString(currentShiftDate.get(Calendar.DAY_OF_WEEK));//BUG
+			day = getDayAsString(currentShiftDate.get(Calendar.DAY_OF_WEEK)); //BUG
 		}
 		
 		File folder = new File(path.toString());
