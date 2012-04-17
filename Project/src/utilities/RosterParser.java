@@ -139,7 +139,10 @@ public class RosterParser {
 		 * Open the employee list file, check for a match with the cnumber, and
 		 * if one occurs, return the name
 		 */
+<<<<<<< HEAD
+=======
 
+>>>>>>> f637d2ec7ea9564795b4c78f8df00a4443ddd064
 		try {
 			BufferedReader reader = getReader(employeeFileName);
 			String line = null;
