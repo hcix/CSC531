@@ -130,11 +130,14 @@ public class AdminTab extends JPanel implements ActionListener {
 
 	}
 //-----------------------------------------------------------------------------
+<<<<<<< HEAD
 	public void refreshItemsTable(){
 		manageItemsDialog.refreshItemsTable();
 	}
 //-----------------------------------------------------------------------------
 	@Override
+=======
+>>>>>>> got rid of overrides that were causing errors for me, other small stuffs
 	public void actionPerformed(ActionEvent e) {
 	
 	}

@@ -8,6 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import progAdmin.itemsToReview.ItemToReview;
@@ -70,6 +72,12 @@ private static final long serialVersionUID = 1L;
 		mainPanel.add(addNewUserButton);
 		mainPanel.add(editUserButton);
 		mainPanel.add(deleteUserButton);
+		
+		JScrollPane tableHolderPane = new JScrollPane();
+		JTable userTable = new JTable();
+		tableHolderPane.add(userTable);
+		
+		mainPanel.add(tableHolderPane);
 		
 	    Container contentPane = getContentPane();
 	    contentPane.add(mainPanel);

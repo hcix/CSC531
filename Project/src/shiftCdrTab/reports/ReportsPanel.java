@@ -286,7 +286,6 @@ private static final long serialVersionUID = 1L;
 	    return buttonsPanel;
 	}
 //-----------------------------------------------------------------------------	
-	@Override
 	public void mouseClicked(MouseEvent e) {
 //DEBUG
 System.out.println("ReportListRenderer: mouseClicked(): CALLED!!");
@@ -309,22 +308,18 @@ System.out.println("ReportListRenderer: mouseClicked(): CALLED!!");
 		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mousePressed(MouseEvent e) {
 		//System.out.println("ItemRenderer: mousePressed(): CALLED!!");
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		//System.out.println("ItemRenderer: mouseReleased(): CALLED!!");
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseEntered(MouseEvent e) {
 		//System.out.println("ItemRenderer: mouseEntered(): CALLED!!");	
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseExited(MouseEvent e) {
 		//System.out.println("ItemRenderer: mouseExited(): CALLED!!");	
 	}

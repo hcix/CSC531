@@ -185,10 +185,13 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		return entriesPanel;
 	}
 //-----------------------------------------------------------------------------	
+<<<<<<< HEAD
 	/** 
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 
+=======
+>>>>>>> got rid of overrides that were causing errors for me, other small stuffs
 	public void actionPerformed(ActionEvent ev) {
 		String listId = ev.getActionCommand();
 		int id = Integer.valueOf(listId);

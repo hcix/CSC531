@@ -196,7 +196,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	}
 
 //-----------------------------------------------------------------------------
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == ADD) {
 			((RollCallTableModel) table.getModel()).addRow();
@@ -420,7 +419,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
     			"icons/save_48.png");
     	finishedButton.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 			    popup.dispose();
 			}

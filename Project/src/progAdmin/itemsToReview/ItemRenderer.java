@@ -93,20 +93,65 @@ public class ItemRenderer implements ListCellRenderer, ListDataListener {
 System.out.println("ItemRenderer: itemStateChanged: called");
 		itemsList.repaint();
 	}
+<<<<<<< HEAD
 //-----------------------------------------------------------------------------
 	@Override
+=======
+//-----------------------------------------------------------------------------*/
+	public void mouseClicked(MouseEvent e) {
+
+//DEBUG System.out.println("ItemRenderer: mouseClicked(): CALLED!!");
+		
+		if(e.getClickCount() == 2){ //double click
+			     int index = itemsList.locationToIndex(e.getPoint());
+			     
+			     Object item = listModel.getElementAt(index);
+			     itemsList.ensureIndexIsVisible(index);
+			     ReadItemDialog itemDialog = new ReadItemDialog(parent, ((ItemToReview)item));
+			     itemDialog.setVisible(true);
+			     itemDialog.setModal(true);
+			     //int selected = itemsList.getSelectedIndex();
+			    itemsList.repaint();
+			    // (itemsList.getModel()).a
+			     try{
+			
+			    	// itemsList.
+			    //	 XmlParser.saveItemsToReviewList(itemsList, FileHelper.getItemsToReviewFile());
+			     
+			     } catch(Exception ex){
+			    	 ex.printStackTrace();
+			     }
+		}
+		
+	}
+//-----------------------------------------------------------------------------
+	public void mousePressed(MouseEvent e) {
+		//System.out.println("ItemRenderer: mousePressed(): CALLED!!");
+	}
+//-----------------------------------------------------------------------------
+	public void mouseReleased(MouseEvent e) {
+		//System.out.println("ItemRenderer: mouseReleased(): CALLED!!");
+	}
+//-----------------------------------------------------------------------------
+	public void mouseEntered(MouseEvent e) {
+		//System.out.println("ItemRenderer: mouseEntered(): CALLED!!");	
+	}
+//-----------------------------------------------------------------------------
+	public void mouseExited(MouseEvent e) {
+		//System.out.println("ItemRenderer: mouseExited(): CALLED!!");	
+	}
+//=============================================================================
+>>>>>>> got rid of overrides that were causing errors for me, other small stuffs
 	public void intervalAdded(ListDataEvent e) {
 //DEBUG
 System.out.println("ItemRenderer: intervalAdded: called");		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void intervalRemoved(ListDataEvent e) {
 //DEBUG
 System.out.println("ItemRenderer: intervalRemoved: called");	
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void contentsChanged(ListDataEvent e) {
 //DEBUG
 System.out.println("ItemRenderer: contentsChanged: called");	

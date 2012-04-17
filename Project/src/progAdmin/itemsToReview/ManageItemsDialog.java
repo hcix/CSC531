@@ -149,6 +149,7 @@ private static final long serialVersionUID = 1L;
 		return itemsPanel;
 	}
 //-----------------------------------------------------------------------------
+<<<<<<< HEAD
 	public void refreshItemsTable(){
 		table.repaint();
 	}
@@ -186,6 +187,8 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	@Override
+=======
+>>>>>>> got rid of overrides that were causing errors for me, other small stuffs
 	public void mouseClicked(MouseEvent e){
 		//checks if it was a double click
         if (e.getComponent().isEnabled() && e.getButton() == 
@@ -206,22 +209,18 @@ private static final long serialVersionUID = 1L;
         }
     }
 //-----------------------------------------------------------------------------
-	@Override
 	public void mousePressed(MouseEvent e) {
 		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseEntered(MouseEvent e) {		
 		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseExited(MouseEvent e) {
 		
 	}
