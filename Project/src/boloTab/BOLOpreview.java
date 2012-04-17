@@ -13,11 +13,11 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
-import utilities.pdf.PDFViewHelper;
 import utilities.ui.ImageHandler;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
@@ -26,12 +26,13 @@ import utilities.ui.SwingHelper;
  * <code>BOLOform</code> for a given <code>Bolo</code> that can be edited, 
  * saved, printed, and emailed.
  */
-public class BOLOpreview extends JDialog {
-	private static final long serialVersionUID = 1L;
+public class BOLOpreview extends JDialog implements ActionListener {
+private static final long serialVersionUID = 1L;
 	String age, race, sex, height, weight, build, eyes, hair;
 	String reference, caseNum, status, weapon;
 	String preparedBy, approvedBy;
 	String otherDescrip, narrative;
+	/** the BOLO holding the info currently displayed in this dialog **/
 	Bolo bolo;
 	JFrame parent;
 	JPanel dialogPanel;
@@ -44,7 +45,7 @@ public class BOLOpreview extends JDialog {
 	 * @param parent
 	 * @param bolo
 	 */
-	BOLOpreview(JFrame parent, Bolo bolo){
+	public BOLOpreview(JFrame parent, Bolo bolo){
 		super(parent, "BOLO", true);
 
 		//BOLO object to load info from
@@ -127,12 +128,13 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return infoPanel
 	 */
-	public JPanel createPhysicalDescriptionPanel(){
+	private JPanel createPhysicalDescriptionPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout());
 		infoPanel.setBackground(Color.WHITE);
 		String[] labels = { "Approx. Age: ", "Race", "Sex", "Approx. Height: ", 
 				"Approx. Weight: ", "Build: ", "Eyes: ", "Hair: ", 
-				"Other Description/Info: " };
+				"Other Description/Info: " 
+				};
 		
 		
 		//get the info from the BOLO object
@@ -142,11 +144,9 @@ public class BOLOpreview extends JDialog {
 		//put each existing attribute's name and value into the panel(bolo fields 0-8)
 		for(int i=0; i<9; i++){
 			if(fieldsArray[i]!=null){ 
-//DEBUG
-				//System.out.printf("index %d of fieldsArray = %s\n", i, fieldsArray[i]);
+//DEBUG System.out.printf("index %d of fieldsArray = %s\n", i, fieldsArray[i]);
 				labels[i] = labels[i].concat(fieldsArray[i]); 
-//DEBUG
-				//System.out.printf("index %d of labels = %s\n", i, labels[i]);
+//DEBUG System.out.printf("index %d of labels = %s\n", i, labels[i]);
 				label = new JLabel(labels[i]);
 				infoPanel.add(label, "align, wrap"); 
 			}
@@ -156,10 +156,9 @@ public class BOLOpreview extends JDialog {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * 
-	 * @return infoPanel
+	 * Creates the incident info panel.
 	 */
-	public JPanel createIncidentInfoPanel(){
+	private JPanel createIncidentInfoPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout());
 		infoPanel.setBackground(Color.WHITE);
 		String[] labels = { "Reference: ", "Case #: ", "Status: ", 
@@ -189,7 +188,7 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return narrativePanel
 	 */
-	public JPanel createNarrativePanel(){
+	private JPanel createNarrativePanel(){
 		JPanel narrativePanel = new JPanel(new MigLayout());
 		narrativePanel.setBackground(Color.WHITE);
 		
@@ -204,7 +203,7 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return adminPanel
 	 */
-	public JPanel createAdministrativePanel(){
+	private JPanel createAdministrativePanel(){
 		JPanel adminPanel = new JPanel(new MigLayout());
 		adminPanel.setBackground(Color.WHITE);
         // create labels
@@ -232,7 +231,7 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return photoVideoPanel
 	 */
-	public JPanel createPhotoVideoPanel(){
+	private JPanel createPhotoVideoPanel(){
 		JPanel photoVideoPanel = new JPanel(new MigLayout());
 		photoVideoPanel.setBackground(Color.WHITE);
 		
@@ -257,12 +256,12 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return buttonsPanel
 	 */
-	public JPanel createButtonsPanel(){
+	private JPanel createButtonsPanel(){
 	
 		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
 		
-		//Add cancel button
-		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
+		//Cancel button
+		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_32.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae) {
@@ -270,18 +269,24 @@ public class BOLOpreview extends JDialog {
 			}
 		});
 	
-	    //Add save button
-	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
+	    //Save button
+	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_32.png");
 	    saveButton.setToolTipText("Save BOLO");
-	    saveButton.addActionListener(new ActionListener( ) {
+	    saveButton.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	    		saveAndClose();
 	    	}
 	    });
 	    
-	    //Add edit button
-	    JButton editButton = 
-	    		SwingHelper.createImageButton("Edit", "icons/edit_48.png");
+	    //Delete button
+	    JButton deleteButton = SwingHelper.createImageButton("Delete", 
+	    		"icons/delete_32.png");
+	    deleteButton.setToolTipText("Delete BOLO");
+	    deleteButton.addActionListener(this);
+	    
+	    //Edit button
+	    JButton editButton = SwingHelper.createImageButton("Edit",
+	    		"icons/edit_32.png");
 	    editButton.setToolTipText("Edit this BOLO");
 	    editButton.addActionListener(new ActionListener( ) {
 	    	public void actionPerformed(ActionEvent e) {
@@ -294,7 +299,7 @@ public class BOLOpreview extends JDialog {
 	    
 	    //Add print button
 	    JButton printButton = 
-	    		SwingHelper.createImageButton("Print", "icons/print_48.png");
+	    		SwingHelper.createImageButton("Print", "icons/print_32.png");
 	    printButton.setToolTipText("Print this BOLO document");
 	    printButton.addActionListener(new ActionListener( ) {
 	    	public void actionPerformed(ActionEvent e) {
@@ -303,14 +308,13 @@ public class BOLOpreview extends JDialog {
 	    });
 	    
 	    //Add email button
-	    JButton emailButton = new JButton("<html>Email<br>BOLO</html>");
+	    JButton emailButton = new JButton("Email");
 	    emailButton.setToolTipText("Email this BOLO document");
 	    emailButton.addActionListener(new ActionListener( ) {
 	    	public void actionPerformed(ActionEvent e) {
-	    		//
+	    		//TODO implement email
 	    	}
 	    });
-	    
 	    
 	    JPanel saveAndCancelButtonsPanel = new JPanel();
 	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
@@ -321,23 +325,22 @@ public class BOLOpreview extends JDialog {
 	    printAndEmailButtonPanel.add(editButton);
 	    buttonsPanel.add(saveAndCancelButtonsPanel, "shrinky");
 	    buttonsPanel.add(printAndEmailButtonPanel, "growx, shrinky");
+	    buttonsPanel.add(deleteButton);
 	   
-	   // SwingHelper.addLineBorder(buttonsPanel);
 	    return buttonsPanel;
 	}
 //-----------------------------------------------------------------------------
 	 /**
-	  * Close and Cancel
+	  * Close and cancel.
 	  */
-	public void closeAndCancel( ) {
+	private void closeAndCancel() {
 		  setVisible(false);
 	 }
 //-----------------------------------------------------------------------------
 	/**
 	* Save the information input into this form and close the dialog.
 	*/
-	public void saveAndClose(){
-		 
+	private void saveAndClose(){	 
 		 //add the BOLO object's info to the database
 		 try {
 			bolo.addToDB();
@@ -346,10 +349,31 @@ public class BOLOpreview extends JDialog {
 			System.out.println("error: unable to add BOLO to DB");
 			e.printStackTrace();
 		 }
-		 
 		 //close the window
 		 this.dispose();	
 	}
 //-----------------------------------------------------------------------------
-}
 
+	public void actionPerformed(ActionEvent ev) {
+		//attempt to delete the currently displayed BOLO
+		try{
+			bolo.deleteFromDB();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(parent, "Error occured while " +
+					"attempting to delete BOLO from database", "Database Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		
+		
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Called when the delete button is 'clicked'. Attempts to delete the 
+	 * currently displayed BOLO
+	 */
+	private void deleteBOLOAndClose(){
+		
+	}
+//-----------------------------------------------------------------------------
+}

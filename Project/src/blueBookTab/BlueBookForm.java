@@ -27,6 +27,7 @@ import utilities.ui.ImagePreview;
 import utilities.ui.ResizablePhotoDialog;
 import utilities.ui.SwingHelper;
 /**
+ * JDOC
  * Creates UI for BlueBook input form.
  */
 //-----------------------------------------------------------------------------
@@ -38,6 +39,9 @@ private static final long serialVersionUID = 1L;
 	JPanel photoArea;
 	JPanel inputPanel;
 //-----------------------------------------------------------------------------
+	/**
+	 * JDOC
+	 */
 	public BlueBookForm(JFrame parent) {
 		super(parent, "New Blue Book Entry", true);
 		//Set the size of the form
@@ -79,7 +83,10 @@ private static final long serialVersionUID = 1L;
 	    contentPane.add(inputScrollPane);
 	}
 //-----------------------------------------------------------------------------
-	BlueBookForm(JFrame parent, BlueBookEntry entry){
+	/**
+	 * JDOC
+	 */
+	public BlueBookForm(JFrame parent, BlueBookEntry entry){
 		this(parent);
 		this.bbEntry = entry;
 		loadFromExistingEntry();
@@ -88,7 +95,7 @@ private static final long serialVersionUID = 1L;
 	 /**
 	  * Places the info from the input fields into the global BlueBookEntry object.
 	  */
-	 public void loadFromExistingEntry(){
+	private void loadFromExistingEntry(){
 		 //set the filled in fields in the global BlueBookEntry object
 			
 		caseNumField.setText(bbEntry.getCaseNum()); 
@@ -241,7 +248,7 @@ private static final long serialVersionUID = 1L;
 	/**
 	* Save the information input into this form and close the dialog.
 	*/
-	 public void saveAndClose( ) {
+	private void saveAndClose( ) {
 		//place the info from the fields into a bbEntry object
 		 putInfoIntoBlueBookEntry();
 		 
@@ -265,7 +272,7 @@ private static final long serialVersionUID = 1L;
 	 /**
 	  * Places the info from the input fields into the global BlueBook object.
 	  */
-	 public void putInfoIntoBlueBookEntry(){
+	private void putInfoIntoBlueBookEntry(){
 		 String caseNumText, nameText, affiliText, addressText, weapon;
 		 String locationText, descritionText, reasonText;
 		 //String preparedBy;
@@ -293,7 +300,7 @@ private static final long serialVersionUID = 1L;
 	 /**
 	  * Places the info from the input fields into the global bbEntry object.
 	  */
-	 public void loadFromExistingbbEntry(){
+	 private void loadFromExistingbbEntry(){
 
 		 //set the form fields to contain info from the bbEntry
 		 caseNumField.setText(bbEntry.getCaseNum());
@@ -313,7 +320,7 @@ private static final long serialVersionUID = 1L;
 		 
 	}
 //-----------------------------------------------------------------------------
-	 public void chooseAndAddPhoto(final JPanel photoPanel){
+	 private void chooseAndAddPhoto(final JPanel photoPanel){
 			//show choose photo dialog
 			final JFileChooser fc = new JFileChooser();
 			System.out.println("Bluebook form chooseAndAddPhoto after file chooser");
@@ -352,7 +359,7 @@ System.out.printf("BlueBookForm: chooseAndAddPhoto: filepath = %s\n", file.getPa
 	 * Erase any fields in the form that have been filled in and close the
 	 * dialog.
 	 */
-	 public void closeAndCancel( ) {
+	 private void closeAndCancel( ) {
 		//reset the form
 		eraseForm();
 		
@@ -360,7 +367,7 @@ System.out.printf("BlueBookForm: chooseAndAddPhoto: filepath = %s\n", file.getPa
 		this.dispose();	
 	 }
 //-----------------------------------------------------------------------------
-	 public void eraseForm(){
+	 private void eraseForm(){
 		//set the text of all the form's fields to null
 		caseNumField.setText(null);
 		nameField.setText(null);

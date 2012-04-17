@@ -4,66 +4,70 @@ import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import utilities.ui.ImageHandler;
 
 //-----------------------------------------------------------------------------
 /**
- *Class representing a BOLO.
+ * JDOC
  */
 public class BlueBookEntry {
-	/** Name of individual associated with a BOLO */
+	/** Name of individual associated with Entry */
 	private String name;
-	/** Date of birth of individual associated with a BOLO*/
+	/** Date of birth of individual associated with Entry*/
 	private String dob;
-	/** Affiliation of individual associated with a BOLO */
+	/** Affiliation of individual associated with Entry */
 	private String affili;
-	/** Address of a reported BOLO */
+	/** Address of a reported BlueBook Entry */
 	private String address;
-	/** Description of crime associated with a BOLO */
+	/** Description of crime associated with a BlueBook Entry */
 	private String crimeDescrip;
-	/** Narrative of individual reporting a BOLO */
+	/** Narrative of individual reporting a BlueBook Entry */
 	private String narrative;
-	/** Date BOLO was reported */
+	/** Date BlueBook Entry was reported */
 	private String date;
-	/** Time BOLO was reported */
+	/** Time BlueBook Entry was reported */
 	private String time;
-	/** Location BOLO was reported at*/
+	/** Location BlueBook Entry was reported at*/
 	private String location;
-	/** BOLO's case number */
+	/** BlueBook Entry's case number */
 	private String caseNum;
-	/** Status of BOLO */
+	/** Status of BlueBook Entry */
 	private String status;
-	/** Weapon carried by an individual associated with the BOLO */
+	/** Weapon carried by an individual associated with the BlueBook Entry */
 	private String weapon;
 	/** Indicates if associated individual is armed with a weapon */
 	private boolean isArmed=false;
-	/** Officer that prepared the BOLO */
+	/** Officer that prepared the BlueBook Entry */
 	private String preparedBy;
-	/** Path in file system leading to photo pertaining to the BOLO*/
+	/** Path in file system leading to photo pertaining to the BlueBook Entry*/
 	private Path photoFilePath = null;
-	/** Path in file system leading to a video pertaining to the BOLO*/
+	/** Path in file system leading to a video pertaining to the BlueBook Entry*/
 	private Path videoFilePath = null;
-	/** ID of BOLO in the Blue book*/
-	private int bluebkID=0;
+	/** ID of BlueBook Entry in the Blue book*/
+	private Integer bbID=null;
+	/** list of absolute filenames of photos associated with this BlueBook Entry */
+	ArrayList<String> photoFilePaths;
 //-----------------------------------------------------------------------------
 		/**
-		 * Creates a new BlueBookEntry with all fields initially empty
+		 * Creates a new BlueBookEntry with all fields initially empty.
 		 */
 		public BlueBookEntry(){
-			
+			photoFilePaths = new ArrayList<String>();
 		}
 //-----------------------------------------------------------------------------
 	/**
-	 * Returns the name on file for the BOLO
-	 * @return name of individual affiliated with this particular BOLO
+	 * Returns the name on file for the BlueBook Entry
+	 * @return name of individual affiliated with this particular BlueBook Entry
 	 */
 	public String getName() {
 		return name;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Sets the name of a BOLO individual
+	 * Sets the name of a BlueBook Entry individual
 	 * @param name - the name value to set
 	 */
 	public void setName(String name) {
@@ -71,7 +75,7 @@ public class BlueBookEntry {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Sets the date of birth for a BOLO individual
+	 * Sets the date of birth for a BlueBook Entry individual
 	 * @return dob - 
 	 */
 	public String getDob() {
@@ -86,7 +90,7 @@ public class BlueBookEntry {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Returns affiliation of a BOLO individual
+	 * Returns affiliation of a BlueBook Entry individual
 	 * @return affili - 
 	 */
 	public String getAffili() {
@@ -94,7 +98,7 @@ public class BlueBookEntry {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Sets affiliation of a BOLO individual
+	 * Sets affiliation of a BlueBook Entry individual
 	 * @param affili - the affili value to set
 	 */
 	public void setAffili(String affili) {
@@ -260,19 +264,19 @@ public class BlueBookEntry {
 	 /**
 	 * @return the bluebkID
 	 */
-	public int getBluebkID() {
-		return bluebkID;
+	public int getBbID() {
+		return bbID;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param bluebkID the bluebkID to set
+	 * @param bbID - 
 	 */
-	public void setBluebkID(int bluebkID) {
-		this.bluebkID = bluebkID;
+	public void setBbID(int bbID) {
+		this.bbID = bbID;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param photoFilePath - the path of the photo associated with this BOLO
+	 * @param photoFilePath - the path of the photo associated with this BlueBook Entry
 	 */
 	public void setPhotoFilePath(Path p_photoFilePath) {
 		this.photoFilePath = p_photoFilePath;
@@ -286,7 +290,7 @@ public class BlueBookEntry {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param videoFilePath - the path of the video associated with this BOLO
+	 * @param videoFilePath - the path of the video associated with this BlueBook Entry
 	 */
 	public void setVideoFilePath(Path videoFilePath) {
 		this.videoFilePath = videoFilePath;
@@ -339,7 +343,7 @@ public class BlueBookEntry {
 	    prep.setString(10, this.time);
 	    prep.setString(11, this.date);
 	    
-	    if(this.bluebkID!=0){ prep.setInt(14, this.bluebkID); }
+	    if(this.bbID!=0){ prep.setInt(14, this.bbID); }
 	
 	    if(photoFilePath!=null){
 		    Path absPhotoFilePath = photoFilePath.toAbsolutePath();
@@ -366,4 +370,29 @@ public class BlueBookEntry {
 	    
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Deletes this BlueBook Entry object from the 'BlueBook Entry' table in the database.
+	 * @throws Exception
+	 */
+	public void deleteFromDB() throws Exception {
+		//check that this BlueBook Entry is in the DB before attempting to delete it
+		if(bbID==null){
+			//do nothing, this BlueBook Entry was never written to the database 
+			return;
+		}
+				
+		//create the connection to the database
+		Class.forName("org.sqlite.JDBC");
+	    Connection conn = DriverManager.getConnection("jdbc:sqlite:Database/umpd.db");	
+	    Statement stat = conn.createStatement();
+	    
+	    //perform delete
+	    stat.executeUpdate("DELETE FROM bluebook WHERE bbID = " + bbID);
+	    
+	    //close the connection
+	    conn.close();
+	    
+	}
+//-----------------------------------------------------------------------------
+	
 }

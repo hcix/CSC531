@@ -83,7 +83,6 @@ private static final long serialVersionUID = 1L;
 			}
 		});
 	    
-		
 		//Set up the new BOLO form
 		
 		//Add the BOLO "letter head" image to the top
@@ -115,10 +114,9 @@ private static final long serialVersionUID = 1L;
 
 //TODO: Add standard footer
 		
-
-	    /*Add buttons panel to top of scroll panel as the row header
-	     *(the buttons panel stays at the top of the screen even if the top of the form isn't
-	     *currently visible) */
+	    //Add buttons panel to top of scroll panel as the row header
+	    //	(the buttons panel stays at the top of the screen even if the top of the form isn't
+	    //	currently visible) 
 	    JPanel buttonsPanel = createButtonsPanel();
 	    dialogPanelScroller.setColumnHeaderView(buttonsPanel);	    
 	    
@@ -129,6 +127,7 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------	
 	/**
+	 * @JDOC
 	 * @see loadFromExistingBOLO()
 	 * @param parent
 	 * @param bolo
@@ -141,9 +140,8 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------	
 	/**
 	 * 
-	 * @return infoPanel
 	 */
-	public JPanel createPhysicalDescriptionPanel(){
+	private JPanel createPhysicalDescriptionPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout("","","[][][][][][nogrid]"));
 				
 		SwingHelper.addTitledBorder(infoPanel, "Physical Description");
@@ -204,9 +202,8 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	/**
 	 * 
-	 * @return infoPanel
 	 */
-	public JPanel createIncidentInfoPanel(){
+	private JPanel createIncidentInfoPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout());
 					
 		SwingHelper.addTitledBorder(infoPanel, "Incident Info");
@@ -237,9 +234,8 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	/**
 	 * 
-	 * @return narrativePanel
 	 */
-	public JPanel createNarrativePanel(){
+	private JPanel createNarrativePanel(){
 		JPanel narrativePanel = new JPanel(new MigLayout());
 		
 		SwingHelper.addTitledBorder(narrativePanel, "Narrative/Remarks");
@@ -259,9 +255,8 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	/**
 	 * 
-	 * @return adminPanel
 	 */
-	public JPanel createAdministrativePanel(){
+	private JPanel createAdministrativePanel(){
 		JPanel adminPanel = new JPanel(new MigLayout());
 		
 		SwingHelper.addTitledBorder(adminPanel, "Administrative Info");
@@ -288,9 +283,8 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	/**
 	 * 
-	 * @return photoVideoPanel
 	 */
-	public JPanel createPhotoVideoPanel(){
+	private JPanel createPhotoVideoPanel(){
 		JPanel photoVideoPanel = new JPanel(new MigLayout("fill"));
 		
 		//Create initial no-photo place holder photo
@@ -324,14 +318,14 @@ private static final long serialVersionUID = 1L;
 		return photoVideoPanel;
 	}
 //-----------------------------------------------------------------------------
-	/*
+	/**
 	 * 
 	 */
-	public JPanel createButtonsPanel(){
+	private JPanel createButtonsPanel(){
 	
 		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
 		
-		//Add cancel button
+		//Cancel button
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", 
 				"icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
@@ -341,7 +335,7 @@ private static final long serialVersionUID = 1L;
 			}
 		});
 	
-	    // Add save button
+	    //Save button
 	    JButton saveButton = SwingHelper.createImageButton("Save", 
 	    		"icons/save_48.png");
 	    saveButton.setToolTipText("Save BOLO");
@@ -351,7 +345,7 @@ private static final long serialVersionUID = 1L;
 	    	}
 	    });
 	    
-	    // Add preview button
+	    //Preview button
 	    JButton previewButton = new JButton("Preview");
 	    previewButton.setToolTipText("Preview and print final BOLO document");
 	    previewButton.addActionListener(new ActionListener() {
@@ -384,9 +378,9 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	* Save the information input into this form and close the dialog.
-	*/
-	public void saveAndClose(){
+	 * Save the information input into this form and close the dialog.
+	 */
+	private void saveAndClose(){
 
 		//place the info from the fields into a BOLO object
 		 putInfoIntoBoloObject();
@@ -414,7 +408,7 @@ private static final long serialVersionUID = 1L;
 	 /**
 	  * Places the info from the input fields into the global BOLO object.
 	  */
-	 public void putInfoIntoBoloObject(){
+	 private void putInfoIntoBoloObject(){
 		 String age, race, sex, height, weight, build, eyes, hair;
 		 String reference, caseNum, status, weapon;
 		 String preparedBy, approvedBy;
@@ -464,7 +458,7 @@ private static final long serialVersionUID = 1L;
 	 /**
 	  * Places the info from the input fields into the global BOLO object.
 	  */
-	 public void loadFromExistingBOLO(){
+	 private void loadFromExistingBOLO(){
 		 //set the filled in fields in the global BOLO object
 		 ageField.setText(bolo.getAge());
 		 
@@ -499,9 +493,8 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	 /**
 	  * 
-	  * @param photoPanel
 	  */
-	 public void chooseAndAddPhoto(final JPanel photoPanel){
+	 private void chooseAndAddPhoto(final JPanel photoPanel){
 		//show choose photo dialog
 		final JFileChooser fc = new JFileChooser();
 		fc.addChoosableFileFilter(FileHelper.getImageFilter());
@@ -539,7 +532,7 @@ private static final long serialVersionUID = 1L;
 	 * Erase any fields in the form that have been filled in and close the
 	 * dialog.
 	 */
-	 public void closeAndCancel() {
+	 private void closeAndCancel() {
 		//reset the form
 		eraseForm();
 	
@@ -566,7 +559,7 @@ private static final long serialVersionUID = 1L;
 	 /**
 	  * Erases <code>BOLOfrom</code>
 	  */
-	 public void eraseForm(){
+	 private void eraseForm(){
 		//set the text of all the form's fields to null
 		ageField.setText(null);
 		raceField.setText(null);
@@ -640,7 +633,7 @@ private static final long serialVersionUID = 1L;
 	  }
 //-----------------------------------------------------------------------------	
 	  /**
-	   * 
+	   * JDOC
 	   * @return this.newBOLOWascreated
 	   */
 	  public boolean isNewBOLOWascreated(){

@@ -134,7 +134,7 @@ public class SearchHelper {
 		 BlueBookEntry entry;
 		    while (allEntries.next()) {
 		    	entry = new BlueBookEntry();
-		    	entry.setBluebkID(allEntries.getInt("bbID"));
+		    	entry.setBbID(allEntries.getInt("bbID"));
 		    	
 		    	name = allEntries.getString("offenderName");
 		        if(name!=null){ entry.setName(name); }

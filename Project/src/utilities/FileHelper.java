@@ -268,7 +268,7 @@ return dirName;
 	public static Path savePhoto(ImageIcon imgIcn, String filename){
 		String progDir = getProgramDirPathName();
 		
-		System.out.printf("\nFileHelper: savePhoto(): filename = %s\n", filename);
+//DEBUG System.out.printf("\nFileHelper: savePhoto(): filename = %s\n", filename);
 		
 		//Specifies a system independent path
 		Path destinationFile = Paths.get(progDir, PHOTO_DIR, filename);

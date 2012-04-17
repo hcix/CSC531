@@ -21,7 +21,8 @@ import utilities.ui.ImageHandler;
 import utilities.ui.DisplayPanel;
 import utilities.ui.SwingHelper;
 /**
- * Configures UI for the Blue Book Tab
+ * JDOC
+ * Configures UI for the Blue Book Tab.
  */
 //-----------------------------------------------------------------------------	
 public class BlueBookTab extends JPanel implements ActionListener {
@@ -29,6 +30,9 @@ private static final long serialVersionUID = 1L;
 	ArrayList<BlueBookEntry> bluebook;
 	JFrame parent;
 //-----------------------------------------------------------------------------	
+	/**
+	 * JDOC
+	 */
 	public BlueBookTab(final JFrame parent){
 		this.setLayout(new BorderLayout());
 		this.parent=parent;
@@ -65,7 +69,7 @@ private static final long serialVersionUID = 1L;
 		this.add(buttonsPanel, BorderLayout.PAGE_END);
 	}
 //-----------------------------------------------------------------------------
-	JDialog createSearchDialog(JFrame parent){
+	private JDialog createSearchDialog(JFrame parent){
 		//Create the dialog and set the size
 		JDialog searchDialog = new JDialog(parent, "Search Blue Book Database", true);
 		searchDialog.setPreferredSize(SwingHelper.SEARCH_DIALOG_DIMENSION);
@@ -105,7 +109,7 @@ private static final long serialVersionUID = 1L;
 		return searchDialog;
 	}
 //-----------------------------------------------------------------------------	
-	public JPanel createEntriesPanel(){
+	private JPanel createEntriesPanel(){
 		JPanel entriesPanel = new JPanel(new MigLayout("gapx 30, wrap 4"));
 		JPanel entryPanel;
 		//Date prepDate;

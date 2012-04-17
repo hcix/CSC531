@@ -5,6 +5,8 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.ImageIcon;
 import utilities.ui.ImageHandler;
 //-----------------------------------------------------------------------------
@@ -19,10 +21,10 @@ public class Bolo {
 	private String preparedBy, approvedBy;
 	private String otherDescrip = null, narrative = null;
 	private Path photoFilePath = null, videoFilePath = null;
-	//private String photoFileName = null, videoFileName = null;
 	private long incidentDate=0, incidentTime=0, prepDate=0, prepTime=0;
 	private String[] fieldArray;
-	private int boloID;
+	private Integer boloID=null;
+	//private int bolo_id;
 //-----------------------------------------------------------------------------
 		/**
 		 * Creates a new <code>Bolo</code> object with all fields initially null
@@ -180,7 +182,7 @@ public class Bolo {
 	 */
 	public void setOtherDescrip(String otherDescrip) {
 		this.otherDescrip = otherDescrip;
-		fieldArray[8]=otherDescrip;
+//		fieldArray[8]=otherDescrip;
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -433,13 +435,12 @@ public class Bolo {
 	    prep.setLong(16, this.prepDate);
 	    prep.setString(17, this.otherDescrip);
 	    prep.setString(18, this.narrative);
-	    if(this.boloID!=0){ prep.setInt(21, this.boloID); }
+	    if(this.boloID!=null){ prep.setInt(21, this.boloID); }
 	    prep.setLong(22, this.incidentTime);
 	    prep.setLong(22, this.prepTime);
 	
 	    if(photoFilePath!=null){
 		    Path absPhotoFilePath = photoFilePath.toAbsolutePath();
-		    //URI imgURI = absPhotoFilePath.toUri();
 		    photoPathName = absPhotoFilePath.toString();
 	    }
 	    prep.setString(19, photoPathName);	    
@@ -458,6 +459,30 @@ public class Bolo {
 	    conn.setAutoCommit(true);
 	    
 	    //Close the connection
+	    conn.close();
+	    
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Deletes this BOLO object from the 'bolo' table in the database.
+	 * @throws Exception
+	 */
+	public void deleteFromDB() throws Exception {
+		//check that this BOLO is in the DB before attempting to delete it
+		if(boloID==null){
+			//do nothing, this BOLO was never written to the database 
+			return;
+		}
+				
+		//create the connection to the database
+		Class.forName("org.sqlite.JDBC");
+	    Connection conn = DriverManager.getConnection("jdbc:sqlite:Database/umpd.db");	
+	    Statement stat = conn.createStatement();
+	    
+	    //perform delete
+	    stat.executeUpdate("DELETE FROM bolo WHERE bolo_id = " + boloID);
+	    
+	    //close the connection
 	    conn.close();
 	    
 	}

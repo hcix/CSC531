@@ -38,9 +38,9 @@ public class BOLOtab extends JPanel  implements ActionListener {
 //-----------------------------------------------------------------------------
 	/**
 	 * Create the <code>BOLOtab</code> to hold Recent <code>Bolo</code>s and 
-	 * Archived <code>Bolo</code>s  
+	 * Archived <code>Bolo</code>s.  
 	 * 
-	 * @param parent
+	 * @param parent 
 	 */
 	public BOLOtab(final JFrame parent){
 		this.setLayout(new BorderLayout());
