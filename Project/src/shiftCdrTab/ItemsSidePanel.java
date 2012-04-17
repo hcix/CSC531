@@ -1,14 +1,14 @@
 package shiftCdrTab;
 
-import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+
 import net.miginfocom.swing.MigLayout;
 import progAdmin.itemsToReview.ItemRenderer;
 import progAdmin.itemsToReview.ItemToReview;
@@ -42,7 +42,7 @@ private static final long serialVersionUID = 1L;
 		JPanel panel = new JPanel(new MigLayout("flowy"));
 		//add a title
 		String title = "<html><h3>Items to Review</h3></html>";
-		JLabel titleLabel = new JLabel(title, JLabel.CENTER);
+		JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
 		panel.add(titleLabel, "alignx center");
 		//add the review items
 		addItemsToReview(panel);
@@ -93,15 +93,19 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 //	@Override
+	@Override
 	public void mousePressed(MouseEvent e) { }
 //-----------------------------------------------------------------------------
 //	@Override
+	@Override
 	public void mouseReleased(MouseEvent e) { }
 //-----------------------------------------------------------------------------
 //	@Override
+	@Override
 	public void mouseEntered(MouseEvent e) { }
 //-----------------------------------------------------------------------------
 //	@Override
+	@Override
 	public void mouseExited(MouseEvent e) { }
 //=============================================================================
 }

@@ -27,6 +27,7 @@ import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
@@ -112,7 +113,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		Date date = Calendar.getInstance().getTime();
 		SimpleDateFormat format = new SimpleDateFormat("EEEE,MMMM dd ");
 		JLabel shiftLabel = new JLabel("Shift for " + format.format(date)
-				+ " at " + rm.shiftTimeAsString(shiftTime) + ":00");
+				+ " at " + ResourceManager.shiftTimeAsString(shiftTime) + ":00");
 		// change the font at some point shiftLabel.setFont();
 
 		// place panes in roll call tab
@@ -270,7 +271,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	private void editLastRollCall() {
 		final JDialog popup = new JDialog(rm.getGuiParent(), "Edit Roll Call");
 		final JPanel mainPanel = new JPanel(new MigLayout());
-		JToolBar toolbar = new JToolBar("Toolbar", JToolBar.HORIZONTAL);
+		JToolBar toolbar = new JToolBar("Toolbar", SwingConstants.HORIZONTAL);
         ArrayList<String> rollNames = new ArrayList<String>();
         Date date = new Date();
         String mostRecentShiftAsString;
@@ -361,7 +362,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	}
 //-----------------------------------------------------------------------------
 	public void getShiftTime(ResourceManager rm) {
-		shiftTime = rm.getShiftTime();
+		shiftTime = ResourceManager.getShiftTime();
 	}
     public static int getMostRecentShift() {
 		return mostRecentShift;
@@ -390,21 +391,25 @@ private class RollCallTableModel extends AbstractTableModel implements
 	}
 
 //-----------------------------------------------------------------------------
+	@Override
 	public int getColumnCount() {
 		return columnNames.length;
 	}
 
 //-----------------------------------------------------------------------------
+	@Override
 	public int getRowCount() {
 		return data.length;
 	}
 
 //-----------------------------------------------------------------------------
+	@Override
 	public String getColumnName(int col) {
 		return columnNames[col];
 	}
 
 //-----------------------------------------------------------------------------
+	@Override
 	public Object getValueAt(int row, int col) {
 		return data[row][col];
 	}
@@ -415,6 +420,7 @@ private class RollCallTableModel extends AbstractTableModel implements
 	 * each cell. If we didn't implement this method, then the 'present'
 	 * column would contain text ("true"/"false"), rather than a check box.
 	 */
+	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Class getColumnClass(int c) {
 		return getValueAt(0, c).getClass();
@@ -424,6 +430,7 @@ private class RollCallTableModel extends AbstractTableModel implements
 	/*
 	 * Don't need to implement this method unless your table's editable.
 	 */
+	@Override
 	public boolean isCellEditable(int row, int col) {
 		return true;
 	}
@@ -433,6 +440,7 @@ private class RollCallTableModel extends AbstractTableModel implements
 	 * Don't need to implement this method unless your table's data can
 	 * change.
 	 */
+	@Override
 	public void setValueAt(Object value, int row, int col) {
 		if (DEBUG) {
 			System.out.println("Setting value at " + row + "," + col
@@ -490,6 +498,7 @@ private class RollCallTableModel extends AbstractTableModel implements
 	}
 
 //-----------------------------------------------------------------------------
+	@Override
 	public void tableChanged(TableModelEvent e) {
 		/*
 		 * int row = e.getFirstRow(); int column = e.getColumn(); TableModel

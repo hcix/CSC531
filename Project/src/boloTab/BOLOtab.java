@@ -19,6 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import net.miginfocom.swing.MigLayout;
 import utilities.DatabaseHelper;
 import utilities.ui.ImageHandler;
@@ -66,6 +68,7 @@ public class BOLOtab extends JPanel  implements ActionListener {
 		newBOLOButton.addActionListener(new ActionListener() {
 			//BOLO form dialog
 			BOLOform formDialog = new BOLOform(parent);
+			@Override
 			public void actionPerformed(ActionEvent e){
 				formDialog.setVisible(true);	
 				
@@ -86,6 +89,7 @@ public class BOLOtab extends JPanel  implements ActionListener {
 
 		importBOLOButton.addActionListener(new ActionListener() {
 			//file chooser dialog
+			@Override
 			public void actionPerformed(ActionEvent e){
 				//file chooser dialog .setVisable(true);
 				//Create a file chooser
@@ -104,6 +108,7 @@ public class BOLOtab extends JPanel  implements ActionListener {
 		searchButton.addActionListener(new ActionListener() {
 			//Search dialog
 			JDialog searchDialog = createSearchDialog(parent);
+			@Override
 			public void actionPerformed(ActionEvent e){
 				searchDialog.setVisible(true);
 			}
@@ -212,7 +217,7 @@ public class BOLOtab extends JPanel  implements ActionListener {
 				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
 			}
 			
-			boloPanel.add(new JLabel(armedText, JLabel.CENTER), "alignx center,wrap");
+			boloPanel.add(new JLabel(armedText, SwingConstants.CENTER), "alignx center,wrap");
 			
 			boloPanel.add(new JLabel(date), "split 3, aligny top");
 			boloPanel.add(new JLabel("Case#: "+caseNum));

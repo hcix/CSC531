@@ -23,6 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
@@ -401,7 +402,7 @@ public class SwingHelper {
 	public static JPanel makeTextPanel(String text) {
 	    JPanel panel = new JPanel(false);
 	    JLabel filler = new JLabel(text);
-	    filler.setHorizontalAlignment(JLabel.CENTER);
+	    filler.setHorizontalAlignment(SwingConstants.CENTER);
 	    panel.setLayout(new GridLayout(1, 1));
 	    panel.add(filler);
 	    return panel;
@@ -479,8 +480,8 @@ public class SwingHelper {
 		
 		ImageIcon buttonIcon = ImageHandler.createImageIcon(imagePath);
 		JButton imageButton= new JButton(buttonText, buttonIcon);
-		imageButton.setVerticalTextPosition(AbstractButton.BOTTOM);
-		imageButton.setHorizontalTextPosition(AbstractButton.CENTER);
+		imageButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		imageButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		
 		return imageButton;
 	}
@@ -519,6 +520,7 @@ public class SwingHelper {
         JLabel armedLabel = new JLabel("Armed?");
 		JCheckBox armedFieldNo = new JCheckBox("No");
 		armedFieldNo.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				ifYesField.setVisible(false);
 			}
@@ -526,6 +528,7 @@ public class SwingHelper {
 		
 		JCheckBox armedFieldYes = new JCheckBox("Yes");
 		armedFieldYes.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				ifYesField.setVisible(true);
 			}

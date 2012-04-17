@@ -32,7 +32,6 @@ import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import shiftCdrTab.RollCall;
-import shiftCdrTab.ShiftCdrTab;
 import utilities.DatabaseHelper;
 import utilities.FileHelper;
 import utilities.pdf.PDFView;
@@ -63,6 +62,7 @@ private static final long serialVersionUID = 1L;
 			newButton.addActionListener(new ActionListener() {
 				//Shift CDR form dialog
 				//ShiftReportForm formDialog = new ShiftReportForm(rm, null);
+				@Override
 				public void actionPerformed(ActionEvent e){
 					String mostRecentShift = System.getProperty("UMPD.latestShiftTime");
 					ArrayList<RollCall> rollCall;
@@ -95,6 +95,7 @@ private static final long serialVersionUID = 1L;
 					"icons/Import.png");
 			importButton.addActionListener(new ActionListener() {
 				//file chooser dialog
+				@Override
 				public void actionPerformed(ActionEvent e){
 					//show choose photo dialog
 					final JFileChooser fc = new JFileChooser();
@@ -127,6 +128,7 @@ private static final long serialVersionUID = 1L;
 			searchButton.addActionListener(new ActionListener() {
 				//Search dialog
 				JDialog searchDialog = createSearchDialog(parent);
+				@Override
 				public void actionPerformed(ActionEvent e){
 					searchDialog.setVisible(true);
 					//TODO Implement Search
@@ -259,6 +261,7 @@ private static final long serialVersionUID = 1L;
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				//closeAndCancel( );
 			}
@@ -268,7 +271,8 @@ private static final long serialVersionUID = 1L;
 	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
 	    saveButton.setToolTipText("Save Report");
 	    saveButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		//closeAndSave();
 	    	}
 	    });

@@ -5,14 +5,14 @@ import java.nio.file.Paths;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.FileHandler;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 import net.miginfocom.swing.MigLayout;
-import utilities.FileHelper;
 import utilities.ui.ImageHandler;
 
 //-----------------------------------------------------------------------------
@@ -47,7 +47,7 @@ public class LayoutTester2 extends JPanel {
 		//JLabel textArea = new JLabel(date + "\n" + "Case #: " + caseNum + "\n\n" + status);
 		//boloPanel.add(new JLabel(photo));
 		boloPanel.add(new JLabel(photo));
-		boloPanel.add(new JLabel("ARMED", JLabel.CENTER), "alignx center,wrap");
+		boloPanel.add(new JLabel("ARMED", SwingConstants.CENTER), "alignx center,wrap");
 		boloPanel.add(new JLabel(date), "split 3, aligny top");
 		boloPanel.add(new JLabel("Case#: "+caseNum));
 		boloPanel.add(new JLabel(status));

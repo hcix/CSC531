@@ -3,8 +3,6 @@ package utilities.pdf;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -591,6 +589,7 @@ System.out.println("selected one is : components[0].toString()");
 				decode_pdf.setDisplayView(Display.SINGLE_PAGE, Display.DISPLAY_LEFT_ALIGNED);
 			} else {
 				final Runnable doPaintComponent = new Runnable() {
+					@Override
 					public void run() {
 						decode_pdf.setDisplayView(Display.SINGLE_PAGE, Display.DISPLAY_LEFT_ALIGNED);
 					}
@@ -602,6 +601,7 @@ System.out.println("selected one is : components[0].toString()");
 				decode_pdf.setDisplayView(Display.SINGLE_PAGE, Display.DISPLAY_CENTERED);
 			} else {
 				final Runnable doPaintComponent = new Runnable() {
+					@Override
 					public void run() {
 						decode_pdf.setDisplayView(Display.SINGLE_PAGE, Display.DISPLAY_CENTERED);
 					}

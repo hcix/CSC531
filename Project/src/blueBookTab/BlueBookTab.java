@@ -15,6 +15,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import net.miginfocom.swing.MigLayout;
 import utilities.DatabaseHelper;
 import utilities.ui.ImageHandler;
@@ -40,6 +42,7 @@ private static final long serialVersionUID = 1L;
 		newEntryButton.addActionListener(new ActionListener() {
 			//Create new Blue Book entry form dialog
 			BlueBookForm formDialog = new BlueBookForm(parent);
+			@Override
 			public void actionPerformed(ActionEvent e){
 				formDialog.setVisible(true);
 			}
@@ -50,6 +53,7 @@ private static final long serialVersionUID = 1L;
 		searchButton.addActionListener(new ActionListener() {
 			//Search dialog
 			JDialog searchDialog = createSearchDialog(parent);
+			@Override
 			public void actionPerformed(ActionEvent e){
 				searchDialog.setVisible(true);
 			}
@@ -140,7 +144,7 @@ private static final long serialVersionUID = 1L;
 				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
 			}
 			
-			entryPanel.add(new JLabel(armedText, JLabel.CENTER), "alignx center,wrap");
+			entryPanel.add(new JLabel(armedText, SwingConstants.CENTER), "alignx center,wrap");
 			
 			entryPanel.add(new JLabel(" "), "split 3, aligny top");
 			entryPanel.add(new JLabel("Case#: "+caseNum));

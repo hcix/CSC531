@@ -23,7 +23,8 @@ public class Core extends JFrame {
 	public static void main(String[] args) {
 	    //Schedule a job for the event dispatch thread: creating and showing the GUI
 	    SwingUtilities.invokeLater(new Runnable() {
-	        @SuppressWarnings("deprecation")
+	        @Override
+			@SuppressWarnings("deprecation")
 			public void run() {
 	        	
 	        	//Use the native systems look and feel

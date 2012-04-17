@@ -3,7 +3,6 @@ package userinterface;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,6 +11,8 @@ import java.util.LinkedList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 import utilities.FileHelper;
 import utilities.ui.SwingHelper;
 import net.miginfocom.swing.MigLayout;
@@ -50,14 +51,14 @@ public class HomeTab extends JPanel implements ActionListener {
 
 		JLabel welcomeLabel = new JLabel(
 				"<html><font size=\"8\">Welcome, Officer xyz</font>",
-				JLabel.CENTER);
+				SwingConstants.CENTER);
 		panel.add(welcomeLabel);
 		// panel.add(jsep);
 
 		JLabel welcomeTextLabel = new JLabel(
 				"<html><font size = \"4\">Hello all, this is a message from the Chief.<br>"
 						+ "I just wanted to say good work on apprehending that BOLO last week.<br>  Keep it up!</font>",
-				JLabel.CENTER);
+				SwingConstants.CENTER);
 		// welcomeText.setPreferredSize(new Dimension(100, 100));
 		panel.add(welcomeTextLabel);
 		// panel.add(jsep);

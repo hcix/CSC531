@@ -191,6 +191,7 @@ JPanel dialogPanel;
 		
 		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", "icons/camera.png");
 		addPhotoButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				//chooseAndAddPhoto(photoPanel);
 			}

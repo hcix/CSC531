@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
-import utilities.pdf.PDFViewHelper;
 import utilities.ui.ImageHandler;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
@@ -69,6 +68,7 @@ public class BOLOpreview extends JDialog {
 
 		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
 		this.addWindowListener(new WindowAdapter( ) {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				//setVisible(false);
 				closeAndCancel();
@@ -268,6 +268,7 @@ public class BOLOpreview extends JDialog {
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				closeAndCancel();
 			}
@@ -277,7 +278,8 @@ public class BOLOpreview extends JDialog {
 	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
 	    saveButton.setToolTipText("Save BOLO");
 	    saveButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		saveAndClose();
 	    	}
 	    });
@@ -287,7 +289,8 @@ public class BOLOpreview extends JDialog {
 	    		SwingHelper.createImageButton("Edit", "icons/edit_48.png");
 	    editButton.setToolTipText("Edit this BOLO");
 	    editButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		//BOLO form dialog
 				BOLOform formDialog = new BOLOform(parent, bolo);
 				setVisible(false);
@@ -300,7 +303,8 @@ public class BOLOpreview extends JDialog {
 	    		SwingHelper.createImageButton("Print", "icons/print_48.png");
 	    printButton.setToolTipText("Print this BOLO document");
 	    printButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	 //   		PrintHelper ph = new PrintHelper(dialogPanel);
 	    	}
 	    });
@@ -309,7 +313,8 @@ public class BOLOpreview extends JDialog {
 	    JButton emailButton = new JButton("<html>Email<br>BOLO</html>");
 	    emailButton.setToolTipText("Email this BOLO document");
 	    emailButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		//
 	    	}
 	    });
