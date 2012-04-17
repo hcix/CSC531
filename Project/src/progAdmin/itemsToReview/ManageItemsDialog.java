@@ -11,7 +11,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -32,17 +31,18 @@ import utilities.ui.SwingHelper;
 /**
  * JDOC
  */
-public class ManageItemsDialog  extends JDialog implements MouseListener{
+public class ManageItemsDialog  extends JDialog implements MouseListener, ActionListener{
 private static final long serialVersionUID = 1L;
-	//ItemToReview item;
-	JTextField titleField;
-	JTextArea textArea;
-	//ArrayList<ItemToReview> items;
 	final JTable table=new JTable();
 	final JPanel itemsPanel = new JPanel();
-	final ResourceManager rm;
+	ResourceManager rm;
+	JTextField titleField;
+	JTextArea textArea;
+	static final String ADD_ITEM = "add";
+	static final String DELETE_ITEM = "delete";
+	static final String EDIT_ITEM = "edit";
 //-----------------------------------------------------------------------------
-	public ManageItemsDialog(final ResourceManager rm){
+	public ManageItemsDialog(ResourceManager rm){
 		super(rm.getGuiParent(), "Manage Review Items", true);
 		this.rm=rm;
 		this.setPreferredSize(new Dimension(700,700));
@@ -63,51 +63,18 @@ private static final long serialVersionUID = 1L;
 		
 		JButton addNewItemButton = 
 				SwingHelper.createImageButton("Add Item", "icons/plusSign_48.png");
-		addNewItemButton.addActionListener(new ActionListener() {
-			AddItemDialog itemDialog = new AddItemDialog(rm);
-			public void actionPerformed(ActionEvent e) {
-				itemDialog.setVisible(true);
-				itemDialog.setModal(true);
-				//refresh items list from ResourceManager
-				//items=rm.getItems();
-				table.repaint();
-				
-			}
-		});
+		addNewItemButton.setActionCommand(ADD_ITEM);
+		addNewItemButton.addActionListener(this);
 		
-		JButton deleteItemButton = SwingHelper
-				.createImageButton("Delete Item", "icons/delete_48.png");
-		deleteItemButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int rowIndex = table.getSelectedRow();
-				//delete the selected item
-				//items.remove(rowIndex);
-				//rm.setItems(items);
-				rm.removeItem(rowIndex);
-				table.repaint();
-			}
-		});
+		JButton deleteItemButton = 
+				SwingHelper.createImageButton("Delete Item", "icons/delete_48.png");
+		deleteItemButton.setActionCommand(DELETE_ITEM);
+		deleteItemButton.addActionListener(this);
 		
-		JButton editItemButton = SwingHelper
-				.createImageButton("Edit Item", "icons/edit_48.png");
-		editItemButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int rowIndex = table.getSelectedRow();
-				if(rowIndex>=0){
-					//show the ReadItemDialog to display the item
-		           // ReadItemDialog readItem = new ReadItemDialog(
-		            	//	rm.getGuiParent(), items.get(rowIndex));
-					ReadItemDialog readItem = new ReadItemDialog(
-		            		rm.getGuiParent(), rm.getItems().get(rowIndex));
-		            readItem.makeEditable();
-		            readItem.setVisible(true);
-		            //wait on the ReadItemDialog to be closed
-		            readItem.setModal(true);
-		            //items=rm.getItems();
-		            table.repaint();
-				}
-			}
-		});
+		JButton editItemButton = 
+				SwingHelper.createImageButton("Edit Item", "icons/edit_48.png");
+		editItemButton.setActionCommand(EDIT_ITEM);
+		editItemButton.addActionListener(this);
 		
 		mainPanel.add(addNewItemButton);
 
@@ -136,7 +103,6 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	private void closeAndCancel(){
-
 		this.dispose();
 	}	
 //-----------------------------------------------------------------------------
@@ -178,6 +144,42 @@ private static final long serialVersionUID = 1L;
 	    }
 	    
 		return itemsPanel;
+	}
+//-----------------------------------------------------------------------------
+	public void refreshItemsTable(){
+		table.repaint();
+	}
+//-----------------------------------------------------------------------------
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String command = e.getActionCommand();
+		if(command.equals(ADD_ITEM)){
+			AddItemDialog itemDialog = new AddItemDialog(rm);
+			itemDialog.setVisible(true);
+			itemDialog.setModal(true);
+			//refresh items list from ResourceManager
+			table.repaint();
+		} else if(command.equals(DELETE_ITEM)){
+			int rowIndex = table.getSelectedRow();
+			rm.removeItem(rowIndex);
+			table.repaint();
+		} else if (command.equals(EDIT_ITEM)){
+			int rowIndex = table.getSelectedRow();
+			if(rowIndex>=0){
+				//show the ReadItemDialog to display the item
+	           // ReadItemDialog readItem = new ReadItemDialog(
+	            	//	rm.getGuiParent(), items.get(rowIndex));
+				ReadItemDialog readItem = new ReadItemDialog(
+	            		rm.getGuiParent(), rm.getItems().get(rowIndex));
+	            readItem.makeEditable();
+	            readItem.setVisible(true);
+	            //wait on the ReadItemDialog to be closed
+	            readItem.setModal(true);
+	            //items=rm.getItems();
+	            table.repaint();
+			}
+		}
+		
 	}
 //-----------------------------------------------------------------------------
 	@Override
@@ -224,19 +226,13 @@ private static final long serialVersionUID = 1L;
 	private class ItemsTableModel extends AbstractTableModel implements TableModelListener {
 		private static final long serialVersionUID = 1L;
 		private String[] columnNames = {"Reviewed","Title","Details"};
-		
+
        // private ArrayList<ItemToReview> items = new ArrayList<ItemToReview>();
 //-----------------------------------------------------------------------------
    //     public ItemsTableModel(ArrayList<ItemToReview> items) {
 		public ItemsTableModel() {
-			
-        	//this.items=items;
         	
         }
-//-----------------------------------------------------------------------------
-    /*    public void setList(ArrayList<ItemToReview> newItems) {
-        	this.items = newItems;
-        }*/
 //-----------------------------------------------------------------------------
         public int getColumnCount() {
         	return columnNames.length;
@@ -269,7 +265,7 @@ private static final long serialVersionUID = 1L;
 	    	} else {
 	    		return (rm.getItems().get(row).getDetails());
 	    	}
-	    	
+
 	    }
 //-----------------------------------------------------------------------------
 	    /*
@@ -287,7 +283,7 @@ private static final long serialVersionUID = 1L;
 	     * Implement this method if your table's data can change.
 	     */
 	    public void setValueAt(Object value, int row, int col) {
-	
+
 	    	// data[row][col] = value;
 	    	/*
 	    	if(col==0){
@@ -298,7 +294,7 @@ private static final long serialVersionUID = 1L;
 	    		items.get(row).setDetails((String)value);
 	    	}
 	    	*/
-	    	
+
 	    }
 //-----------------------------------------------------------------------------  
 	/*	public void addRow(ItemToReview item) {  

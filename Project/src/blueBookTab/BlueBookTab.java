@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import utilities.DatabaseHelper;
 import utilities.ui.ImageHandler;
-import utilities.ui.ItemsViewerPanel;
+import utilities.ui.DisplayPanel;
 import utilities.ui.SwingHelper;
 /**
  * Configures UI for the Blue Book Tab
@@ -153,7 +153,7 @@ private static final long serialVersionUID = 1L;
 			i++;
 		}
 		
-		ItemsViewerPanel itemsPanel = new ItemsViewerPanel(items, this);
+		DisplayPanel itemsPanel = new DisplayPanel(items, this);
 		
 		entriesPanel.add(itemsPanel);
 	

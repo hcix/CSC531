@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import utilities.DatabaseHelper;
 import utilities.ui.ImageHandler;
-import utilities.ui.ItemsViewerPanel;
+import utilities.ui.DisplayPanel;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
@@ -157,8 +157,6 @@ private static final long serialVersionUID = 1L;
 		JPanel recentBOLOsPanel = new JPanel(new MigLayout());
 		JPanel boloPanel;
 		Date prepDate;
-	
-		//TODO: make scrollable!
 
 		try {
 			boloList = DatabaseHelper.getBOLOsFromDB();
@@ -207,7 +205,7 @@ private static final long serialVersionUID = 1L;
 			i++;
 		}
 		
-		ItemsViewerPanel entriesPanel = new ItemsViewerPanel(items, this, 4);
+		DisplayPanel entriesPanel = new DisplayPanel(items, this, 4);
 		
 		recentBOLOsPanel.add(entriesPanel);
 		
