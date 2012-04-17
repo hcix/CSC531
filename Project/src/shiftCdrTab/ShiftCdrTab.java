@@ -220,7 +220,15 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	}
 //-----------------------------------------------------------------------------
     private void getPrevRollCall() {
+    	
+    	//BUG Same bug in next I believe. Always saves the date in the database as current
+    	//date, not sure why yet, have to trace through. so many date/calendar objects. Somehow
+    	//related to currentShiftDate I think, which should be changed everytime you get a new
+    	//shift.
+    	
+    	boolean moveOn = false;
     	ArrayList<String> names;
+    	ArrayList<RollCall> rollCallList;
     	// get the next roll call
     	if (shiftTime == 10 || shiftTime == 22)
     		shiftTime -= 4;
@@ -246,22 +254,44 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
     		System.out.println("couldn't increment shiftTime:line 226 ShiftCdrTab");
     		return;
     	}
-    	try {
-    		// TODO figure out best functionality for going back and forth
-    		// shifts
-    		//testing change from nextShift to updatedShiftTime
-    		names = rm.getRollCall(shiftTime, currentShiftDate);
-    		table.setModel(new RollCallTableModel(names));
-    	} catch (Exception e) {
-    		System.out.println("couldn't get next roll call");
-    	}
     	
+    	//first see if a roll call exists for this shift
+    	Format format = new SimpleDateFormat("ddMMMyyyy" + shiftTime + "00");
+    	Date date = currentShiftDate.getTime();
+    	try {
+			rollCallList = dbHelper.getRollCallFromDatabase(format.format(date));
+			if (rollCallList.isEmpty()) 
+				moveOn = true;
+			else
+			    updateTable(rollCallList);
+		} catch (Exception e1) {
+			System.out.println("Couldn't get rollcall from database- ShiftCdrTab line 257");
+			e1.printStackTrace();
+		    moveOn = true;
+		}
+    	
+    	if (moveOn) {
+    	    try {
+    		    // TODO figure out best functionality for going back and forth
+    		    // shifts
+    		    //testing change from nextShift to updatedShiftTime
+    		    names = rm.getRollCall(shiftTime, currentShiftDate);
+    		    table.setModel(new RollCallTableModel(names));
+    	    } catch (Exception e) {
+    		    System.out.println("couldn't get next roll call");
+    	    }
+    		//shiftLabel.setText("No shift found for " + format.format(currentShiftDate.getTime())
+    			//	+ " at " + rm.shiftTimeAsString(shiftTime) + ":00");
+    		//table.setModel(new RollCallTableModel());
+    	}       
     	refreshShiftLabel();
-		
 	}
 //-----------------------------------------------------------------------------
     private void getNextRollCall() {
+    	
+    	boolean moveOn = false;
     	ArrayList<String> names;
+    	ArrayList<RollCall> rollCallList;
     	// get the next roll call
     	if (shiftTime == 6 || shiftTime == 18)
     		//nextShift = shiftTime + 4;
@@ -291,16 +321,33 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
     		System.out.println("couldn't increment shiftTime:line 226 ShiftCdrTab");
     		return;
     	}
-    	try {
-    		// TODO figure out best functionality for going back and forth
-    		// shifts
-    		//testing change from nextShift to updatedShiftTime
-    		names = rm.getRollCall(shiftTime, currentShiftDate);
-    		table.setModel(new RollCallTableModel(names));
-    	} catch (Exception e) {
-    		System.out.println("couldn't get next roll call");
-    	}
     	
+    	//first see if a roll call exists for this shift
+    	Format format = new SimpleDateFormat("ddMMMyyyy" + shiftTime + "00");
+    	Date date = currentShiftDate.getTime();
+    	try {
+			rollCallList = dbHelper.getRollCallFromDatabase(format.format(date));
+			if (rollCallList.isEmpty()) 
+				moveOn = true;
+		    else 
+			    updateTable(rollCallList);
+		} catch (Exception e1) {
+			System.out.println("Couldn't get rollcall from database- ShiftCdrTab line 257");
+			//e1.printStackTrace();
+			moveOn = true;
+		}
+    	
+    	if (moveOn) { 
+    	   try {
+    		    // TODO figure out best functionality for going back and forth
+    		    // shifts
+    		    //testing change from nextShift to updatedShiftTime
+    	 	    names = rm.getRollCall(shiftTime, currentShiftDate);
+    		    table.setModel(new RollCallTableModel(names));
+    	    } catch (Exception e) {
+    		    System.out.println("couldn't get next roll call");
+    	    }
+    	}
     	refreshShiftLabel();
 	}
 //-----------------------------------------------------------------------------
@@ -325,7 +372,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 			comment = (String) table.getModel().getValueAt(i, j++);
 			Calendar cal = Calendar.getInstance();
 			date = cal.getTime();
-			format = new SimpleDateFormat("ddMMMyyyy:" + shiftTime + ":00");
+			format = new SimpleDateFormat("ddMMMyyyy" + shiftTime + "00");
 			shiftDate = format.format(date);
 
 			// push to person
@@ -363,6 +410,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	}
 	
 //-----------------------------------------------------------------------------
+	@Deprecated
 	private void editLastRollCall() {
 		final JDialog popup = new JDialog(rm.getGuiParent(), "Edit Roll Call");
 		final JPanel mainPanel = new JPanel(new MigLayout());
@@ -381,7 +429,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
         	return;
         }
    
-        Format format = new SimpleDateFormat("ddMMMyyyy:" + mostRecentShiftAsString + ":00");
+        Format format = new SimpleDateFormat("ddMMMyyyy" + mostRecentShiftAsString + "00");
         try {
 			rollCallList = dbHelper.getRollCallFromDatabase(format.format(date));
 		} catch (Exception e1) {
@@ -435,6 +483,44 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		popup.setVisible(true);
 	}
 
+	
+// -----------------------------------------------------------------------------
+    private void updateTable(ArrayList<RollCall> rollCallList) {
+    
+    ArrayList<String> rollNames = new ArrayList<String>();
+    
+    //get the list of names
+    for (RollCall rollCall : rollCallList) {
+    	rollNames.add(rollCall.getName());
+    }
+    
+    /*
+     * run this method, adds the appropriate number of rows to the table
+     * should be done differently, will work for now
+     */   
+    //makeTablePanel(rollNames);
+    //add the rest of the fields
+    
+    table.setModel(new RollCallTableModel(rollNames));
+	int i = 0;
+	int j;
+	for (RollCall rollCall : rollCallList) {
+		j = 1;
+		//convert to boolean
+		if (rollCall.getPresent().equals("true")) 
+		    table.setValueAt(true, i, j++);
+		else if (rollCall.getPresent().equals("false"))
+			table.setValueAt(false, i, j++);
+		else  {
+			//debug
+			System.out.println("value unkown, set to false");
+			table.setValueAt(false, i, j++);
+		}
+   		table.setValueAt(rollCall.getTimeArrived(), i, j++);
+		table.setValueAt(rollCall.getComment(), i++, j++);
+	}
+}
+	
 // -----------------------------------------------------------------------------
 	public JSpinner createtimeSpinner() {
 		JSpinner timeSpinner;
@@ -473,6 +559,13 @@ private class RollCallTableModel extends AbstractTableModel implements
 	// JSpinner spinner = createtimeSpinner();
 
 	private Object[][] data = new Object[0][0];
+//-----------------------------------------------------------------------------
+	public RollCallTableModel() {
+
+		/*
+		 * blank table
+		 */
+	}
 //-----------------------------------------------------------------------------
 	public RollCallTableModel(ArrayList<String> names) {
 
