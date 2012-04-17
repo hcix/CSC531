@@ -25,18 +25,25 @@ import utilities.ui.ImageHandler;
 import utilities.ui.ImagePreview;
 import utilities.ui.ResizablePhotoDialog;
 import utilities.ui.SwingHelper;
-/**
- * Creates UI for BlueBook input form.
- */
 //-----------------------------------------------------------------------------
+/**
+ * The <code>BlueBookForm</code> class is where the information of a given <code>BlueBookEntry</code>
+ * is entered by the user. 
+ */
 public class BlueBookForm extends JDialog {
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	BlueBookEntry bbEntry;
 	JTextField caseNumField, nameField, affiliField, addressField, ifYesField;
 	JTextArea locationField, descriptionField, reasonField;
 	JPanel photoArea;
 	JPanel inputPanel;
 //-----------------------------------------------------------------------------
+	/**
+	 * Creates a new window, sets the window and creates a new 
+	 * <code>BlueBookEntry</code> instance
+	 * 
+	 * @param parent
+	 */
 	public BlueBookForm(JFrame parent) {
 		super(parent, "New Blue Book Entry", true);
 		//Set the size of the form
@@ -79,6 +86,12 @@ private static final long serialVersionUID = 1L;
 	    contentPane.add(inputScrollPane);
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Constructor
+	 * 
+	 * @param parent
+	 * @param entry
+	 */
 	BlueBookForm(JFrame parent, BlueBookEntry entry){
 		this(parent);
 		this.bbEntry = entry;
@@ -106,9 +119,13 @@ private static final long serialVersionUID = 1L;
 			photoArea.add(new JLabel(photo));
 		 }
 		 inputPanel.validate(); 
-	}
+	 }
 //-----------------------------------------------------------------------------
-	private JPanel createInputPanel() {
+	/**
+	 * Create and set the <code>inputPanel</code>
+	 * @return inputPanel
+	 */
+	 private JPanel createInputPanel() {
 		
 		// create and set panels
 		JPanel inputPanel = new JPanel();
@@ -179,9 +196,13 @@ private static final long serialVersionUID = 1L;
 		SwingHelper.addArmedQuestionCheckboxes(inputPanel, ifYesField);
 		
 		return inputPanel;
-	}
+	 }
 //-----------------------------------------------------------------------------
-	private JPanel createButtonsPanel(){
+	/**
+	 * 
+	 * @return buttonsPanel
+	 */
+	 private JPanel createButtonsPanel(){
 		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
 		
 		//Add cancel button
@@ -218,9 +239,13 @@ private static final long serialVersionUID = 1L;
 	    buttonsPanel.add(previewButtonPanel, "growx, shrinky");
 	    SwingHelper.addLineBorder(buttonsPanel);
 	    return buttonsPanel;
-	}
+	 }
 //-----------------------------------------------------------------------------
-	private JPanel createPhotoPanel(){
+	/**
+	 * 
+	 * @return photoPanel
+	 */ 
+	 private JPanel createPhotoPanel(){
 		final JPanel photoPanel = new JPanel(new MigLayout());
 		photoArea = photoPanel;
 		//Create initial no-photo place holder photo
@@ -291,10 +316,10 @@ private static final long serialVersionUID = 1L;
 		 reasonText=reasonField.getText();
 		 if(!reasonText.isEmpty()){ bbEntry.setNarrative(reasonText); }
 		 
-	}
+	 }
 //-----------------------------------------------------------------------------
 	 /**
-	  * Places the info from the input fields into the global bbEntry object.
+	  * Places the info from the input fields into the global <code>bbEntry</code> object.
 	  */
 	 public void loadFromExistingbbEntry(){
 
@@ -314,8 +339,12 @@ private static final long serialVersionUID = 1L;
 
 //TODO: place the photo into the form
 		 
-	}
+	 }
 //-----------------------------------------------------------------------------
+	 /**
+	  * Add a photo to the respective entry 
+	  * @param photoPanel
+	  */
 	 public void chooseAndAddPhoto(final JPanel photoPanel){
 			//show choose photo dialog
 			final JFileChooser fc = new JFileChooser();
@@ -330,7 +359,7 @@ private static final long serialVersionUID = 1L;
 				//copy the chosen photo into the program's 'Photos' directory
 				final File file = fc.getSelectedFile();
 				
-System.out.printf("BlueBookForm: chooseAndAddPhoto: filepath = %s\n", file.getPath());
+				System.out.printf("BlueBookForm: chooseAndAddPhoto: filepath = %s\n", file.getPath());
 
 				ImageIcon chosenPhoto = new ImageIcon(file.getPath());
 				
@@ -363,6 +392,9 @@ System.out.printf("BlueBookForm: chooseAndAddPhoto: filepath = %s\n", file.getPa
 		this.dispose();	
 	 }
 //-----------------------------------------------------------------------------
+	 /**
+	  * Sets the form to its default with all fields null
+	  */
 	 public void eraseForm(){
 		//set the text of all the form's fields to null
 		caseNumField.setText(null);

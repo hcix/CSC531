@@ -217,9 +217,9 @@ private static final long serialVersionUID = 1L;
 				engine.eval(reader);
 				Object result = engine.get("isAccepted");
 				reader.close();
-				if((int)(result) == -1){
-					return ERROR_BAD_PASSWORD;
-				}
+//				if((int)(result) == -1){
+//					return ERROR_BAD_PASSWORD;
+//				}
 			}catch(Exception e){
 				e.printStackTrace();
 			}

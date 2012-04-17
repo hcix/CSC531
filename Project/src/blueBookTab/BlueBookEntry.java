@@ -9,7 +9,9 @@ import utilities.ui.ImageHandler;
 
 //-----------------------------------------------------------------------------
 /**
- *Class representing a BOLO.
+ * The <code>BlueBookEntry</code> class represents a particular incident instance 
+ * including name, date of birth, affiliation, address, crime description, narrative
+ * date, time, location, case number, weapon, and attached photos and videos
  */
 public class BlueBookEntry {
 	/** Name of individual associated with a BOLO */
@@ -47,16 +49,16 @@ public class BlueBookEntry {
 	/** ID of BOLO in the Blue book*/
 	private int bluebkID=0;
 //-----------------------------------------------------------------------------
-		/**
-		 * Creates a new BlueBookEntry with all fields initially empty
-		 */
-		public BlueBookEntry(){
-			
-		}
+	/**
+	 * Creates a new <code>BlueBookEntry</code> with all fields initially empty
+	 */
+	public BlueBookEntry(){
+		
+	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Returns the name on file for the BOLO
-	 * @return name of individual affiliated with this particular BOLO
+	 * 
+	 * @return name
 	 */
 	public String getName() {
 		return name;
@@ -72,233 +74,236 @@ public class BlueBookEntry {
 //-----------------------------------------------------------------------------
 	/**
 	 * Sets the date of birth for a BOLO individual
-	 * @return dob - 
+	 * @return dob - date of birth
 	 */
 	public String getDob() {
 		return dob;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param dob - the date of birth value to set
+	 * @param dob - date of birth
 	 */
 	public void setDob(String dob) {
 		this.dob = dob;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Returns affiliation of a BOLO individual
-	 * @return affili - 
+	 * 
+	 * @return affili - affiliation
 	 */
 	public String getAffili() {
 		return affili;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Sets affiliation of a BOLO individual
-	 * @param affili - the affili value to set
+	 * @param affili - affiliation
 	 */
 	public void setAffili(String affili) {
 		this.affili = affili;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return address - 
+	 * @return address - address of the individual 
 	 */
 	public String getAddress() {
 		return address;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param address - the address value to set
+	 * @param address - address of the individual 
 	 */
 	public void setAddress(String address) {
 		this.address = address;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Returns description of the crime
-	 * @return crimeDescrip - 
+	 * 
+	 * @return crimeDescrip - description of the crime
 	 */
 	public String getCrimeDescrip() {
 		return crimeDescrip;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Sets description of the crime
-	 * @param crimeDescrip - the crimeDescrip value to set
+	 * 
+	 * @param crimeDescrip - description of the crime
 	 */
 	public void setCrimeDescrip(String crimeDescrip) {
 		this.crimeDescrip = crimeDescrip;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return narrative - 
+	 * @return narrative - account of events
 	 */
 	public String getNarrative() {
 		return narrative;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param narrative - the narrative value to set
+	 * @param narrative - account of events
 	 */
 	public void setNarrative(String narrative) {
 		this.narrative = narrative;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return date - 
+	 * @return date 
 	 */
 	public String getDate() {
 		return date;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param date - the date value to set
+	 * @param date
 	 */
 	public void setDate(String date) {
 		this.date = date;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return time - 
+	 * @return time 
 	 */
 	public String getTime() {
 		return time;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param time - the time value to set
+	 * @param time
 	 */
 	public void setTime(String time) {
 		this.time = time;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return location - 
+	 * @return location 
 	 */
 	public String getLocation() {
 		return location;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param location - the location value to set
+	 * @param location
 	 */
 	public void setLocation(String location) {
 		this.location = location;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return caseNum - 
+	 * @return caseNum - case number
 	 */
 	public String getCaseNum() {
 		return caseNum;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param caseNum - the caseNum value to set
+	 * @param caseNum - case number
 	 */
 	public void setCaseNum(String caseNum) {
 		this.caseNum = caseNum;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return status - 
+	 * @return status 
 	 */
 	public String getStatus() {
 		return status;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param status - the status value to set
+	 * @param status
 	 */
 	public void setStatus(String status) {
 		this.status = status;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return weapon - 
+	 * @return weapon 
 	 */
 	public String getWeapon() {
 		return weapon;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param weapon - the weapon value to set
+	 * @param weapon 
 	 */
 	public void setWeapon(String weapon) {
 		this.weapon = weapon;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return true if offender isArmed; false otherwise
+	 * @return isArmed
 	 */
 	public boolean isArmed() {
 		return isArmed;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param isArmed - the isArmed value to set
+	 * @param isArmed
 	 */
 	public void setArmed(boolean isArmed) {
 		this.isArmed = isArmed;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return preparedBy - 
+	 * @return preparedBy - the officer who prepared the document 
 	 */
 	public String getPreparedBy() {
 		return preparedBy;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param preparedBy - the preparedBy value to set
+	 * @param preparedBy - the officer who prepared the document 
 	 */
 	public void setPreparedBy(String preparedBy) {
 		this.preparedBy = preparedBy;
 	}		
 //-----------------------------------------------------------------------------
 	 /**
-	 * @return the bluebkID
+	 * @return bluebkID - unique ID used in the database
 	 */
 	public int getBluebkID() {
 		return bluebkID;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param bluebkID the bluebkID to set
+	 * @param bluebkID - unique ID used in the database
 	 */
 	public void setBluebkID(int bluebkID) {
 		this.bluebkID = bluebkID;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param photoFilePath - the path of the photo associated with this BOLO
+	 * @param photoFilePath - the path of the photo associated with this each entry
 	 */
 	public void setPhotoFilePath(Path p_photoFilePath) {
 		this.photoFilePath = p_photoFilePath;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return the path of the associated photo
+	 * @return path - where on the disk the associated photo lies
 	 */
 	public Path getPhotoFilePath() {
 		return photoFilePath;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param videoFilePath - the path of the video associated with this BOLO
+	 * @param videoFilePath - where on the disk the associated video lies
 	 */
 	public void setVideoFilePath(Path videoFilePath) {
 		this.videoFilePath = videoFilePath;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return the path of the associated video
+	 * @return videoFilePath - where on the disk the associated video lies
 	 */
 	public Path getVideoFilePath() {
 		return videoFilePath;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @return photo - an ImageIcon of the respective photo
+	 */
 	public ImageIcon getPhoto(){
 		ImageIcon photo = ImageHandler.getThumbnailImageIcon(photoFilePath);
 		if(photo==null){ System.out.printf("null photo\n"); }
