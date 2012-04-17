@@ -73,7 +73,8 @@ public class RosterParser {
 		if (!file.isDirectory())
 			return false;
 
-		filePath = file.getAbsolutePath() + "\\" + "regularschedule.lst";
+		//filePath = file.getAbsolutePath() + "\\" + "regularschedule.lst"; // old broken code
+		filePath = Paths.get((file.getAbsolutePath()).toString(), "regularschedule.lst").toString();
 		shiftTimeAsString = ((Integer) shiftTime).toString();
 		//append leading 0 if necessary
 		if (shiftTime == 6)
@@ -84,10 +85,7 @@ public class RosterParser {
 		 * Open the reader, read each line and check if the time and day match,
 		 * if so return true, else return false
 		 */
-<<<<<<< HEAD
-=======
-		
->>>>>>> got rid of overrides that were causing errors for me, other small stuffs
+
 		try {
 			BufferedReader reader = getReader(filePath);
 			String line = null;
@@ -100,7 +98,8 @@ public class RosterParser {
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("No regular schedule file, line 100 Roster Parser");
+			//e.printStackTrace();
 		}
 		return false;
 	}
@@ -126,11 +125,8 @@ public class RosterParser {
 		 * Open the employee list file, check for a match with the cnumber, and
 		 * if one occurs, return the name
 		 */
-<<<<<<< HEAD
 		try  {
-=======
-		try {
->>>>>>> got rid of overrides that were causing errors for me, other small stuffs
+
 			BufferedReader reader = getReader(employeeFileName);
 			String line = null;
 			while ((line = reader.readLine()) != null) {

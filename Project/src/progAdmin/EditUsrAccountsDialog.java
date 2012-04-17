@@ -159,7 +159,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		else if(command.equals(DELETE_USER))
 		{
 			int rowIndex = table.getSelectedRow();
-			rm.removeItem(rowIndex);
+			//rm.removeItem(rowIndex);
 			table.repaint();
 			// I ALSO WANT A PROMPT CHECKING IF ITS OK TO DELETE USER
 		}
