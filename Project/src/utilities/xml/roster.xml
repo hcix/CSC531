@@ -48,4 +48,20 @@
 		<email>e.magari@umiami.edu</email>
 		<permissions>supervisor</permissions>
 	</employee>
+	<employee>
+		<cnumber>yeahright</cnumber>
+		<firstname>Micah</firstname>
+		<lastname>Reback</lastname>
+		<caneid>m.reback</caneid>
+		<email>m.reback@umiami.edu</email>
+		<permissions>supervisor</permissions>
+	</employee>
+		<employee>
+		<cnumber>xxx</cnumber>
+		<firstname>Heather</firstname>
+		<lastname>Ciechowski</lastname>
+		<caneid>hciechowski</caneid>
+		<email>h.ciechowski@umiami.edu</email>
+		<permissions>supervisor</permissions>
+	</employee>
 </roster>

@@ -220,6 +220,9 @@ public class LoginDialog extends JDialog implements ActionListener {
 				Object result = engine.get("isAccepted");
 				reader.close();
 
+//				if((int)(result) == -1){
+//					return ERROR_BAD_PASSWORD;
+//				}
 				if((Integer)(result) == -1){
 					return ERROR_BAD_PASSWORD;
 				}

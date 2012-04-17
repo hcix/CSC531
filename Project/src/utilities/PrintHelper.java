@@ -1,6 +1,3 @@
-/**
- * 
- */
 package utilities;
 
 import java.awt.Graphics;
@@ -13,12 +10,21 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
+//-----------------------------------------------------------------------------
+/**
+ * The <code>PrintHelper</code> class is designed to help printing
+ *
+ */
 public class PrintHelper implements Printable, ActionListener {
 	JFrame frameToPrint;
 	JPanel panelToPrint;
 //-----------------------------------------------------------------------------
-    public PrintHelper(JFrame f) {
+    /**
+     * Get the print job and pass it to <code>print</code>
+     * 
+     * @param f - get the current frame
+     */
+	public PrintHelper(JFrame f) {
         frameToPrint = f;
         PrinterJob job = PrinterJob.getPrinterJob();
         job.setPrintable(this);
@@ -32,7 +38,8 @@ public class PrintHelper implements Printable, ActionListener {
         }
     }
 //-----------------------------------------------------------------------------
-    public PrintHelper(JPanel f) {
+    //WHY ARE THERE 2 OF THESE?
+	public PrintHelper(JPanel f) {
     	panelToPrint = f;
         PrinterJob job = PrinterJob.getPrinterJob();
         job.setPrintable(this);

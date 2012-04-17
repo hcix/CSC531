@@ -12,10 +12,25 @@ import java.util.ArrayList;
 import shiftCdrTab.RollCall;
 import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
-
+//-----------------------------------------------------------------------------
+/**
+ * The <code>SearchHelper</code> class is designed to aid in the ability to search 
+ * the database to find a desired query.
+ *
+ */
 public class SearchHelper {
-
 	private static String queryString;
+//-----------------------------------------------------------------------------
+	/**
+	 * Queries the database for the desired <code>String</code> parameters
+	 * 
+	 * @param table - either <code>Bolo</code>, <code>BlueBookEntry</code>, or <code>RollCall</code>
+	 * @param fields - 
+	 * @param parameters - the search parameters
+	 * @return depending on the <code>table</code> it calls the appropriate method. 
+	 * (<code>fillBOLO()</code>, <code>fillBlueBook()</code>, <code>fillRollCall()</code>)
+	 * @throws Exception
+	 */
 	public static ArrayList<?> search (String table, String[] fields, String[] parameters) throws Exception {
 	
 		//Create the connection to the database
@@ -49,6 +64,15 @@ public class SearchHelper {
 	        return (fillRollCall(allEntries));
 	    return null;
 	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Populates <code>Bolo</code>s with respective age, race, sex, height, weight, build, eyes, 
+	 * hair, reference, case number, weapon, prepared by, ... data
+	 * 
+	 * @param allEntries - all entries from an SQL query
+	 * @return boloList - an <code>ArrayList</code> of <code>Bolo</code>s found from SQL query
+	 * @throws SQLException
+	 */
 	private static ArrayList<Bolo> fillBOLO(ResultSet allEntries) throws SQLException {
 		ArrayList<Bolo> boloList = new ArrayList<Bolo>();
 		String age, race, sex, height, weight, build, eyes, hair;
@@ -122,6 +146,15 @@ public class SearchHelper {
 		    }
 		return boloList;
 	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Populates <code>BlueBookEntry</code>s with respective name, date of birth, affiliation, 
+	 * address, crime description, narrative, date, time, location, case number, weapon data
+	 * 
+	 * @param allEntries - all entries from an SQL query
+	 * @return bluebook - an <code>ArrayList</code> of <code>BlueBookEntry</code>s found from SQL query
+	 * @throws SQLException
+	 */
 	private static ArrayList<BlueBookEntry> fillBlueBook(ResultSet allEntries) throws SQLException {
 		ArrayList<BlueBookEntry> bluebook = new ArrayList<BlueBookEntry>();
 		String name, caseNum, time, date;
@@ -164,6 +197,15 @@ public class SearchHelper {
 		    }
 		return bluebook;
 	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Fills <code>RollCall</code> with respective name, present, time arrived, 
+	 * comment data
+	 * 
+	 * @param allEntries - all entries from an SQL query
+	 * @return rollCallList - a <code>RollCall</code>s found from SQL query
+	 * @throws SQLException
+	 */
 	private static ArrayList<RollCall> fillRollCall(ResultSet allEntries) throws SQLException {
     	ArrayList<RollCall> rollCallList = new ArrayList<RollCall>();
     	RollCall rollCall;

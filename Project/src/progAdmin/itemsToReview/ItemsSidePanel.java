@@ -22,7 +22,6 @@ import utilities.ui.SwingHelper;
  */
 public class ItemsSidePanel extends JScrollPane implements MouseListener, ActionListener {
 private static final long serialVersionUID = 1L;
-	//private static final String ADD_ITEM = "add";
 	ResourceManager rm;
 	JList<ItemToReview> itemsJList;
 	ItemsListModel itemsModel;
@@ -34,10 +33,10 @@ private static final long serialVersionUID = 1L;
 		this.rm=rm;
 		this.mainInterface=mainInterface;
 		
-		//Create the items panel to be displayed in the scroller
-		JPanel panel = createItemsPanel();
-		//panel.setLayout(new BorderLayout());
-		this.setViewportView(panel);
+		//create the items panel to be displayed in the scroller
+		this.setViewportView(createItemsPanel());
+		
+		//create the toolbar to place at the top of the scroller panel
 		this.setColumnHeaderView(createToolbar());
 	}
 //-----------------------------------------------------------------------------
@@ -46,20 +45,7 @@ private static final long serialVersionUID = 1L;
 	 */
 	private JPanel createItemsPanel(){
 		JPanel panel = new JPanel(new MigLayout("flowy"));
-		//add a title 
-		//String title = "<html><h3>Items to Review</h3></html>";
-		//JLabel titleLabel = new JLabel(title, JLabel.CENTER);
-		//panel.add(titleLabel, "alignx center");
-		
-		//add the toolbar
-		//addToolbar(panel);
-		
-		
 
-		//add a title
-		String title = "<html><h3>Items to Review</h3></html>";
-		JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
-		panel.add(titleLabel, "alignx center");
 		//add the review items
 		addItemsToPanel(panel);
 		
@@ -84,7 +70,7 @@ private static final long serialVersionUID = 1L;
 		//add a title 
 		String title = "<html><h2>Items to Review</h2></html>";
 		JLabel titleLabel = new JLabel(title, JLabel.CENTER);
-		toolbar.add(titleLabel, "growx");//, "alignx center");
+		toolbar.add(titleLabel, "growx");
 		
 		toolbar.add(addItemButton);
 		
@@ -134,7 +120,6 @@ private static final long serialVersionUID = 1L;
 		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		AddItemDialog itemDialog = new AddItemDialog(rm);
 		itemDialog.setVisible(true);
