@@ -206,26 +206,28 @@ public class DatabaseHelper {
 		Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
 		
 		//check for already existing shift
-		Statement stat = conn.createStatement();
-		ResultSet allEntries = stat.executeQuery("SELECT 1 FROM RollCall WHERE ShiftDate = shiftDate;");
-		//if (!allEntries.getString("Name").equals(null)) {    
+		//Statement stat = conn.createStatement();
+		//ResultSet allEntries = stat.executeQuery("SELECT 1 FROM RollCall WHERE ShiftDate = shiftDate;");
+		
+		//if (allEntries.next()) {    
 			//JOptionPane.showMessageDialog(null, "Shift already submitted for this date.");
 			//return;
 		//}
 		
 		//insert into person table
 		PreparedStatement personStatement = conn.prepareStatement(
-				"INSERT into RollCall(Name, Present, Comment, TimeArrived, ShiftDate) " +
-				"VALUES(?,?,?,?,?);"
+				"INSERT into RollCall(roll_call_ID, Name, Present, Comment, TimeArrived, ShiftDate) " +
+				"VALUES(?,?,?,?,?,?);"
 		    );
 		
 		//long shiftDateEpoch = convertDateToEpoch(shiftDate);
 		    
-		personStatement.setString(1,name);
-		personStatement.setString(2,present);
-		personStatement.setString(3,comment);
-		personStatement.setString(4,timeArrived);
-		personStatement.setString(5,shiftDate);
+		personStatement.setString(1, null);
+		personStatement.setString(2,name);
+		personStatement.setString(3,present);
+		personStatement.setString(4,comment);
+		personStatement.setString(5,timeArrived);
+		personStatement.setString(6,shiftDate);
 		personStatement.addBatch();
 
 	    //Create new row in the table for the data
