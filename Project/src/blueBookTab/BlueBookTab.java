@@ -46,7 +46,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		JPanel entriesPanel = createEntriesPanel();
 		//Create a button to create a new Blue Book entry 
 		JButton newEntryButton = 
-				SwingHelper.createImageButton("Create", "icons/plusSign_48.png");
+				SwingHelper.createImageButton("Create Entry", "icons/plusSign_48.png");
 		newEntryButton.addActionListener(new ActionListener() {
 			//Create new Blue Book entry form dialog
 			BlueBookForm formDialog = new BlueBookForm(parent);
@@ -57,7 +57,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		});
 
 		//Create search button
-		JButton searchButton = SwingHelper.createImageButton("Search", "icons/search.png");
+		JButton searchButton = SwingHelper.createImageButton("Search Blue Book", "icons/search.png");
 		searchButton.addActionListener(new ActionListener() {
 			//Search dialog
 			JDialog searchDialog = createSearchDialog(parent);
@@ -185,7 +185,6 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		return entriesPanel;
 	}
 //-----------------------------------------------------------------------------	
-
 	/** 
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */

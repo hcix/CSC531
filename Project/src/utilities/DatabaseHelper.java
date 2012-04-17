@@ -9,14 +9,15 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-
 import javax.swing.JOptionPane;
-
 import shiftCdrTab.RollCall;
 import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
 //-----------------------------------------------------------------------------
 /**
+ * A helper class designed to make accessing the crime table within the
+ * database in program easier. 
+ * This classes methods should be used exclusively to interact with the 
  * The <code>DatabaseHelper</code> class is designed to make accessing 
  * the crime table within the database in program easier. 
  * These methods should be used exclusively to interact with the 

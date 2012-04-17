@@ -1,61 +1,107 @@
-package shiftCdrTab;
+package progAdmin.itemsToReview;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
-
 import net.miginfocom.swing.MigLayout;
-import progAdmin.itemsToReview.ItemRenderer;
-import progAdmin.itemsToReview.ItemToReview;
-import progAdmin.itemsToReview.ItemsListModel;
-import progAdmin.itemsToReview.ReadItemDialog;
 import program.ResourceManager;
 import userinterface.MainInterfaceWindow;
+import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
  * JDOC
  */
-public class ItemsSidePanel extends JScrollPane implements MouseListener {
+public class ItemsSidePanel extends JScrollPane implements MouseListener, ActionListener {
 private static final long serialVersionUID = 1L;
+	//private static final String ADD_ITEM = "add";
 	ResourceManager rm;
 	JList<ItemToReview> itemsJList;
 	ItemsListModel itemsModel;
 	MainInterfaceWindow mainInterface;
 //-----------------------------------------------------------------------------
-	ItemsSidePanel(ResourceManager rm, MainInterfaceWindow mainInterface){
+	public ItemsSidePanel(ResourceManager rm, MainInterfaceWindow mainInterface){
 		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				  ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.rm=rm;
 		this.mainInterface=mainInterface;
+		
 		//Create the items panel to be displayed in the scroller
 		JPanel panel = createItemsPanel();
-		
+		//panel.setLayout(new BorderLayout());
 		this.setViewportView(panel);
+		this.setColumnHeaderView(createToolbar());
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Create the panel to display the items list within.
+	 */
 	private JPanel createItemsPanel(){
 		JPanel panel = new JPanel(new MigLayout("flowy"));
+		//add a title 
+		//String title = "<html><h3>Items to Review</h3></html>";
+		//JLabel titleLabel = new JLabel(title, JLabel.CENTER);
+		//panel.add(titleLabel, "alignx center");
+		
+		//add the toolbar
+		//addToolbar(panel);
+		
+		
+
 		//add a title
 		String title = "<html><h3>Items to Review</h3></html>";
 		JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
 		panel.add(titleLabel, "alignx center");
 		//add the review items
-		addItemsToReview(panel);
+		addItemsToPanel(panel);
 		
 		return panel;
 	}
 //-----------------------------------------------------------------------------
-	private void addItemsToReview(JPanel panel){
-
+	/**
+	 * Create the toolbar to display at the top of the panel.
+	 */
+	private JToolBar createToolbar(){
+		//create toolbar
+		JToolBar toolbar = new JToolBar("Items To Review");
+		toolbar.setLayout(new MigLayout("fillx", "[]push[]", null));
+		//make a tool bar immovable
+		toolbar.setFloatable(false); 
+		//visually indicate tool bar buttons when the user passes over them w/ cursor
+		toolbar.setRollover(true); 
+				
+		JButton addItemButton = SwingHelper.createImageButton("icons/plusSign_16.png");
+		addItemButton.addActionListener(this);
+		
+		//add a title 
+		String title = "<html><h2>Items to Review</h2></html>";
+		JLabel titleLabel = new JLabel(title, JLabel.CENTER);
+		toolbar.add(titleLabel, "growx");//, "alignx center");
+		
+		toolbar.add(addItemButton);
+		
+		return toolbar;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Create a new JList to display the review items and add it to the given
+	 * JPanel.
+	 */
+	private void addItemsToPanel(JPanel panel){
 		itemsModel = new ItemsListModel(rm);
+		
 		itemsJList = new JList<ItemToReview>(itemsModel);
-
+		
 		ItemRenderer itemRenderer = new ItemRenderer(rm.getGuiParent(), itemsJList);
+		
 		itemsJList.setCellRenderer(itemRenderer);
 		itemsJList.addMouseListener(this);
 		itemsModel.addListDataListener(itemRenderer);
@@ -66,9 +112,6 @@ private static final long serialVersionUID = 1L;
 	public void updateItemsList(){
 		JPanel panel = createItemsPanel();
 		this.setViewportView(panel);
-		//itemsList = rm.getItems();
-		//itemsJList.getModel();
-	//	itemsJList.repaint();
 	}
 //-----------------------------------------------------------------------------
 	public void mouseClicked(MouseEvent e) {
@@ -83,7 +126,7 @@ private static final long serialVersionUID = 1L;
 			     ReadItemDialog itemDialog = new ReadItemDialog(rm.getGuiParent(), ((ItemToReview)item));
 			     itemDialog.setVisible(true);
 			     itemDialog.setModal(true);
-			     //int selected = itemsList.getSelectedIndex();
+			     //repaint the JList in case data changed
 			    itemsJList.repaint();
 			    //tell the items table it needs to update too
 			    mainInterface.refreshItemsTable();
@@ -91,6 +134,21 @@ private static final long serialVersionUID = 1L;
 		
 	}
 //-----------------------------------------------------------------------------
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		AddItemDialog itemDialog = new AddItemDialog(rm);
+		itemDialog.setVisible(true);
+		itemDialog.setModal(true);
+		itemDialog.setModal(true);
+		//repaint the JList to display the new item
+	    //itemsJList.repaint();
+	    updateItemsList();
+	    //tell the items table it needs to update too
+	    mainInterface.refreshItemsTable();
+
+	}
+//-----------------------------------------------------------------------------
+//	@Override
 	public void mousePressed(MouseEvent e) { }
 //-----------------------------------------------------------------------------
 	public void mouseReleased(MouseEvent e) { }

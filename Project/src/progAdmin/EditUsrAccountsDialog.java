@@ -21,6 +21,9 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
@@ -141,8 +144,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		this.dispose();
 	}
 //-----------------------------------------------------------------------------
-	public void actionPerformed(ActionEvent e) 
-	{
+	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if(command.equals(ADD_USER))
 		{

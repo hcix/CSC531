@@ -126,7 +126,6 @@ public class RosterParser {
 		 * if one occurs, return the name
 		 */
 		try  {
-
 			BufferedReader reader = getReader(employeeFileName);
 			String line = null;
 			while ((line = reader.readLine()) != null) {

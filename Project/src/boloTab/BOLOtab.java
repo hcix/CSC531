@@ -70,15 +70,12 @@ public class BOLOtab extends JPanel  implements ActionListener {
 			BOLOform formDialog = new BOLOform(parent);
 			public void actionPerformed(ActionEvent e){
 				formDialog.setVisible(true);	
-				
 				//wait for the dialog to be dismissed before continuing
 				formDialog.setModal(true);
-
-		//		if(formDialog.isNewBOLOWascreated()){
-					recentBolosTab.removeAll();
-					recentBolosTab.add(createRecentBOLOsTab());
-					tabbedPane.revalidate();
-		//		}
+				//refresh to display any changes
+				recentBolosTab.removeAll();
+				recentBolosTab.add(createRecentBOLOsTab());
+				tabbedPane.revalidate();
 			}
 		});
 

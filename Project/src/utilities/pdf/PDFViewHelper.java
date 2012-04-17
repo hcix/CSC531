@@ -141,7 +141,6 @@ private static final long serialVersionUID = 1L;
 	    pdfView.add(pdfDecoder, "alignx center");		
 	    scrollPane.setViewportView(pdfView);
 	        
-	   
 	    JPanel topPanel = new JPanel(new MigLayout("nogrid"));  
 	    topPanel.add(new ZoomControls(pdfDecoder));
 	    topPanel.add(otherButtons, "spanx");
