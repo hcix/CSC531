@@ -1,6 +1,3 @@
-/**
- * Display's BOLO preview document that can be saved, printed, and emailed.
- */
 package boloTab;
 
 import java.awt.Color;
@@ -24,6 +21,11 @@ import utilities.pdf.PDFViewHelper;
 import utilities.ui.ImageHandler;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
+/**
+ * The <code>BOLOpreview</code> class displays a summary of the 
+ * <code>BOLOform</code> for a given <code>Bolo</code> that can be edited, 
+ * saved, printed, and emailed.
+ */
 public class BOLOpreview extends JDialog {
 	private static final long serialVersionUID = 1L;
 	String age, race, sex, height, weight, build, eyes, hair;
@@ -36,6 +38,13 @@ public class BOLOpreview extends JDialog {
 	boolean newBOLOWascreated;
 
 //-----------------------------------------------------------------------------
+	/**
+	 * Generates the <code>BOLOpreview</code> window  with all necessary fields 
+	 * to view a given <code>Bolo</code>
+	 * 
+	 * @param parent
+	 * @param bolo
+	 */
 	BOLOpreview(JFrame parent, Bolo bolo){
 		super(parent, "BOLO", true);
 
@@ -66,7 +75,6 @@ public class BOLOpreview extends JDialog {
 			}
 		});
 	    
-
 
 		/*Set up the BOLO page*/
 		
@@ -117,6 +125,11 @@ public class BOLOpreview extends JDialog {
 	    
 	}
 //-----------------------------------------------------------------------------	
+	/**
+	 * Creates a description Panel for a <code>Bolo</code> in the <code>BOL
+	 * 
+	 * @return infoPanel
+	 */
 	public JPanel createPhysicalDescriptionPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout());
 		infoPanel.setBackground(Color.WHITE);
@@ -145,6 +158,10 @@ public class BOLOpreview extends JDialog {
 		return infoPanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @return infoPanel
+	 */
 	public JPanel createIncidentInfoPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout());
 		infoPanel.setBackground(Color.WHITE);
@@ -171,6 +188,10 @@ public class BOLOpreview extends JDialog {
 		return infoPanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @return narrativePanel
+	 */
 	public JPanel createNarrativePanel(){
 		JPanel narrativePanel = new JPanel(new MigLayout());
 		narrativePanel.setBackground(Color.WHITE);
@@ -182,6 +203,10 @@ public class BOLOpreview extends JDialog {
 		return narrativePanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @return adminPanel
+	 */
 	public JPanel createAdministrativePanel(){
 		JPanel adminPanel = new JPanel(new MigLayout());
 		adminPanel.setBackground(Color.WHITE);
@@ -206,6 +231,10 @@ public class BOLOpreview extends JDialog {
 		return adminPanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @return photoVideoPanel
+	 */
 	public JPanel createPhotoVideoPanel(){
 		JPanel photoVideoPanel = new JPanel(new MigLayout());
 		photoVideoPanel.setBackground(Color.WHITE);
@@ -219,11 +248,18 @@ public class BOLOpreview extends JDialog {
 		return photoVideoPanel;
 	}
 //-----------------------------------------------------------------------------
-
-  public boolean isNewBOLOWascreated(){
-	  return newBOLOWascreated;
-  }
+	/**
+	 * 
+	 * @return newBOLOWascreated
+	 */
+	public boolean isNewBOLOWascreated(){
+		  return newBOLOWascreated;
+	}
 //-----------------------------------------------------------------------------	
+	/**
+	 * 
+	 * @return buttonsPanel
+	 */
 	public JPanel createButtonsPanel(){
 	
 		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
@@ -293,27 +329,30 @@ public class BOLOpreview extends JDialog {
 	    return buttonsPanel;
 	}
 //-----------------------------------------------------------------------------
-	  public void closeAndCancel( ) {
+	 /**
+	  * Close and Cancel
+	  */
+	public void closeAndCancel( ) {
 		  setVisible(false);
-	  }
+	 }
 //-----------------------------------------------------------------------------
-		/**
-		* Save the information input into this form and close the dialog.
-		*/
-		public void saveAndClose(){
-			 
-			 //add the BOLO object's info to the database
-			 try {
-				bolo.addToDB();
-			 } catch (Exception e) {
-				 //TODO change println below into error message for user
-				System.out.println("error: unable to add BOLO to DB");
-				e.printStackTrace();
-			 }
-			 
-			 //close the window
-			 this.dispose();	
-		}
+	/**
+	* Save the information input into this form and close the dialog.
+	*/
+	public void saveAndClose(){
+		 
+		 //add the BOLO object's info to the database
+		 try {
+			bolo.addToDB();
+		 } catch (Exception e) {
+			 //TODO change println below into error message for user
+			System.out.println("error: unable to add BOLO to DB");
+			e.printStackTrace();
+		 }
+		 
+		 //close the window
+		 this.dispose();	
+	}
 //-----------------------------------------------------------------------------
 }
 
