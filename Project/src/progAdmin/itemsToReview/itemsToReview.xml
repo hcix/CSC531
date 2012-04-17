@@ -1,29 +1,13 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <UMPD.itemsList>
 	<item>
 		<title>vdfvds</title>
 		<details>fdvdfsvsdgfvsdf</details>
 	</item>
 	<item>
-		<title>vdfvds</title>
-		<details>fdvdfsvsdgfvsdf</details>
-	</item>
-<<<<<<< HEAD:Project/bin/progAdmin/itemsToReview.xml
-<<<<<<< HEAD
-	<item>
-		<title>vdfvds</title>
-		<details>fdvdfsvsdgfvsdf</details>
-	</item>
-=======
->>>>>>> 3aff5fe7b064dbf4fc818c42008d78e08eab7def
-=======
-	<item>
 		<title>2222</title>
 		<details>22222</details>
 	</item>
-<<<<<<< HEAD
->>>>>>> 754d0ef9f02564b26f81ee68d51128d3c1aac855:Project/src/progAdmin/itemsToReview/itemsToReview.xml
-=======
 	<item>
 		<title>3333</title>
 		<details>33333</details>
@@ -37,12 +21,39 @@
 		<details>1</details>
 	</item>
 	<item>
-		<title>new2</title>
-		<details>2</details>
+		<title>newkndsks</title>
+		<details>kkkkk</details>
 	</item>
 	<item>
-		<title>new3</title>
-		<details>3</details>
+		<title>2222</title>
+		<details>22222</details>
 	</item>
->>>>>>> 421092ad512b2814dbc5750311809291a0a23e0a
+	<item>
+		<title>3333</title>
+		<details>33333</details>
+	</item>
+	<item>
+		<title>im so new</title>
+		<details>ohh</details>
+	</item>
+	<item>
+		<title>new1</title>
+		<details>1</details>
+	</item>
+	<item>
+		<title>newkndsks</title>
+		<details>kkkkk</details>
+	</item>
+	<item>
+		<title>HELLO</title>
+		<details>hbdchisb</details>
+	</item>
+	<item>
+		<title>ME:)</title>
+		<details>sdklfjbv</details>
+	</item>
+	<item>
+		<title>hvb</title>
+		<details>khb</details>
+	</item>
 </UMPD.itemsList>

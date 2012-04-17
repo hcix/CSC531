@@ -40,10 +40,6 @@ public class Core extends JFrame {
 	        
 	        	rm = new ResourceManager(frame);
 	        	
-	        	Splash splashScreen = new Splash();
-	        	splashScreen.setVisible(true);
-	        	
-	        	
 	        	//Set up the UI
 	        	createAndShowMainGUI();
 	        }

@@ -33,6 +33,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import net.miginfocom.swing.MigLayout;
+import progAdmin.itemsToReview.ItemsSidePanel;
 import program.ResourceManager;
 import shiftCdrTab.reports.ReportsPanel;
 import userinterface.MainInterfaceWindow;
@@ -245,7 +246,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		rm.setLatestShiftTime(shiftTime);
 		//TODO push to xml eventually
 	}
-
 //-----------------------------------------------------------------------------
 	private void launchScheduler() {
 		// launch schedule program
@@ -363,10 +363,11 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	public void getShiftTime(ResourceManager rm) {
 		shiftTime = rm.getShiftTime();
 	}
+//-----------------------------------------------------------------------------
     public static int getMostRecentShift() {
 		return mostRecentShift;
 	}
-// =============================================================================
+//=============================================================================
 private class RollCallTableModel extends AbstractTableModel implements
 		TableModelListener {
 	private static final long serialVersionUID = 1L;

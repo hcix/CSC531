@@ -3,8 +3,6 @@ package utilities.pdf;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -22,6 +20,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 import net.miginfocom.swing.MigLayout;
@@ -85,20 +84,10 @@ public class PDFView {
 	public static boolean showMessages=false;
 	protected Values commonValues=new Values();
 	protected Printer currentPrinter=new Printer();
-	protected PdfDecoder decode_pdf = new PdfDecoder(true);
-	
+	protected PdfDecoder decode_pdf = new PdfDecoder(true);	
 	protected GUIThumbnailPanel thumbnails=new SwingThumbnailPanel(commonValues,decode_pdf);
-	
-	//protected GUIThumbnailPanel thumbnails=new MySwingThumbnailPanel(commonValues,decode_pdf);
-	//protected GUIThumbnailPanel thumbnails=new DirViewThumbnailPanel(commonValues,FileHelper.getReportsDir());
-	
-	//protected GUIThumbnailPanel thumbnails=new DirViewThumbnailPanel(FileHelper.getReportsDir());
-	
 	private PropertiesFile properties=new PropertiesFile();
-	
 	public SwingGUI currentGUI=new SwingGUI(decode_pdf,commonValues,thumbnails,properties);
-	//public MySwingGUI currentGUI=new MySwingGUI(decode_pdf,commonValues,thumbnails,properties);
-
 	private GUISearchWindow searchFrame=new SwingSearchWindow(currentGUI);
 	protected Commands currentCommands=new Commands(commonValues,currentGUI,decode_pdf,
       thumbnails,properties,searchFrame,currentPrinter);
@@ -106,10 +95,10 @@ public class PDFView {
 		  SwingMouseListener(decode_pdf,currentGUI,commonValues,currentCommands);
 	protected String[] scalingValues;
 	public static boolean exitOnClose=true;
+	
     private JButton[] topButtons = null;
     private JPanel topButtonPanel = null;
     org.jpedal.objects.acroforms.rendering.AcroRenderer formRenderer = null;
-
     ResourceManager rm;
     ArrayList<FieldAndVal> allFormFields;
     String progDir = FileHelper.getProgramDirPathName();
@@ -125,111 +114,21 @@ public class PDFView {
 		PdfDecoder.showErrorMessages=true;
 
 		this.rm = rm;
-		//properties.loadProperties(prefFile.toString());
   
 		this.setRootContainer(comp);
 		this.setupViewer();
 		this.openPdfFile(doc);
 		  
-		//currentGUI.setIsDirOfFiles(true);
-		//currentGUI.setDirName(FileHelper.getReportsDir());
-		
 		formRenderer = decode_pdf.getFormRenderer();
 		
+		//show user an error dialog if unable to retrieve form fields
 		if(formRenderer==null) { 
 			rm.showErrorDialog("File I/O", 
 					"An error occured when attempting to display the document.");
-//DEBUG			
-			System.out.println("\nPDFView: PDFView: formRenderer==null; FAIL\n"); 
+//DEBUG	System.out.println("\nPDFView: PDFView: formRenderer==null; FAIL\n"); 
 		}
      
     }
-//-----------------------------------------------------------------------------
-    /**
-     * Create a new <code>PDFView</code>.
-     */
-    public PDFView(String doc, String dir, Container comp, ResourceManager rm) {
-		//enable error messages which are OFF by default
-		PdfDecoder.showErrorMessages=true;
-
-		this.rm = rm;
-		properties.loadProperties(prefFile.toString());
-  
-		this.setRootContainer(comp);
-		this.setupViewer();
-		//this.openPdfFilledDir(dir);
-		
-		this.openPdfFile(doc);
-		
-		formRenderer = decode_pdf.getFormRenderer();
-		
-		if(formRenderer==null) { 
-			rm.showErrorDialog("File I/O", 
-					"An error occured when attempting to display the document.");
-//DEBUG			
-			System.out.println("\nPDFView: PDFView: formRenderer==null; FAIL\n"); 
-		}
-		
-		//addFileSelectionListener();
-     
-    }
-//-----------------------------------------------------------------------------
-    /**
-     * Create a new <code>PDFView</code>.
-     */
-    public PDFView(String doc, String dir, Container comp, ResourceManager rm, 
-    		JPanel topButtonPanel) {
-		//enable error messages which are OFF by default
-		PdfDecoder.showErrorMessages=true;
-
-		properties.loadProperties(prefFile.toString());
-		
-		this.rm = rm;
-		// this.topButtonPanel= topButtonPanel;
-		this.setRootContainer(comp);
-		this.setupViewer();
-		
-		
-		this.openPdfFile(doc);
-		
-		formRenderer = decode_pdf.getFormRenderer();
-		
-		if(formRenderer==null) { 
-			rm.showErrorDialog("File I/O", 
-					"An error occured when attempting to display the document.");
-//DEBUG			
-			System.out.println("\nPDFView: PDFView: formRenderer==null; FAIL\n"); 
-		}
-		
-		//addFileSelectionListener();
-     
-    }
-//-----------------------------------------------------------------------------
-/*	public void addFileSelectionListener(){
-	    Object[] buttons=thumbnails.getButtons();
-	    
-		int files = ((DirViewThumbnailPanel)thumbnails).getFilesInDirCount();
-		final ArrayList<String> fileNames = ((DirViewThumbnailPanel)thumbnails).getAbsfileNames();
-		String actCmd;
-		
-			for(int i=0;i<files;i++){
-				actCmd = "" + i;
-				((JButton)buttons[i]).setActionCommand(actCmd);
-				((JButton)buttons[i]).addActionListener(new ActionListener(){
-					@Override
-					public void actionPerformed(ActionEvent e) {
-
-						String indx = e.getActionCommand();
-						int clicked = Integer.valueOf(indx);
-						
-						openPdfFile(fileNames.get(clicked));
-//DEBUG
-System.out.println("PDFView: addFileSelectionListener: clicked = "+fileNames.get(clicked));
-					}
-				});
-			}
-
-	}*/
 //-----------------------------------------------------------------------------	
     /**
      * Create a new <code>PDFView</code>.
@@ -305,8 +204,6 @@ System.out.println("selected one is : components[0].toString()");
 				System.out.println("text in remarks = " + text);
 				allFormFields.add(new FieldAndVal(name, text));
 			} else {
-			//System.out.println("((JTextField)components[0]).getText() = " +
-			//		((JTextField)components[0]).getText());
 			text = ((JTextField)components[0]).getText();
 			if(text==null){ System.out.println("text is null"); text = ""; }
 				FieldAndVal curr = new FieldAndVal(name, text);
@@ -392,20 +289,22 @@ System.out.println("selected one is : components[0].toString()");
 //-----------------------------------------------------------------------------
 	/**
 	 * Set the container this <code>PDFView</code> should be placed in.
-	 */
+	 
 	public void setRootContainer(Container rootContainer){
 		if(rootContainer==null){ throw new RuntimeException("Null containers not allowed."); }
     
 		Container c = rootContainer;
     
-    if((rootContainer instanceof JTabbedPane)){
-      JPanel temp = new JPanel(new BorderLayout());
-      rootContainer.add(temp);
-      c = temp;
-    }else if(rootContainer instanceof JScrollPane){
-      JPanel temp = new JPanel(new BorderLayout());
-      ((JScrollPane)rootContainer).getViewport().add(temp);
-      c = temp;
+		if((rootContainer instanceof JTabbedPane)){
+			JPanel temp = new JPanel(new BorderLayout());
+			rootContainer.add(temp);
+			c = temp;
+		}
+		else if(rootContainer instanceof JScrollPane){
+			JPanel temp = new JPanel(new BorderLayout());
+			((JScrollPane)rootContainer).getViewport().add(temp);
+			c = temp;
+		
       if(topButtons!=null){
     	  addTopButtonPanel(((JScrollPane)rootContainer));
       } else if (topButtonPanel!=null){
@@ -427,21 +326,65 @@ System.out.println("selected one is : components[0].toString()");
     c.setPreferredSize(new Dimension(600, 750));
     
     currentGUI.setFrame(c);
+  }*/
+//-----------------------------------------------------------------------------
+	/**
+	 * Set the container this <code>PDFView</code> should be placed in.
+	 */
+	public void setRootContainer(Container rootContainer){
+		if(rootContainer==null){ throw new RuntimeException("Null containers not allowed."); }
+    
+		Container c = rootContainer;
+    
+		if((rootContainer instanceof JTabbedPane)){
+			JPanel temp = new JPanel(new BorderLayout());
+			rootContainer.add(temp);
+			c = temp;
+		} else if(rootContainer instanceof JScrollPane){
+			JPanel temp = new JPanel(new BorderLayout());
+			((JScrollPane)rootContainer).getViewport().add(temp);
+			c = temp;
+		} else if(rootContainer instanceof JSplitPane){
+		      throw new RuntimeException("To add the simpleViewer to a split pane " +
+		      		"please pass through either JSplitPane.getLeftComponent() or" +
+		      		" JSplitPane.getRightComponent()");
+		}
+		
+		if(topButtons!=null){
+    	  addTopButtonPanel(((JScrollPane)rootContainer));
+		} else if (topButtonPanel!=null){
+    	  addTopButtonPanels(((JScrollPane)rootContainer));
+		} else {
+    	  ((JScrollPane)rootContainer).setColumnHeaderView(new ZoomControls(decode_pdf));
+		}
+      
+    
+    
+    if(!(rootContainer instanceof JFrame)){
+      c.setLayout(new BorderLayout());
+    }
+    
+    c.setPreferredSize(new Dimension(600, 750));
+    
+    currentGUI.setFrame(c);
   }
 //-----------------------------------------------------------------------------
 	private void addTopButtonPanel(JScrollPane scroller){
-		JPanel buttonPanel = new JPanel(new MigLayout("rtl"));
+		JToolBar toolbar = new JToolBar("PDF Viewer");
+		toolbar.setLayout(new MigLayout("fillx", "[]push[]", null));
+		//JPanel buttonPanel = new JPanel(new MigLayout("rtl"));
 		
 		JPanel p = new JPanel();
 		
 		for(JButton button : topButtons){
 			p.add(button);
-			//button.setBorder(null);
 		}
-	
-		buttonPanel.add(p, "pushx");
-		buttonPanel.add(new ZoomControls(decode_pdf));
-		scroller.setColumnHeaderView(buttonPanel);
+
+		toolbar.add(new ZoomControls(decode_pdf));
+		toolbar.add(p);
+		
+		//place the toolbar at the top of the viewer
+		scroller.setColumnHeaderView(toolbar);
 	}
 //-----------------------------------------------------------------------------
 	private void addTopButtonPanels(JScrollPane scroller){
@@ -458,45 +401,7 @@ System.out.println("selected one is : components[0].toString()");
 	 * frame separate from the application
 	 */
 	public void setupViewer() {
-		//also allow messages to be suppressed with JVM option
-	/*	String flag=System.getProperty("org.jpedal.suppressViewerPopups");
-		
-		@SuppressWarnings("unused")
-		boolean suppressViewerPopups = false;
-		if(flag!=null && flag.toLowerCase().equals("true")){
-			suppressViewerPopups = true;
-		}
-	  */
-		
-		/**
-		 *  set search window position here to ensure
-		 *  that gui has correct value
-		
-		String searchType = properties.getValue("searchWindowType");
-		if(searchType!=null && searchType.length() != 0){
-			System.out.println("System property: searchWindowType = "+searchType);
-		    int type = Integer.parseInt(searchType);
-		    searchFrame.setStyle(type);
-		}else
-		    searchFrame.setStyle(SwingSearchWindow.SEARCH_MENU_BAR);
-		
-		//Set search frame here
-		currentGUI.setSearchFrame(searchFrame);
- */
-		
-        /*switch on thumbnails if flag is set
-		String setThumbnail=System.getProperty("org.jpedal.thumbnail");
-        if(setThumbnail!=null){
-        	System.out.println("System property: org.jpedal.thumbnail = "+setThumbnail);
-            if(setThumbnail.equals("true"))
-                thumbnails.setThumbnailsEnabled(true);
-            else if(setThumbnail.equals("true"))
-                thumbnails.setThumbnailsEnabled(false);
-        }else{ //default
-            thumbnails.setThumbnailsEnabled(true);
-        }
-*/
-        //non-GUI initialization
+		//non-GUI initialization
         String customBundle=System.getProperty("org.jpedal.bundleLocation");
 
         if(customBundle!=null){
@@ -519,7 +424,6 @@ System.out.println("selected one is : components[0].toString()");
                         "\n Format is path, using '.' as break ie org.jpedal.international.messages");
             }
             ResourceBundle rb = ResourceBundle.getBundle(customBundle);
-            //Messages.setBundle(ResourceBundle.getBundle(customBundle));
             init(rb);
             
         }else
@@ -538,12 +442,10 @@ System.out.println("selected one is : components[0].toString()");
         decode_pdf.getDynamicRenderer().setMessageFrame(currentGUI.getFrame());
 
         if(currentGUI.isSingle()){
-        	//System.out.println("is single");
             TransferHandler singleViewTransferHandler = 
             		new SingleViewTransferHandler(commonValues, thumbnails, currentGUI, currentCommands);
             decode_pdf.setTransferHandler(singleViewTransferHandler);
         } else {
-        	//System.out.println("is NOT single");
             TransferHandler multiViewTransferHandler = 
             		new MultiViewTransferHandler(commonValues, thumbnails, currentGUI, currentCommands);
             currentGUI.getMultiViewerFrames().setTransferHandler(multiViewTransferHandler);
@@ -552,7 +454,7 @@ System.out.println("selected one is : components[0].toString()");
     }
 //-----------------------------------------------------------------------------
 	/**
-	* setup the viewer
+	* Setup the viewer.
 	*/
 	@SuppressWarnings("static-access")
 	protected void init(ResourceBundle bundle) {

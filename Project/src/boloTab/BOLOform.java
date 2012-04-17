@@ -453,7 +453,7 @@ private static final long serialVersionUID = 1L;
 		 //set the times
 		 
 		 //set picture
-		 ImageIcon photo = ImageHandler.getResizableImageIcon(
+		 ImageIcon photo = ImageHandler.getScaledImageIcon(
 				 bolo.getPhotoFilePath(), 200, 299);
 		 if(photo!=null){
 			photoArea.removeAll();

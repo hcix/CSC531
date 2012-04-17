@@ -1,12 +1,3 @@
-/**
- * A helper class designed to make accessing the crime table within the
- * database in program easier. 
- * This classes methods should be used exclusively to interact with the 
- * database to ensure thread safety. Only one connection can write to the
- * database at a time, thus once a connection is opened the entire database 
- * locks until it is closed. 
- *
- */
 package utilities;
 
 import java.lang.reflect.Array;
@@ -23,14 +14,21 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-
 import javax.swing.JOptionPane;
-
 import program.ResourceManager;
 import shiftCdrTab.RollCall;
 import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
-
+//-----------------------------------------------------------------------------
+/**
+ * A helper class designed to make accessing the crime table within the
+ * database in program easier. 
+ * This classes methods should be used exclusively to interact with the 
+ * database to ensure thread safety. Only one connection can write to the
+ * database at a time, thus once a connection is opened the entire database 
+ * locks until it is closed. 
+ *
+ */
 public class DatabaseHelper {	
 //-----------------------------------------------------------------------------
 	/**

@@ -54,10 +54,9 @@ private static final long serialVersionUID = 1L;
 			this.setLayout(new MigLayout("fill"));
 			this.rm = rm;
 			
-			
 			final JFrame parent = rm.getGuiParent();
 			
-			//Button to create a new report 
+			//button to create a new report 
 			JButton newButton = SwingHelper.createImageButton("Create new Report", 
 					"icons/plusSign_48.png"); 
 			newButton.addActionListener(new ActionListener() {
@@ -73,8 +72,7 @@ private static final long serialVersionUID = 1L;
 					//check that a rollcall has been submitted
 			        if (mostRecentShift.equals("none")){
 			        	JOptionPane.showMessageDialog(rm.getGuiParent(), "No shift has been submitted yet.");
-			        }
-			        else {
+			        } else {
 					    Format format = new SimpleDateFormat("ddMMMyyyy:" + mostRecentShift + ":00");
 					    Date date = new Date();
 					    try {

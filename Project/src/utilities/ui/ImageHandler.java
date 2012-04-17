@@ -50,6 +50,8 @@ public class ImageHandler {
 //-----------------------------------------------------------------------------
 	/** 
 	 * JDOC
+	 * 
+	 * @param absFileName - the absolute filename of the image file
 	 */
 	public static ImageIcon getImageIcon(String absFileName){
 		ImageIcon imgIcon = new ImageIcon(absFileName);
@@ -102,6 +104,9 @@ public class ImageHandler {
 	    return resizedImgIcon;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * JDOC
+	 */
 	public static ImageIcon getThumbnailImageIcon(File file, int w, int h){
 		ImageIcon thumbnail = null;
 		ImageIcon tmpIcon = new ImageIcon(file.getPath());
@@ -120,6 +125,9 @@ public class ImageHandler {
 		return thumbnail;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * JDOC
+	 */
 	public static ImageIcon getThumbnailImageIcon(Path path){
 		ImageIcon thumbnail = null;
 		ImageIcon tmpIcon = null;
@@ -156,7 +164,10 @@ public class ImageHandler {
 		return thumbnail;
 	}
 //-----------------------------------------------------------------------------
-	public static ImageIcon getResizableImageIcon(Path image, int w, int h){
+	/**
+	 * JDOC
+	 */
+	public static ImageIcon getScaledImageIcon(Path image, int w, int h){
 		ImageIcon thumbnail = null;
 		ImageIcon tmpIcon = null;
 	    image = image.toAbsolutePath();
@@ -185,6 +196,9 @@ public class ImageHandler {
 		return thumbnail;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * JDOC
+	 */
 	public static BufferedImage getBufferedImage(String path, int w, int h){
 		// Create an image, and wait for it to load
 		ImageIcon imgIcn = getImageIcon(path);

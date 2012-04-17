@@ -99,7 +99,7 @@ private static final long serialVersionUID = 1L;
 		descriptionField.setText(bbEntry.getNarrative());
 	
 		 //set picture
-		 ImageIcon photo = ImageHandler.getResizableImageIcon(
+		 ImageIcon photo = ImageHandler.getScaledImageIcon(
 				 bbEntry.getPhotoFilePath(), 200, 299);
 		 if(photo!=null){
 			photoArea.removeAll();

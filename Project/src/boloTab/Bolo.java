@@ -10,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import javax.swing.ImageIcon;
 import utilities.ui.ImageHandler;
-
 //-----------------------------------------------------------------------------
 public class Bolo {
 	private String age, race, sex, height, weight, build, eyes, hair;

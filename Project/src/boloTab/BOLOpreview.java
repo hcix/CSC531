@@ -34,7 +34,6 @@ public class BOLOpreview extends JDialog {
 	JFrame parent;
 	JPanel dialogPanel;
 	boolean newBOLOWascreated;
-
 //-----------------------------------------------------------------------------
 	BOLOpreview(JFrame parent, Bolo bolo){
 		super(parent, "BOLO", true);
@@ -61,12 +60,9 @@ public class BOLOpreview extends JDialog {
 		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
 		this.addWindowListener(new WindowAdapter( ) {
 			public void windowClosing(WindowEvent e) {
-				//setVisible(false);
 				closeAndCancel();
 			}
 		});
-	    
-
 
 		/*Set up the BOLO page*/
 		
@@ -213,7 +209,7 @@ public class BOLOpreview extends JDialog {
 		Path photoPath = bolo.getPhotoFilePath();
 		
 		if(photoPath!=null){
-			ImageIcon photo = ImageHandler.getResizableImageIcon(photoPath, 200, 299);
+			ImageIcon photo = ImageHandler.getScaledImageIcon(photoPath, 200, 299);
 			photoVideoPanel.add(new JLabel(photo));
 		}
 		return photoVideoPanel;
