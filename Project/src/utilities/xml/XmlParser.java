@@ -83,30 +83,39 @@ public class XmlParser {
 						if (event.asStartElement().getName().getLocalPart()
 								.equals(CNUMBER)) {
 							event = eventReader.nextEvent();
-							employee.setCnumber(event.asCharacters().getData());
+							if(event.isCharacters())
+								employee.setCnumber(event.asCharacters().getData());
 							continue;
+							
 						}
 					}
 					
 					if (event.asStartElement().getName().getLocalPart()
 							.equals(LASTNAME)) {
 						event = eventReader.nextEvent();
-						employee.setLastname(event.asCharacters().getData());
+						if(event.isCharacters())
+							employee.setLastname(event.asCharacters().getData());
 						continue;
+						
 					}
 					
 					if (event.asStartElement().getName().getLocalPart()
 							.equals(CANEID)) {
 						event = eventReader.nextEvent();
-						employee.setCaneID(event.asCharacters().getData());
+						if(event.isCharacters())
+							employee.setCaneID(event.asCharacters().getData());
 						continue;
+						
 					}
 					
 					if (event.asStartElement().getName().getLocalPart()
 							.equals(EMAIL)) {
 						event = eventReader.nextEvent();
-						employee.setEmail(event.asCharacters().getData());
+						if(event.isCharacters()){
+							employee.setEmail(event.asCharacters().getData());
+						}
 						continue;
+						
 					}
 
 					if (event.asStartElement().getName().getLocalPart()
@@ -119,8 +128,10 @@ public class XmlParser {
 					if (event.asStartElement().getName().getLocalPart()
 							.equals(FIRSTNAME)) {
 						event = eventReader.nextEvent();
-						employee.setFirstname(event.asCharacters().getData());
+						if(event.isCharacters())
+							employee.setFirstname(event.asCharacters().getData());
 						continue;
+						
 					}
 				}
 				// If we reach the end of an item element we add it to the list
@@ -286,16 +297,20 @@ public class XmlParser {
 						if (event.asStartElement().getName().getLocalPart()
 								.equals(TITLE)) {
 							event = eventReader.nextEvent();
-							item.setTitle(event.asCharacters().getData());
+							if(event.isCharacters())
+								item.setTitle(event.asCharacters().getData());
 							continue;
+							
 						}
 					}
 					
 					if (event.asStartElement().getName().getLocalPart()
 							.equals(DETAILS)) {
 						event = eventReader.nextEvent();
-						item.setDetails(event.asCharacters().getData());
+						if(event.isCharacters())
+							item.setDetails(event.asCharacters().getData());
 						continue;
+						
 					}
 					
 				}

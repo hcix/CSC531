@@ -21,5 +21,28 @@
 		<title>new</title>
 		<details>item</details>
 	</item>
+<<<<<<< HEAD
 >>>>>>> 754d0ef9f02564b26f81ee68d51128d3c1aac855:Project/src/progAdmin/itemsToReview/itemsToReview.xml
+=======
+	<item>
+		<title>1:11</title>
+		<details>i2hh</details>
+	</item>
+	<item>
+		<title>new</title>
+		<details>wwww</details>
+	</item>
+	<item>
+		<title>2222</title>
+		<details>22222</details>
+	</item>
+	<item>
+		<title>3333</title>
+		<details>33333</details>
+	</item>
+	<item>
+		<title>4444</title>
+		<details>44444</details>
+	</item>
+>>>>>>> 421092ad512b2814dbc5750311809291a0a23e0a
 </UMPD.itemsList>

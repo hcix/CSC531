@@ -23,7 +23,8 @@ public class Core extends JFrame {
 	public static void main(String[] args) {
 	    //Schedule a job for the event dispatch thread: creating and showing the GUI
 	    SwingUtilities.invokeLater(new Runnable() {
-	        public void run() {
+	        @SuppressWarnings("deprecation")
+			public void run() {
 	        	
 	        	//Use the native systems look and feel
 	        	try{
@@ -38,6 +39,10 @@ public class Core extends JFrame {
 	        	//createAndShowLoginGUI();
 	        
 	        	rm = new ResourceManager(frame);
+	        	
+	        	Splash splashScreen = new Splash();
+	        	splashScreen.setVisible(true);
+	        	
 	        	
 	        	//Set up the UI
 	        	createAndShowMainGUI();
@@ -98,4 +103,5 @@ public class Core extends JFrame {
 	}
 	
 //-----------------------------------------------------------------------------	
+
 }

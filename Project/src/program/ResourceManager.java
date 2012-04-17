@@ -184,7 +184,7 @@ public class ResourceManager {
 	 * @return items - 
 	 */
 	public ArrayList<ItemToReview> getItems() {
-//DEBUG
+/*DEBUG
 System.out.println("=====================================================================");
 System.out.println("\nReturning:");
 int i=0;
@@ -192,26 +192,18 @@ for(ItemToReview item : items){
 System.out.printf("item %d: %s\n", i, item.toString());
 i++;
 }System.out.println("=====================================================================");
-
+*/
 		return items;
 	}
-//-----------------------------------------------------------------------------
-	/**
-	 * @param items - the items value to set
-	 */
-/*	public void setItems(ArrayList<ItemToReview> items) {
-		this.items = items;
-		saveItemsList();
-	}*/
 //-----------------------------------------------------------------------------
 	/**
 	 * JDOC
 	 */
 	public void removeItem(int index) {
-//DEBUG
+/*DEBUG
 System.out.println("DELETE: Resourcemanager: removeItem: curListSize = " + 
 items.size() + "; index to delete= " +index);
-		
+*/		
 		items.remove(index);	
 		saveItemsList();
 	}
@@ -220,9 +212,10 @@ items.size() + "; index to delete= " +index);
 	 * JDOC
 	 */
 	public void addItem(ItemToReview newItem) {
-//DEBUG
+/*DEBUG
 System.out.println("ADD: Resourcemanager: addItem: curListSize = " + 
 items.size() + "; newItem.getTitle = " + newItem.getTitle());
+*/
 		items.add(newItem);
 		saveItemsList();
 	}
@@ -243,7 +236,7 @@ items.size() + "; newItem.getTitle = " + newItem.getTitle());
 	 * JDOC
 	 */
 	private void saveItemsList(){
-//DEBUG
+/*DEBUG
 System.out.println("--------------------------------------------------------------------");
 System.out.println("\nThe list about to be saved:");
 int i=0;
@@ -251,7 +244,7 @@ for(ItemToReview item : items){
 System.out.printf("item %d: %s\n", i, item.toString());
 i++;
 }System.out.println("--------------------------------------------------------------------");
-			
+*/		
 		//save the items list to the xml file
 		try{
 			XmlParser.saveItemsToReviewList(items);
