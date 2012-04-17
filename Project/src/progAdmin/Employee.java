@@ -1,6 +1,8 @@
 package progAdmin;
+//-----------------------------------------------------------------------------
 /**
- * Class representing a UMPD employee used for login/permissions purposes
+ * The <code>Employee</code> class represents a UMPD employee used for 
+ * login/permissions purposes
  */
 public class Employee {
 	private String cnumber; 
@@ -12,8 +14,8 @@ public class Employee {
 	private int level;
 //-----------------------------------------------------------------------------
 	/**
-	 * Getter method for the cnumber variable
-	 * @return - employee's C number, as assigned by the University of Miami
+	 * 'Getter' method for the cnumber variable
+	 * @return cnumber - employee's C number, as assigned by the University of Miami
 	 */
 	public String getCnumber() {
 		return cnumber;
@@ -29,7 +31,7 @@ public class Employee {
 //-----------------------------------------------------------------------------
 	/**
 	 * Getter method for caneID variable
-	 * @return - employee's UM username
+	 * @return caneID - employee's UM username
 	 */
 	public String getCaneID() {
 		return caneID;
@@ -126,7 +128,7 @@ public class Employee {
 	/**
 	 * Getter method for employee's level
 	 * 
-	 * @return
+	 * @return level - their access level
 	 */
 	public int getLevel(){
 		return level;

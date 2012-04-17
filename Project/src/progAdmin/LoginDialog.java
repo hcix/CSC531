@@ -25,10 +25,13 @@ import net.miginfocom.swing.MigLayout;
 import program.CurrentUser;
 import utilities.FileHelper;
 import utilities.ui.SwingHelper;
-
 //-----------------------------------------------------------------------------
+/**
+ * The <code>LoginDialog</code> class
+ *
+ */
 public class LoginDialog extends JDialog implements ActionListener {
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	private static boolean loginSuccessful=false;
 	//buttons
 	private static final String LOGIN = "login";
