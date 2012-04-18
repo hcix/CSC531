@@ -175,8 +175,8 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 >>>>>>> logout works, see DashboardPanel
 			table.repaint();
 			//TODO:I ALSO WANT A PROMPT CHECKING IF ITS OK TO DELETE USER
-			JOptionPane.showConfirmDialog(parent, "Are you sure blah blah...?", 
-					"Confirm Delete", JOptionPane.QUESTION_MESSAGE);
+			//JOptionPane.showConfirmDialog(parent, "Are you sure blah blah...?", 
+			//		"Confirm Delete", JOptionPane.QUESTION_MESSAGE);
 		}
 		else {System.err.print("get actioncommand error");} 
 	}
@@ -185,7 +185,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 	private class EmployeeTableModel extends AbstractTableModel implements TableModelListener 
 	{
 		private static final long serialVersionUID = 1L;
-		private String [] columnNames = {"cnumber", "firstname", "lastname",
+		private String [] columnNames =  {"cnumber", "firstname", "lastname",
 				"caneid", "email", "permissions"};	
 	//-----------------------------------------------------------------------------
 		public void tableChanged(TableModelEvent e) {
