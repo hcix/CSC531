@@ -11,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -24,14 +25,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-<<<<<<< HEAD
-=======
-import javax.swing.table.TableColumn;
-
 import progAdmin.itemsToReview.ItemToReview;
->>>>>>> rando changes
 import net.miginfocom.swing.MigLayout;
-import progAdmin.itemsToReview.ItemToReview;
 import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
@@ -125,14 +120,16 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		table.setPreferredScrollableViewportSize(dialogDim);
 	    table.setFillsViewportHeight(true);
 	    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-<<<<<<< HEAD
 
-=======
-	    
-		
->>>>>>> rando changes
 	    employeeList = XmlParser.getRoster();
-		
+		for(int rows = 1; rows < employeeList.size(); rows++)
+		{
+			for(int columns = 0; columns < 6; columns++)
+			{
+				
+			}
+		}
+	    
 		for(Employee e: employeeList)
 			System.out.println(e);
 		
@@ -154,7 +151,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		String command = e.getActionCommand();
 		if(command.equals(ADD_USER))
 		{
-			AddUserDialog aud = new AddUserDialog();
+			AddUserDialog aud = new AddUserDialog(parent);
 			aud.setVisible(true);
 			aud.setModal(true);
 			//refresh table
@@ -162,23 +159,23 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		}
 		else if(command.equals(EDIT_USER))
 		{
-			
+			int rowIndex = table.getSelectedRow();
+			int colIndex = table.getSelectedColumn();
+			table.setCellSelectionEnabled(true);
+			table.setValueAt("stuff", rowIndex, colIndex);
 			//TODO: make edit user dialog
 			//TODO: open edit user dialog
+			table.repaint();
 		}
 		else if(command.equals(DELETE_USER))
 		{
 			int rowIndex = table.getSelectedRow();
-<<<<<<< HEAD
-=======
-			//rm.removeItem(rowIndex);
->>>>>>> rando changes
 			table.repaint();
 			//TODO:I ALSO WANT A PROMPT CHECKING IF ITS OK TO DELETE USER
 			//JOptionPane.showConfirmDialog(parent, "Are you sure blah blah...?", 
 			//		"Confirm Delete", JOptionPane.QUESTION_MESSAGE);
 		}
-		else {System.err.print("get actioncommand error");} 
+		table.repaint();
 	}
 //=============================================================================
 	/** INNER CLASS **/
