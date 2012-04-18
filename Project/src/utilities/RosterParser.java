@@ -15,13 +15,17 @@ import static java.nio.file.Files.newBufferedReader;
 import static java.nio.file.Paths.get;
 
 /**
- * This class will be used to read through the .lst file for each employee,
- * in order to determine what shifts they work.
+ * The <code>RosterParser</code> class will be used to read through the .lst 
+ * file for each <code>Employee</code>, in order to determine what shifts they work.
  */
 public class RosterParser {
 //-----------------------------------------------------------------------------
 	/**
-	 * JDOC
+	 * Get an <code>ArrayList</code> of <code>Employee</code> names that are working
+	 * 
+	 * @param shiftTime - the time an <code>Employee</code> comes to work
+	 * @param currentShiftDate - the date an <code>Employee</code> comes to work
+	 * @return Employees - an <code>ArrayList</code> of <code>Employee</code> names
 	 */
 	public ArrayList<String> getEmployeesOnShift(int shiftTime, Calendar currentShiftDate) {
 		ArrayList<String> Employees = new ArrayList<String>();
@@ -64,7 +68,13 @@ public class RosterParser {
 
 //-----------------------------------------------------------------------------
 	/**
-	 * JDOC
+	 * Check if an <code>Employee</code> is working
+	 * 
+	 * @param file - the applicable file
+	 * @param shiftTime - the time of an <code>Employee</code>'s shift
+	 * @param day - the date of an <code>Employee</code>'s shift
+	 * @return <code>boolean</code> - <code>true</code> if an <code>Employee</code> is working, 
+	 * 			 <code>false</code> else
 	 */
 	public boolean isOnShift(File file, int shiftTime, String day) 
 	{
@@ -105,7 +115,10 @@ public class RosterParser {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * JDOC
+	 * Find an <code>Employee</code>'s name from his/her <code>Cnumber</code> if it exists
+	 * 
+	 * @param Cnumber - the University of Miami identification number
+	 * @return name - the <code>Employee</code> name, <code>null</code> if else
 	 */
 	public String getNameFromCNumber(String Cnumber) {
 		//here filename is really the cnumber
@@ -152,7 +165,6 @@ public class RosterParser {
 	 * Gets a <code>BufferedReader</code> to read the given file.
 	 * 
 	 * @param filename - the filename to return a <code>BufferedReader</code>
-	 * for
 	 * @return a <code>BufferedReader</code> for the specified filename 
 	 */
 	private BufferedReader getReader(String filename) throws IOException {
@@ -160,7 +172,10 @@ public class RosterParser {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * JDOC
+	 * Using an integer date, get date as a <code>String</code>
+	 * 
+	 * @param dayAsInt - a day represented as an integer
+	 * @return dayOfTheWeek
 	 */
 	private String getDayAsString(int dayAsInt) {
 
