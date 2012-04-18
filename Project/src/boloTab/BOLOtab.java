@@ -68,17 +68,20 @@ public class BOLOtab extends JPanel  implements ActionListener {
 		newBOLOButton.addActionListener(new ActionListener() {
 			//BOLO form dialog
 			BOLOform formDialog = new BOLOform(parent);
+			
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e){
 				formDialog.setVisible(true);	
 				
 				//wait for the dialog to be dismissed before continuing
 				formDialog.setModal(true);
 
-		//		if(formDialog.isNewBOLOWascreated()){
+				if(formDialog.isNewBOLOWascreated()){
 					recentBolosTab.removeAll();
 					recentBolosTab.add(createRecentBOLOsTab());
-					tabbedPane.revalidate();
-		//		}
+					recentBolosTab.revalidate();
+				}
+
 			}
 		});
 
@@ -172,6 +175,7 @@ public class BOLOtab extends JPanel  implements ActionListener {
 //-----------------------------------------------------------------------------
 	/**
 	 * In the <code>BOLOtab</code> create and set a recent BOLO tab as a JPanel
+	 * <p>This displays the bolos in 
 	 * 
 	 * @return recentBOLOsPanel
 	 */
@@ -187,14 +191,14 @@ public class BOLOtab extends JPanel  implements ActionListener {
 		}
 
 		int listSize = boloList.size();
+		System.out.println("boloList.size() = " + listSize);
 		JPanel[] items = new JPanel[listSize];
 		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
 		
 		int i=0;
 		for(Bolo bolo: boloList){
 			String listId = "" + boloList.indexOf(bolo);
-//DEBUG	prints list ID of the Bolo bolo: bololist
-//System.out.printf("listId = %s\n", listId);
+
 			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
 			
 			JLabel photoLabel = new JLabel(

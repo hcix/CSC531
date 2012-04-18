@@ -219,15 +219,10 @@ public class LoginDialog extends JDialog implements ActionListener {
 				engine.eval(reader);
 				Object result = engine.get("isAccepted");
 				reader.close();
-<<<<<<< HEAD
-//				if((int)(result) == -1){
-//					return ERROR_BAD_PASSWORD;
-//				}
-=======
+				
 				if((Integer)(result) == -1){
 					return ERROR_BAD_PASSWORD;
 				}
->>>>>>> got rid of overrides that were causing errors for me, other small stuffs
 			}catch(Exception e){
 				e.printStackTrace();
 			}

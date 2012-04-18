@@ -79,10 +79,10 @@ public class BlueBookTab extends JPanel implements ActionListener {
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates a search dialog for the <code>BlueBookTab</code> when the 
-	 * <code>searchButton</code> is clicked
+	 * <code>searchButton</code> is clicked.
 	 * 
-	 * @param parent
-	 * @return
+	 * @param parent - Parent JFrame
+	 * @return 
 	 */
 	JDialog createSearchDialog(JFrame parent){
 		//Create the dialog and set the size
@@ -126,7 +126,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 //-----------------------------------------------------------------------------	
 	/**
 	 * Create the <code>entriesPanel</code> and populate it with data from the
-	 * database
+	 * database.
 	 * 
 	 * @return entriesPanel
 	 */
@@ -185,13 +185,11 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		return entriesPanel;
 	}
 //-----------------------------------------------------------------------------	
-<<<<<<< HEAD
+
 	/** 
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 
-=======
->>>>>>> got rid of overrides that were causing errors for me, other small stuffs
 	public void actionPerformed(ActionEvent ev) {
 		String listId = ev.getActionCommand();
 		int id = Integer.valueOf(listId);
