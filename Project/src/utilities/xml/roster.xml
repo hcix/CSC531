@@ -16,4 +16,12 @@
 		<email>h.ciechowski@umiami.edu</email>
 		<permissions>supervisor</permissions>
 	</employee>
+	</roster>
+		<cnumber>12345</cnumber>
+		<firstname>Brosef</firstname>
+		<lastname>Brochacho</lastname>
+		<caneid>b.bro</caneid>
+		<email>b.bro@whatever.gov</email>
+		<permissions>Supervisor</permissions>
+	</employee>
 </roster>
