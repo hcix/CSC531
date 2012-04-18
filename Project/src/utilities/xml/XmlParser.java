@@ -151,7 +151,7 @@ public class XmlParser {
 		return roster;
 	}
 //-----------------------------------------------------------------------------	
-	public void saveRoster(List<Employee> roster) throws Exception {
+	public static void saveRoster(List<Employee> roster) throws Exception {
 		String rosterFileName = FileHelper.getRosterFilePathName();
 		//Create a XMLOutputFactory
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
@@ -365,7 +365,7 @@ public class XmlParser {
 		eventWriter.add(end);
 	}
 //-----------------------------------------------------------------------------	
-	private void addEmployeeNode(XMLEventWriter eventWriter, Employee employee)
+	private static void addEmployeeNode(XMLEventWriter eventWriter, Employee employee)
 	throws Exception {
 		XMLEventFactory eventFactory = XMLEventFactory.newInstance();
 		XMLEvent end = eventFactory.createDTD("\n");
