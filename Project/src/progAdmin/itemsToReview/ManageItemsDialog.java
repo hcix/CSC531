@@ -196,8 +196,6 @@ private static final long serialVersionUID = 1L;
             int row = table.rowAtPoint(p);
             
             //show the ReadItemDialog to display the item
-        //    ReadItemDialog readItem = new ReadItemDialog(
-        //    		rm.getGuiParent(), items.get(row));
             ReadItemDialog readItem = new ReadItemDialog(
             		rm.getGuiParent(), rm.getItems().get(row));
             readItem.setVisible(true);
@@ -226,10 +224,8 @@ private static final long serialVersionUID = 1L;
 	private class ItemsTableModel extends AbstractTableModel implements TableModelListener {
 		private static final long serialVersionUID = 1L;
 		private String[] columnNames = {"Reviewed","Title","Details"};
-
-       // private ArrayList<ItemToReview> items = new ArrayList<ItemToReview>();
 //-----------------------------------------------------------------------------
-   //     public ItemsTableModel(ArrayList<ItemToReview> items) {
+
 		public ItemsTableModel() {
         	
         }
@@ -240,7 +236,6 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
       
 		public int getRowCount() {
-            //return data.length;
         	return rm.getItems().size();
         }
 //-----------------------------------------------------------------------------
@@ -249,16 +244,7 @@ private static final long serialVersionUID = 1L;
 	    }
 //-----------------------------------------------------------------------------
 		public Object getValueAt(int row, int col) {
-	    	//return data[row][col];
-	    	/*
-	    	if(col==0){
-	    		return (items.get(row).isReviewed());
-	    	} else if(col==1){
-	    		return (items.get(row).getTitle());
-	    	} else {
-	    		return (items.get(row).getDetails());
-	    	}
-	    	*/
+
 	    	if(col==0){
 	    		return (rm.getItems().get(row).isReviewed());
 	    	} else if(col==1){
@@ -285,45 +271,9 @@ private static final long serialVersionUID = 1L;
 	     * Implement this method if your table's data can change.
 	     */
 	    @Override
-		public void setValueAt(Object value, int row, int col) {
-
-	    	// data[row][col] = value;
-	    	/*
-	    	if(col==0){
-	    		items.get(row).setReviewed((boolean)value);   		
-	    	} else if(col==1){
-	    		items.get(row).setTitle((String)value);
-	    	} else {
-	    		items.get(row).setDetails((String)value);
-	    	}
-	    	*/
-
-	    }
-//-----------------------------------------------------------------------------  
-	/*	public void addRow(ItemToReview item) {  
-			Boolean reviewed;
-		    	
-			if(item.isReviewed()){
-				reviewed = new Boolean(true);
-			}else{
-				reviewed = new Boolean(false);
-			}
-		    	
-			//item.setCreator(System.getProperty("UMPD.user"));
-			
-			items.add(item);
-		}   */
-//-----------------------------------------------------------------------------  
-   /*     public void deleteRow(int row) {  
-        	items.remove(row);
-        }        */  
+		public void setValueAt(Object value, int row, int col) {  }
 //-----------------------------------------------------------------------------        
-	public void tableChanged(TableModelEvent e) {
-    	   //if(rm.getItems().size()!=items.size()){
-    	//	   items = rm.getItems();
-    	 //  }
-    	   
-       }
+	public void tableChanged(TableModelEvent e) { }
  //-----------------------------------------------------------------------------
 	}
 //=============================================================================
