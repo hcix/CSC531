@@ -130,7 +130,7 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return infoPanel
 	 */
-	public JPanel createPhysicalDescriptionPanel(){
+	private JPanel createPhysicalDescriptionPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout());
 		infoPanel.setBackground(Color.WHITE);
 		String[] labels = { "Approx. Age: ", "Race", "Sex", "Approx. Height: ", 
@@ -162,7 +162,7 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return infoPanel
 	 */
-	public JPanel createIncidentInfoPanel(){
+	private JPanel createIncidentInfoPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout());
 		infoPanel.setBackground(Color.WHITE);
 		String[] labels = { "Reference: ", "Case #: ", "Status: ", 
@@ -192,7 +192,7 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return narrativePanel
 	 */
-	public JPanel createNarrativePanel(){
+	private JPanel createNarrativePanel(){
 		JPanel narrativePanel = new JPanel(new MigLayout());
 		narrativePanel.setBackground(Color.WHITE);
 		
@@ -207,7 +207,7 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return adminPanel
 	 */
-	public JPanel createAdministrativePanel(){
+	private JPanel createAdministrativePanel(){
 		JPanel adminPanel = new JPanel(new MigLayout());
 		adminPanel.setBackground(Color.WHITE);
         // create labels
@@ -235,7 +235,7 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return photoVideoPanel
 	 */
-	public JPanel createPhotoVideoPanel(){
+	private JPanel createPhotoVideoPanel(){
 		JPanel photoVideoPanel = new JPanel(new MigLayout());
 		photoVideoPanel.setBackground(Color.WHITE);
 		
@@ -260,7 +260,7 @@ public class BOLOpreview extends JDialog {
 	 * 
 	 * @return buttonsPanel
 	 */
-	public JPanel createButtonsPanel(){
+	private JPanel createButtonsPanel(){
 	
 		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
 		

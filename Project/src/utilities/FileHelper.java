@@ -1,6 +1,3 @@
-/**
- * Helper class to help with accessing files within the file system.
- */
 package utilities;
 
 import java.awt.Graphics2D;
@@ -16,7 +13,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.filechooser.FileFilter;
 import org.jpedal.examples.simpleviewer.SimpleViewer;
-
+//-----------------------------------------------------------------------------
+/**
+* The <code>FileHelper</code> class is designed to help with accessing files 
+* within the file system.
+*/
 public class FileHelper {
 	//Image File Extensions
 	public final static String JPEG = "jpeg";
@@ -52,7 +53,11 @@ public class FileHelper {
   	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Gets the name of the absolute path to the file where the document 
+	 * is stored on the file system
 	 * 
+	 * @param doc - the local path of the document
+	 * @return docName - the absolute path of the document
 	 */
 	public static String getDocumentPathName(String doc){
 		File progDir = new File("..");
@@ -73,9 +78,11 @@ public class FileHelper {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Gets the absolute file path name of the given report. 
+	 * Gets the name of the absolute path to the file where the report 
+	 * is stored on the file system
 	 * 
-	 * @param 
+	 * @param reportName - the local path of the report
+	 * @return docName - the absolute path of the report
 	 */
 	public static String getReportPathName(String reportName){
 		File progDir = new File("..");
@@ -97,7 +104,11 @@ public class FileHelper {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * JDOC
+	 * Gets the name of the absolute path to the directory where the report 
+	 * is stored on the file system
+	 * 
+	 * @return dirName - the canonical path name of the reports
+	 * @see getCanonicalPath()
 	 */
 	public static String getReportsDir(){
 		File progDir = new File(getProgramDirPathName());
@@ -105,7 +116,7 @@ public class FileHelper {
 		String dirName=null;
 			
 		try{
-		dirPath = Paths.get(progDir.getCanonicalPath(), 
+			dirPath = Paths.get(progDir.getCanonicalPath(), 
 				DOC_DIR, SFT_RPTS_SUBDIR);
 		} catch (IOException e){
 			e.printStackTrace();
@@ -115,12 +126,14 @@ public class FileHelper {
 		
 //DEBUG System.out.println("FileHelper: getReportsDir: dir = " + dirName);	
 
-return dirName;
-		
+		return dirName;	
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Gets the name of the absolute path to the file where the roster 
+	 * is stored on the file system
 	 * 
+	 * @return rosterFileName - the canonical path name of the roster
 	 */
 	public static String getRosterFilePathName(){
 		File progDir = new File("..");
@@ -141,6 +154,13 @@ return dirName;
 		
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Gets the name of the absolute path to the file where the form template
+	 * is stored on the file system
+	 * 
+	 * @param form - the name of the form
+	 * @return docName - the absolute path of the form template
+	 */
 	public static String getFormTemplatePathName(String form){
 		File progDir = new File(getProgramDirPathName());
 		Path docPath=null;
@@ -161,8 +181,9 @@ return dirName;
 //-----------------------------------------------------------------------------
   	/**
   	 * Gets the name of the absolute path to the directory where the UMPD Management
-  	 * Program is stored on the file system.
-  	 * @return the absolute path to the directory containing the UMPD Management app
+  	 * Program is stored on the file system
+  	 * .
+  	 * @return programDir - the absolute path to the directory containing the UMPD Management app
   	 * and all of it's accompanying files
   	 */
 	public static String getProgramDirPathName(){
@@ -185,6 +206,7 @@ return dirName;
 	/**
 	 * Gets the name of the properties file path, which is used by 
 	 * <code>ResourceManager</code> to load the program's properties.
+	 * 
 	 * @return the absolute path to properties file
 	 */
 	public static String getPropertiesFile(){
@@ -198,7 +220,8 @@ return dirName;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Gets the name of the itemsToReview.xml file.
+	 * Gets the name of the <code>itemsToReview.xml</code> file.
+	 * 
 	 * @return the absolute path to itemsToReview.xml
 	 */
 	public static String getItemsToReviewFile(){
@@ -214,6 +237,7 @@ return dirName;
 	/**
 	 * Gets the name of the properties file path, which is used by 
 	 * <code>ResourceManager</code> to load the program's properties.
+	 * 
 	 * @return the absolute path to properties file
 	 */
 	public static String getDatabaseFile(){
@@ -228,7 +252,8 @@ return dirName;
 	/**
 	 * Copies a Shift Commander Summary Report into the UMPD Management Program's
 	 * program files. Makes a copy of the specified file and places the copy into
-	 * the program's Documents/ShiftCdrReports subdirectory.
+	 * the program's Documents/ShiftCdrReports sub-directory.
+	 * 
 	 *  @param original - the original report file
 	 *  @return the path of the newly created file, which is an exact copy of the
 	 *  original

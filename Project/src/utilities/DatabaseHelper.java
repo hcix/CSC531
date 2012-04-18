@@ -1,12 +1,3 @@
-/**
- * A helper class designed to make accessing the crime table within the
- * database in program easier. 
- * This classes methods should be used exclusively to interact with the 
- * database to ensure thread safety. Only one connection can write to the
- * database at a time, thus once a connection is opened the entire database 
- * locks until it is closed. 
- *
- */
 package utilities;
 
 import java.nio.file.Path;
@@ -22,14 +13,23 @@ import java.util.Date;
 import shiftCdrTab.RollCall;
 import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
-
+//-----------------------------------------------------------------------------
+/**
+ * The <code>DatabaseHelper</code> class is designed to make accessing 
+ * the crime table within the database in program easier. 
+ * These methods should be used exclusively to interact with the 
+ * database to ensure thread safety. Only one connection can write to the
+ * database at a time, thus once a connection is opened the entire database 
+ * locks until it is closed. 
+ *
+ */
 public class DatabaseHelper {	
 //-----------------------------------------------------------------------------
 	/**
-	 * Retrives all the BOLOs from the database and places them into an 
-	 * <code>Arraylist</code> of BOLO objects, which is returned to the 
+	 * Retrieves all the <code>Bolo</code>s from the database and places them into an 
+	 * <code>Arraylist</code> of <code>Bolo</code> objects, which is returned to the 
 	 * caller.
-	 * @return an arraylist of BOLO objects
+	 * @return boloList - an <code>Arraylist</code> of <code>Bolo</code> objects
 	 * @throws Exception
 	 */
 	public static ArrayList<Bolo> getBOLOsFromDB() throws Exception{
@@ -125,10 +125,10 @@ public class DatabaseHelper {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Retrieves the Blue Book from the database and places them into an 
-	 * <code>Arraylist</code> of BlueBookEntry objects, which is returned to the 
+	 * Retrieves all the <code>BlueBookEntry</code>s from the database and places them into an 
+	 * <code>Arraylist</code> of <code>BlueBookEntry</code> objects, which is returned to the 
 	 * caller.
-	 * @return an Arraylist of BlueBookEntry objects
+	 * @return bluebook - an <code>Arraylist</code> of <code>BlueBookEntry</code> objects
 	 * @throws Exception
 	 */
 	public static ArrayList<BlueBookEntry> getBluebookFromDB() throws Exception{
@@ -190,6 +190,16 @@ public class DatabaseHelper {
 	    return bluebook;
 	} 
 //-----------------------------------------------------------------------------
+	/**
+	 * Takes <code>RollCall</code> data imported from the the UMPD Scheduler and populates the database
+	 * 
+	 * @param name - officer name
+	 * @param present - either here or not here
+	 * @param comment - add text about that day
+	 * @param timeArrived - time the officer arrived 
+	 * @param shiftDate - the date of the officers shift
+	 * @throws Exception
+	 */
 	public void addRollCall(String name, String present, String comment, 
 			String timeArrived, String shiftDate) throws Exception {
 		
@@ -234,7 +244,15 @@ public class DatabaseHelper {
 	}
 
 //-----------------------------------------------------------------------------
-    public ArrayList<RollCall> getRollCallFromDatabase(String shiftDate) throws Exception {
+    /**
+     * Takes <code>RollCall</code> data stored in the database and populate the 
+     * <code>ShiftCdrTab</code> 
+     * 
+     * @param shiftDate - the officer's assigned date to come into work
+     * @return rollCallList - an <code>Arraylist</code> of <code>RollCall</code> objects
+     * @throws Exception
+     */
+	public ArrayList<RollCall> getRollCallFromDatabase(String shiftDate) throws Exception {
     	ArrayList<RollCall> rollCallList = new ArrayList<RollCall>();
     	// Implement later TODO
     	
@@ -354,7 +372,6 @@ public class DatabaseHelper {
 	}
 	*/
 //-----------------------------------------------------------------------------
-
 	/**
 	 * Converts a <code>Date</code> object into a <code>long</code> representing
 	 * the number of seconds elapsed since the epoch. 
