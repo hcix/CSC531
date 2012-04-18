@@ -31,8 +31,7 @@ import utilities.ui.SwingHelper;
  * into Recent <code>Bolo</code>s and Archived <code>Bolo</code>s  
  */
 public class BOLOtab extends JPanel implements ActionListener {
-	private static final long serialVersionUID = 1L;
-	private static final String CREATE_ACTION = "create";
+private static final long serialVersionUID = 1L;
 	BOLOform newFormDialog;
 	ArrayList<Bolo> boloList;
 	JFrame parent;

@@ -26,7 +26,7 @@ import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------	
 /**
  * The <code>BlueBookTab</code> class creates a tab on the UMPD Management
- * System to hold information of <code>BlueBookEntry</code>s.
+ * System to hold information of <code>BlueBookEntry</code>s. 
  */
 public class BlueBookTab extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -35,8 +35,6 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	JTextField caseNumField;
 	JTextField locationField;
 	JTextField nameField;
-
-
 	// -----------------------------------------------------------------------------
 	/**
 	 * Creates and sets the <code>BlueBookTab</code> to view all the
@@ -94,7 +92,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	 */
 	public JDialog createSearchDialog(JFrame parent) {
 		// Create the dialog and set the size
-		JDialog searchDialog = new JDialog(parent, "Search Blue Book Database",
+		final JDialog searchDialog = new JDialog(parent, "Search Blue Book Database",
 				true);
 		searchDialog.setPreferredSize(SwingHelper.SEARCH_DIALOG_DIMENSION);
 		searchDialog.setSize(SwingHelper.SEARCH_DIALOG_DIMENSION);
@@ -122,6 +120,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				search();
+				searchDialog.dispose();
 			}
 			
 		});
@@ -166,13 +165,19 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		try {
 			searchResults = (ArrayList<BlueBookEntry>) SearchHelper.search("bluebook", fields, parameters);
 			//DEBUG
-			for (BlueBookEntry entry : searchResults) {
-					System.out.println("case number :" + entry.getCaseNum());	
-			}
+//			for (BlueBookEntry entry : searchResults) {
+//					System.out.println("case number :" + entry.getCaseNum());	
+//			}
 		} catch (Exception e) {
 			System.out.println("Couldn't run search in bluebook"); 
 			e.printStackTrace();
 		}
+		JDialog searchDialog = new JDialog();
+		JPanel searchEntriesPanel = createSearchEntriesPanel();
+		searchDialog.add(searchEntriesPanel, BorderLayout.CENTER);
+		searchDialog.setLocationRelativeTo(null);
+		searchDialog.setSize(500,500); //set dynamically TODO
+		searchDialog.setVisible(true);//BUG disappears
 	}
 
 	// -----------------------------------------------------------------------------
@@ -242,8 +247,74 @@ public class BlueBookTab extends JPanel implements ActionListener {
 
 		return entriesPanel;
 	}
+// -----------------------------------------------------------------------------
+	/**
+	 * Create the <code>entriesPanel</code> and populate it with data from the
+	 * database
+	 * 
+	 * @return entriesPanel
+	 */
+	public JPanel createSearchEntriesPanel() {
+		JPanel entriesPanel = new JPanel(new MigLayout("gapx 30, wrap 4"));
+		JPanel entryPanel;
+		// Date prepDate;
 
-	// -----------------------------------------------------------------------------
+		// TODO: make scrollable!
+
+		try {
+			bluebook = DatabaseHelper.getBluebookFromDB();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		int listSize = bluebook.size();
+		JPanel[] items = new JPanel[listSize];
+		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
+
+		int i = 0;
+		for (BlueBookEntry entry : bluebook) {
+			entryPanel = new JPanel(
+					new MigLayout("flowy", "[][]", "[][center]"));
+			String listId = "" + bluebook.indexOf(entry);
+			if (entry.getPhotoFilePath() != null) {
+				JLabel photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
+						entry.getPhoto(), 100, 100));
+				entryPanel.add(photoLabel);
+			}
+			String caseNum = "";
+			if (entry.getCaseNum() != null) {
+				caseNum = entry.getCaseNum();
+			}
+			String status = "";
+			if (entry.getStatus() != null) {
+				status = entry.getStatus();
+			}
+			String armedText = "";
+			if (entry.getWeapon() != null) {
+				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
+			}
+
+			entryPanel.add(new JLabel(armedText, SwingConstants.CENTER),
+					"alignx center,wrap");
+
+			entryPanel.add(new JLabel(" "), "split 3, aligny top");
+			entryPanel.add(new JLabel("Case#: " + caseNum));
+			entryPanel.add(new JLabel(status));
+			entryPanel.setSize(new Dimension(130, 150));
+			entryPanel.setPreferredSize(new Dimension(130, 150));
+
+			entryPanel.setName(listId);
+			items[i] = entryPanel;
+			i++;
+		}
+
+		DisplayPanel itemsPanel = new DisplayPanel(items, this);
+
+		entriesPanel.add(itemsPanel);
+
+		return entriesPanel;
+	}
+// -----------------------------------------------------------------------------
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */

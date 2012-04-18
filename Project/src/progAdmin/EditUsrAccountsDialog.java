@@ -24,6 +24,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
+import progAdmin.itemsToReview.ItemToReview;
 import net.miginfocom.swing.MigLayout;
 import progAdmin.itemsToReview.ItemToReview;
 import utilities.ui.SwingHelper;
@@ -148,17 +150,18 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			aud.setVisible(true);
 			aud.setModal(true);
 			
-			Employee emp = aud.getEmployee();
-			employeeList.add(emp);
-			
-			
-			try {
-				XmlParser.saveRoster(employeeList);
-			} catch (Exception ee) {
-				ee.printStackTrace();
-			}
-			//refresh table
-			table.repaint();
+			if(aud.checkCanceled() != true)
+			{
+				Employee emp = aud.getEmployee();
+				employeeList.add(emp);
+				try {
+					XmlParser.saveRoster(employeeList);
+				} catch (Exception ee) {
+					ee.printStackTrace();
+				}
+				//refresh table
+				table.repaint();
+			}	
 		}
 		else if(command.equals(EDIT_USER))
 		{
@@ -167,14 +170,20 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			AddUserDialog aud = new AddUserDialog(parent, emp);
 			aud.setVisible(true);
 			aud.setModal(true);
-			//TODO: make edit user dialog
-			//TODO: open edit user dialog
-			int empLoc = employeeList.indexOf(emp);
-			employeeList.remove(emp);
-			employeeList.add(empLoc, aud.getEmployee());
-			table.repaint();
+			if(aud.checkCanceled() != true)
+			{
+				int empLoc = employeeList.indexOf(emp);
+				employeeList.remove(emp);
+				employeeList.add(empLoc, aud.getEmployee());
+				try {
+					XmlParser.saveRoster(employeeList);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				table.repaint();
+			}
 		}
-		else if(command.equals(DELETE_USER))
+else if(command.equals(DELETE_USER))
 		{
 			int selected = table.getSelectedRow();
 			Employee emp = employeeList.get(selected);
@@ -182,12 +191,16 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			/* BEN: Why you make your life difficult? You can just use the
 			 * JOptionPane.showConfirmDialog() method to display a confirm dialog
 			 * and get a result back from it
-			DeleteUserPrompt dup = new DeleteUserPrompt("Are you sure you want to delete user " + emp.getFirstname() + " " );
+			int rowIndex = table.getSelectedRow();
+			//rm.removeItem(rowIndex);
+			int selected = table.getSelectedRow();
+			Employee emp = employeeList.get(selected);
+			
+			DeleteUserPrompt dup = new DeleteUserPrompt(parent, "Are you sure you want to delete user " + emp.getFirstname() + " " + emp.getLastname() + "?");
 			dup.setVisible(true);
-			dup.setModal(true);
 			
 			int result = dup.getResult();
-			if(result == 0) // ok to delete
+			if(result == 1) // ok to delete
 			{
 				employeeList.remove(emp);
 				try {
@@ -200,7 +213,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			
 			//show confirm delete dialog
 			int confirm = JOptionPane.showConfirmDialog(parent, ("Are you sure you want to" +
-					" delete user" + emp.getLastname() + "?"), ("Are you sure?"), 
+					" delete user" + emp.getLastname() + "?"), ("Delete User?"), 
 					JOptionPane.YES_NO_OPTION);
 			
 			//if delete was confirmed, perform delete
@@ -215,6 +228,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			//repaint table to show changes	
 			table.repaint();
 		}
+		this.getContentPane().revalidate();
 	}
 //=============================================================================
 	/** INNER CLASS **/
