@@ -455,10 +455,56 @@ private static final long serialVersionUID = 1L;
 
 		 
 		 //set the times
-		 bolo.setprepDate(getPrepDateEpoch());
+		 //bolo.setprepDate(getPrepDateEpoch());
 		 bolo.setincidentDate(getIncidentDateEpoch());
 		 
 	}
+//-----------------------------------------------------------------------------
+	 /**
+	  *  
+	  * @return preparedCal.getTimeInMillis()/1000
+	  */
+	 public long getPrepDateEpoch(){
+		  Date day = new Date();
+		  Date time = new Date();
+
+		  Calendar preparedCal = Calendar.getInstance();
+		  Calendar timeCal = Calendar.getInstance();
+
+		  day = ((SpinnerDateModel) preparedDate.getModel()).getDate();
+		  time = ((SpinnerDateModel) preparedTime.getModel()).getDate();
+		  timeCal.setTime(time);
+		
+		  preparedCal.setTime(day);
+		  preparedCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
+		  preparedCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
+		  preparedCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
+			 
+		  return (preparedCal.getTimeInMillis()/1000);
+	  }
+//-----------------------------------------------------------------------------
+	  /**
+	   * 
+	   * @return incidentCal.getTimeInMillis()/1000
+	   */
+	  public long getIncidentDateEpoch(){
+		  Date day = new Date();
+		  Date time = new Date();
+		  
+		  Calendar incidentCal = Calendar.getInstance();
+		  Calendar timeCal = Calendar.getInstance();
+		
+		  day = ((SpinnerDateModel) preparedDate.getModel()).getDate();
+		  time = ((SpinnerDateModel) preparedTime.getModel()).getDate();
+		  timeCal.setTime(time);
+		
+		  incidentCal.setTime(day);
+		  incidentCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
+		  incidentCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
+		  incidentCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
+		  
+		  return (incidentCal.getTimeInMillis()/1000); 
+	  }
 //-----------------------------------------------------------------------------
 	 /**
 	  * Places the info from the input fields into the global BOLO object.
@@ -591,52 +637,6 @@ private static final long serialVersionUID = 1L;
 		photoArea.add(noPhotoLabel);
 		(photoArea.getParent()).validate();
 	 }
-//-----------------------------------------------------------------------------
-	 /**
-	  *  
-	  * @return preparedCal.getTimeInMillis()/1000
-	  */
-	 public long getPrepDateEpoch(){
-		  Date day = new Date();
-		  Date time = new Date();
-
-		  Calendar preparedCal = Calendar.getInstance();
-		  Calendar timeCal = Calendar.getInstance();
-
-		  day = ((SpinnerDateModel) preparedDate.getModel()).getDate();
-		  time = ((SpinnerDateModel) preparedTime.getModel()).getDate();
-		  timeCal.setTime(time);
-		
-		  preparedCal.setTime(day);
-		  preparedCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
-		  preparedCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
-		  preparedCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
-			 
-		  return (preparedCal.getTimeInMillis()/1000);
-	  }
-//-----------------------------------------------------------------------------
-	  /**
-	   * 
-	   * @return incidentCal.getTimeInMillis()/1000
-	   */
-	  public long getIncidentDateEpoch(){
-		  Date day = new Date();
-		  Date time = new Date();
-		  
-		  Calendar incidentCal = Calendar.getInstance();
-		  Calendar timeCal = Calendar.getInstance();
-		
-		  day = ((SpinnerDateModel) preparedDate.getModel()).getDate();
-		  time = ((SpinnerDateModel) preparedTime.getModel()).getDate();
-		  timeCal.setTime(time);
-		
-		  incidentCal.setTime(day);
-		  incidentCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
-		  incidentCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
-		  incidentCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
-		  
-		  return (incidentCal.getTimeInMillis()/1000); 
-	  }
 //-----------------------------------------------------------------------------	
 	  /**
 	   * 
