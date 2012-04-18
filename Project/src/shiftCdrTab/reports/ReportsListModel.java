@@ -16,10 +16,12 @@ public class ReportsListModel extends DefaultListModel implements ListModel{
 	    this.reportFileList = reportFileList;
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public Object getElementAt(int index) {
 		return(reportFileList.get(index));
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public int getSize() {
 		return(reportFileList.size());
 	}

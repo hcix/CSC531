@@ -340,14 +340,14 @@ i++;
 		}
 			
 		RosterParser parser = new RosterParser();
-		Employees = parser.getEmployeesOnShift(shiftTime);
+		Employees = parser.getEmployeesOnShift(shiftTime, null);
 		return Employees;
 	}
 //-----------------------------------------------------------------------------	
 	/**
 	 * JDOC
 	 */
-	public ArrayList<String> getRollCall(int shiftTime) throws Exception {
+	public ArrayList<String> getRollCall(int shiftTime, Calendar currentShiftDate) throws Exception {
 		ArrayList<String> Employees = new ArrayList<String>();
 				
 		if (shiftTime < 0 || shiftTime > 24 ) {
@@ -356,7 +356,7 @@ i++;
 		}
 		
 		RosterParser parser = new RosterParser();
-		Employees = parser.getEmployeesOnShift(shiftTime);
+		Employees = parser.getEmployeesOnShift(shiftTime, currentShiftDate);
 		return Employees;
 	}
 //-----------------------------------------------------------------------------	

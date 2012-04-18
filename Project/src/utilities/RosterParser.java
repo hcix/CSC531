@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+
 import static java.nio.charset.Charset.defaultCharset;
 import static java.nio.file.Files.newBufferedReader;
 import static java.nio.file.Paths.get;
@@ -21,19 +23,25 @@ public class RosterParser {
 	/**
 	 * JDOC
 	 */
-	public ArrayList<String> getEmployeesOnShift(int shiftTime) {
+	public ArrayList<String> getEmployeesOnShift(int shiftTime, Calendar currentShiftDate) {
 		ArrayList<String> Employees = new ArrayList<String>();
 		ArrayList<File> files = new ArrayList<File>();
-		Calendar cal = Calendar.getInstance();
 		String name, day;
 		int dayAsInt;
+		
 		// Directory path here
 		//Path path = Paths.get("Project","PatrolScheduler", "employee"); //JAR
 		Path path = Paths.get("PatrolScheduler", "employee"); //ECLIPSE
-
-		dayAsInt = cal.get(Calendar.DAY_OF_WEEK);
-		day = getDayAsString(dayAsInt);
-
+		
+		if (currentShiftDate == null) {
+		    Calendar cal = Calendar.getInstance();		    	    
+		    dayAsInt = cal.get(Calendar.DAY_OF_WEEK);
+		    day = getDayAsString(dayAsInt);
+		}
+		else {
+			day = getDayAsString(currentShiftDate.get(Calendar.DAY_OF_WEEK));//BUG
+		}
+		
 		File folder = new File(path.toString());
 		Collections.addAll(files, folder.listFiles());
 
@@ -58,7 +66,8 @@ public class RosterParser {
 	/**
 	 * JDOC
 	 */
-	public boolean isOnShift(File file, int shiftTime, String day) {
+	public boolean isOnShift(File file, int shiftTime, String day) 
+	{
 		String filePath, shiftTimeAsString;
 		// check that file is a directory
 		if (!file.isDirectory())
@@ -75,21 +84,22 @@ public class RosterParser {
 		 * Open the reader, read each line and check if the time and day match,
 		 * if so return true, else return false
 		 */
-		try (BufferedReader reader = getReader(filePath)) {
+		try {
+			BufferedReader reader = getReader(filePath);
 			String line = null;
-			while ((line = reader.readLine()) != null) {
+			while ((line = reader.readLine()) != null) 
+			{
 				if (line.startsWith(shiftTimeAsString) && line.contains(day)) {
 					return true;
 				}
 			}
+			
 		} catch (IOException e) {
-//DEBUG
-//System.out.println("Employee file " + file.getName() + " has no regular shifts");
-
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return false;
 	}
-
 //-----------------------------------------------------------------------------
 	/**
 	 * JDOC
@@ -112,7 +122,8 @@ public class RosterParser {
 		 * Open the employee list file, check for a match with the cnumber, and
 		 * if one occurs, return the name
 		 */
-		try (BufferedReader reader = getReader(employeeFileName)) {
+		try {
+			BufferedReader reader = getReader(employeeFileName);
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				if (line.contains(Cnumber)) {

@@ -18,16 +18,14 @@ import userinterface.HomeTab;
 import userinterface.MainInterfaceWindow;
 import utilities.FileHelper;
 import utilities.ui.SwingHelper;
-import utilities.xml.XmlParser;
-
+//-----------------------------------------------------------------------------
 /**
- * The Administration Panel allows users with Supervisor privileges to perform
+ * The <code>AdminTab</code> Panel allows users with Supervisor privileges to perform
  * administrative tasks within the system such as adding, removing, and editing
  * personal, recording video announcements, editing system properties etc. This
  * panel will only be displayed if the current user has Supervisor privileges.
  * 
  */
-
 public class AdminTab extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	JFrame parent;
@@ -128,11 +126,11 @@ public class AdminTab extends JPanel implements ActionListener {
 
 	}
 //-----------------------------------------------------------------------------
+
 	public void refreshItemsTable(){
 		manageItemsDialog.refreshItemsTable();
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void actionPerformed(ActionEvent e) {
 	
 	}

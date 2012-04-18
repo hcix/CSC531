@@ -41,6 +41,7 @@ private static final long serialVersionUID = 1L;
 		
 		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
 		this.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				closeAndCancel( );
 			}
@@ -74,6 +75,7 @@ private static final long serialVersionUID = 1L;
  		
 		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
 		this.addWindowListener(new WindowAdapter( ) {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				closeAndCancel( );
 			}
@@ -110,7 +112,7 @@ private static final long serialVersionUID = 1L;
 	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
 	    saveButton.setToolTipText("Save Report");
 	    saveButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 	    		closeAndSave();
 	    	}
 	    });

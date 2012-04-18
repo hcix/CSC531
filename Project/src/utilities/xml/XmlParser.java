@@ -151,17 +151,8 @@ public class XmlParser {
 		return roster;
 	}
 //-----------------------------------------------------------------------------	
-	/**
-	 * Saves the given <code>ArrayList</code> of <code>ItemToReview</code> objects
-	 * into the itemsToReview.xml file. Note that this method rewrites the
-	 * itemsToReview.xml file with the item contents of the given list.
-	 * 
-	 * @param itemsJList - the ArrayList of <code>ItemToReview</code> objects
-	 * to save to the itemsToReview.xml file
-	 */
-	public void saveRoster() throws Exception {
+	public void saveRoster(List<Employee> roster) throws Exception {
 		String rosterFileName = FileHelper.getRosterFilePathName();
-		List<Employee> roster = getRoster();
 		//Create a XMLOutputFactory
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
 		//Create XMLEventWriter

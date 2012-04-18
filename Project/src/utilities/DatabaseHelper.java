@@ -1,6 +1,5 @@
 package utilities;
 
-import java.lang.reflect.Array;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -8,14 +7,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import javax.swing.JOptionPane;
-import program.ResourceManager;
 import shiftCdrTab.RollCall;
 import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
@@ -24,6 +17,9 @@ import boloTab.Bolo;
  * A helper class designed to make accessing the crime table within the
  * database in program easier. 
  * This classes methods should be used exclusively to interact with the 
+ * The <code>DatabaseHelper</code> class is designed to make accessing 
+ * the crime table within the database in program easier. 
+ * These methods should be used exclusively to interact with the 
  * database to ensure thread safety. Only one connection can write to the
  * database at a time, thus once a connection is opened the entire database 
  * locks until it is closed. 
@@ -32,10 +28,10 @@ import boloTab.Bolo;
 public class DatabaseHelper {	
 //-----------------------------------------------------------------------------
 	/**
-	 * Retrives all the BOLOs from the database and places them into an 
-	 * <code>Arraylist</code> of BOLO objects, which is returned to the 
+	 * Retrieves all the <code>Bolo</code>s from the database and places them into an 
+	 * <code>Arraylist</code> of <code>Bolo</code> objects, which is returned to the 
 	 * caller.
-	 * @return an arraylist of BOLO objects
+	 * @return boloList - an <code>Arraylist</code> of <code>Bolo</code> objects
 	 * @throws Exception
 	 */
 	public static ArrayList<Bolo> getBOLOsFromDB() throws Exception{
@@ -131,10 +127,10 @@ public class DatabaseHelper {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Retrieves the Blue Book from the database and places them into an 
-	 * <code>Arraylist</code> of BlueBookEntry objects, which is returned to the 
+	 * Retrieves all the <code>BlueBookEntry</code>s from the database and places them into an 
+	 * <code>Arraylist</code> of <code>BlueBookEntry</code> objects, which is returned to the 
 	 * caller.
-	 * @return an Arraylist of BlueBookEntry objects
+	 * @return bluebook - an <code>Arraylist</code> of <code>BlueBookEntry</code> objects
 	 * @throws Exception
 	 */
 	public static ArrayList<BlueBookEntry> getBluebookFromDB() throws Exception{
@@ -196,6 +192,16 @@ public class DatabaseHelper {
 	    return bluebook;
 	} 
 //-----------------------------------------------------------------------------
+	/**
+	 * Takes <code>RollCall</code> data imported from the the UMPD Scheduler and populates the database
+	 * 
+	 * @param name - officer name
+	 * @param present - either here or not here
+	 * @param comment - add text about that day
+	 * @param timeArrived - time the officer arrived 
+	 * @param shiftDate - the date of the officers shift
+	 * @throws Exception
+	 */
 	public void addRollCall(String name, String present, String comment, 
 			String timeArrived, String shiftDate) throws Exception {
 		
@@ -206,26 +212,28 @@ public class DatabaseHelper {
 		Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
 		
 		//check for already existing shift
-		Statement stat = conn.createStatement();
-		ResultSet allEntries = stat.executeQuery("SELECT 1 FROM RollCall WHERE ShiftDate = shiftDate;");
-		//if (!allEntries.getString("Name").equals(null)) {    
+		//Statement stat = conn.createStatement();
+		//ResultSet allEntries = stat.executeQuery("SELECT 1 FROM RollCall WHERE ShiftDate = shiftDate;");
+		
+		//if (allEntries.next()) {    
 			//JOptionPane.showMessageDialog(null, "Shift already submitted for this date.");
 			//return;
 		//}
 		
 		//insert into person table
 		PreparedStatement personStatement = conn.prepareStatement(
-				"INSERT into RollCall(Name, Present, Comment, TimeArrived, ShiftDate) " +
-				"VALUES(?,?,?,?,?);"
+				"INSERT into RollCall(roll_call_ID, Name, Present, Comment, TimeArrived, ShiftDate) " +
+				"VALUES(?,?,?,?,?,?);"
 		    );
 		
 		//long shiftDateEpoch = convertDateToEpoch(shiftDate);
 		    
-		personStatement.setString(1,name);
-		personStatement.setString(2,present);
-		personStatement.setString(3,comment);
-		personStatement.setString(4,timeArrived);
-		personStatement.setString(5,shiftDate);
+		personStatement.setString(1, null);
+		personStatement.setString(2,name);
+		personStatement.setString(3,present);
+		personStatement.setString(4,comment);
+		personStatement.setString(5,timeArrived);
+		personStatement.setString(6,shiftDate);
 		personStatement.addBatch();
 
 	    //Create new row in the table for the data
@@ -238,7 +246,15 @@ public class DatabaseHelper {
 	}
 
 //-----------------------------------------------------------------------------
-    public ArrayList<RollCall> getRollCallFromDatabase(String shiftDate) throws Exception {
+    /**
+     * Takes <code>RollCall</code> data stored in the database and populate the 
+     * <code>ShiftCdrTab</code> 
+     * 
+     * @param shiftDate - the officer's assigned date to come into work
+     * @return rollCallList - an <code>Arraylist</code> of <code>RollCall</code> objects
+     * @throws Exception
+     */
+	public ArrayList<RollCall> getRollCallFromDatabase(String shiftDate) throws Exception {
     	ArrayList<RollCall> rollCallList = new ArrayList<RollCall>();
     	// Implement later TODO
     	
@@ -358,7 +374,6 @@ public class DatabaseHelper {
 	}
 	*/
 //-----------------------------------------------------------------------------
-
 	/**
 	 * Converts a <code>Date</code> object into a <code>long</code> representing
 	 * the number of seconds elapsed since the epoch. 

@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import userinterface.MainInterfaceWindow;
@@ -45,7 +46,6 @@ private static final long serialVersionUID = 1L;
 	 */
 	private JPanel createItemsPanel(){
 		JPanel panel = new JPanel(new MigLayout("flowy"));
-		
 		//add a title 
 		//String title = "<html><h3>Items to Review</h3></html>";
 		//JLabel titleLabel = new JLabel(title, JLabel.CENTER);
@@ -55,6 +55,11 @@ private static final long serialVersionUID = 1L;
 		//addToolbar(panel);
 		
 		
+
+		//add a title
+		String title = "<html><h3>Items to Review</h3></html>";
+		JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
+		panel.add(titleLabel, "alignx center");
 		//add the review items
 		addItemsToPanel(panel);
 		
@@ -109,7 +114,6 @@ private static final long serialVersionUID = 1L;
 		this.setViewportView(panel);
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseClicked(MouseEvent e) {
 
 //DEBUG System.out.println("ItemRenderer: mouseClicked(): CALLED!!");
@@ -147,13 +151,10 @@ private static final long serialVersionUID = 1L;
 //	@Override
 	public void mousePressed(MouseEvent e) { }
 //-----------------------------------------------------------------------------
-//	@Override
 	public void mouseReleased(MouseEvent e) { }
 //-----------------------------------------------------------------------------
-//	@Override
 	public void mouseEntered(MouseEvent e) { }
 //-----------------------------------------------------------------------------
-//	@Override
 	public void mouseExited(MouseEvent e) { }
 //=============================================================================
 }

@@ -3,14 +3,6 @@ package program;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-
 import utilities.ui.ImageHandler;
 
 public class Splash extends Frame implements ActionListener {
@@ -49,7 +41,8 @@ public class Splash extends Frame implements ActionListener {
     }
      
     private static WindowListener closeWindow = new WindowAdapter(){
-        public void windowClosing(WindowEvent e){
+        @Override
+		public void windowClosing(WindowEvent e){
             e.getWindow().dispose();
         }
     };

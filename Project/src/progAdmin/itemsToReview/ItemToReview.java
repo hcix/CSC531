@@ -1,7 +1,6 @@
 package progAdmin.itemsToReview;
 
 import java.util.Date;
-import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
 /**
  * 

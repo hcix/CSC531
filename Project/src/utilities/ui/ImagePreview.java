@@ -92,7 +92,8 @@ private static final long serialVersionUID = 1L;
         }
     }
 
-    protected void paintComponent(Graphics g) {
+    @Override
+	protected void paintComponent(Graphics g) {
         if (thumbnail == null) {
             loadImage();
         }

@@ -3,8 +3,6 @@ package shiftCdrTab.reports;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.text.DateFormat;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -81,19 +79,16 @@ public class ReportListRenderer implements ListCellRenderer, ListDataListener {
 //-----------------------------------------------------------------------------
 /*	public void itemStateChanged(ItemEvent e) { }	*/
 //=============================================================================
-	@Override
 	public void intervalAdded(ListDataEvent e) {
 		
 		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void intervalRemoved(ListDataEvent e) {
 		
 		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void contentsChanged(ListDataEvent e) {
 		//((ItemToReview)e.getIndex0()).
 	}

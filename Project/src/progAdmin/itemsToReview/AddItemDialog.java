@@ -41,6 +41,7 @@ private static String  ADD_ITEM_ERROR = "Item Error";
 
 		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
 		this.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				closeAndCancel();
 			}

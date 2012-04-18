@@ -39,7 +39,7 @@ private static final long serialVersionUID = 1L;
 	    zoomIn.setToolTipText("Zoom In"); 
 	    zoomIn.setBorderPainted(false);
 	    zoomIn.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 	    		zoomIdx++;
 				if(zoomIdx>8){ zoomIdx=8; }
 				pdfDecoder.setPageParameters((float)(scalingVals[zoomIdx]),1);
@@ -57,7 +57,7 @@ private static final long serialVersionUID = 1L;
 		zoomOut.setToolTipText("Zoom Out"); 
 		zoomOut.setBorderPainted(false);
 		zoomOut.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 	    		zoomIdx--;
 	    		if(zoomIdx<0){ zoomIdx=0; }
 	    		pdfDecoder.setPageParameters((float)(scalingVals[zoomIdx]),1);

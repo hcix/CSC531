@@ -5,7 +5,11 @@ package progAdmin;
 
 import java.util.List;
 import utilities.xml.XmlParser;
-
+//-----------------------------------------------------------------------------
+/**
+ * 
+ *
+ */
 public class PersonnelManager {
 	public static final String PERMIS_NONE="none";
 	public static final String PERMIS_OFFICER="officer";

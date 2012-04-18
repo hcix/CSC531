@@ -20,6 +20,8 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
@@ -53,6 +55,7 @@ private static final long serialVersionUID = 1L;
 
 		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
 		this.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				closeAndCancel();
 			}
@@ -79,10 +82,11 @@ private static final long serialVersionUID = 1L;
 		mainPanel.add(addNewItemButton);
 
 		//Create toolbar to hold actions buttons
-		JToolBar toolbar = new JToolBar("Toolbar", JToolBar.HORIZONTAL);
+		JToolBar toolbar = new JToolBar("Toolbar", SwingConstants.HORIZONTAL);
 		toolbar.add(addNewItemButton);
 		toolbar.add(deleteItemButton);
 		toolbar.add(editItemButton);
+		toolbar.setFloatable(false);
 		
 		//Create the table of items
 		itemsPanel.add(createItemsPanel());
@@ -121,7 +125,7 @@ private static final long serialVersionUID = 1L;
 	    tableScrollPane.setViewportView(table);
 	    itemsPanel.setLayout(new BorderLayout());
 	    itemsPanel.add(tableScrollPane,BorderLayout.CENTER);
-	    tableScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	    tableScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 	    
 	    /*
 	     * Set the table model to be the one custom created for this table
@@ -150,7 +154,7 @@ private static final long serialVersionUID = 1L;
 		table.repaint();
 	}
 //-----------------------------------------------------------------------------
-	@Override
+	
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if(command.equals(ADD_ITEM)){
@@ -182,7 +186,7 @@ private static final long serialVersionUID = 1L;
 		
 	}
 //-----------------------------------------------------------------------------
-	@Override
+
 	public void mouseClicked(MouseEvent e){
 		//checks if it was a double click
         if (e.getComponent().isEnabled() && e.getButton() == 
@@ -203,22 +207,18 @@ private static final long serialVersionUID = 1L;
         }
     }
 //-----------------------------------------------------------------------------
-	@Override
 	public void mousePressed(MouseEvent e) {
 		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseEntered(MouseEvent e) {		
 		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseExited(MouseEvent e) {
 		
 	}
@@ -238,16 +238,17 @@ private static final long serialVersionUID = 1L;
         	return columnNames.length;
         }
 //-----------------------------------------------------------------------------
-        public int getRowCount() {
+      
+		public int getRowCount() {
             //return data.length;
         	return rm.getItems().size();
         }
 //-----------------------------------------------------------------------------
-        public String getColumnName(int col) {
+		public String getColumnName(int col) {
             return columnNames[col];
 	    }
 //-----------------------------------------------------------------------------
-	    public Object getValueAt(int row, int col) {
+		public Object getValueAt(int row, int col) {
 	    	//return data[row][col];
 	    	/*
 	    	if(col==0){
@@ -274,7 +275,8 @@ private static final long serialVersionUID = 1L;
 	     * then the 'reviewed' column would contain text ("true"/"false"),
 	     * rather than a check box.
 	     */
-	    @SuppressWarnings({ "unchecked", "rawtypes" })
+	    @Override
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int c) {
 	        return getValueAt(0, c).getClass();
 	    }
@@ -282,7 +284,8 @@ private static final long serialVersionUID = 1L;
 	    /*
 	     * Implement this method if your table's data can change.
 	     */
-	    public void setValueAt(Object value, int row, int col) {
+	    @Override
+		public void setValueAt(Object value, int row, int col) {
 
 	    	// data[row][col] = value;
 	    	/*
@@ -315,7 +318,7 @@ private static final long serialVersionUID = 1L;
         	items.remove(row);
         }        */  
 //-----------------------------------------------------------------------------        
-       public void tableChanged(TableModelEvent e) {
+	public void tableChanged(TableModelEvent e) {
     	   //if(rm.getItems().size()!=items.size()){
     	//	   items = rm.getItems();
     	 //  }

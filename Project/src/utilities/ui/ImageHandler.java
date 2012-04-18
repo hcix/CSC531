@@ -21,6 +21,7 @@ public class ImageHandler {
 	 * @return an <code>ImageIcon</code> or <code>null</code> if the path was invalid 
 	 * @deprecated use <code>getImageIcon()</code> or getProgramImgIcon instead
 	 */
+	@Deprecated
 	public static ImageIcon createImageIcon(String path) {
 	    java.net.URL imgURL = MainInterfaceWindow.class.getResource(path);
 	    if (imgURL != null) {
