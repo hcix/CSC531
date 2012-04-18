@@ -127,7 +127,6 @@ private static final long serialVersionUID = 1L;
 	     * Set the table model to be the one custom created for this table
 	     * and passing in the list of names for the shift
 	     */
-	  //  ItemsTableModel tableModel = new ItemsTableModel(items);
 	    ItemsTableModel tableModel = new ItemsTableModel();
 	    tableModel.addTableModelListener(tableModel);
 	    table.setModel(tableModel);
@@ -226,10 +225,7 @@ private static final long serialVersionUID = 1L;
 	private class ItemsTableModel extends AbstractTableModel implements TableModelListener {
 		private static final long serialVersionUID = 1L;
 		private String[] columnNames = {"Reviewed","Title","Details"};
-
-       // private ArrayList<ItemToReview> items = new ArrayList<ItemToReview>();
 //-----------------------------------------------------------------------------
-   //     public ItemsTableModel(ArrayList<ItemToReview> items) {
 		public ItemsTableModel() {
         	
         }
@@ -248,16 +244,7 @@ private static final long serialVersionUID = 1L;
 	    }
 //-----------------------------------------------------------------------------
 	    public Object getValueAt(int row, int col) {
-	    	//return data[row][col];
-	    	/*
-	    	if(col==0){
-	    		return (items.get(row).isReviewed());
-	    	} else if(col==1){
-	    		return (items.get(row).getTitle());
-	    	} else {
-	    		return (items.get(row).getDetails());
-	    	}
-	    	*/
+
 	    	if(col==0){
 	    		return (rm.getItems().get(row).isReviewed());
 	    	} else if(col==1){
@@ -296,30 +283,9 @@ private static final long serialVersionUID = 1L;
 	    	*/
 
 	    }
-//-----------------------------------------------------------------------------  
-	/*	public void addRow(ItemToReview item) {  
-			Boolean reviewed;
-		    	
-			if(item.isReviewed()){
-				reviewed = new Boolean(true);
-			}else{
-				reviewed = new Boolean(false);
-			}
-		    	
-			//item.setCreator(System.getProperty("UMPD.user"));
-			
-			items.add(item);
-		}   */
-//-----------------------------------------------------------------------------  
-   /*     public void deleteRow(int row) {  
-        	items.remove(row);
-        }        */  
 //-----------------------------------------------------------------------------        
        public void tableChanged(TableModelEvent e) {
-    	   //if(rm.getItems().size()!=items.size()){
-    	//	   items = rm.getItems();
-    	 //  }
-    	   
+
        }
  //-----------------------------------------------------------------------------
 	}

@@ -47,17 +47,23 @@ private static final long serialVersionUID = 1L;
 	JFrame parent;
 	JPanel photoArea;
 	JPanel dialogPanel;
-	boolean newBOLOWascreated;
+	/** a reference to the main <code>BOLOtab</code> used to tell 
+	 * <code>BOLOtab</code> to refresh its contents after a delete operation */
+	BOLOtab bolotab;
+	/** lets the main BOLOtab know if a new BOLO was created during the last
+	 * invocation of this dialog */
+	boolean newBOLOWascreated; 
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates a new window, sets the window and creates a new <code>Bolo</code> instance
 	 * 
 	 * @param parent
 	 */
-	BOLOform(JFrame parent){
+	public BOLOform(JFrame parent, BOLOtab bolotab){
 		super(parent, "New BOLO", true);
 
 		this.parent = parent;
+		this.bolotab=bolotab;
 		 	
 		//Create the BOLO object to add info to
 		bolo = new Bolo();
@@ -132,8 +138,8 @@ private static final long serialVersionUID = 1L;
 	 * @param parent
 	 * @param bolo
 	 */
-	BOLOform(JFrame parent, Bolo bolo){
-		this(parent);
+	public BOLOform(JFrame parent, BOLOtab bolotab, Bolo bolo){
+		this(parent, bolotab);
 		this.bolo = bolo;
 		loadFromExistingBOLO();
 	}
@@ -352,7 +358,7 @@ private static final long serialVersionUID = 1L;
 	    	public void actionPerformed(ActionEvent e) {
 	    		//setVisible(false);
 	    		putInfoIntoBoloObject();
-	    		BOLOpreview preview = new BOLOpreview(parent, bolo);
+	    		BOLOpreview preview = new BOLOpreview(parent, bolotab, bolo);
 	    		preview.setVisible(true);
 	    		preview.setModal(true);
 	    		if(preview.isNewBOLOWascreated()){

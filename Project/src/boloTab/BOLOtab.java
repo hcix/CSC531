@@ -30,8 +30,10 @@ import utilities.ui.SwingHelper;
  * to hold information of <code>Bolo</code>s (Be On the Look Out) and organize them
  * into Recent <code>Bolo</code>s and Archived <code>Bolo</code>s  
  */
-public class BOLOtab extends JPanel  implements ActionListener {
+public class BOLOtab extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
+	private static final String CREATE_ACTION = "create";
+	BOLOform newFormDialog;
 	ArrayList<Bolo> boloList;
 	JFrame parent;
 	JPanel recentBolosTab;
@@ -60,32 +62,29 @@ public class BOLOtab extends JPanel  implements ActionListener {
 		tabbedPane.addTab("Archived", archievedBolosTab);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_3);
         
-		//Create a button to create a new BOLO 
+		//Create BOLO button
 		JButton newBOLOButton = SwingHelper.createImageButton("Create BOLO", 
 				"icons/plusSign_48.png");
-		newBOLOButton.addActionListener(new ActionListener() {
-			//BOLO form dialog
-			BOLOform formDialog = new BOLOform(parent);
+		//newBOLOButton.setActionCommand(CREATE_ACTION);
+		newBOLOButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				formDialog.setVisible(true);	
+				//Display the new BOLO form dialog
+				newFormDialog.setVisible(true);	
 				//wait for the dialog to be dismissed before continuing
-				formDialog.setModal(true);
+				newFormDialog.setModal(true);
 				//refresh to display any changes
-				recentBolosTab.removeAll();
-				recentBolosTab.add(createRecentBOLOsTab());
-				tabbedPane.revalidate();
+				refreshRecentBOLOsTab();
 			}
 		});
 
-		//Create a button to import an existing BOLO
+		//Import existing BOLO button
 		JButton importBOLOButton = SwingHelper.createImageButton("Import Existing BOLO", 
 				"icons/Import.png");
-
 		importBOLOButton.addActionListener(new ActionListener() {
 			//file chooser dialog
 			public void actionPerformed(ActionEvent e){
 				//file chooser dialog .setVisable(true);
-				//Create a file chooser
+				//create a file chooser
 				final JFileChooser fc = new JFileChooser();
 
 				//In response to a button click:
@@ -94,10 +93,9 @@ public class BOLOtab extends JPanel  implements ActionListener {
 			}
 		});
 
-		//Create search button
+		//Search button
 		JButton searchButton = SwingHelper.createImageButton("Search Records", 
 				"icons/search.png");
-
 		searchButton.addActionListener(new ActionListener() {
 			//Search dialog
 			JDialog searchDialog = createSearchDialog(parent);
@@ -106,6 +104,7 @@ public class BOLOtab extends JPanel  implements ActionListener {
 			}
 		});
 
+		
         this.add(tabbedPane, BorderLayout.CENTER);
 
         JPanel buttonsPanel = new JPanel();
@@ -113,6 +112,9 @@ public class BOLOtab extends JPanel  implements ActionListener {
         buttonsPanel.add(importBOLOButton);
         buttonsPanel.add(searchButton);
         this.add(buttonsPanel, BorderLayout.PAGE_END);
+        
+        //TODO: Change below to be happening on bg thread so usr doesn't have to wait
+        newFormDialog = new BOLOform(parent, this);
 		
 	}
 //-----------------------------------------------------------------------------
@@ -170,7 +172,7 @@ public class BOLOtab extends JPanel  implements ActionListener {
 	 * 
 	 * @return recentBOLOsPanel
 	 */
-	public JPanel createRecentBOLOsTab(){
+	private JPanel createRecentBOLOsTab(){
 		JPanel recentBOLOsPanel = new JPanel(new MigLayout());
 		JPanel boloPanel;
 		Date prepDate;
@@ -229,18 +231,28 @@ public class BOLOtab extends JPanel  implements ActionListener {
 		return recentBOLOsPanel;
 	}
 //-----------------------------------------------------------------------------		
-	/** 
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	public void refreshRecentBOLOsTab(){
+		recentBolosTab.removeAll();
+		recentBolosTab.add(createRecentBOLOsTab());
+		this.revalidate();
+	}
+	
+//-----------------------------------------------------------------------------	
+	/**
+	 * Invoked by the <code>DisplayPanel</code> when a BOLO is 'clicked'
+	 * on.
 	 */
-	@Override
 	public void actionPerformed(ActionEvent ev) {
 		String listId = ev.getActionCommand();
 		int id = Integer.valueOf(listId);
 		
 		Bolo selectedBOLO = boloList.get(id);
-		BOLOpreview preview = new BOLOpreview(parent, selectedBOLO);
+		BOLOpreview preview = new BOLOpreview(parent, this, selectedBOLO);
 
-		preview.setVisible(true);	
+		preview.setVisible(true);
+//		preview.setModal(true);
+		
+		
 
 	}
 //-----------------------------------------------------------------------------	

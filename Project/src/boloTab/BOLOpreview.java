@@ -34,7 +34,11 @@ private static final long serialVersionUID = 1L;
 	String otherDescrip, narrative;
 	/** the BOLO holding the info currently displayed in this dialog **/
 	Bolo bolo;
+	/** a reference to the main JFrame used to create & display this dialog */
 	JFrame parent;
+	/** a reference to the main <code>BOLOtab</code> used to tell 
+	 * <code>BOLOtab</code> to refresh its contents after a delete operation */
+	BOLOtab bolotab;
 	JPanel dialogPanel;
 	boolean newBOLOWascreated;
 //-----------------------------------------------------------------------------
@@ -45,7 +49,7 @@ private static final long serialVersionUID = 1L;
 	 * @param parent
 	 * @param bolo
 	 */
-	public BOLOpreview(JFrame parent, Bolo bolo){
+	public BOLOpreview(JFrame parent, BOLOtab bolotab, Bolo bolo){
 		super(parent, "BOLO", true);
 
 		//BOLO object to load info from
@@ -291,7 +295,7 @@ private static final long serialVersionUID = 1L;
 	    editButton.addActionListener(new ActionListener( ) {
 	    	public void actionPerformed(ActionEvent e) {
 	    		//BOLO form dialog
-				BOLOform formDialog = new BOLOform(parent, bolo);
+				BOLOform formDialog = new BOLOform(parent, bolotab, bolo);
 				setVisible(false);
 				formDialog.setVisible(true);
 	    	}
@@ -355,24 +359,35 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 
 	public void actionPerformed(ActionEvent ev) {
-		//attempt to delete the currently displayed BOLO
-		try{
-			bolo.deleteFromDB();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			JOptionPane.showMessageDialog(parent, "Error occured while " +
-					"attempting to delete BOLO from database", "Database Error",
-					JOptionPane.ERROR_MESSAGE);
-		}
-		
-		
+		//attempt to delete the currently displayed BOLO & close this dialog
+		deleteBOLOAndClose();	
 	}
 //-----------------------------------------------------------------------------
 	/**
 	 * Called when the delete button is 'clicked'. Attempts to delete the 
-	 * currently displayed BOLO
+	 * currently displayed BOLO from the database and the file system.
 	 */
 	private void deleteBOLOAndClose(){
+		try{
+			bolo.deleteFromDB();
+		} catch (Exception ex) {
+			//delete unsuccesssful, show error message and close
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(parent, "Error occured while " +
+					"attempting to delete BOLO from database", "Database Error",
+					JOptionPane.ERROR_MESSAGE);
+			this.setVisible(false);
+			return;
+		}
+		
+		//TODO: Delete BOLO from BOLO directory w/in program 
+		// ( delete file: CSC531/Documents/BOLOs/thisBolo.pdf )
+		//close and show message confirming delete was successful
+		bolotab.refreshRecentBOLOsTab();
+		this.setVisible(false);
+		
+		JOptionPane.showMessageDialog(parent, "This BOLO has been deleted.", 
+				"BOLO Deleted", JOptionPane.INFORMATION_MESSAGE);
 		
 	}
 //-----------------------------------------------------------------------------

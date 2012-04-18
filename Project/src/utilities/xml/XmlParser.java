@@ -1,5 +1,6 @@
 package utilities.xml;
 
+import java.awt.event.ActionEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,6 +18,7 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartDocument;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import boloTab.BOLOform;
 import progAdmin.Employee;
 import progAdmin.itemsToReview.ItemToReview;
 import utilities.FileHelper;
@@ -152,16 +154,11 @@ public class XmlParser {
 	}
 //-----------------------------------------------------------------------------	
 	/**
-	 * Saves the given <code>ArrayList</code> of <code>ItemToReview</code> objects
-	 * into the itemsToReview.xml file. Note that this method rewrites the
-	 * itemsToReview.xml file with the item contents of the given list.
+	 * JDOC
 	 * 
-	 * @param itemsJList - the ArrayList of <code>ItemToReview</code> objects
-	 * to save to the itemsToReview.xml file
-	 */
-	public void saveRoster() throws Exception {
+	 */			
+	public void saveRoster(List<Employee> roster) throws Exception {
 		String rosterFileName = FileHelper.getRosterFilePathName();
-		List<Employee> roster = getRoster();
 		//Create a XMLOutputFactory
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
 		//Create XMLEventWriter

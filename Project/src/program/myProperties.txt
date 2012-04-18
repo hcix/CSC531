@@ -1,7 +1,0 @@
-subliminal.message=Buy StayPuft Marshmallows!
-
-<?xml version="1.0" encoding="UTF-8"?>
-<progProperties>
-	<UMPD.latestReport>/Users/heatherciechowski/CSC531/Documents/ShiftReports/ShiftCDRSumReport04_06_2012_19_54.pdf</UMPD.latestReport>
-	<UMPD.latestVideo>none</UMPD.latestVideo>
-</progProperties>
