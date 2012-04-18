@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <roster>
 	<employee>
 		<cnumber>06064699</cnumber>
@@ -15,22 +15,6 @@
 		<caneid>aesteves</caneid>
 		<email>aesteves@miami.edu</email>
 		<permissions>supervisor</permissions>
-	</employee>
-	<employee>
-		<cnumber>06064677</cnumber>
-		<firstname>Juan</firstname>
-		<lastname>Cuerdo</lastname>
-		<caneid>jcuerdo</caneid>
-		<email>jcuerdo@miami.edu</email>
-		<permissions>officer</permissions>
-	</employee>
-	<employee>
-		<cnumber>06064666</cnumber>
-		<firstname>William</firstname>
-		<lastname>Gerlach</lastname>
-		<caneid>wgerlach</caneid>
-		<email>wgerlach@miami.edu</email>
-		<permissions>command</permissions>
 	</employee>
 	<employee>
 		<cnumber>1</cnumber>
@@ -56,12 +40,20 @@
 		<email>m.reback@umiami.edu</email>
 		<permissions>supervisor</permissions>
 	</employee>
-		<employee>
+	<employee>
 		<cnumber>xxx</cnumber>
 		<firstname>Heather</firstname>
 		<lastname>Ciechowski</lastname>
 		<caneid>hciechowski</caneid>
 		<email>h.ciechowski@umiami.edu</email>
 		<permissions>supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>dfsdfs</cnumber>
+		<firstname>Frodo</firstname>
+		<lastname>Baggins</lastname>
+		<caneid>1352354</caneid>
+		<email>ifnsdfpi</email>
+		<permissions>Supervisor</permissions>
 	</employee>
 </roster>
