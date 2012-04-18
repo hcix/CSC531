@@ -27,6 +27,7 @@ import utilities.ui.ResizablePhotoDialog;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
+<<<<<<< HEAD
  * The <code>BlueBookForm</code> class is where the information of a given <code>BlueBookEntry</code>
  * is obtained.  The data can be gathered via user input or from an existing <code>BlueBookEntry</code>.
  * 
@@ -35,6 +36,10 @@ import utilities.ui.SwingHelper;
  * <p>When the <code>BlueBookForm</code> is saved, its data is transfered to a <code>BlueBookEntry</code> and stores
  * in the BlueBook database.
  * 
+=======
+ * The <code>BlueBookForm</code> class is where the information of a given 
+ * <code>BlueBookEntry</code> is entered by the user. 
+>>>>>>> c7dbd3929905b3433d3b67b6e4901ced664023d1
  */
 public class BlueBookForm extends JDialog {
 	private static final long serialVersionUID = 1L;
@@ -133,7 +138,7 @@ public class BlueBookForm extends JDialog {
 		descriptionField.setText(bbEntry.getNarrative());
 	
 		 //set picture
-		 ImageIcon photo = ImageHandler.getResizableImageIcon(
+		 ImageIcon photo = ImageHandler.getScaledImageIcon(
 				 bbEntry.getPhotoFilePath(), 200, 299);
 		 if(photo!=null){
 			photoArea.removeAll();

@@ -6,15 +6,19 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-
+import javax.swing.JOptionPane;
 import shiftCdrTab.RollCall;
 import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
 //-----------------------------------------------------------------------------
 /**
+ * A helper class designed to make accessing the crime table within the
+ * database in program easier. 
+ * This classes methods should be used exclusively to interact with the 
  * The <code>DatabaseHelper</code> class is designed to make accessing 
  * the crime table within the database in program easier. 
  * These methods should be used exclusively to interact with the 
@@ -154,7 +158,7 @@ public class DatabaseHelper {
 	    	entry = new BlueBookEntry();
 	    	entry.setBluebkID(allEntries.getInt("bbID"));
 	    	
-	    	name = allEntries.getString("offenderName");
+	    	name = allEntries.getString("name");
 	        if(name!=null){ entry.setName(name); }
 	        narrative = allEntries.getString("narrartive");
 	        if(narrative!=null){ entry.setNarrative(narrative); }
@@ -202,6 +206,9 @@ public class DatabaseHelper {
 	 */
 	public void addRollCall(String name, String present, String comment, 
 			String timeArrived, String shiftDate) throws Exception {
+		PreparedStatement personStatement;
+		Integer rollCallID = null;
+		boolean replace = false;
 		
 		//Create the connection to the database
 		Class.forName("org.sqlite.JDBC");
@@ -210,38 +217,59 @@ public class DatabaseHelper {
 		Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
 		
 		//check for already existing shift
-		//Statement stat = conn.createStatement();
-		//ResultSet allEntries = stat.executeQuery("SELECT 1 FROM RollCall WHERE ShiftDate = shiftDate;");
+//		Statement stat = conn.createStatement();
+//		ResultSet allEntries = stat.executeQuery("SELECT * FROM RollCall WHERE ShiftDate = shiftDate AND Name = name;");
+//		
+//		allEntries.next();
+//		
+//		try {
+//			rollCallID = ((Integer)allEntries.getInt("roll_call_ID"));
+//			replace = true;
+//		} catch (Exception e) {
+//			/*
+//			 * If code reaches this spot, then the record is not in the
+//			 * database and needs not be replaced. Not the most elegant way 
+//			 * to do it, but I'm running out of options and time.
+//			 */
+//			replace = false; //redundant but for code clarity
+//		}
+//		
 		
-		//if (allEntries.next()) {    
-			//JOptionPane.showMessageDialog(null, "Shift already submitted for this date.");
-			//return;
+//		if (replace) {
+//		    //insert into person table
+//		    personStatement = conn.prepareStatement(
+//				    "REPLACE into RollCall(roll_call_ID, Name, Present, Comment, TimeArrived, ShiftDate) " +
+//				    "VALUES(?,?,?,?,?,?);"
+//		        );
+//		
+//		    personStatement.setInt(1, Integer.valueOf(rollCallID));
+//		    //long shiftDateEpoch = convertDateToEpoch(shiftDate);
+//		}
+//		else {
+			personStatement = conn.prepareStatement(
+				    "REPLACE into RollCall(roll_call_ID, name, present, comment, timearrived, shiftdate) " +
+				    "VALUES(?,?,?,?,?,?);"
+		        );
+		
+		    personStatement.setString(1, null);
+			
 		//}
 		
-		//insert into person table
-		PreparedStatement personStatement = conn.prepareStatement(
-				"INSERT into RollCall(roll_call_ID, Name, Present, Comment, TimeArrived, ShiftDate) " +
-				"VALUES(?,?,?,?,?,?);"
-		    );
-		
-		//long shiftDateEpoch = convertDateToEpoch(shiftDate);
-		    
-		personStatement.setString(1, null);
-		personStatement.setString(2,name);
-		personStatement.setString(3,present);
-		personStatement.setString(4,comment);
-		personStatement.setString(5,timeArrived);
-		personStatement.setString(6,shiftDate);
-		personStatement.addBatch();
+		    personStatement.setString(2,name);
+		    personStatement.setString(3,present);
+		    personStatement.setString(4,comment);
+		    personStatement.setString(5,timeArrived);
+		    personStatement.setString(6,shiftDate);
+		    personStatement.addBatch();
 
-	    //Create new row in the table for the data
-		conn.setAutoCommit(false);
-		personStatement.executeBatch();
-		conn.setAutoCommit(true);
-		
+	        //Create new row in the table for the data
+		    conn.setAutoCommit(false);
+		    personStatement.executeBatch();
+		    conn.setAutoCommit(true);
 		//Close the connection
+		//allEntries.close();
 		conn.close();
-	}
+    }
 
 //-----------------------------------------------------------------------------
     /**
@@ -250,9 +278,11 @@ public class DatabaseHelper {
      * 
      * @param shiftDate - the officer's assigned date to come into work
      * @return rollCallList - an <code>Arraylist</code> of <code>RollCall</code> objects
+     * @throws ClassNotFoundException 
+     * @throws SQLException 
      * @throws Exception
      */
-	public ArrayList<RollCall> getRollCallFromDatabase(String shiftDate) throws Exception {
+	public ArrayList<RollCall> getRollCallFromDatabase(String shiftDate) throws ClassNotFoundException, SQLException {
     	ArrayList<RollCall> rollCallList = new ArrayList<RollCall>();
     	// Implement later TODO
     	
@@ -267,7 +297,9 @@ public class DatabaseHelper {
         Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
     	
         Statement stat = conn.createStatement();
-	    ResultSet allEntries = stat.executeQuery("SELECT * FROM RollCall WHERE ShiftDate = shiftDate;");
+        //ResultSet allEntries = stat.executeQuery("SELECT * FROM RollCall WHERE ShiftDate = '17Apr2012:10:00';");
+        String query = "SELECT * FROM RollCall WHERE shiftdate = " + "'" + shiftDate + "'" + ";";
+	    ResultSet allEntries = stat.executeQuery(query);
     	
 	    //RollCall rollCall;
 	    
@@ -303,9 +335,9 @@ public class DatabaseHelper {
 	    while (allEntries.next()) {
 	    	
 	    	//hack-fu
-	    rollCallList.add(new RollCall(allEntries.getString("Name"),
-	    			allEntries.getString("Present"), allEntries.getString("TimeArrived"),
-	    			allEntries.getString("Comment")));
+	    rollCallList.add(new RollCall(allEntries.getString("name"),
+	    			allEntries.getString("present"), allEntries.getString("timearrived"),
+	    			allEntries.getString("comment")));
 	    	
 	    }
 	    allEntries.close();

@@ -368,40 +368,40 @@ public class FileHelper {
 		
 	}
 //-----------------------------------------------------------------------------
-		/**
-		 * Copies the specified source file to the target destination.
-		 * @param source - file to copy
-		 * @param target - absolute path of the location to copy the 
-		 * source file to
-		 */
-		public static Path copyFile(File source, Path target){
-			
-			Path orginalPath = source.toPath();
-			Path newPath = target.resolve(orginalPath.getFileName());
-			String newFileName;
-			
-			for(int i=1; i<100; i++){
-				try {
-					target = Files.copy(orginalPath, newPath);
-					return target;
-				} catch (FileAlreadyExistsException e){
-					Path p = orginalPath.getFileName();
+	/**
+	 * Copies the specified source file to the target destination.
+	 * @param source - file to copy
+	 * @param target - absolute path of the location to copy the 
+	 * source file to
+	 */
+	public static Path copyFile(File source, Path target){
+		
+		Path orginalPath = source.toPath();
+		Path newPath = target.resolve(orginalPath.getFileName());
+		String newFileName;
+		
+		for(int i=1; i<100; i++){
+			try {
+				target = Files.copy(orginalPath, newPath);
+				return target;
+			} catch (FileAlreadyExistsException e){
+				Path p = orginalPath.getFileName();
 //DEBUG System.out.println("\n\n copyfile pathp : " + p.toString() + "\n\n");
-					newFileName = getNameWithoutExtension(p.toString()) + i + "."
-							+ getFileExtension(source);
+				newFileName = getNameWithoutExtension(p.toString()) + i + "."
+						+ getFileExtension(source);
 //DEBUG System.out.println("\n\n copyfile newFilename : " + newFileName + "\n\n");
-					newPath = Paths.get(target.toString(), newFileName);
+				newPath = Paths.get(target.toString(), newFileName);
 
 //DEBUG System.out.println("\n\n copyfile newpath : " + newPath.toString() + "\n\n");
-				} catch (IOException x) {
-					System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
-			    }
-			}
-			
-			//100 files with this file's same name (and diff numbers after) already exist, 
-			//tell the user to pick a new name
-			return newPath;
+			} catch (IOException x) {
+				System.err.format("Unable to copy: %s: %s%n", orginalPath, x);  
+		    }
 		}
+		
+		//100 files with this file's same name (and diff numbers after) already exist, 
+		//tell the user to pick a new name
+		return newPath;
+	}
 //-----------------------------------------------------------------------------
   	/** 
   	 * Creates and returns an instance of <code>FileHelper</code>'s inner
@@ -463,6 +463,11 @@ public class FileHelper {
 		return filename;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @param pdfFile - the filename of a PDF
+	 * @param c - @see JComponent
+	 */
 	public static void openPDFInComponent(String pdfFile, JComponent c){
 		
 		SimpleViewer viewer = new SimpleViewer();	

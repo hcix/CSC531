@@ -13,15 +13,20 @@ import java.util.Date;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.nio.file.Files.newBufferedReader;
 import static java.nio.file.Paths.get;
+//-----------------------------------------------------------------------------
 
 /**
- * This class will be used to read through the .lst file for each employee,
- * in order to determine what shifts they work.
+ * The <code>RosterParser</code> class will be used to read through the .lst 
+ * file for each <code>Employee</code>, in order to determine what shifts they work.
  */
 public class RosterParser {
 	//-----------------------------------------------------------------------------
 	/**
-	 * JDOC
+	 * Get an <code>ArrayList</code> of <code>Employee</code> names that are working
+	 * 
+	 * @param shiftTime - the time an <code>Employee</code> comes to work
+	 * @param currentShiftDate - the date an <code>Employee</code> comes to work
+	 * @return Employees - an <code>ArrayList</code> of <code>Employee</code> names
 	 */
 	public ArrayList<String> getEmployeesOnShift(int shiftTime, Calendar currentShiftDate) {
 		ArrayList<String> Employees = new ArrayList<String>();
@@ -39,7 +44,7 @@ public class RosterParser {
 			day = getDayAsString(dayAsInt);
 		}
 		else {
-			day = getDayAsString(currentShiftDate.get(Calendar.DAY_OF_WEEK));//BUG
+			day = getDayAsString(currentShiftDate.get(Calendar.DAY_OF_WEEK)); //BUG
 		}
 
 		File folder = new File(path.toString());
@@ -64,7 +69,13 @@ public class RosterParser {
 
 	//-----------------------------------------------------------------------------
 	/**
-	 * JDOC
+	 * Check if an <code>Employee</code> is working
+	 * 
+	 * @param file - the applicable file
+	 * @param shiftTime - the time of an <code>Employee</code>'s shift
+	 * @param day - the date of an <code>Employee</code>'s shift
+	 * @return <code>boolean</code> - <code>true</code> if an <code>Employee</code> is working, 
+	 * 			 <code>false</code> else
 	 */
 	public boolean isOnShift(File file, int shiftTime, String day) 
 	{
@@ -73,7 +84,8 @@ public class RosterParser {
 		if (!file.isDirectory())
 			return false;
 
-		filePath = file.getAbsolutePath() + "\\" + "regularschedule.lst";
+		//filePath = file.getAbsolutePath() + "\\" + "regularschedule.lst"; // old broken code
+		filePath = Paths.get((file.getAbsolutePath()).toString(), "regularschedule.lst").toString();
 		shiftTimeAsString = ((Integer) shiftTime).toString();
 		//append leading 0 if necessary
 		if (shiftTime == 6)
@@ -97,13 +109,17 @@ public class RosterParser {
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("No regular schedule file, line 100 Roster Parser");
+			//e.printStackTrace();
 		}
 		return false;
 	}
 	//-----------------------------------------------------------------------------
 	/**
-	 * JDOC
+	 * Find an <code>Employee</code>'s name from his/her <code>Cnumber</code> if it exists
+	 * 
+	 * @param Cnumber - the University of Miami identification number
+	 * @return name - the <code>Employee</code> name, <code>null</code> if else
 	 */
 	public String getNameFromCNumber(String Cnumber) {
 		//here filename is really the cnumber
@@ -123,6 +139,7 @@ public class RosterParser {
 		 * Open the employee list file, check for a match with the cnumber, and
 		 * if one occurs, return the name
 		 */
+<<<<<<< HEAD
 			try {
 				BufferedReader reader = getReader(employeeFileName);
 				String line = null;
@@ -133,6 +150,18 @@ public class RosterParser {
 						name = name.concat(splitName[1]);
 						return name;
 					}
+=======
+
+		try {
+			BufferedReader reader = getReader(employeeFileName);
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				if (line.contains(Cnumber)) {
+					splitName = line.split("\t", 3);
+					name = splitName[0].concat(" ");
+					name = name.concat(splitName[1]);
+					return name;
+>>>>>>> c7dbd3929905b3433d3b67b6e4901ced664023d1
 				}
 			} catch (IOException e) {
 				System.out.println("Employee list does not exist");
@@ -141,6 +170,7 @@ public class RosterParser {
 			return null;
 		}
 
+<<<<<<< HEAD
 		//-----------------------------------------------------------------------------
 		/**
 		 * Gets a <code>BufferedReader</code> to read the given file.
@@ -176,6 +206,44 @@ public class RosterParser {
 			default:
 				return null;
 			}
+=======
+//-----------------------------------------------------------------------------
+	/**
+	 * Gets a <code>BufferedReader</code> to read the given file.
+	 * 
+	 * @param filename - the filename to return a <code>BufferedReader</code>
+	 * @return a <code>BufferedReader</code> for the specified filename 
+	 */
+	private BufferedReader getReader(String filename) throws IOException {
+		return newBufferedReader(get(filename), defaultCharset());
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Using an integer date, get date as a <code>String</code>
+	 * 
+	 * @param dayAsInt - a day represented as an integer
+	 * @return dayOfTheWeek
+	 */
+	private String getDayAsString(int dayAsInt) {
+
+		switch (dayAsInt) {
+		case 1:
+			return "Sunday";
+		case 2:
+			return "Monday";
+		case 3:
+			return "Tuesday";
+		case 4:
+			return "Wednesday";
+		case 5:
+			return "Thursday";
+		case 6:
+			return "Friday";
+		case 7:
+			return "Saturday";
+		default:
+			return null;
+>>>>>>> c7dbd3929905b3433d3b67b6e4901ced664023d1
 		}
 		//-----------------------------------------------------------------------------
 	}

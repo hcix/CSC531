@@ -72,9 +72,9 @@ public class BOLOtab extends JPanel  implements ActionListener {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e){
 				formDialog.setVisible(true);	
-				
 				//wait for the dialog to be dismissed before continuing
 				formDialog.setModal(true);
+<<<<<<< HEAD
 
 				if(formDialog.isNewBOLOWascreated()){
 					recentBolosTab.removeAll();
@@ -82,6 +82,12 @@ public class BOLOtab extends JPanel  implements ActionListener {
 					recentBolosTab.revalidate();
 				}
 
+=======
+				//refresh to display any changes
+				recentBolosTab.removeAll();
+				recentBolosTab.add(createRecentBOLOsTab());
+				tabbedPane.revalidate();
+>>>>>>> c7dbd3929905b3433d3b67b6e4901ced664023d1
 			}
 		});
 

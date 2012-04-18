@@ -4,10 +4,13 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import progAdmin.AdminTab;
+import progAdmin.PersonnelManager;
+import program.CurrentUser;
 import program.ResourceManager;
 import shiftCdrTab.ShiftCdrTab;
 import blueBookTab.BlueBookTab;
@@ -19,6 +22,7 @@ private static final long serialVersionUID = 1L;
 	JPanel homeTab, boloTab, rollCallTab, blueBookTab;
 	ShiftCdrTab shiftCdrTab;
 	AdminTab adminTab;
+	JButton logoutButton;
 //-----------------------------------------------------------------------------	
 	public MainInterfaceWindow(JFrame parent, ResourceManager rm){
 		super(new GridLayout(1, 1));

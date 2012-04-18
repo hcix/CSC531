@@ -42,8 +42,7 @@ public class Core extends JFrame {
 	        	
 	        	//Splash splashScreen = new Splash();
 	        	//splashScreen.setVisible(true);
-	        	
-	        	
+
 	        	//Set up the UI
 	        	createAndShowMainGUI();
 	        }
@@ -100,6 +99,10 @@ public class Core extends JFrame {
 		if(!loginDialog.isSuccessful()){
 			System.exit(0);
 		}
+	}
+	public static void invalidateFrames()
+	{
+		frame.dispose();
 	}
 	
 //-----------------------------------------------------------------------------	

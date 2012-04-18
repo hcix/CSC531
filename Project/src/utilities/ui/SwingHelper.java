@@ -472,33 +472,35 @@ public class SwingHelper {
 	 * <code>JButton</code> with the given text will be returned.
 	 * @param buttonText - the text to appear on the button 
 	 * @param imagePath - the pathname of the image to place on the button given relative 
-	 * to userinterface package.
+	 * to <code>userinterface</code> package.
 	 * 
 	 * @return <code>JButton</code> with specified icon image and text
 	 */
 	public static JButton createImageButton(String buttonText, String imagePath){
 		
-		ImageIcon buttonIcon = ImageHandler.createImageIcon(imagePath);
+		ImageIcon buttonIcon = ImageHandler.getProgramImgIcon(imagePath);
+							 //ImageHandler.createImageIcon(imagePath);
 		JButton imageButton= new JButton(buttonText, buttonIcon);
 		imageButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		imageButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		
 		return imageButton;
 	}
+	
 //-----------------------------------------------------------------------------	
 	/** 
-	 * Creates and returns a new <code>JButton</code> with the image found at the given
-	 * filename.In the case that no image is found at the given path, a <code>JButton</code>
-	 * with no text or image will be returned.
-	 * @param buttonText - the text to appear on the button 
-	 * @param imagePath - the pathname of the image to place on the button given relative 
-	 * to userinterface package.
+	 * Creates and returns a new <code>JButton</code> with the image from the given
+	 * filename. In the case that no image is found at the given path, an empty
+	 * JButton with nothing in it will be returned.
 	 * 
+	 * @param imagePath - the pathname of the image to place on the button given 
+	 * 		relative to <code>userinterface</code> package.
 	 * @return <code>JButton</code> with specified icon image and text
 	 */
 	public static JButton createImageButton(String imagePath){
 		
-		ImageIcon buttonIcon = ImageHandler.createImageIcon(imagePath);
+		ImageIcon buttonIcon = ImageHandler.getProgramImgIcon(imagePath);
+							 //ImageHandler.createImageIcon(imagePath);
 		JButton imageButton= new JButton(buttonIcon);
 		
 		return imageButton;
