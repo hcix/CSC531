@@ -8,16 +8,4 @@
 		<email>m.reback@umiami.edu</email>
 		<permissions>supervisor</permissions>
 	</employee>
-<<<<<<< HEAD
-	<employee>
-		<cnumber>dfsdfs</cnumber>
-		<firstname>Frodo</firstname>
-		<lastname>Baggins</lastname>
-		<caneid>1352354</caneid>
-		<email>ifnsdfpi</email>
-		<permissions>Supervisor</permissions>
-	</employee>
 </roster>
-=======
-</roster>
->>>>>>> edituserdialog functional except table viewability
