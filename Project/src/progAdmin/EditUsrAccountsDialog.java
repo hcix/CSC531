@@ -27,10 +27,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-<<<<<<< HEAD
 import javax.swing.table.TableColumn;
-=======
->>>>>>> editusrdialog stuff
 import progAdmin.itemsToReview.ItemToReview;
 import net.miginfocom.swing.MigLayout;
 import utilities.ui.SwingHelper;
@@ -177,16 +174,12 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			employeeList.add(empLoc, aud.getEmployee());
 			table.repaint();
 		}
-		else if(command.equals(DELETE_USER))
-		{
-<<<<<<< HEAD
-			int rowIndex = table.getSelectedRow();
-			//rm.removeItem(rowIndex);
-=======
+		else if(command.equals(DELETE_USER)){
 			int selected = table.getSelectedRow();
 			Employee emp = employeeList.get(selected);
 			
-			DeleteUserPrompt dup = new DeleteUserPrompt("Are you sure you want to delete user " + emp.getFirstname() + " " + emp.getLastname() + "?");
+			DeleteUserPrompt dup = new DeleteUserPrompt("Are you sure you want" +
+					" to delete user " + emp.getFirstname() + " " + emp.getLastname() + "?");
 			dup.setVisible(true);
 			dup.setModal(true);
 			
@@ -200,11 +193,8 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 					e1.printStackTrace();
 				}
 			}
-			
->>>>>>> editusrdialog stuff
-			table.repaint();
-		}
 		table.repaint();
+		}
 	}
 //=============================================================================
 	/** INNER CLASS **/
