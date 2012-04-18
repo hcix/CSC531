@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.swing.JOptionPane;
 import shiftCdrTab.RollCall;
 import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
@@ -158,7 +157,7 @@ public class DatabaseHelper {
 	    	entry = new BlueBookEntry();
 	    	entry.setBluebkID(allEntries.getInt("bbID"));
 	    	
-	    	name = allEntries.getString("offenderName");
+	    	name = allEntries.getString("name");
 	        if(name!=null){ entry.setName(name); }
 	        narrative = allEntries.getString("narrartive");
 	        if(narrative!=null){ entry.setNarrative(narrative); }
@@ -247,7 +246,7 @@ public class DatabaseHelper {
 //		}
 //		else {
 			personStatement = conn.prepareStatement(
-				    "REPLACE into RollCall(roll_call_ID, Name, Present, Comment, TimeArrived, ShiftDate) " +
+				    "REPLACE into RollCall(roll_call_ID, name, present, comment, timearrived, shiftdate) " +
 				    "VALUES(?,?,?,?,?,?);"
 		        );
 		
@@ -298,7 +297,7 @@ public class DatabaseHelper {
     	
         Statement stat = conn.createStatement();
         //ResultSet allEntries = stat.executeQuery("SELECT * FROM RollCall WHERE ShiftDate = '17Apr2012:10:00';");
-        String query = "SELECT * FROM RollCall WHERE ShiftDate = " + "'" + shiftDate + "'" + ";";
+        String query = "SELECT * FROM RollCall WHERE shiftdate = " + "'" + shiftDate + "'" + ";";
 	    ResultSet allEntries = stat.executeQuery(query);
     	
 	    //RollCall rollCall;
@@ -335,9 +334,9 @@ public class DatabaseHelper {
 	    while (allEntries.next()) {
 	    	
 	    	//hack-fu
-	    rollCallList.add(new RollCall(allEntries.getString("Name"),
-	    			allEntries.getString("Present"), allEntries.getString("TimeArrived"),
-	    			allEntries.getString("Comment")));
+	    rollCallList.add(new RollCall(allEntries.getString("name"),
+	    			allEntries.getString("present"), allEntries.getString("timearrived"),
+	    			allEntries.getString("comment")));
 	    	
 	    }
 	    allEntries.close();

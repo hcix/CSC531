@@ -7,15 +7,13 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
+import net.miginfocom.swing.MigLayout;
 import utilities.FileHelper;
 import utilities.ui.SwingHelper;
-import net.miginfocom.swing.MigLayout;
 
 //import uk.co.caprica.vlcj.binding.LibVlc;
 //import uk.co.caprica.vlcj.runtime.RuntimeUtil;

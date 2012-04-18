@@ -1,5 +1,8 @@
 package utilities;
 
+import static java.nio.charset.Charset.defaultCharset;
+import static java.nio.file.Files.newBufferedReader;
+import static java.nio.file.Paths.get;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -8,12 +11,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
-
-import static java.nio.charset.Charset.defaultCharset;
-import static java.nio.file.Files.newBufferedReader;
-import static java.nio.file.Paths.get;
-//-----------------------------------------------------------------------------
 
 /**
  * The <code>RosterParser</code> class will be used to read through the .lst 

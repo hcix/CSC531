@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import shiftCdrTab.RollCall;
 import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
@@ -19,7 +18,6 @@ import boloTab.Bolo;
  *
  */
 public class SearchHelper {
-	private static String queryString;
 //-----------------------------------------------------------------------------
 	/**
 	 * Queries the database for the desired <code>String</code> parameters
@@ -31,8 +29,8 @@ public class SearchHelper {
 	 * (<code>fillBOLO()</code>, <code>fillBlueBook()</code>, <code>fillRollCall()</code>)
 	 * @throws Exception
 	 */
-	public static ArrayList<?> search (String table, String[] fields, String[] parameters) throws Exception {
-	
+	public static ArrayList<?> search (String table, ArrayList<String> fields, ArrayList<String> parameters) throws Exception {
+		String queryString;
 		//Create the connection to the database
 		Class.forName("org.sqlite.JDBC");
 				
@@ -46,11 +44,14 @@ public class SearchHelper {
 	    Statement stat = conn.createStatement();
 	    
 	    // construct query string
-	    queryString = "SELECT * FROM " + table + "WHERE ";
-	    for (int i = 0; i < parameters.length ||  i < fields.length; i++) {
-	    	queryString.concat(fields[i] + " = " + parameters[i]);
+	    queryString = "SELECT * FROM " + table + " WHERE ";
+	    for (int i = 0; i < parameters.size(); i++) {
+	    	if (i != 0)
+	    		queryString = queryString.concat(" AND ");
+	    	queryString = queryString.concat(fields.get(i) + " = " + "'" + 
+	    		parameters.get(i) + "'");
 	    }
-	    queryString.concat(";");
+	    queryString = queryString.concat(";");
 	    
 	    System.out.println(queryString); //DEBUG
 	    ResultSet allEntries = stat.executeQuery(queryString);
@@ -167,7 +168,7 @@ public class SearchHelper {
 		    	entry = new BlueBookEntry();
 		    	entry.setBluebkID(allEntries.getInt("bbID"));
 		    	
-		    	name = allEntries.getString("offenderName");
+		    	name = allEntries.getString("name");
 		        if(name!=null){ entry.setName(name); }
 		        narrative = allEntries.getString("narrartive");
 		        if(narrative!=null){ entry.setNarrative(narrative); }
@@ -211,9 +212,9 @@ public class SearchHelper {
     	RollCall rollCall;
 	    while (allEntries.next()) {  	
 	    	//hack-fu
-	    	rollCallList.add(new RollCall(allEntries.getString("Name"),
-	    			allEntries.getString("Present"), allEntries.getString("TimeArrived"),
-	    			allEntries.getString("Comment")));    	    
+	    	rollCallList.add(new RollCall(allEntries.getString("name"),
+	    			allEntries.getString("present"), allEntries.getString("timearrived"),
+	    			allEntries.getString("comment")));    	    
 	    }
 	   
 	    for (RollCall testrollCall : rollCallList) {   	

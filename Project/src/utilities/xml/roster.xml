@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <roster>
 	<employee>
 		<cnumber>yeahright</cnumber>
@@ -9,11 +9,5 @@
 		<permissions>supervisor</permissions>
 	</employee>
 	<employee>
-		<cnumber>dfsdfs</cnumber>
-		<firstname>Frodo</firstname>
-		<lastname>Baggins</lastname>
-		<caneid>1352354</caneid>
-		<email>ifnsdfpi</email>
-		<permissions>Supervisor</permissions>
-	</employee>
+</employee>
 </roster>
