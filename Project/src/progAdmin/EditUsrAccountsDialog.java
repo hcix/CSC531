@@ -24,6 +24,12 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+<<<<<<< HEAD
+=======
+import javax.swing.table.TableColumn;
+
+import progAdmin.itemsToReview.ItemToReview;
+>>>>>>> rando changes
 import net.miginfocom.swing.MigLayout;
 import progAdmin.itemsToReview.ItemToReview;
 import utilities.ui.SwingHelper;
@@ -119,7 +125,12 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		table.setPreferredScrollableViewportSize(dialogDim);
 	    table.setFillsViewportHeight(true);
 	    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+<<<<<<< HEAD
 
+=======
+	    
+		
+>>>>>>> rando changes
 	    employeeList = XmlParser.getRoster();
 		
 		for(Employee e: employeeList)
@@ -151,12 +162,17 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		}
 		else if(command.equals(EDIT_USER))
 		{
+			
 			//TODO: make edit user dialog
 			//TODO: open edit user dialog
 		}
 		else if(command.equals(DELETE_USER))
 		{
 			int rowIndex = table.getSelectedRow();
+<<<<<<< HEAD
+=======
+			//rm.removeItem(rowIndex);
+>>>>>>> rando changes
 			table.repaint();
 			//TODO:I ALSO WANT A PROMPT CHECKING IF ITS OK TO DELETE USER
 			//JOptionPane.showConfirmDialog(parent, "Are you sure blah blah...?", 

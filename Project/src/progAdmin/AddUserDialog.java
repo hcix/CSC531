@@ -2,7 +2,8 @@ package progAdmin;
 
 import javax.swing.JDialog;
 
-public class AddUserDialog extends JDialog {
+public class AddUserDialog extends JDialog 
+{
 
 	/**
 	 * 
