@@ -187,8 +187,7 @@ public class Demo extends JPanel {
     }*/
   //=============================================================================
     class SharedListSelectionHandler implements ListSelectionListener {
-        @Override
-		public void valueChanged(ListSelectionEvent e) { 
+        public void valueChanged(ListSelectionEvent e) { 
             ListSelectionModel lsm = (ListSelectionModel)e.getSource();
 
             int firstIndex = e.getFirstIndex();
@@ -234,16 +233,13 @@ public class Demo extends JPanel {
 			public String getColumnName(int column) {
                 return columnNames[column];
             }
-            @Override
-			public int getRowCount() { 
+            public int getRowCount() { 
                 return size();
             }
-            @Override
-			public int getColumnCount() {
+            public int getColumnCount() {
                 return columnNames.length;
             }
-            @Override
-			public Object getValueAt(int row, int column) {
+            public Object getValueAt(int row, int column) {
                 String[] rowData = (String [])elementAt(row);
                 return rowData[column];
             }
@@ -262,40 +258,31 @@ public class Demo extends JPanel {
         };
 
         //Implement the TableModel interface.
-        @Override
-		public int getRowCount() {
+        public int getRowCount() {
             return tableModel.getRowCount();
         }
-        @Override
-		public int getColumnCount() {
+        public int getColumnCount() {
             return tableModel.getColumnCount();
         }
-        @Override
-		public String getColumnName(int columnIndex) {
+        public String getColumnName(int columnIndex) {
             return tableModel.getColumnName(columnIndex);
         }
-        @Override
-		public Class getColumnClass(int columnIndex) {
+        public Class getColumnClass(int columnIndex) {
             return tableModel.getColumnClass(columnIndex);
         }
-        @Override
-		public boolean isCellEditable(int rowIndex, int columnIndex) {
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
             return tableModel.isCellEditable(rowIndex, columnIndex);
         }
-        @Override
-		public Object getValueAt(int rowIndex, int columnIndex) {
+        public Object getValueAt(int rowIndex, int columnIndex) {
             return tableModel.getValueAt(rowIndex, columnIndex);
         }
-        @Override
-		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             tableModel.setValueAt(aValue, rowIndex, columnIndex);
         }
-        @Override
-		public void addTableModelListener(TableModelListener l) {
+        public void addTableModelListener(TableModelListener l) {
             tableModel.addTableModelListener(l);
         }
-        @Override
-		public void removeTableModelListener(TableModelListener l) {
+        public void removeTableModelListener(TableModelListener l) {
             tableModel.removeTableModelListener(l);
         }
     }

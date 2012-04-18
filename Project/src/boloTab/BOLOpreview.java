@@ -268,7 +268,6 @@ public class BOLOpreview extends JDialog {
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
-			@Override
 			public void actionPerformed(ActionEvent ae) {
 				closeAndCancel();
 			}
@@ -278,8 +277,7 @@ public class BOLOpreview extends JDialog {
 	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
 	    saveButton.setToolTipText("Save BOLO");
 	    saveButton.addActionListener(new ActionListener( ) {
-	    	@Override
-			public void actionPerformed(ActionEvent e) {
+	    	public void actionPerformed(ActionEvent e) {
 	    		saveAndClose();
 	    	}
 	    });
@@ -289,8 +287,7 @@ public class BOLOpreview extends JDialog {
 	    		SwingHelper.createImageButton("Edit", "icons/edit_48.png");
 	    editButton.setToolTipText("Edit this BOLO");
 	    editButton.addActionListener(new ActionListener( ) {
-	    	@Override
-			public void actionPerformed(ActionEvent e) {
+	    	public void actionPerformed(ActionEvent e) {
 	    		//BOLO form dialog
 				BOLOform formDialog = new BOLOform(parent, bolo);
 				setVisible(false);
@@ -303,8 +300,7 @@ public class BOLOpreview extends JDialog {
 	    		SwingHelper.createImageButton("Print", "icons/print_48.png");
 	    printButton.setToolTipText("Print this BOLO document");
 	    printButton.addActionListener(new ActionListener( ) {
-	    	@Override
-			public void actionPerformed(ActionEvent e) {
+	    	public void actionPerformed(ActionEvent e) {
 	 //   		PrintHelper ph = new PrintHelper(dialogPanel);
 	    	}
 	    });
@@ -313,8 +309,7 @@ public class BOLOpreview extends JDialog {
 	    JButton emailButton = new JButton("<html>Email<br>BOLO</html>");
 	    emailButton.setToolTipText("Email this BOLO document");
 	    emailButton.addActionListener(new ActionListener( ) {
-	    	@Override
-			public void actionPerformed(ActionEvent e) {
+	    	public void actionPerformed(ActionEvent e) {
 	    		//
 	    	}
 	    });

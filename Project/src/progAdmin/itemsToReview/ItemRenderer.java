@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ItemEvent;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,7 +35,6 @@ public class ItemRenderer implements ListCellRenderer, ListDataListener {
 		listModel = itemsList.getModel();
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public Component getListCellRendererComponent(JList list,Object value,int index,
             boolean isSelected, boolean hasFocus) {
 
@@ -93,11 +94,7 @@ public class ItemRenderer implements ListCellRenderer, ListDataListener {
 System.out.println("ItemRenderer: itemStateChanged: called");
 		itemsList.repaint();
 	}
-<<<<<<< HEAD
 //-----------------------------------------------------------------------------
-	@Override
-=======
-//-----------------------------------------------------------------------------*/
 	public void mouseClicked(MouseEvent e) {
 
 //DEBUG System.out.println("ItemRenderer: mouseClicked(): CALLED!!");
@@ -140,8 +137,6 @@ System.out.println("ItemRenderer: itemStateChanged: called");
 	public void mouseExited(MouseEvent e) {
 		//System.out.println("ItemRenderer: mouseExited(): CALLED!!");	
 	}
-//=============================================================================
->>>>>>> got rid of overrides that were causing errors for me, other small stuffs
 	public void intervalAdded(ListDataEvent e) {
 //DEBUG
 System.out.println("ItemRenderer: intervalAdded: called");		

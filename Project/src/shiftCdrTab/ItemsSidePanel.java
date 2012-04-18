@@ -71,7 +71,6 @@ private static final long serialVersionUID = 1L;
 	//	itemsJList.repaint();
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseClicked(MouseEvent e) {
 
 //DEBUG System.out.println("ItemRenderer: mouseClicked(): CALLED!!");
@@ -92,20 +91,12 @@ private static final long serialVersionUID = 1L;
 		
 	}
 //-----------------------------------------------------------------------------
-//	@Override
-	@Override
 	public void mousePressed(MouseEvent e) { }
 //-----------------------------------------------------------------------------
-//	@Override
-	@Override
 	public void mouseReleased(MouseEvent e) { }
 //-----------------------------------------------------------------------------
-//	@Override
-	@Override
 	public void mouseEntered(MouseEvent e) { }
 //-----------------------------------------------------------------------------
-//	@Override
-	@Override
 	public void mouseExited(MouseEvent e) { }
 //=============================================================================
 }

@@ -46,7 +46,6 @@ public class PrintHelper implements Printable, ActionListener {
         }
     }
 //-----------------------------------------------------------------------------
-    @Override
 	public int print(Graphics g, PageFormat pf, int page) throws PrinterException {
  
         if (page > 0) { 
@@ -66,7 +65,6 @@ public class PrintHelper implements Printable, ActionListener {
         return PAGE_EXISTS;
     }
 //-----------------------------------------------------------------------------
-    @Override
 	public void actionPerformed(ActionEvent e) {
          PrinterJob job = PrinterJob.getPrinterJob();
          job.setPrintable(this);

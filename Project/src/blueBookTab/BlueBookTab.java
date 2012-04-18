@@ -50,7 +50,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		newEntryButton.addActionListener(new ActionListener() {
 			//Create new Blue Book entry form dialog
 			BlueBookForm formDialog = new BlueBookForm(parent);
-			@Override
+			
 			public void actionPerformed(ActionEvent e){
 				formDialog.setVisible(true);
 			}
@@ -61,7 +61,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		searchButton.addActionListener(new ActionListener() {
 			//Search dialog
 			JDialog searchDialog = createSearchDialog(parent);
-			@Override
+			
 			public void actionPerformed(ActionEvent e){
 				searchDialog.setVisible(true);
 			}
