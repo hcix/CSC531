@@ -1,53 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <roster>
-	<employee>
-		<cnumber>06064699</cnumber>
-		<firstname>Delia</firstname>
-		<lastname>Bugallo</lastname>
-		<caneid>dbugallo</caneid>
-		<email>dbugallo@miami.edu</email>
-		<permissions>supervisor</permissions>
-	</employee>
-	<employee>
-		<cnumber>06064688</cnumber>
-		<firstname>Alina</firstname>
-		<lastname>Esteves</lastname>
-		<caneid>aesteves</caneid>
-		<email>aesteves@miami.edu</email>
-		<permissions>supervisor</permissions>
-	</employee>
-	<employee>
-		<cnumber>06064677</cnumber>
-		<firstname>Juan</firstname>
-		<lastname>Cuerdo</lastname>
-		<caneid>jcuerdo</caneid>
-		<email>jcuerdo@miami.edu</email>
-		<permissions>officer</permissions>
-	</employee>
-	<employee>
-		<cnumber>06064666</cnumber>
-		<firstname>William</firstname>
-		<lastname>Gerlach</lastname>
-		<caneid>wgerlach</caneid>
-		<email>wgerlach@miami.edu</email>
-		<permissions>command</permissions>
-	</employee>
-	<employee>
-		<cnumber>1</cnumber>
-		<firstname>Sir/Ma'am</firstname>
-		<lastname>!</lastname>
-		<caneid>demo</caneid>
-		<email>none</email>
-		<permissions>supervisor</permissions>
-	</employee>
-	<employee>
-		<cnumber>05246876</cnumber>
-		<firstname>Enid</firstname>
-		<lastname>Magari</lastname>
-		<caneid>emagari</caneid>
-		<email>e.magari@umiami.edu</email>
-		<permissions>supervisor</permissions>
-	</employee>
 	<employee>
 		<cnumber>yeahright</cnumber>
 		<firstname>Micah</firstname>
@@ -56,12 +8,12 @@
 		<email>m.reback@umiami.edu</email>
 		<permissions>supervisor</permissions>
 	</employee>
-		<employee>
-		<cnumber>xxx</cnumber>
-		<firstname>Heather</firstname>
-		<lastname>Ciechowski</lastname>
-		<caneid>hciechowski</caneid>
-		<email>h.ciechowski@umiami.edu</email>
-		<permissions>supervisor</permissions>
+	<employee>
+		<cnumber>dfsdfs</cnumber>
+		<firstname>Frodo</firstname>
+		<lastname>Baggins</lastname>
+		<caneid>1352354</caneid>
+		<email>ifnsdfpi</email>
+		<permissions>Supervisor</permissions>
 	</employee>
 </roster>

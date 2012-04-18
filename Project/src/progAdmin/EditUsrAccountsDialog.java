@@ -11,9 +11,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -24,10 +27,12 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+<<<<<<< HEAD
 import javax.swing.table.TableColumn;
+=======
+>>>>>>> editusrdialog stuff
 import progAdmin.itemsToReview.ItemToReview;
 import net.miginfocom.swing.MigLayout;
-import progAdmin.itemsToReview.ItemToReview;
 import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
@@ -123,9 +128,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 	    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 	    employeeList = XmlParser.getRoster();
-		
-		for(Employee e: employeeList)
-			System.out.println(e);
+	    
 		return table;
 	}
 //-----------------------------------------------------------------------------
@@ -136,7 +139,6 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 //-----------------------------------------------------------------------------
 	private void closeAndCancel()
 	{
-
 		this.dispose();
 	}
 //-----------------------------------------------------------------------------
@@ -144,29 +146,65 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		String command = e.getActionCommand();
 		if(command.equals(ADD_USER))
 		{
-			AddUserDialog aud = new AddUserDialog();
+			// add user dialog -- null because no employee is being edited
+			AddUserDialog aud = new AddUserDialog(parent, null);
 			aud.setVisible(true);
 			aud.setModal(true);
+			
+			Employee emp = aud.getEmployee();
+			employeeList.add(emp);
+			
+			
+			try {
+				XmlParser.saveRoster(employeeList);
+			} catch (Exception ee) {
+				ee.printStackTrace();
+			}
 			//refresh table
 			table.repaint();
 		}
 		else if(command.equals(EDIT_USER))
 		{
-			
+			int selected = table.getSelectedRow();
+			Employee emp = employeeList.get(selected);
+			AddUserDialog aud = new AddUserDialog(parent, emp);
+			aud.setVisible(true);
+			aud.setModal(true);
 			//TODO: make edit user dialog
 			//TODO: open edit user dialog
+			int empLoc = employeeList.indexOf(emp);
+			employeeList.remove(emp);
+			employeeList.add(empLoc, aud.getEmployee());
+			table.repaint();
 		}
 		else if(command.equals(DELETE_USER))
 		{
+<<<<<<< HEAD
 			int rowIndex = table.getSelectedRow();
 			//rm.removeItem(rowIndex);
-
+=======
+			int selected = table.getSelectedRow();
+			Employee emp = employeeList.get(selected);
+			
+			DeleteUserPrompt dup = new DeleteUserPrompt("Are you sure you want to delete user " + emp.getFirstname() + " " + emp.getLastname() + "?");
+			dup.setVisible(true);
+			dup.setModal(true);
+			
+			int result = dup.getResult();
+			if(result == 0) // ok to delete
+			{
+				employeeList.remove(emp);
+				try {
+					XmlParser.saveRoster(employeeList);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+			
+>>>>>>> editusrdialog stuff
 			table.repaint();
-			//TODO:I ALSO WANT A PROMPT CHECKING IF ITS OK TO DELETE USER
-			//JOptionPane.showConfirmDialog(parent, "Are you sure blah blah...?", 
-			//		"Confirm Delete", JOptionPane.QUESTION_MESSAGE);
 		}
-		else {System.err.print("get actioncommand error");} 
+		table.repaint();
 	}
 //=============================================================================
 	/** INNER CLASS **/
