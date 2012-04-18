@@ -219,14 +219,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 				engine.eval(reader);
 				Object result = engine.get("isAccepted");
 				reader.close();
-<<<<<<< HEAD
 
-=======
-				
-//				if((int)(result) == -1){
-//					return ERROR_BAD_PASSWORD;
-//				}
->>>>>>> logout works, see DashboardPanel
 				if((Integer)(result) == -1){
 					return ERROR_BAD_PASSWORD;
 				}

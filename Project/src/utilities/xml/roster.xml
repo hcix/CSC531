@@ -56,4 +56,12 @@
 		<email>m.reback@umiami.edu</email>
 		<permissions>supervisor</permissions>
 	</employee>
+		<employee>
+		<cnumber>xxx</cnumber>
+		<firstname>Heather</firstname>
+		<lastname>Ciechowski</lastname>
+		<caneid>hciechowski</caneid>
+		<email>h.ciechowski@umiami.edu</email>
+		<permissions>supervisor</permissions>
+	</employee>
 </roster>

@@ -14,7 +14,6 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -22,15 +21,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
-<<<<<<< HEAD
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-=======
-import javax.swing.table.TableColumn;
-
-import progAdmin.itemsToReview.ItemToReview;
->>>>>>> logout works, see DashboardPanel
 import net.miginfocom.swing.MigLayout;
 import progAdmin.itemsToReview.ItemToReview;
 import utilities.ui.SwingHelper;
@@ -102,39 +95,34 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		
 		//JSeparator jsep = new JSeparator();
 		
-		JScrollPane tableScrollPane = new JScrollPane();
-		tableScrollPane.setViewportView(createTable());
+		
+		//tableScrollPane.setViewportView(createTable());
 		//tableScrollPane.add(createTable());
 		
+		EmployeeTableModel tableModel = new EmployeeTableModel();
 		mainPanel.add(toolbar, BorderLayout.NORTH);
+		
+		table = createTable(tableModel);	
+		JScrollPane tableScrollPane = new JScrollPane(table);
 		//mainPanel.add(jsep, BorderLayout.CENTER);
-		mainPanel.add(tableScrollPane, BorderLayout.SOUTH);
+		mainPanel.add(tableScrollPane, BorderLayout.CENTER);
 
 	    Container contentPane = getContentPane();
 	    contentPane.add(mainPanel);
 	}
 //-----------------------------------------------------------------------------
-	private JTable createTable()
+	private JTable createTable(EmployeeTableModel tableModel)
 	{
-		table = new JTable();
+		table = new JTable(tableModel);
 		table.setShowGrid(true);
 		table.setGridColor(Color.black);
 		table.setPreferredScrollableViewportSize(dialogDim);
 	    table.setFillsViewportHeight(true);
 	    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-	    
-		
-<<<<<<< HEAD
+
 	    employeeList = XmlParser.getRoster();
 		
 		for(Employee e: employeeList)
-=======
-		XmlParser xmlp = new XmlParser();
-		employees = xmlp.getRoster();
-		TableColumn tc = new TableColumn();
-		
-		for(Employee e: employees)
->>>>>>> logout works, see DashboardPanel
 			System.out.println(e);
 		
 		return table;
@@ -169,10 +157,6 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		else if(command.equals(DELETE_USER))
 		{
 			int rowIndex = table.getSelectedRow();
-<<<<<<< HEAD
-=======
-			//rm.removeItem(rowIndex);
->>>>>>> logout works, see DashboardPanel
 			table.repaint();
 			//TODO:I ALSO WANT A PROMPT CHECKING IF ITS OK TO DELETE USER
 			//JOptionPane.showConfirmDialog(parent, "Are you sure blah blah...?", 
@@ -187,6 +171,10 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		private static final long serialVersionUID = 1L;
 		private String [] columnNames =  {"cnumber", "firstname", "lastname",
 				"caneid", "email", "permissions"};	
+	//-----------------------------------------------------------------------------
+		EmployeeTableModel(){
+			
+		}
 	//-----------------------------------------------------------------------------
 		public void tableChanged(TableModelEvent e) {
 			//don't need to implement this bc table is only editable thru dialogs
@@ -227,10 +215,9 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 	     * editor for each cell. In this case, all cells are strings so
 	     * this is simple.
 	     */
-	    @Override
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int c) {
-	        return getValueAt(0, c).getClass();
+	        return String.class;
 	    }
 	//-----------------------------------------------------------------------------
 	}
