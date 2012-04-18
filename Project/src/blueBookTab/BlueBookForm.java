@@ -27,8 +27,8 @@ import utilities.ui.ResizablePhotoDialog;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
- * The <code>BlueBookForm</code> class is where the information of a given <code>BlueBookEntry</code>
- * is entered by the user. 
+ * The <code>BlueBookForm</code> class is where the information of a given 
+ * <code>BlueBookEntry</code> is entered by the user. 
  */
 public class BlueBookForm extends JDialog {
 	private static final long serialVersionUID = 1L;

@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import utilities.FileHelper;
 //-----------------------------------------------------------------------------
 /**
- *
+ * JDOC
  */
 public class ResizablePhotoDialog extends JDialog {
 private static final long serialVersionUID = 1L;
