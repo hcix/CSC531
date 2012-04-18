@@ -3,6 +3,7 @@ package progAdmin;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -15,8 +16,6 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -27,7 +26,10 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+<<<<<<< HEAD
 import javax.swing.table.TableColumn;
+=======
+>>>>>>> edituserdialog functional except table viewability
 import progAdmin.itemsToReview.ItemToReview;
 import net.miginfocom.swing.MigLayout;
 import utilities.ui.SwingHelper;
@@ -148,17 +150,18 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			aud.setVisible(true);
 			aud.setModal(true);
 			
-			Employee emp = aud.getEmployee();
-			employeeList.add(emp);
-			
-			
-			try {
-				XmlParser.saveRoster(employeeList);
-			} catch (Exception ee) {
-				ee.printStackTrace();
-			}
-			//refresh table
-			table.repaint();
+			if(aud.checkCanceled() != true)
+			{
+				Employee emp = aud.getEmployee();
+				employeeList.add(emp);
+				try {
+					XmlParser.saveRoster(employeeList);
+				} catch (Exception ee) {
+					ee.printStackTrace();
+				}
+				//refresh table
+				table.repaint();
+			}	
 		}
 		else if(command.equals(EDIT_USER))
 		{
@@ -167,26 +170,34 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			AddUserDialog aud = new AddUserDialog(parent, emp);
 			aud.setVisible(true);
 			aud.setModal(true);
-			//TODO: make edit user dialog
-			//TODO: open edit user dialog
-			int empLoc = employeeList.indexOf(emp);
-			employeeList.remove(emp);
-			employeeList.add(empLoc, aud.getEmployee());
-			table.repaint();
+			if(aud.checkCanceled() != true)
+			{
+				int empLoc = employeeList.indexOf(emp);
+				employeeList.remove(emp);
+				employeeList.add(empLoc, aud.getEmployee());
+				try {
+					XmlParser.saveRoster(employeeList);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				table.repaint();
+			}
 		}
 		else if(command.equals(DELETE_USER))
 		{
+<<<<<<< HEAD
 			int rowIndex = table.getSelectedRow();
 			//rm.removeItem(rowIndex);
+=======
+>>>>>>> edituserdialog functional except table viewability
 			int selected = table.getSelectedRow();
 			Employee emp = employeeList.get(selected);
 			
-			DeleteUserPrompt dup = new DeleteUserPrompt("Are you sure you want to delete user " + emp.getFirstname() + " " + emp.getLastname() + "?");
+			DeleteUserPrompt dup = new DeleteUserPrompt(parent, "Are you sure you want to delete user " + emp.getFirstname() + " " + emp.getLastname() + "?");
 			dup.setVisible(true);
-			dup.setModal(true);
 			
 			int result = dup.getResult();
-			if(result == 0) // ok to delete
+			if(result == 1) // ok to delete
 			{
 				employeeList.remove(emp);
 				try {
@@ -197,6 +208,10 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			}
 			table.repaint();
 		}
+<<<<<<< HEAD
+=======
+		this.getContentPane().revalidate();
+>>>>>>> edituserdialog functional except table viewability
 	}
 //=============================================================================
 	/** INNER CLASS **/
