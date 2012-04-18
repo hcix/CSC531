@@ -13,6 +13,7 @@ import java.util.Date;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.nio.file.Files.newBufferedReader;
 import static java.nio.file.Paths.get;
+//-----------------------------------------------------------------------------
 
 /**
  * The <code>RosterParser</code> class will be used to read through the .lst 
@@ -138,10 +139,7 @@ public class RosterParser {
 		 * Open the employee list file, check for a match with the cnumber, and
 		 * if one occurs, return the name
 		 */
-<<<<<<< HEAD
 
-=======
->>>>>>> rando changes
 		try {
 			BufferedReader reader = getReader(employeeFileName);
 			String line = null;

@@ -33,6 +33,12 @@ public class AdminTab extends JPanel implements ActionListener {
 	ManageItemsDialog manageItemsDialog;
 	MainInterfaceWindow mainInterface;
 //-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * 
+	 * @param rm - <code>ResourceManager</code>
+	 * @param mainInterface - 
+	 */
 	public AdminTab(ResourceManager rm, MainInterfaceWindow mainInterface) {
 		JPanel adminPanel = new JPanel();
 		this.parent = rm.getGuiParent();
@@ -41,7 +47,7 @@ public class AdminTab extends JPanel implements ActionListener {
 
 		adminPanel.add(createActionButtons());
 
-		//create the initially invisiable dialog that will manage review items
+		//create the initially invisible dialog that will manage review items
 		manageItemsDialog = new ManageItemsDialog(rm);
 		manageItemsDialog.setVisible(false);
 		
