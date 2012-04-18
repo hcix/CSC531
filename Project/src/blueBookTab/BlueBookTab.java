@@ -121,7 +121,6 @@ public class BlueBookTab extends JPanel implements ActionListener {
 				"icons/search.png");
 		searchButton.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				search();
 				searchDialog.dispose();

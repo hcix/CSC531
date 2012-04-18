@@ -26,10 +26,6 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-<<<<<<< HEAD
-import javax.swing.table.TableColumn;
-=======
->>>>>>> edituserdialog functional except table viewability
 import progAdmin.itemsToReview.ItemToReview;
 import net.miginfocom.swing.MigLayout;
 import utilities.ui.SwingHelper;
@@ -185,11 +181,6 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		}
 		else if(command.equals(DELETE_USER))
 		{
-<<<<<<< HEAD
-			int rowIndex = table.getSelectedRow();
-			//rm.removeItem(rowIndex);
-=======
->>>>>>> edituserdialog functional except table viewability
 			int selected = table.getSelectedRow();
 			Employee emp = employeeList.get(selected);
 			
@@ -208,10 +199,8 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			}
 			table.repaint();
 		}
-<<<<<<< HEAD
-=======
+
 		this.getContentPane().revalidate();
->>>>>>> edituserdialog functional except table viewability
 	}
 //=============================================================================
 	/** INNER CLASS **/
