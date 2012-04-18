@@ -47,7 +47,8 @@ private static final long serialVersionUID = 1L;
 		this.setLayout(new BorderLayout());
 
 		this.parent = parent;
-
+		
+		
 		//Create BOLOs tabbed display area
 		final JTabbedPane tabbedPane = new JTabbedPane();
 
@@ -61,11 +62,13 @@ private static final long serialVersionUID = 1L;
 		tabbedPane.addTab("Archived", archievedBolosTab);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_3);
         
+		
 		//Create BOLO button
 		JButton newBOLOButton = SwingHelper.createImageButton("Create BOLO", 
 				"icons/plusSign_48.png");
-		//newBOLOButton.setActionCommand(CREATE_ACTION);
-		newBOLOButton.addActionListener(new ActionListener(){
+		newBOLOButton.addActionListener(new ActionListener() {
+			//BOLO form dialog
+
 			public void actionPerformed(ActionEvent e){
 				//Display the new BOLO form dialog
 				newFormDialog.setVisible(true);	
@@ -73,6 +76,11 @@ private static final long serialVersionUID = 1L;
 				newFormDialog.setModal(true);
 				//refresh to display any changes
 				refreshRecentBOLOsTab();
+
+				//refresh to display any changes
+				recentBolosTab.removeAll();
+				recentBolosTab.add(createRecentBOLOsTab());
+				tabbedPane.revalidate();
 			}
 		});
 
@@ -168,6 +176,7 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	/**
 	 * In the <code>BOLOtab</code> create and set a recent BOLO tab as a JPanel
+	 * <p>This displays the bolos in 
 	 * 
 	 * @return recentBOLOsPanel
 	 */
@@ -183,14 +192,14 @@ private static final long serialVersionUID = 1L;
 		}
 
 		int listSize = boloList.size();
+		System.out.println("boloList.size() = " + listSize);
 		JPanel[] items = new JPanel[listSize];
 		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
 
 		int i=0;
 		for(Bolo bolo: boloList){
 			String listId = "" + boloList.indexOf(bolo);
-//DEBUG	prints list ID of the Bolo bolo: bololist
-//System.out.printf("listId = %s\n", listId);
+
 			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
 
 			JLabel photoLabel = new JLabel(
@@ -250,8 +259,6 @@ private static final long serialVersionUID = 1L;
 
 		preview.setVisible(true);
 //		preview.setModal(true);
-
-
 
 	}
 //-----------------------------------------------------------------------------	

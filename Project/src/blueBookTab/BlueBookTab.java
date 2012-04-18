@@ -84,11 +84,16 @@ public class BlueBookTab extends JPanel implements ActionListener {
 
 	// -----------------------------------------------------------------------------
 	/**
+<<<<<<< HEAD
+	 * Creates a search dialog for the <code>BlueBookTab</code> when the 
+	 * <code>searchButton</code> is clicked.
+=======
 	 * Creates a search dialog for the <code>BlueBookTab</code> when the
 	 * <code>searchButton</code> is clicked
+>>>>>>> c7dbd3929905b3433d3b67b6e4901ced664023d1
 	 * 
-	 * @param parent
-	 * @return
+	 * @param parent - Parent JFrame
+	 * @return 
 	 */
 	public JDialog createSearchDialog(JFrame parent) {
 		// Create the dialog and set the size
@@ -182,7 +187,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	// -----------------------------------------------------------------------------
 	/**
 	 * Create the <code>entriesPanel</code> and populate it with data from the
-	 * database
+	 * database.
 	 * 
 	 * @return entriesPanel
 	 */

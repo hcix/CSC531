@@ -209,6 +209,7 @@ else if(command.equals(DELETE_USER))
 					e1.printStackTrace();
 				}
 			}
+<<<<<<< HEAD
 			*/		
 			
 			//show confirm delete dialog
@@ -225,7 +226,6 @@ else if(command.equals(DELETE_USER))
 					e1.printStackTrace();
 				}
 			}
-			//repaint table to show changes	
 			table.repaint();
 		}
 		this.getContentPane().revalidate();

@@ -22,12 +22,12 @@ import utilities.ui.ImageHandler;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
-* The <code>BOLOpreview</code> class displays a summary of the 
-* <code>BOLOform</code> for a given <code>Bolo</code> that can be edited, 
-* saved, printed, and emailed.
-*/
+ * The <code>BOLOpreview</code> class displays a summary of the 
+ * <code>BOLOform</code> for a given <code>Bolo</code> that can be edited, 
+ * saved, printed, and emailed.
+ */
 public class BOLOpreview extends JDialog implements ActionListener {
-	private static final long serialVersionUID = 1L;
+private static final long serialVersionUID = 1L;
 	String age, race, sex, height, weight, build, eyes, hair;
 	String reference, caseNum, status, weapon;
 	String preparedBy, approvedBy;
@@ -55,14 +55,14 @@ public class BOLOpreview extends JDialog implements ActionListener {
 		//BOLO object to load info from
 		this.bolo = bolo;
 		this.parent = parent;
-
+		
 		//Set the size of the page
 		this.setPreferredSize(new Dimension(800,900));
 		this.setSize(new Dimension(800,900));
-
+		
 		dialogPanel = new JPanel(new MigLayout("ins 20"));
 		dialogPanel.setBackground(Color.WHITE);
-
+		
 		//Make the page scrollable
 		JScrollPane dialogPanelScroller = new JScrollPane(dialogPanel);
 		dialogPanelScroller.setVerticalScrollBarPolicy(
@@ -79,7 +79,7 @@ public class BOLOpreview extends JDialog implements ActionListener {
 		});
 
 		/*Set up the BOLO page*/
-
+		
 		//Add the BOLO "letter head" image to the top
 		ImageIcon boloHeaderIcon = 
 				ImageHandler.createImageIcon("images/boloHeader2.png");
@@ -87,7 +87,7 @@ public class BOLOpreview extends JDialog implements ActionListener {
 		boloHeaderPanel.setBackground(Color.WHITE);
 		boloHeaderPanel.add(new JLabel(boloHeaderIcon));
 		dialogPanel.add(boloHeaderPanel, "dock north");
-
+	
 		//Add photo/video panel
 		JPanel photoVideoPanel = createPhotoVideoPanel();
 		dialogPanel.add(photoVideoPanel, "align left");
@@ -99,22 +99,22 @@ public class BOLOpreview extends JDialog implements ActionListener {
 	    //Add incident info panel
 	    JPanel incidentInfoPanel = createIncidentInfoPanel();
 	    dialogPanel.add(incidentInfoPanel, "align left, growx");
-
+	    
 	    //Add narrative area
 	    JPanel narrativePanel = createNarrativePanel();
 	    dialogPanel.add(narrativePanel, "align left, wrap, growx");
-
+	    
 	    //Add administrative panel
 	    JPanel adminPanel = createAdministrativePanel();
 	    dialogPanel.add(adminPanel, "align left");
 
-
+		
 		//TODO: Add standard footer
-
+		
 	    //add buttons panel to top of scroll panel
 	    JPanel buttonsPanel = createButtonsPanel();
 	    dialogPanelScroller.setColumnHeaderView(buttonsPanel);
-
+	    
 	    //Add the BOLO form scrolling pane dialog to the screen
 	    Container contentPane = getContentPane();
 	    contentPane.setLayout(new MigLayout());
@@ -124,7 +124,7 @@ public class BOLOpreview extends JDialog implements ActionListener {
 	 //   		"/Users/heatherciechowski/CSC531/Project/Boloex.pdf", createButtonsPanel());
 	  //  pdfv.setColumnHeaderView(buttonsPanel);
 	 //   contentPane.add(pdfv, "align center");
-
+	    
 	}
 //-----------------------------------------------------------------------------	
 	/**
@@ -137,7 +137,8 @@ public class BOLOpreview extends JDialog implements ActionListener {
 		infoPanel.setBackground(Color.WHITE);
 		String[] labels = { "Approx. Age: ", "Race", "Sex", "Approx. Height: ", 
 				"Approx. Weight: ", "Build: ", "Eyes: ", "Hair: ", 
-				"Other Description/Info: " };
+				"Other Description/Info: " 
+				};
 		
 		
 		//get the info from the BOLO object
@@ -147,11 +148,9 @@ public class BOLOpreview extends JDialog implements ActionListener {
 		//put each existing attribute's name and value into the panel(bolo fields 0-8)
 		for(int i=0; i<9; i++){
 			if(fieldsArray[i]!=null){ 
-//DEBUG
-				//System.out.printf("index %d of fieldsArray = %s\n", i, fieldsArray[i]);
+//DEBUG System.out.printf("index %d of fieldsArray = %s\n", i, fieldsArray[i]);
 				labels[i] = labels[i].concat(fieldsArray[i]); 
-//DEBUG
-				//System.out.printf("index %d of labels = %s\n", i, labels[i]);
+//DEBUG System.out.printf("index %d of labels = %s\n", i, labels[i]);
 				label = new JLabel(labels[i]);
 				infoPanel.add(label, "align, wrap"); 
 			}
@@ -161,8 +160,7 @@ public class BOLOpreview extends JDialog implements ActionListener {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * 
-	 * @return infoPanel
+	 * Creates the incident info panel.
 	 */
 	private JPanel createIncidentInfoPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout());
@@ -263,9 +261,9 @@ public class BOLOpreview extends JDialog implements ActionListener {
 	 * @return buttonsPanel
 	 */
 	private JPanel createButtonsPanel(){
-
+	
 		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
-
+		
 		//Cancel button
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_32.png");
 		cancelButton.setToolTipText("Cancel and do not save");
@@ -274,7 +272,7 @@ public class BOLOpreview extends JDialog implements ActionListener {
 				closeAndCancel();
 			}
 		});
-
+	
 	    //Save button
 	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_32.png");
 	    saveButton.setToolTipText("Save BOLO");
@@ -283,13 +281,13 @@ public class BOLOpreview extends JDialog implements ActionListener {
 	    		saveAndClose();
 	    	}
 	    });
-
+	    
 	    //Delete button
 	    JButton deleteButton = SwingHelper.createImageButton("Delete", 
 	    		"icons/delete_32.png");
 	    deleteButton.setToolTipText("Delete BOLO");
 	    deleteButton.addActionListener(this);
-
+	    
 	    //Edit button
 	    JButton editButton = SwingHelper.createImageButton("Edit",
 	    		"icons/edit_32.png");
@@ -302,7 +300,7 @@ public class BOLOpreview extends JDialog implements ActionListener {
 				formDialog.setVisible(true);
 	    	}
 	    });
-
+	    
 	    //Add print button
 	    JButton printButton = 
 	    		SwingHelper.createImageButton("Print", "icons/print_32.png");
@@ -312,7 +310,7 @@ public class BOLOpreview extends JDialog implements ActionListener {
 	 //   		PrintHelper ph = new PrintHelper(dialogPanel);
 	    	}
 	    });
-
+	    
 	    //Add email button
 	    JButton emailButton = new JButton("Email");
 	    emailButton.setToolTipText("Email this BOLO document");
@@ -321,7 +319,7 @@ public class BOLOpreview extends JDialog implements ActionListener {
 	    		//TODO implement email
 	    	}
 	    });
-
+	    
 	    JPanel saveAndCancelButtonsPanel = new JPanel();
 	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
 	    saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
@@ -332,7 +330,7 @@ public class BOLOpreview extends JDialog implements ActionListener {
 	    buttonsPanel.add(saveAndCancelButtonsPanel, "shrinky");
 	    buttonsPanel.add(printAndEmailButtonPanel, "growx, shrinky");
 	    buttonsPanel.add(deleteButton);
-
+	   
 	    return buttonsPanel;
 	}
 //-----------------------------------------------------------------------------
@@ -343,12 +341,10 @@ public class BOLOpreview extends JDialog implements ActionListener {
 		  setVisible(false);
 	 }
 //-----------------------------------------------------------------------------
-	
 	/**
 	* Save the information input into this form and close the dialog.
 	*/
-	public void saveAndClose(){
-		 
+	private void saveAndClose(){	 
 		 //add the BOLO object's info to the database
 		 try {
 			bolo.addToDB();
@@ -357,9 +353,14 @@ public class BOLOpreview extends JDialog implements ActionListener {
 			System.out.println("error: unable to add BOLO to DB");
 			e.printStackTrace();
 		 }
-		 
 		 //close the window
 		 this.dispose();	
+	}
+//-----------------------------------------------------------------------------
+
+	public void actionPerformed(ActionEvent ev) {
+		//attempt to delete the currently displayed BOLO & close this dialog
+		deleteBOLOAndClose();	
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -378,22 +379,16 @@ public class BOLOpreview extends JDialog implements ActionListener {
 			this.setVisible(false);
 			return;
 		}
-
+		
 		//TODO: Delete BOLO from BOLO directory w/in program 
 		// ( delete file: CSC531/Documents/BOLOs/thisBolo.pdf )
 		//close and show message confirming delete was successful
 		bolotab.refreshRecentBOLOsTab();
 		this.setVisible(false);
-
+		
 		JOptionPane.showMessageDialog(parent, "This BOLO has been deleted.", 
 				"BOLO Deleted", JOptionPane.INFORMATION_MESSAGE);
-
-	}
-//-----------------------------------------------------------------------------
-
-	public void actionPerformed(ActionEvent ev) {
-		//attempt to delete the currently displayed BOLO & close this dialog
-		deleteBOLOAndClose();	
+		
 	}
 //-----------------------------------------------------------------------------
 }

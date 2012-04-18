@@ -398,7 +398,6 @@ private static final long serialVersionUID = 1L;
 			System.out.println("error: unable to add BOLO to DB");
 			e.printStackTrace();
 		 }
-
 //TODO: Create a pdf from the input data
 
 		 //reset the form
@@ -645,5 +644,5 @@ private static final long serialVersionUID = 1L;
 	  public boolean isNewBOLOWascreated(){
 		  return this.newBOLOWascreated;
 	  }
-//-----------------------------------------------------------------------------	
+//-----------------------------------------------------------------------------
 }

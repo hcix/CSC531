@@ -26,20 +26,46 @@ import utilities.ui.ResizablePhotoDialog;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
+<<<<<<< HEAD
+ * The <code>BlueBookForm</code> class is where the information of a given <code>BlueBookEntry</code>
+ * is obtained.  The data can be gathered via user input or from an existing <code>BlueBookEntry</code>.
+ * 
+ * <p>The <code>BlueBookForm</code> creates a pop-up window from which the user can enter BlueBookForm's data.
+ * 
+ * <p>When the <code>BlueBookForm</code> is saved, its data is transfered to a <code>BlueBookEntry</code> and stores
+ * in the BlueBook database.
+ * 
+=======
  * The <code>BlueBookForm</code> class is where the information of a given 
  * <code>BlueBookEntry</code> is entered by the user. 
+>>>>>>> c7dbd3929905b3433d3b67b6e4901ced664023d1
  */
 public class BlueBookForm extends JDialog {
 	private static final long serialVersionUID = 1L;
+	/** BlueBookEntry where the data gathered in the BlueBookForm will be stored. */
 	BlueBookEntry bbEntry;
-	JTextField caseNumField, nameField, affiliField, addressField, ifYesField;
-	JTextArea locationField, descriptionField, reasonField;
+	/** Field where the case number is entered. */
+	JTextField caseNumField;
+	/** Field where the subject's name is entered. */
+	JTextField nameField;
+	/** Field where the subject's affiliations are entered. */
+	JTextField affiliField;
+	/** Field where the subject's last known address is entered */
+	JTextField addressField;
+	/** Field where the subject's weapon is entered.  Only appears if subject is marked as having a weapon */
+	JTextField ifYesField;
+	/** Field containing the location of the crime */
+	JTextArea locationField;
+	/** Field describing the crime */
+	JTextArea descriptionField;
+	JTextArea reasonField;
 	JPanel photoArea;
 	JPanel inputPanel;
 //-----------------------------------------------------------------------------
 	/**
-	 * Creates a new window, sets the window and creates a new 
-	 * <code>BlueBookEntry</code> instance
+	 * Creates a pop-up window, sets the window and creates a new 
+	 * <code>BlueBookEntry</code> instance.  Method is called when the "Create" 
+	 * button is clicked in the BlueBook tab. 
 	 * 
 	 * @param parent
 	 */
@@ -86,7 +112,7 @@ public class BlueBookForm extends JDialog {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Constructor
+	 * Constructor method
 	 * 
 	 * @param parent
 	 * @param entry
@@ -121,7 +147,7 @@ public class BlueBookForm extends JDialog {
 	 }
 //-----------------------------------------------------------------------------
 	/**
-	 * Create and set the <code>inputPanel</code>
+	 * Create and set the <code>inputPanel</code>.
 	 * @return inputPanel
 	 */
 	 private JPanel createInputPanel() {
@@ -315,7 +341,7 @@ public class BlueBookForm extends JDialog {
 	 }
 //-----------------------------------------------------------------------------
 	 /**
-	  * Places the info from the input fields into the global <code>bbEntry</code> object.
+	  * Places info from a <code>bbEntry</code> object into the BlueBookForm's data fields.
 	  */
 	 public void loadFromExistingbbEntry(){
 
@@ -339,7 +365,8 @@ public class BlueBookForm extends JDialog {
 //-----------------------------------------------------------------------------
 	 /**
 	  * Add a photo to the respective entry 
-	  * @param photoPanel
+	  * 
+	  * @param photoPanel - panel containing the photo. 
 	  */
 	 public void chooseAndAddPhoto(final JPanel photoPanel){
 			//show choose photo dialog
