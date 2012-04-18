@@ -66,7 +66,7 @@ public class SearchHelper {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Populates <code>Bolo</code>s respective with age, race, sex, height, weight, build, eyes, 
+	 * Populates <code>Bolo</code>s with respective age, race, sex, height, weight, build, eyes, 
 	 * hair, reference, case number, weapon, prepared by, ... data
 	 * 
 	 * @param allEntries - all entries from an SQL query
@@ -149,10 +149,10 @@ public class SearchHelper {
 //-----------------------------------------------------------------------------
 	/**
 	 * Populates <code>BlueBookEntry</code>s with respective name, date of birth, affiliation, 
-	 * address, crime description, narrative, date, time, location, case number, weapon
+	 * address, crime description, narrative, date, time, location, case number, weapon data
 	 * 
-	 * @param allEntries - 
-	 * @return
+	 * @param allEntries - all entries from an SQL query
+	 * @return bluebook - an <code>ArrayList</code> of <code>BlueBookEntry</code>s found from SQL query
 	 * @throws SQLException
 	 */
 	private static ArrayList<BlueBookEntry> fillBlueBook(ResultSet allEntries) throws SQLException {
@@ -199,10 +199,11 @@ public class SearchHelper {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Fills <code>
+	 * Fills <code>RollCall</code> with respective name, present, time arrived, 
+	 * comment data
 	 * 
-	 * @param allEntries
-	 * @return
+	 * @param allEntries - all entries from an SQL query
+	 * @return rollCallList - a <code>RollCall</code>s found from SQL query
 	 * @throws SQLException
 	 */
 	private static ArrayList<RollCall> fillRollCall(ResultSet allEntries) throws SQLException {
