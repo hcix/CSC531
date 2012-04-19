@@ -353,12 +353,52 @@ public ArrayList<String> getPhotoFilePaths() {
 		return photo;
 	}
 //-----------------------------------------------------------------------------
+    private byte[] getBytes(ArrayList<String> p_photoFilePaths) throws IOException, SQLException {
+    	    byte[] bytes = null;
+    	
+    		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    		ObjectOutput out = new ObjectOutputStream(bos);   
+    		out.writeObject(p_photoFilePaths);
+    		bytes = bos.toByteArray();
+    		//close
+    		out.close();
+    		out.flush();
+    		bos.close();
+    		
+    		
+		return bytes;
+	}
+ //-----------------------------------------------------------------------------
+    private SerialBlob getBlob(ArrayList<String> p_photoFilePaths) throws IOException, SQLException {
+	    SerialBlob blob = null;
+	
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutput out = new ObjectOutputStream(bos);   
+		out.writeObject(p_photoFilePaths);
+		blob = new SerialBlob(bos.toByteArray());
+		//close
+		out.close();
+		out.flush();
+		bos.close();
+		
+			
+		return blob;
+	}
+//-----------------------------------------------------------------------------
+    public static Object getObjectFromBytes(byte[] bytes) throws SQLException, IOException, ClassNotFoundException {
+    	Object o = null;
+    	ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+    	ObjectInput in = new ObjectInputStream(bis);
+    	o = in.readObject(); 
+    	
+    	bis.close();
+    	in.close();
+    	
+    	return o;
+    }
+//-----------------------------------------------------------------------------
 	/**
-	 * <b> addToDB </b>
-	 * <pre>public void addToDB() throws Exception</pre> 
-	 * <blockquote> 
 	 * Adds this BlueBookEntry to the 'bluebook' table in the database.
-	 * </blockquote>
 	 * @throws Exception
 	 */
 	public void addToDB() throws Exception{
@@ -414,50 +454,6 @@ public ArrayList<String> getPhotoFilePaths() {
 	    conn.close();
 	}
 //-----------------------------------------------------------------------------
-    private byte[] getBytes(ArrayList<String> p_photoFilePaths) throws IOException, SQLException {
-    	    byte[] bytes = null;
-    	
-    		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-    		ObjectOutput out = new ObjectOutputStream(bos);   
-    		out.writeObject(p_photoFilePaths);
-    		bytes = bos.toByteArray();
-    		//close
-    		out.close();
-    		out.flush();
-    		bos.close();
-    		
-    		
-		return bytes;
-	}
- //-----------------------------------------------------------------------------
-    private SerialBlob getBlob(ArrayList<String> p_photoFilePaths) throws IOException, SQLException {
-	    SerialBlob blob = null;
-	
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ObjectOutput out = new ObjectOutputStream(bos);   
-		out.writeObject(p_photoFilePaths);
-		blob = new SerialBlob(bos.toByteArray());
-		//close
-		out.close();
-		out.flush();
-		bos.close();
-		
-		
-	return blob;
-}
-//-----------------------------------------------------------------------------
-    public static Object getObjectFromBytes(byte[] bytes) throws SQLException, IOException, ClassNotFoundException {
-    	Object o = null;
-    	ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-    	ObjectInput in = new ObjectInputStream(bis);
-    	o = in.readObject(); 
-    	
-    	bis.close();
-    	in.close();
-    	
-    	return o;
-    }
-//-----------------------------------------------------------------------------
 	/**
 	 * Deletes this BlueBook Entry object from the 'BlueBook Entry' table in the database.
 	 * @throws Exception
@@ -506,6 +502,10 @@ public ArrayList<String> getPhotoFilePaths() {
 		catch(Exception e){ e.printStackTrace(); return null; }
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Create a unique filename to save an instance of the related form version
+	 * of this Entry entity.
+	 */
 	public String createNewUniqueFilename(){
 		//create the filename the saved form will have
 		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getDateInstance();
@@ -529,8 +529,7 @@ public ArrayList<String> getPhotoFilePaths() {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Save this ShiftCdrReport's information in a pdf on the file system
-	 * 
+	 * Save this BlueBookEntry's information in a pdf on the file system.
 	 */
 	public void loadInfoIntoForm(String saveAs){
 		//used to put text into the form
@@ -565,7 +564,8 @@ public ArrayList<String> getPhotoFilePaths() {
 	        //You! Now!
 	     // ...
 	        
-	        //TODO: add photo(s)
+	        //TODO: add photo(s)!
+	        
     	} catch(Exception e){
     		e.printStackTrace();
     	}
@@ -608,20 +608,20 @@ public ArrayList<String> getPhotoFilePaths() {
         }
 //-----------------------------------------------------------------------------
     /**
-     * Creates a paragraph with some text about a movie with River Phoenix,
-     * and a poster of the corresponding movie.
-     * @param text the text about the movie
-     * @param imdb the IMDB code referring to the poster
+     * Creates a paragraph with some text and an image.
      * @throws DocumentException
      * @throws IOException
      */
     public Paragraph createParagraph(String text, String imdb)
         throws DocumentException, IOException {
         Paragraph p = new Paragraph(text);
-        Image img = Image.getInstance((this.getPhotoFilePath().toString()));
-        img.scaleToFit(1000, 72);
-        img.setRotationDegrees(-30);
-        p.add(new Chunk(img, 0, -15, true));
+        if(this.getPhotoFilePath()!=null){
+	        Image img = Image.getInstance((this.getPhotoFilePath().toString()));
+	        
+	        img.scaleToFit(1000, 72);
+	        img.setRotationDegrees(-30);
+	        p.add(new Chunk(img, 0, -15, true));
+        }
         return p;
     }
 //-----------------------------------------------------------------------------

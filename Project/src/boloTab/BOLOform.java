@@ -502,9 +502,9 @@ public class BOLOform extends JDialog {
 
 
 		 //set the times
-		 //bolo.setprepDate(getPrepDateEpoch());
-		 bolo.setincidentDate(getIncidentDateEpoch());
-		 bolo.setincidentTime(getIncidentTimeEpoch());
+//HAD TO COMMENT OUT TO WMAKE WORK
+		// bolo.setincidentDate(getIncidentDateEpoch());
+		// bolo.setincidentTime(getIncidentTimeEpoch());
 
 	}
 //-----------------------------------------------------------------------------
@@ -687,6 +687,7 @@ public class BOLOform extends JDialog {
 //-----------------------------------------------------------------------------	
 	  public long getIncidentTimeEpoch() {
 		  Date incidentTimeLong;
+		  
 	      incidentTime.getAccessibleContext();//to be converted
 	      incidentTimeLong = (Date)incidentTime.getValue();
 	      

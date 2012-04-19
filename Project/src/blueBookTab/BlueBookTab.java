@@ -80,14 +80,8 @@ public class BlueBookTab extends JPanel implements ActionListener {
 				newFormDialog.setVisible(true);
 				//wait for the dialog to be dismissed before continuing
 				newFormDialog.setModal(true);
-				//refresh to display any changes
-				
+				//refresh to display any changes	
 				refreshBBtab();
-
-				//refresh to display any changes
-//				entriesPanel.removeAll();
-//				entriesPanel.add(createEntriesPanel());
-//				panel.revalidate();
 			}
 		});
 
@@ -105,8 +99,6 @@ public class BlueBookTab extends JPanel implements ActionListener {
 
 		
 		// add the components to this tab
-
-		//this.add(entriesPanel, BorderLayout.CENTER);
 		this.add(entriesScroller, BorderLayout.CENTER);
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(newEntryButton);
@@ -118,15 +110,10 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	}
 //-----------------------------------------------------------------------------
 	/**
-<<<<<<< HEAD
-	 * Creates a search dialog for the <code>BlueBookTab</code> when the
-	 * <code>searchButton</code> is clicked.
-=======
 	 * Creates a search dialog for the <code>BlueBookTab</code> when the 
 	 * <code>searchButton</code> is clicked.
 	 * Creates a search dialog for the <code>BlueBookTab</code> when the
 	 * <code>searchButton</code> is clicked
->>>>>>> shit ton of homeTab changes and other stuff
 	 * 
 	 * @param parent - Parent JFrame
 	 * @return 
@@ -414,7 +401,7 @@ System.out.println("bluebook size = " + bluebook.size());
 	}
 //-----------------------------------------------------------------------------		
 	/**
-	 * JDOC 
+	 * Refreshs the tab's content. 
 	 */
 	public void refreshBBtab(){
 		JPanel[] newItems = createItemsPanels();
@@ -422,7 +409,6 @@ System.out.println("bluebook size = " + bluebook.size());
 		entriesScroller.revalidate();
 	}
 //-----------------------------------------------------------------------------
-
 	public void actionPerformed(ActionEvent ev) {	
 	    
 		//get which entry was click

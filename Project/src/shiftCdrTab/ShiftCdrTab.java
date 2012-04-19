@@ -74,8 +74,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	ItemsSidePanel itemsScroller;
 	MainInterfaceWindow mainInterface;
 	final static int GAP = 10;
-
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	public ShiftCdrTab(ResourceManager rm, MainInterfaceWindow mainInterface) {
 		this.setLayout(new BorderLayout());
 		this.rm = rm;
@@ -131,7 +130,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		// end test
 
 		// Create button panel
-		JPanel buttonPanel = new JPanel(new FlowLayout());
+		JPanel buttonPanel = new JPanel(new MigLayout("fillx", "[]push[]push[]", null));
 		JButton addButton = SwingHelper.createImageButton("Add Officer",
 				"icons/plusSign_48.png");
 		addButton.setActionCommand(ADD);
@@ -169,29 +168,37 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		searchButton.addActionListener(new ActionListener() {
 		    // Search dialog
 		    JDialog searchDialog = createSearchDialog(parent);
-
-			public void actionPerformed(ActionEvent e) {
-			    searchDialog.setVisible(true);
+		    public void actionPerformed(ActionEvent e) {
+		    	searchDialog.setVisible(true);
 		    }
 		});
 
 		buttonPanel.add(prevShiftButton);
-		buttonPanel.add(addButton);
-		buttonPanel.add(deleteButton);
-		buttonPanel.add(submitButton);
-		buttonPanel.add(launchButton);
-        buttonPanel.add(searchButton);
+		
+		JPanel middle = new JPanel();
+		middle.add(addButton);
+		middle.add(deleteButton);
+		middle.add(submitButton);
+		middle.add(launchButton);
+		middle.add(searchButton);
+//		buttonPanel.add(addButton);
+//		buttonPanel.add(deleteButton);
+//		buttonPanel.add(submitButton);
+//		buttonPanel.add(launchButton);
+//      buttonPanel.add(searchButton);
+		buttonPanel.add(middle);
 		buttonPanel.add(nextShiftButton);
 
 		// create a label
 		date = Calendar.getInstance().getTime();
 		format = new SimpleDateFormat("EEEE, MMMM dd, YYYY ");
 		shiftLabel = new JLabel("Shift for " + format.format(date) + " at "
-
-				+ rm.shiftTimeAsString(shiftTime) + ":00");
-        shiftLabel.setFont(new Font("Serif", Font.BOLD, 32));
+			+ rm.shiftTimeAsString(shiftTime) + ":00");
+        		shiftLabel.setFont(new Font("Serif", Font.BOLD, 32));
+        		
 		// change the font at some point shiftLabel.setFont();
 
+        		
 		// place panes in roll call tab
 		rollCallTab.add(shiftLabel, "dock north");
 		rollCallTab.add(tablePanel, "dock north");
@@ -200,12 +207,12 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		this.add(itemsScroller, BorderLayout.EAST);
 	}
 
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	public void refreshItemsList() {
 		itemsScroller.updateItemsList();
 	}
 
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	private void refreshShiftLabel() {
 		SimpleDateFormat format = new SimpleDateFormat("EEEE, MMMM dd, YYYY ");
 		shiftLabel.setText("Shift for "
@@ -214,7 +221,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		// change the font at some point shiftLabel.setFont();
 	}
 
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	JPanel makeTablePanel(ArrayList<String> names) {
 		JPanel tablePanel = new JPanel();
 
@@ -259,8 +266,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		 */
 		return tablePanel;
 	}
-
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == ADD) {
 			((RollCallTableModel) table.getModel()).addRow();
@@ -282,7 +288,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 			getPrevRollCall();
 		}
 	}
-// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	private JDialog createSearchDialog(JFrame parent) {
 		// Create the dialog and set the size
 				final JDialog searchDialog = new JDialog(parent, "Search Blue Book Database",
@@ -322,7 +328,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 				contentPane.add(searchPanel);
 				return searchDialog;
 	}
-// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
     private void search() {
     	ArrayList<RollCall> searchResults = new ArrayList<RollCall>();
 		ArrayList<String>fields = new ArrayList<String>();
@@ -354,7 +360,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		searchDialog.setSize(dialogDim); 
 		searchDialog.setVisible(true);
     }
-// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
     private JPanel createRollCallPanel(ArrayList<RollCall> searchResults) {
     	JPanel entriesPanel = new JPanel(new MigLayout("gapx 30, wrap 4"));
 		ArrayList<String> rollCallNames = new ArrayList<String>();
@@ -436,7 +442,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		return entriesPanel;
 	}
 
-// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	private void getPrevRollCall() {
 
 		boolean moveOn = false;
@@ -506,7 +512,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		refreshShiftLabel();
 	}
 
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	private void getNextRollCall() {
 
 		boolean moveOn = false;

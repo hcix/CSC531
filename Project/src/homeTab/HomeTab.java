@@ -55,7 +55,7 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 		this.parent = parent;
 		JPanel homePanel = new JPanel();
 
-		homePanel.add(makeGUI());
+		//homePanel.add(makeGUI());
 		
 		this.add(homePanel);
 	}
@@ -223,7 +223,7 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 	public void databaseAction() throws Exception
 	{
 		// get the list of changes from the DB
-		changeList = DatabaseHelper.HomeTabPullFromDB();
+	//	changeList = DatabaseHelper.HomeTabPullFromDB();
 	}
 
 	public void focusGained(FocusEvent e) 

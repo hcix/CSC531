@@ -239,10 +239,10 @@ System.out.println("BlueBookPreview: constructor ");
 			//attempt to delete the currently displayed BlueBookEntry & close this dialog
 			deleteEntryAndClose();	
 		} else if(ev.getActionCommand().equals(PRINT_ACTION)){
-			rm.launchDefaultApplication(bbEntry.filename);
+			
 		} else if(ev.getActionCommand().equals(EMAIL_ACTION)){
-			Desktop.Action action = Desktop.Action.OPEN;
-			//rm.launchMail(ev);
+			//Desktop.Action action = Desktop.Action.OPEN;
+			rm.onLaunchMail(ev);
 			
 		}
 	}

@@ -46,6 +46,9 @@ public class ResourceManager {
     EmailHandler emailHandler;
     Properties progProps;
     ArrayList<ItemToReview> items;
+    boolean mailIsSupported = false;
+    boolean printIsSupported = false;
+    //Desktop.Action browse_action = Desktop.Action.BROWSE;
 //-----------------------------------------------------------------------------
     protected ResourceManager(JFrame parent){
     	this.parent = parent;
@@ -53,11 +56,7 @@ public class ResourceManager {
     	//Set up the classes controlling the program's actions
     	if (Desktop.isDesktopSupported()) {
             desktop = Desktop.getDesktop();
-            // now enable buttons for actions that are supported.
             verifyAllActions();
-        } else {
-        	//load backup modules
-        	
         }
     	
     	//Load the properties from the progProperties.xml file
@@ -65,44 +64,44 @@ public class ResourceManager {
     	try{ loadProperties();
     	}catch (Exception e){ e.printStackTrace(); }
     	
+    	//Load the items to review from the itemsToReview.xml file
     	loadItemsList();
     		
     }
 //-----------------------------------------------------------------------------
-    /**
-     * Set the Desktop.Action to PRINT before invoking
-     * the default application.
+	/**
+     * Verifies which actions are supported by the current enviornment. 
      */
-    private void onPrintAction(ActionEvent evt) {
-        action = Desktop.Action.PRINT;
+    private void verifyAllActions() {
+       // if (!desktop.isSupported(Desktop.Action.BROWSE)) { }
+        
+    	if (!desktop.isSupported(Desktop.Action.MAIL)) { mailIsSupported = true; }
+       
+    	//if (!desktop.isSupported(Desktop.Action.OPEN)) { }
+        //if (!desktop.isSupported(Desktop.Action.EDIT)) { }
+        
+        if (!desktop.isSupported(Desktop.Action.PRINT)) { printIsSupported = true; }
     }
 //-----------------------------------------------------------------------------
     /**
-
-     *
-     */
-
-//-----------------------------------------------------------------------------
-	/**
      * Launch the default email client using the "mailto"
      * protocol and the text supplied by the user.
-     * 
+     *
      */
-    private void verifyAllActions() {
-        if (!desktop.isSupported(Desktop.Action.BROWSE)) {
-        	//load backup browser
-        }
-        if (!desktop.isSupported(Desktop.Action.MAIL)) {
-            //load email handler
-        }
-        if (!desktop.isSupported(Desktop.Action.OPEN)) {
-            //load backup pdf reader
-        }
-        if (!desktop.isSupported(Desktop.Action.EDIT)) {
-        	//load backup pdf reader
-        }
-        if (!desktop.isSupported(Desktop.Action.PRINT)) {
-            //load backup print mechanisms
+    public void onLaunchMail(ActionEvent evt) {
+        String mailTo = " ";//txtMailTo.getText();
+        URI uriMailTo = null;
+        try {
+            if (mailTo.length() > 0) {
+                uriMailTo = new URI("mailto", mailTo, null);
+                desktop.mail(uriMailTo);
+            } else {
+                desktop.mail();
+            }
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        } catch(URISyntaxException use) {
+            use.printStackTrace();
         }
     }
 //-----------------------------------------------------------------------------
@@ -125,48 +124,6 @@ public class ResourceManager {
 		}
 		
     }
-//-----------------------------------------------------------------------------
-    /**
-	* Launch the default application associated with a specific
-	* filename using the preset Desktop.Action.
-	*
-	*/
-	public void launchDefaultApplication(String fileName) {
-		File file = new File(fileName);
-		
-		try{
-			switch(action){
-			case OPEN:
-				desktop.open(file);
-			}
-		} catch (IOException e){
-			e.printStackTrace();
-			
-		}
-		
-    }
-//-----------------------------------------------------------------------------
-	 /**
-     * Launch the default email client using the "mailto"
-     * protocol and the text supplied by the user.
-     *
-     *//*
-    private void onLaunchMail(ActionEvent evt) {
-        String mailTo = txtMailTo.getText();
-        URI uriMailTo = null;
-        try {
-            if (mailTo.length() > 0) {
-                uriMailTo = new URI("mailto", mailTo, null);
-                desktop.mail(uriMailTo);
-            } else {
-                desktop.mail();
-            }
-        } catch(IOException ioe) {
-            ioe.printStackTrace();
-        } catch(URISyntaxException use) {
-            use.printStackTrace();
-        }
-    }*/
 //-----------------------------------------------------------------------------  
 	/**
 	 * Show the user an error dialog.
@@ -195,47 +152,47 @@ public class ResourceManager {
 
 //-----------------------------------------------------------------------------
 	/**
-	 * @return items - 
+	 * Used to access the shared resource 'items to review'. The 'items to
+	 * review resource should be accessed through the <code>ResourceManager</code>
+	 * class exclusivly to ensure the list is kept consistent throughout the
+	 * UMPD Management System's application user interface as well as the
+	 * xml file storing the information.
+	 * 
+	 * @return the list of all items to review, past and present
 	 */
 	public ArrayList<ItemToReview> getItems() {
-/*DEBUG
-System.out.println("=====================================================================");
-System.out.println("\nReturning:");
-int i=0;
-for(ItemToReview item : items){
-System.out.printf("item %d: %s\n", i, item.toString());
-i++;
-}System.out.println("=====================================================================");
-*/
 		return items;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * JDOC
+	 * Used to remove an item from the shared resource 'items to review'. The 
+	 * 'items to review resource should be accessed through the 
+	 * <code>ResourceManager</code> class exclusivly to ensure the list is kept
+	 * consistent throughout the UMPD Management System's application user interface
+	 * as well as the xml file storing the information.
+	 * 
+	 * @param index - the index of the item to remove
 	 */
 	public void removeItem(int index) {
-/*DEBUG
-System.out.println("DELETE: Resourcemanager: removeItem: curListSize = " + 
-items.size() + "; index to delete= " +index);
-*/		
 		items.remove(index);	
 		saveItemsList();
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * JDOC
+	 * Used to add an item to the shared resource 'items to review'. The 
+	 * 'items to review resource should be accessed through the 
+	 * <code>ResourceManager</code> class exclusivly to ensure the list is kept
+	 * consistent throughout the UMPD Management System's application user interface
+	 * as well as the xml file storing the information.
+	 * @param newItem - the item to add to the global list
 	 */
 	public void addItem(ItemToReview newItem) {
-/*DEBUG
-System.out.println("ADD: Resourcemanager: addItem: curListSize = " + 
-items.size() + "; newItem.getTitle = " + newItem.getTitle());
-*/
 		items.add(newItem);
 		saveItemsList();
 	}
 //-----------------------------------------------------------------------------	 
 	/**
-	 * JDOC
+	 * Load the items to review list form the xml file where it is stored.
 	 */
 	private void loadItemsList(){
 		//populate the items list from the itemsToReview.xml file
@@ -247,18 +204,9 @@ items.size() + "; newItem.getTitle = " + newItem.getTitle());
 	}
 //-----------------------------------------------------------------------------	
 	/**
-	 * JDOC
+	 * Save the items to review list form the xml file where it is stored.
 	 */
 	private void saveItemsList(){
-/*DEBUG
-System.out.println("--------------------------------------------------------------------");
-System.out.println("\nThe list about to be saved:");
-int i=0;
-for(ItemToReview item : items){
-System.out.printf("item %d: %s\n", i, item.toString());
-i++;
-}System.out.println("--------------------------------------------------------------------");
-*/		
 		//save the items list to the xml file
 		try{
 			XmlParser.saveItemsToReviewList(items);
@@ -278,14 +226,10 @@ i++;
 	        progProps.loadFromXML(propFile);
 	        Properties p = new Properties(System.getProperties());
 	        p.putAll(progProps);
-	        //p.load(propFile);
-
+	        
 	        //set the system properties
 	        System.setProperties(p);
 	        // display new properties
-	        
-	//DEBUG Displays new properties list       
-	//System.getProperties().list(System.out);
 
 		}	
 //-----------------------------------------------------------------------------
@@ -327,7 +271,7 @@ i++;
 //-----------------------------------------------------------------------------	
 
 	/**
-	 * JDOC
+	 * Save the current application properties to the progProperties.xml file.
 	 */
 	public void saveProperties(){
 		try{
@@ -340,7 +284,7 @@ i++;
 	}
 //-----------------------------------------------------------------------------	
 	/**
-	 * JDOC
+	 * Gets the Roll Call from the Sched program.
 	 */
 	public ArrayList<String> getRollCall() {
 		int shiftTime;
@@ -358,7 +302,7 @@ i++;
 	}
 //-----------------------------------------------------------------------------	
 	/**
-	 * JDOC
+	 * Gets the specified Roll Call from the Sched program.
 	 */
 	public ArrayList<String> getRollCall(int shiftTime, Calendar currentShiftDate) throws Exception {
 		ArrayList<String> Employees = new ArrayList<String>();
@@ -374,7 +318,7 @@ i++;
 	}
 //-----------------------------------------------------------------------------	
 	/**
-	 * JDOC
+	 * Gets the current shift time.
 	 */
 	public static int getShiftTime() {
 		int currentHour, currentMin, shiftTime;
@@ -471,7 +415,8 @@ i++;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * JDOC
+	 * Converts the shiftTime int into a form that can be stored in the rollCall
+	 * database table.
 	 */
    public static String shiftTimeAsString(int shiftTime) {
 	   String time;

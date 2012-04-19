@@ -28,6 +28,9 @@ import utilities.ui.SwingHelper;
  */
 public class BOLOpreview extends JDialog implements ActionListener {
 private static final long serialVersionUID = 1L;
+	private static String DELETE_ACTION = "delete";
+	private static String PRINT_ACTION = "print";
+	private static String EMAIL_ACTION = "email";
 	String age, race, sex, height, weight, build, eyes, hair;
 	String reference, caseNum, status, weapon;
 	String preparedBy, approvedBy;
@@ -129,134 +132,6 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------	
 	/**
-	 * Creates a description Panel for a <code>Bolo</code> in the <code>BOL
-	 * 
-	 * @return infoPanel
-	 */
-	private JPanel createPhysicalDescriptionPanel(){
-		JPanel infoPanel = new JPanel(new MigLayout());
-		infoPanel.setBackground(Color.WHITE);
-		String[] labels = { "Approx. Age: ", "Race", "Sex", "Approx. Height: ", 
-				"Approx. Weight: ", "Build: ", "Eyes: ", "Hair: ", 
-				"Other Description/Info: " 
-				};
-		
-		//get the info from the BOLO object
-		String[] fieldsArray = bolo.getStringFields();
-		JLabel label;
-		
-		//put each existing attribute's name and value into the panel(bolo fields 0-8)
-		for(int i=0; i<9; i++){
-			if(fieldsArray[i]!=null){ 
-//DEBUG System.out.printf("index %d of fieldsArray = %s\n", i, fieldsArray[i]);
-				labels[i] = labels[i].concat(fieldsArray[i]); 
-//DEBUG System.out.printf("index %d of labels = %s\n", i, labels[i]);
-				label = new JLabel(labels[i]);
-				infoPanel.add(label, "align, wrap"); 
-			}
-		}
-
-		return infoPanel;
-	}
-//-----------------------------------------------------------------------------
-	/**
-	 * Creates the incident info panel.
-	 */
-	private JPanel createIncidentInfoPanel(){
-		JPanel infoPanel = new JPanel(new MigLayout());
-		infoPanel.setBackground(Color.WHITE);
-		String[] labels = { "Reference: ", "Case #: ", "Status: ", 
-				"Date of Incident", "Time of Incident"};
-		
-		//get the info from the BOLO object
-		String[] fieldsArray = bolo.getStringFields();
-		JLabel label;
-		
-		//put each existing attribute's name and value into the panel(bolo fields 9-11)
-		for(int i=9; i<12; i++){
-			if(fieldsArray[i]!=null){ 
-//DEBUG
-				//System.out.printf("index %d of fieldsArray = %s\n", i, fieldsArray[i]);
-				labels[i-9] = labels[i-9].concat(fieldsArray[i]); 
-//DEBUG
-				//System.out.printf("index %d of labels = %s\n", i, labels[i-9]);
-				label = new JLabel(labels[i-9]);
-				infoPanel.add(label, "align, wrap"); 
-			}
-		}
-
-		return infoPanel;
-	}
-//-----------------------------------------------------------------------------
-	/**
-	 * 
-	 * @return narrativePanel
-	 */
-	private JPanel createNarrativePanel(){
-		JPanel narrativePanel = new JPanel(new MigLayout());
-		narrativePanel.setBackground(Color.WHITE);
-		
-		JLabel narrative = new JLabel(bolo.getNarrative());
-		
-		narrativePanel.add(narrative, "align center");
-		
-		return narrativePanel;
-	}
-//-----------------------------------------------------------------------------
-	/**
-	 * 
-	 * @return adminPanel
-	 */
-	private JPanel createAdministrativePanel(){
-		JPanel adminPanel = new JPanel(new MigLayout());
-		adminPanel.setBackground(Color.WHITE);
-        // create labels
-		
-		JLabel fieldLabel;
-		JLabel valueLabel;
-		
-		if(bolo.getPreparedBy()!=null){
-			fieldLabel = new JLabel("BOLO prepared by: ");
-			valueLabel = new JLabel(bolo.getPreparedBy());
-			adminPanel.add(fieldLabel, "align");
-			adminPanel.add(valueLabel, "align, wrap");
-		}
-		if(bolo.getApprovedBy()!=null){
-			fieldLabel = new JLabel("BOLO approved by: ");
-			valueLabel = new JLabel(bolo.getApprovedBy());
-			adminPanel.add(fieldLabel, "align");
-			adminPanel.add(valueLabel, "align, wrap");
-		}
-		
-		return adminPanel;
-	}
-//-----------------------------------------------------------------------------
-	/**
-	 * 
-	 * @return photoVideoPanel
-	 */
-	private JPanel createPhotoVideoPanel(){
-		JPanel photoVideoPanel = new JPanel(new MigLayout());
-		photoVideoPanel.setBackground(Color.WHITE);
-		
-		if(bolo.getPhotoFilePath()!=null){
-			Path photoPath = bolo.getPhotoFilePath();
-			ImageIcon photo = ImageHandler.getScaledImageIcon(photoPath, 200, 299);
-			photoVideoPanel.add(new JLabel(photo));
-		}
-		
-		return photoVideoPanel;
-	}
-//-----------------------------------------------------------------------------
-	/**
-	 * 
-	 * @return newBOLOWascreated
-	 */
-	public boolean isNewBOLOWascreated(){
-		  return newBOLOWascreated;
-	}
-//-----------------------------------------------------------------------------	
-	/**
 	 * 
 	 * @return buttonsPanel
 	 */
@@ -314,11 +189,9 @@ private static final long serialVersionUID = 1L;
 	    //Add email button
 	    JButton emailButton = SwingHelper.createImageButton("Email", "icons/email_32.png");
 	    emailButton.setToolTipText("Email this BOLO document");
-	    emailButton.addActionListener(new ActionListener( ) {
-			public void actionPerformed(ActionEvent e) {
-	    		//TODO implement email
-	    	}
-	    });
+	    emailButton.setActionCommand(EMAIL_ACTION);
+	    emailButton.addActionListener(this);
+
 	    
 	    JPanel saveAndCancelButtonsPanel = new JPanel();
 	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
@@ -357,10 +230,16 @@ private static final long serialVersionUID = 1L;
 		 this.dispose();	
 	}
 //-----------------------------------------------------------------------------
-
 	public void actionPerformed(ActionEvent ev) {
-		//attempt to delete the currently displayed BOLO & close this dialog
-		deleteBOLOAndClose();	
+		if(ev.getActionCommand().equals(DELETE_ACTION)){
+			//attempt to delete the currently displayed BlueBookEntry & close this dialog
+			deleteBOLOAndClose();	
+		} else if(ev.getActionCommand().equals(PRINT_ACTION)){
+			
+		} else if(ev.getActionCommand().equals(EMAIL_ACTION)){
+			rm.onLaunchMail(ev);
+			
+		}
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -391,5 +270,133 @@ private static final long serialVersionUID = 1L;
 				"BOLO Deleted", JOptionPane.INFORMATION_MESSAGE);
 		
 	}
+//-----------------------------------------------------------------------------
+		/**
+		 * Creates a description Panel for a <code>Bolo</code> in the <code>BOL
+		 * 
+		 * @return infoPanel
+		 */
+		private JPanel createPhysicalDescriptionPanel(){
+			JPanel infoPanel = new JPanel(new MigLayout());
+			infoPanel.setBackground(Color.WHITE);
+			String[] labels = { "Approx. Age: ", "Race", "Sex", "Approx. Height: ", 
+					"Approx. Weight: ", "Build: ", "Eyes: ", "Hair: ", 
+					"Other Description/Info: " 
+					};
+			
+			//get the info from the BOLO object
+			String[] fieldsArray = bolo.getStringFields();
+			JLabel label;
+			
+			//put each existing attribute's name and value into the panel(bolo fields 0-8)
+			for(int i=0; i<9; i++){
+				if(fieldsArray[i]!=null){ 
+	//DEBUG System.out.printf("index %d of fieldsArray = %s\n", i, fieldsArray[i]);
+					labels[i] = labels[i].concat(fieldsArray[i]); 
+	//DEBUG System.out.printf("index %d of labels = %s\n", i, labels[i]);
+					label = new JLabel(labels[i]);
+					infoPanel.add(label, "align, wrap"); 
+				}
+			}
+
+			return infoPanel;
+		}
+//-----------------------------------------------------------------------------
+		/**
+		 * Creates the incident info panel.
+		 */
+		private JPanel createIncidentInfoPanel(){
+			JPanel infoPanel = new JPanel(new MigLayout());
+			infoPanel.setBackground(Color.WHITE);
+			String[] labels = { "Reference: ", "Case #: ", "Status: ", 
+					"Date of Incident", "Time of Incident"};
+			
+			//get the info from the BOLO object
+			String[] fieldsArray = bolo.getStringFields();
+			JLabel label;
+			
+			//put each existing attribute's name and value into the panel(bolo fields 9-11)
+			for(int i=9; i<12; i++){
+				if(fieldsArray[i]!=null){ 
+	//DEBUG
+					//System.out.printf("index %d of fieldsArray = %s\n", i, fieldsArray[i]);
+					labels[i-9] = labels[i-9].concat(fieldsArray[i]); 
+	//DEBUG
+					//System.out.printf("index %d of labels = %s\n", i, labels[i-9]);
+					label = new JLabel(labels[i-9]);
+					infoPanel.add(label, "align, wrap"); 
+				}
+			}
+
+			return infoPanel;
+		}
+//-----------------------------------------------------------------------------
+		/**
+		 * 
+		 * @return narrativePanel
+		 */
+		private JPanel createNarrativePanel(){
+			JPanel narrativePanel = new JPanel(new MigLayout());
+			narrativePanel.setBackground(Color.WHITE);
+			
+			JLabel narrative = new JLabel(bolo.getNarrative());
+			
+			narrativePanel.add(narrative, "align center");
+			
+			return narrativePanel;
+		}
+//-----------------------------------------------------------------------------
+		/**
+		 * 
+		 * @return adminPanel
+		 */
+		private JPanel createAdministrativePanel(){
+			JPanel adminPanel = new JPanel(new MigLayout());
+			adminPanel.setBackground(Color.WHITE);
+	        // create labels
+			
+			JLabel fieldLabel;
+			JLabel valueLabel;
+			
+			if(bolo.getPreparedBy()!=null){
+				fieldLabel = new JLabel("BOLO prepared by: ");
+				valueLabel = new JLabel(bolo.getPreparedBy());
+				adminPanel.add(fieldLabel, "align");
+				adminPanel.add(valueLabel, "align, wrap");
+			}
+			if(bolo.getApprovedBy()!=null){
+				fieldLabel = new JLabel("BOLO approved by: ");
+				valueLabel = new JLabel(bolo.getApprovedBy());
+				adminPanel.add(fieldLabel, "align");
+				adminPanel.add(valueLabel, "align, wrap");
+			}
+			
+			return adminPanel;
+		}
+//-----------------------------------------------------------------------------
+		/**
+		 * 
+		 * @return photoVideoPanel
+		 */
+		private JPanel createPhotoVideoPanel(){
+			JPanel photoVideoPanel = new JPanel(new MigLayout());
+			photoVideoPanel.setBackground(Color.WHITE);
+			
+			if(bolo.getPhotoFilePath()!=null){
+				Path photoPath = bolo.getPhotoFilePath();
+				ImageIcon photo = ImageHandler.getScaledImageIcon(photoPath, 200, 299);
+				photoVideoPanel.add(new JLabel(photo));
+			}
+			
+			return photoVideoPanel;
+		}
+//-----------------------------------------------------------------------------
+		/**
+		 * 
+		 * @return newBOLOWascreated
+		 */
+		public boolean isNewBOLOWascreated(){
+			  return newBOLOWascreated;
+		}
 //-----------------------------------------------------------------------------
 }
