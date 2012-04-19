@@ -1,0 +1,39 @@
+Dates in java are a convoluted mess, but here's my best shot at explaining
+how I use them.
+
+Basically there are 2 main Objects for handling dates in java, Date and Calendar
+
+Getting the current time:
+Whenever you want to get the current time in Java, you can do it like this
+
+Date date = Calendar.getInstance().getTime();
+lets break it down. Calendar is a static object, getInstance will return 
+the instance of that calendar(more on this later) and getTime() on a calendar 
+instance returns that instance's time value. So this date object will contain 
+the current system time. To get this to a string you can do one of 2 things.
+To get the default format, just call date.toString(); If you want a custom format 
+for the string, use the format class. 
+SimpleDateFormat format = new SimpleDateFormat(<format string goes here>)
+put in a format string(i.e ddMMYYYY), check the documenation for specifics because there are a 
+lot of ways you can do this. 
+
+handling specific fields:
+now normal reasonable people would let you just call date.getMinute() to get the min
+but java people aren't reasonable. These methods are now deprecated. Instead you have
+to manipulate instances of a calendar. If you're just dealing with the current time 
+fields, then if works as follows. To get the current number of minutes, you do:
+int numMinutes = Calendar.get(Calendar.MINUTE)
+same for any other field.
+
+If you want to deal with saving and passing around a specific date and
+time, the way I'm dealing with it is as follows.
+Create a current instance of the calendar i.e
+
+Calendar currentShiftDate = Calendar.getInstance();
+ 
+then you can set the fields. Say you need to increment the shift time 6 hours.
+ 
+currentShiftDate.add(Calendar.HOUR, 6);
+
+this applies to any field you want. Then you can pass around this object as a date, calling 
+getTime() on it at any point to get the set time.
