@@ -45,7 +45,7 @@ public class SwingHelper {
 	/** length in columns = 20 */
 	public static final int DEFAULT_TEXT_FIELD_LENGTH = 20;
 	
-	public static final Dimension SEARCH_DIALOG_DIMENSION = new Dimension(500, 200);
+	public static final Dimension SEARCH_DIALOG_DIMENSION = new Dimension(500, 250);
 	public static final Dimension LOGIN_DIALOG_DIMENSION = new Dimension(450, 250);
 //-----------------------------------------------------------------------------
 	/** 

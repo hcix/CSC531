@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -39,9 +40,10 @@ public class BOLOform extends JDialog {
 private static final long serialVersionUID = 1L;
 	JTextField ageField,raceField,sexField,heightField,weightField,buildField;
 	JTextField eyesField,hairField;
-	JTextField toiField,referenceField,caseNumField,statusField,ifYesField;
+	JTextField toiField,referenceField,caseNumField,ifYesField;
 	JTextField preparedByField,approvedByField,dateField,timeField;
 	JTextArea otherDescriptField,narrativeText; 
+	JComboBox<String> statusField;
 	JSpinner incidentDate, incidentTime, preparedDate, preparedTime;
 	Bolo bolo;
 	JFrame parent;
@@ -221,10 +223,11 @@ private static final long serialVersionUID = 1L;
 
 
 		// create fields
+		String[] statusStrings = { "", "Need to Identify", "Identified", "Apprehended", "Cleared" };
 		referenceField = new JTextField(15);
 		caseNumField = new JTextField(15);
-		statusField = new JTextField(15);
-
+		statusField = new JComboBox<String>(statusStrings);
+		
 		//row 1
 		incidentDate = SwingHelper.addDateSpinner(infoPanel, "Date of Incident");
 		incidentTime = SwingHelper.addTimeSpinner(infoPanel, "Time of Incident");
@@ -440,7 +443,7 @@ private static final long serialVersionUID = 1L;
 		 if(!reference.isEmpty()){ bolo.setReference(reference); }
 		 caseNum=caseNumField.getText();
 		 if(!caseNum.isEmpty()){ bolo.setCaseNum(caseNum); }
-		 status=statusField.getText();
+		 status=(String)statusField.getSelectedItem();
 		 if(!status.isEmpty()){ bolo.setStatus(status); }
 		 weapon=ifYesField.getText();
 		 if(!weapon.isEmpty()){ bolo.setWeapon(weapon); }
@@ -476,7 +479,7 @@ private static final long serialVersionUID = 1L;
 		 hairField.setText(bolo.getHair());
 		 referenceField.setText(bolo.getReference());
 		 caseNumField.setText(bolo.getCaseNum());
-		 statusField.setText(bolo.getStatus());
+		 statusField.setSelectedItem(bolo.getStatus());
 		 ifYesField.setText(bolo.getWeapon());
 		 preparedByField.setText(bolo.getPreparedBy());
 		 approvedByField.setText(bolo.getApprovedBy());
@@ -576,7 +579,7 @@ private static final long serialVersionUID = 1L;
 		hairField.setText(null);
 		referenceField.setText(null);
 		caseNumField.setText(null);
-		statusField.setText(null);
+		statusField.setSelectedItem("");
 		ifYesField.setText(null);
 		preparedByField.setText(null);
 		approvedByField.setText(null);
