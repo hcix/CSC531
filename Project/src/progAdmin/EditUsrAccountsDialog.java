@@ -187,31 +187,6 @@ else if(command.equals(DELETE_USER))
 			int selected = table.getSelectedRow();
 			Employee emp = employeeList.get(selected);
 			
-			/* BEN: Why you make your life difficult? You can just use the
-			 * JOptionPane.showConfirmDialog() method to display a confirm dialog
-			 * and get a result back from it
-			int rowIndex = table.getSelectedRow();
-			//rm.removeItem(rowIndex);
-			int selected = table.getSelectedRow();
-			Employee emp = employeeList.get(selected);
-			
-			DeleteUserPrompt dup = new DeleteUserPrompt(parent, "Are you sure you want to delete user " + emp.getFirstname() + " " + emp.getLastname() + "?");
-			dup.setVisible(true);
-			
-			int result = dup.getResult();
-			if(result == 1) // ok to delete
-			{
-				employeeList.remove(emp);
-				try {
-					XmlParser.saveRoster(employeeList);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-			}
-<<<<<<< HEAD
-			*/		
-			
-			//show confirm delete dialog
 			int confirm = JOptionPane.showConfirmDialog(parent, ("Are you sure you want to" +
 					" delete user" + emp.getLastname() + "?"), ("Delete User?"), 
 					JOptionPane.YES_NO_OPTION);

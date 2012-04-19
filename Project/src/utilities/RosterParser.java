@@ -136,7 +136,9 @@ public class RosterParser {
 		 * Open the employee list file, check for a match with the cnumber, and
 		 * if one occurs, return the name
 		 */
-		try {
+
+		try 
+		{
 			BufferedReader reader = getReader(employeeFileName);
 			String line = null;
 			while ((line = reader.readLine()) != null) {
@@ -194,5 +196,4 @@ public class RosterParser {
 
 		}
 	}
-
 }
