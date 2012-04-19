@@ -32,8 +32,8 @@ public class RosterParser {
 		int dayAsInt;
 
 		// Directory path here
-		Path path = Paths.get("Project","PatrolScheduler", "employee"); //ECLIPSE
-		//Path path = Paths.get("PatrolScheduler", "employee"); //JAR
+		//Path path = Paths.get("Project", "PatrolScheduler", "employee"); //JAR
+		Path path = Paths.get("PatrolScheduler", "employee"); //ECLIPSE
 
 		if (currentShiftDate == null) {
 			Calendar cal = Calendar.getInstance();		    	    
