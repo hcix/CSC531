@@ -1,9 +1,12 @@
 package progAdmin.itemsToReview;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -58,6 +61,7 @@ private static final long serialVersionUID = 1L;
 		//create toolbar
 		JToolBar toolbar = new JToolBar("Items To Review");
 		toolbar.setLayout(new MigLayout("fillx", "[]push[]", null));
+		toolbar.setBorder(BorderFactory.createMatteBorder(0,0,2,0,Color.gray));
 		//make a tool bar immovable
 		toolbar.setFloatable(false); 
 		//visually indicate tool bar buttons when the user passes over them w/ cursor
@@ -67,11 +71,14 @@ private static final long serialVersionUID = 1L;
 		addItemButton.addActionListener(this);
 		
 		//add a title 
-		String title = "<html><h2>Items to Review</h2></html>";
+		String title = "<html><h2><center>Items to Review</center></h2></html>";
+		//String title = "Items to Review";
 		JLabel titleLabel = new JLabel(title, JLabel.CENTER);
+		
 		toolbar.add(titleLabel, "growx");
 		
 		toolbar.add(addItemButton);
+		
 		
 		return toolbar;
 	}
