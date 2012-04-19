@@ -313,7 +313,7 @@ private static final long serialVersionUID = 1L;
 	    });
 	    
 	    //Add email button
-	    JButton emailButton = new JButton("Email");
+	    JButton emailButton = SwingHelper.createImageButton("Email", "icons/email32.png");
 	    emailButton.setToolTipText("Email this BOLO document");
 	    emailButton.addActionListener(new ActionListener( ) {
 	    	public void actionPerformed(ActionEvent e) {

@@ -3,6 +3,7 @@ package blueBookTab;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Format;
@@ -23,6 +24,13 @@ import utilities.ui.DisplayPanel;
 import utilities.ui.ImageHandler;
 import utilities.ui.SwingHelper;
 
+/*
+ * BUG When you try to upload multiple blue book entries back to back, opens the preview for the last created bbentry 
+ * instead of a new form 
+ */
+/*
+ * BUG doesn't refresh after creating a bolo, have to reopen project
+ */
 //-----------------------------------------------------------------------------	
 /**
  * The <code>BlueBookTab</code> class creates a tab on the UMPD Management
@@ -154,6 +162,8 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		ArrayList<BlueBookEntry> searchResults = new ArrayList<BlueBookEntry>();
 		ArrayList<String >fields = new ArrayList<String>();
 		ArrayList<String >parameters = new ArrayList<String>();
+		
+		//TODO deal with all fields null case (probably pop up another dialog saying such)
 	    //fill search terms		
 		if (!caseNumField.getText().equals("")) {
 		    fields.add("caseNum");
@@ -176,12 +186,14 @@ public class BlueBookTab extends JPanel implements ActionListener {
 			System.out.println("Couldn't run search in bluebook"); 
 			e.printStackTrace();
 		}
-		JDialog searchDialog = new JDialog();
-		JPanel searchEntriesPanel = createSearchEntriesPanel();
+		JDialog searchDialog = new JDialog(parent, "Search Results", true);
+		JPanel searchEntriesPanel = createSearchEntriesPanel(searchResults);
 		searchDialog.add(searchEntriesPanel, BorderLayout.CENTER);
-		searchDialog.setLocationRelativeTo(null);
-		searchDialog.setSize(500,500); //set dynamically TODO
-		searchDialog.setVisible(true);//BUG disappears
+		searchDialog.setLocationByPlatform(true);
+		Toolkit toolkit =  Toolkit.getDefaultToolkit ();
+		Dimension dialogDim = new Dimension(toolkit.getScreenSize().width/2, toolkit.getScreenSize().height/2);
+		searchDialog.setSize(dialogDim); 
+		searchDialog.setVisible(true);
 	}
 
 	// -----------------------------------------------------------------------------
@@ -258,18 +270,17 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	 * 
 	 * @return entriesPanel
 	 */
-	public JPanel createSearchEntriesPanel() {
+	public JPanel createSearchEntriesPanel(ArrayList<BlueBookEntry> bluebook) {
 		JPanel entriesPanel = new JPanel(new MigLayout("gapx 30, wrap 4"));
 		JPanel entryPanel;
 		// Date prepDate;
 
 		// TODO: make scrollable!
 
-		try {
-			bluebook = DatabaseHelper.getBluebookFromDB();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		//DEBUG
+		if (bluebook == null) {
+			System.out.println("error with search results in create search entries"); 
+		} //end DEBUG
 
 		int listSize = bluebook.size();
 		JPanel[] items = new JPanel[listSize];
@@ -312,7 +323,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 			i++;
 		}
 
-		DisplayPanel itemsPanel = new DisplayPanel(items, this);
+		DisplayPanel itemsPanel = new DisplayPanel(items, this, 4);
 
 		entriesPanel.add(itemsPanel);
 
