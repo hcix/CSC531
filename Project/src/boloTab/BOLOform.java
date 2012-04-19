@@ -487,6 +487,7 @@ public class BOLOform extends JDialog {
 		//bolo.setincidentDate(getIncidentDateEpoch());
 
 	}
+<<<<<<< HEAD
 	//-----------------------------------------------------------------------------
 	/**
 	 * Places the info from the input fields into the global BOLO object.
@@ -518,6 +519,41 @@ public class BOLOform extends JDialog {
 			ImageIcon photo = ImageHandler.getScaledImageIcon(
 					bolo.getPhotoFilePath(), 200, 299);
 
+=======
+//-----------------------------------------------------------------------------
+	 /**
+	  * Places the info from the input fields into the global BOLO object.
+	  */
+	 private void loadFromExistingBOLO(){
+		 //set the filled in fields in the global BOLO object
+		 ageField.setText(bolo.getAge());
+
+		 raceField.setText(bolo.getRace());		
+		 sexField.setText(bolo.getSex());		 
+		 heightField.setText(bolo.getHeight());
+		 weightField.setText(bolo.getWeight());
+		 buildField.setText(bolo.getBuild());
+		 eyesField.setText(bolo.getEyes());
+		 hairField.setText(bolo.getHair());
+		 referenceField.setText(bolo.getReference());
+		 caseNumField.setText(bolo.getCaseNum());
+		 statusField.setSelectedItem(bolo.getStatus());
+		 ifYesField.setText(bolo.getWeapon());
+		 preparedByField.setText(bolo.getPreparedBy());
+		 approvedByField.setText(bolo.getApprovedBy());
+		 otherDescriptField.setText(bolo.getOtherDescrip());
+		 narrativeText.setText(bolo.getNarrative());
+
+		 //TODO: set the times
+		 
+		 
+		 
+		 //set picture
+		 if(bolo.getPhotoFilePath()!=null){
+			 ImageIcon photo = ImageHandler.getScaledImageIcon(
+				 bolo.getPhotoFilePath(), 200, 299);
+		 
+>>>>>>> 9bdb4d22f9184f9f674dfb97080df1f7785bafc4
 			photoArea.removeAll();
 			photoArea.add(new JLabel(photo));
 		}

@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
+import userinterface.MainInterfaceWindow;
 import utilities.DatabaseHelper;
 import utilities.SearchHelper;
 import utilities.ui.DisplayPanel;
@@ -36,13 +37,16 @@ import utilities.ui.SwingHelper;
  */
 public class BOLOtab extends JPanel implements ActionListener {
 private static final long serialVersionUID = 1L;
-	BOLOform newFormDialog;
-	ArrayList<Bolo> boloList;
-	JPanel recentBolosTab;
 	JDialog searchDialog;
 	JTextField caseNumField;
 	JComboBox<String> statusList;
 	ResourceManager rm;
+	MainInterfaceWindow mainInterface;
+	JPanel recentBolosTab;
+	DisplayPanel entriesScroller;
+	BOLOform newFormDialog;
+	ArrayList<Bolo> boloList;
+	JTabbedPane tabbedPane;
 //-----------------------------------------------------------------------------
 	/**
 	 * Create the <code>BOLOtab</code> to hold Recent <code>Bolo</code>s and 
@@ -50,16 +54,18 @@ private static final long serialVersionUID = 1L;
 	 * 
 	 * @param parent 
 	 */
-	public BOLOtab(final ResourceManager rm){
+	public BOLOtab(final ResourceManager rm, final MainInterfaceWindow mainInterface){
 		this.setLayout(new BorderLayout());
 		this.rm=rm;
+		this.mainInterface=mainInterface;
 		
 		//Create BOLOs tabbed display area
-		final JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane = new JTabbedPane();
 
 		//Add recent BOLOs tab
-		recentBolosTab = createRecentBOLOsTab();
-		tabbedPane.addTab("Recent BOLOs", recentBolosTab);
+		//recentBolosTab = createRecentBOLOsTab();
+		entriesScroller = createRecentBOLOsTab();
+		tabbedPane.addTab("Recent BOLOs", entriesScroller);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
 
 	    //Add archived BOLOs tab 
@@ -80,9 +86,18 @@ private static final long serialVersionUID = 1L;
 				//wait for the dialog to be dismissed before continuing
 				newFormDialog.setModal(true);
 				
-				//refresh to display any changes
 				refreshRecentBOLOsTab();
+				//refresh to display any changes
+				//refreshRecentBOLOsTab();
 
+				/*OLIVIA: TODO: If the new bolo created was also created as a item
+				(aka the create item from this bolo checkbox was selected) then
+				call the following two methods:
+					mainInterface.refreshItemsList();
+					mainInterface.refreshItemsTable();
+				Otherwise, it is not necessary to call these methods
+				*/
+				
 				//unneeded/repetative, waiting to make sure no errors b4 deleting
 				/*refresh to display any changes
 				recentBolosTab.removeAll();
@@ -233,7 +248,7 @@ private static final long serialVersionUID = 1L;
 	 * 
 	 * @return recentBOLOsPanel
 	 */
-	private JPanel createRecentBOLOsTab(){
+	private DisplayPanel createRecentBOLOsTab(){
 		JPanel recentBOLOsPanel = new JPanel(new MigLayout());
 		JPanel boloPanel;
 		Date prepDate;
@@ -289,9 +304,9 @@ private static final long serialVersionUID = 1L;
 
 		DisplayPanel entriesPanel = new DisplayPanel(items, this, 4);
 
-		recentBOLOsPanel.add(entriesPanel);
+		//recentBOLOsPanel.add(entriesPanel);
 
-		return recentBOLOsPanel;
+		return entriesPanel;
 	}
 //-----------------------------------------------------------------------------
 	public JPanel createSearchBOLOsTab(ArrayList<Bolo> boloList){
@@ -354,10 +369,16 @@ private static final long serialVersionUID = 1L;
 
 //-----------------------------------------------------------------------------		
 	public void refreshRecentBOLOsTab(){
-		recentBolosTab.removeAll();
-		recentBolosTab.add(createRecentBOLOsTab());
-		this.revalidate();
-		this.repaint();
+		entriesScroller.removeAll();
+		entriesScroller = createRecentBOLOsTab();
+		tabbedPane.revalidate();
+		//this.revalidate();
+		//entriesScroller.refreshContents(regenerateBOLOsList());
+		//this.revalidate();
+//		recentBolosTab.removeAll();
+//		recentBolosTab.add(createRecentBOLOsTab());
+//		this.revalidate();
+//		this.repaint();
 	}
 //-----------------------------------------------------------------------------	
 	/**
