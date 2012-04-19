@@ -133,7 +133,6 @@ public class LoginDialog extends JDialog implements ActionListener {
 		return buttonsPanel;
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void actionPerformed(ActionEvent ev) {
 		
 		if(ev.getActionCommand()==LOGIN){

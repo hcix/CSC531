@@ -192,7 +192,6 @@ public class MapTab extends JPanel implements ActionListener{
 	/**
 	 * Called when an action is performed within the map panel.
 	 */
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();
 		

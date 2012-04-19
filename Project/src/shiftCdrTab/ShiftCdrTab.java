@@ -170,7 +170,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		    // Search dialog
 		    JDialog searchDialog = createSearchDialog(parent);
 
-		    @Override
 			public void actionPerformed(ActionEvent e) {
 			    searchDialog.setVisible(true);
 		    }
@@ -262,7 +261,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	}
 
 	// -----------------------------------------------------------------------------
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == ADD) {
 			((RollCallTableModel) table.getModel()).addRow();
@@ -308,7 +306,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 						"icons/search.png");
 				searchButton.addActionListener(new ActionListener() {
 
-					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						search();
 						searchDialog.dispose();
@@ -735,7 +732,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 				"Save and Close", "icons/save_48.png");
 		finishedButton.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				popup.dispose();
 			}
@@ -851,13 +847,11 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		}
 
 		// -----------------------------------------------------------------------------
-		@Override
 		public int getColumnCount() {
 			return columnNames.length;
 		}
 
 		// -----------------------------------------------------------------------------
-		@Override
 		public int getRowCount() {
 			return data.length;
 		}
@@ -869,7 +863,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		}
 
 		// -----------------------------------------------------------------------------
-		@Override
 		public Object getValueAt(int row, int col) {
 			return data[row][col];
 		}
@@ -958,7 +951,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		}
 
 		// -----------------------------------------------------------------------------
-		@Override
 		public void tableChanged(TableModelEvent e) {
 			/*
 			 * int row = e.getFirstRow(); int column = e.getColumn(); TableModel

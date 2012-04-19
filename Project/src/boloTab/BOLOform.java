@@ -11,8 +11,6 @@ import java.io.File;
 import java.sql.Time;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,7 +35,6 @@ import javax.swing.SpinnerDateModel;
 import net.miginfocom.swing.MigLayout;
 import progAdmin.itemsToReview.ItemToReview;
 import program.ResourceManager;
-import userinterface.HomeTab;
 import utilities.FileHelper;
 import utilities.ui.ImageHandler;
 import utilities.ui.ImagePreview;
@@ -331,7 +328,6 @@ public class BOLOform extends JDialog {
 				"icons/camera.png");
 		addPhotoButton.setToolTipText("Attach a photo to this BOLO");
 		addPhotoButton.addActionListener(new ActionListener(){
-			@Override
 			public void actionPerformed(ActionEvent ae) {
 				chooseAndAddPhoto(photoPanel);
 			}
@@ -342,7 +338,6 @@ public class BOLOform extends JDialog {
 		addVideoButton.setToolTipText("Attach a video to this BOLO");
 		addVideoButton.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				loadVideo();
 				
@@ -384,7 +379,6 @@ public class BOLOform extends JDialog {
 				"icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
-			@Override
 			public void actionPerformed(ActionEvent ae) {
 				closeAndCancel();
 			}
@@ -395,7 +389,6 @@ public class BOLOform extends JDialog {
 	    		"icons/save_48.png");
 	    saveButton.setToolTipText("Save BOLO");
 	    saveButton.addActionListener(new ActionListener( ) {
-	    	@Override
 			public void actionPerformed(ActionEvent e) {
 	    		saveAndClose();
 	    	}
@@ -405,7 +398,6 @@ public class BOLOform extends JDialog {
 	    JButton previewButton = new JButton("Preview");
 	    previewButton.setToolTipText("Preview and print final BOLO document");
 	    previewButton.addActionListener(new ActionListener() {
-	    	@Override
 			public void actionPerformed(ActionEvent e) {
 	    		//setVisible(false);
 	    		putInfoIntoBoloObject();

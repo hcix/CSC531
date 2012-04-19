@@ -161,7 +161,6 @@ public class AddUserDialog extends JDialog implements ActionListener
 		cnumberF.setText(e.getCnumber());
 		permissionsB.setSelectedItem(e.getPermissions());
 	}
-	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
 		String command = e.getActionCommand();

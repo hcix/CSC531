@@ -155,7 +155,6 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if(command.equals(ADD_ITEM)){
@@ -188,7 +187,6 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 
-	@Override
 	public void mouseClicked(MouseEvent e){
 		//checks if it was a double click
         if (e.getComponent().isEnabled() && e.getButton() == 
@@ -207,22 +205,18 @@ private static final long serialVersionUID = 1L;
         }
     }
 //-----------------------------------------------------------------------------
-	@Override
 	public void mousePressed(MouseEvent e) {
 		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseEntered(MouseEvent e) {		
 		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseExited(MouseEvent e) {
 		
 	}
@@ -236,13 +230,11 @@ private static final long serialVersionUID = 1L;
         	
         }
 //-----------------------------------------------------------------------------
-        @Override
 		public int getColumnCount() {
         	return columnNames.length;
         }
 //-----------------------------------------------------------------------------
       
-		@Override
 		public int getRowCount() {
         	return rm.getItems().size();
         }
@@ -252,7 +244,6 @@ private static final long serialVersionUID = 1L;
             return columnNames[col];
 	    }
 //-----------------------------------------------------------------------------
-		@Override
 		public Object getValueAt(int row, int col) {
 
 	    	if(col==0){
@@ -283,7 +274,6 @@ private static final long serialVersionUID = 1L;
 	    @Override
 		public void setValueAt(Object value, int row, int col) {  }
 //-----------------------------------------------------------------------------        
-	@Override
 	public void tableChanged(TableModelEvent e) { }
  //-----------------------------------------------------------------------------
 	}

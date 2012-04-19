@@ -137,7 +137,6 @@ private static final long serialVersionUID = 1L;
 	 * If a component is clicked, notify the listener given in construction of this
 	 * obj JDOC
 	 */
-	@Override
 	public void mouseClicked(MouseEvent e) {
 		//let the ActionListener know who's been clicked
 		
@@ -149,7 +148,6 @@ private static final long serialVersionUID = 1L;
 		l.actionPerformed(ev);
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mousePressed(MouseEvent e) {
 		//make panel appear pressed like a button would
 	
@@ -157,19 +155,16 @@ private static final long serialVersionUID = 1L;
 		((JComponent)(e.getSource())).setBorder(BorderFactory.createLoweredBevelBorder());
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		//make panel appear normal again
 		((Component)(e.getSource())).setBackground(originalColor);
 		((JComponent)(e.getSource())).setBorder(BorderFactory.createRaisedBevelBorder());
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseEntered(MouseEvent e) {
 		//TODO highlight outline on panel so user knows it's "selected" ?
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseExited(MouseEvent e) {
 		//make panel appear normal again
 		((Component)(e.getSource())).setBackground(originalColor);

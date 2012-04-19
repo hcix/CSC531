@@ -28,10 +28,14 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import progAdmin.itemsToReview.ItemToReview;
 import net.miginfocom.swing.MigLayout;
+<<<<<<< HEAD
 import progAdmin.itemsToReview.ItemToReview;
 import program.CurrentUser;
 import utilities.ChangeHelper;
 import utilities.DatabaseHelper;
+=======
+import utilities.ChangeHelper;
+>>>>>>> ben random
 import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
@@ -143,7 +147,10 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 	{
 		this.dispose();
 	}
+<<<<<<< HEAD
 //-----------------------------------------------------------------------------
+=======
+>>>>>>> ben random
 
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();

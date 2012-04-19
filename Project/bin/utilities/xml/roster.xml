@@ -104,4 +104,15 @@
 		<email>m</email>
 		<permissions>Supervisor</permissions>
 	</employee>
+<<<<<<< HEAD
+=======
+	<employee>
+		<cnumber>lknlkn</cnumber>
+		<firstname>sdjbs</firstname>
+		<lastname>lknlkn</lastname>
+		<caneid>lknlkj</caneid>
+		<email>lknlkn</email>
+		<permissions>Supervisor</permissions>
+	</employee>
+>>>>>>> ben random
 </roster>

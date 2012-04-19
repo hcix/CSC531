@@ -46,7 +46,6 @@ public class Splash extends Frame implements ActionListener {
         setVisible(true);
         toFront();
     }
-    @Override
 	public void actionPerformed(ActionEvent ae) {
         System.exit(0);
     }
