@@ -9,8 +9,10 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -22,9 +24,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+
 import net.miginfocom.swing.MigLayout;
+import program.ResourceManager;
 import utilities.FileHelper;
 import utilities.ui.ImageHandler;
 import utilities.ui.ImagePreview;
@@ -39,11 +41,13 @@ public class BOLOform extends JDialog {
 private static final long serialVersionUID = 1L;
 	JTextField ageField,raceField,sexField,heightField,weightField,buildField;
 	JTextField eyesField,hairField;
-	JTextField toiField,referenceField,caseNumField,statusField,ifYesField;
+	JTextField toiField,referenceField,caseNumField,ifYesField;
 	JTextField preparedByField,approvedByField,dateField,timeField;
 	JTextArea otherDescriptField,narrativeText; 
+	JComboBox<String> statusField;
 	JSpinner incidentDate, incidentTime, preparedDate, preparedTime;
 	Bolo bolo;
+	ResourceManager rm;
 	JFrame parent;
 	JPanel photoArea;
 	JPanel dialogPanel;
@@ -59,9 +63,9 @@ private static final long serialVersionUID = 1L;
 	 * 
 	 * @param parent
 	 */
-	public BOLOform(JFrame parent, BOLOtab bolotab){
-		super(parent, "New BOLO", true);
-
+	public BOLOform(ResourceManager rm, BOLOtab bolotab){
+		super(rm.getGuiParent(), "New BOLO", true);
+		this.rm=rm;
 		this.parent = parent;
 		this.bolotab=bolotab;
 
@@ -133,13 +137,14 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------	
 	/**
-	 * @JDOC
-	 * @see loadFromExistingBOLO()
+	 * JDOC
+	 * 
 	 * @param parent
 	 * @param bolo
+	 * @see loadFromExistingBOLO()
 	 */
-	public BOLOform(JFrame parent, BOLOtab bolotab, Bolo bolo){
-		this(parent, bolotab);
+	public BOLOform(ResourceManager rm, BOLOtab bolotab, Bolo bolo){
+		this(rm, bolotab);
 		this.bolo = bolo;
 		loadFromExistingBOLO();
 	}
@@ -221,10 +226,11 @@ private static final long serialVersionUID = 1L;
 
 
 		// create fields
+		String[] statusStrings = { "", "Need to Identify", "Identified", "Apprehended", "Cleared" };
 		referenceField = new JTextField(15);
 		caseNumField = new JTextField(15);
-		statusField = new JTextField(15);
-
+		statusField = new JComboBox<String>(statusStrings);
+		
 		//row 1
 		incidentDate = SwingHelper.addDateSpinner(infoPanel, "Date of Incident");
 		incidentTime = SwingHelper.addTimeSpinner(infoPanel, "Time of Incident");
@@ -358,7 +364,7 @@ private static final long serialVersionUID = 1L;
 	    	public void actionPerformed(ActionEvent e) {
 	    		//setVisible(false);
 	    		putInfoIntoBoloObject();
-	    		BOLOpreview preview = new BOLOpreview(parent, bolotab, bolo);
+	    		BOLOpreview preview = new BOLOpreview(rm, bolotab, bolo);
 	    		preview.setVisible(true);
 	    		preview.setModal(true);
 	    		if(preview.isNewBOLOWascreated()){
@@ -390,6 +396,7 @@ private static final long serialVersionUID = 1L;
 
 		//place the info from the fields into a BOLO object
 		 putInfoIntoBoloObject();
+		 bolo.createItemToReview();
 
 		 //add the BOLO object's info to the database
 		 try {
@@ -440,7 +447,7 @@ private static final long serialVersionUID = 1L;
 		 if(!reference.isEmpty()){ bolo.setReference(reference); }
 		 caseNum=caseNumField.getText();
 		 if(!caseNum.isEmpty()){ bolo.setCaseNum(caseNum); }
-		 status=statusField.getText();
+		 status=(String)statusField.getSelectedItem();
 		 if(!status.isEmpty()){ bolo.setStatus(status); }
 		 weapon=ifYesField.getText();
 		 if(!weapon.isEmpty()){ bolo.setWeapon(weapon); }
@@ -476,19 +483,20 @@ private static final long serialVersionUID = 1L;
 		 hairField.setText(bolo.getHair());
 		 referenceField.setText(bolo.getReference());
 		 caseNumField.setText(bolo.getCaseNum());
-		 statusField.setText(bolo.getStatus());
+		 statusField.setSelectedItem(bolo.getStatus());
 		 ifYesField.setText(bolo.getWeapon());
 		 preparedByField.setText(bolo.getPreparedBy());
 		 approvedByField.setText(bolo.getApprovedBy());
 		 otherDescriptField.setText(bolo.getOtherDescrip());
 		 narrativeText.setText(bolo.getNarrative());
 
-		 //set the times
+		 //TODO: set the times
 
 		 //set picture
-		 ImageIcon photo = ImageHandler.getScaledImageIcon(
+		 if(bolo.getPhotoFilePath()!=null){
+			 ImageIcon photo = ImageHandler.getScaledImageIcon(
 				 bolo.getPhotoFilePath(), 200, 299);
-		 if(photo!=null){
+		 
 			photoArea.removeAll();
 			photoArea.add(new JLabel(photo));
 		 }
@@ -576,7 +584,7 @@ private static final long serialVersionUID = 1L;
 		hairField.setText(null);
 		referenceField.setText(null);
 		caseNumField.setText(null);
-		statusField.setText(null);
+		statusField.setSelectedItem("");
 		ifYesField.setText(null);
 		preparedByField.setText(null);
 		approvedByField.setText(null);

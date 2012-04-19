@@ -26,19 +26,14 @@ import utilities.ui.ResizablePhotoDialog;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
-<<<<<<< HEAD
- * The <code>BlueBookForm</code> class is where the information of a given <code>BlueBookEntry</code>
- * is obtained.  The data can be gathered via user input or from an existing <code>BlueBookEntry</code>.
- * 
- * <p>The <code>BlueBookForm</code> creates a pop-up window from which the user can enter BlueBookForm's data.
- * 
- * <p>When the <code>BlueBookForm</code> is saved, its data is transfered to a <code>BlueBookEntry</code> and stores
- * in the BlueBook database.
- * 
-=======
  * The <code>BlueBookForm</code> class is where the information of a given 
- * <code>BlueBookEntry</code> is entered by the user. 
->>>>>>> c7dbd3929905b3433d3b67b6e4901ced664023d1
+ * <code>BlueBookEntry</code> is obtained.  The data can be gathered via user 
+ * input or from an existing <code>BlueBookEntry</code>. <p>The 
+ * <code>BlueBookForm</code> creates a pop-up window from which the user 
+ * can enter BlueBookForm's data. <p>When the <code>BlueBookForm</code> 
+ * is saved, its data is transfered to a <code>BlueBookEntry</code> and stores
+ * in the BlueBook database. The <code>BlueBookForm</code> class is where the
+ * information of a given <code>BlueBookEntry</code> is entered by the user. 
  */
 public class BlueBookForm extends JDialog {
 	private static final long serialVersionUID = 1L;
@@ -52,7 +47,8 @@ public class BlueBookForm extends JDialog {
 	JTextField affiliField;
 	/** Field where the subject's last known address is entered */
 	JTextField addressField;
-	/** Field where the subject's weapon is entered.  Only appears if subject is marked as having a weapon */
+	/** Field where the subject's weapon is entered.  Only appears 
+	 * if subject is marked as having a weapon */
 	JTextField ifYesField;
 	/** Field containing the location of the crime */
 	JTextArea locationField;
@@ -61,6 +57,9 @@ public class BlueBookForm extends JDialog {
 	JTextArea reasonField;
 	JPanel photoArea;
 	JPanel inputPanel;
+	/** a reference to the main <code>BlueBooktab</code> used to tell 
+	 * <code>BlueBooktab</code> to refresh its contents after a delete operation */
+	BlueBookTab bbTab;
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates a pop-up window, sets the window and creates a new 
@@ -69,8 +68,10 @@ public class BlueBookForm extends JDialog {
 	 * 
 	 * @param parent
 	 */
-	public BlueBookForm(JFrame parent) {
+	public BlueBookForm(JFrame parent, BlueBookTab bbTab) {
 		super(parent, "New Blue Book Entry", true);
+		this.bbTab=bbTab;
+		
 		//Set the size of the form
 		this.setPreferredSize(new Dimension(800,900));
 		this.setSize(new Dimension(800,900));
@@ -112,19 +113,21 @@ public class BlueBookForm extends JDialog {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Constructor method
+	 * Constructor method JDOC
 	 * 
-	 * @param parent
-	 * @param entry
+	 * @param parent - 
+	 * @param bbTab -
+	 * @param entry -
 	 */
-	BlueBookForm(JFrame parent, BlueBookEntry entry){
-		this(parent);
+	public BlueBookForm(JFrame parent, BlueBookTab bbTab, BlueBookEntry entry){
+		this(parent, bbTab);
 		this.bbEntry = entry;
 		loadFromExistingEntry();
 	}
 //-----------------------------------------------------------------------------
 	 /**
-	  * Places the info from the input fields into the global BlueBookEntry object.
+	  * Places the info from the input fields into the global 
+	  * <code>BlueBookEntry</code> object.
 	  */
 	 public void loadFromExistingEntry(){
 		 //set the filled in fields in the global BlueBookEntry object
@@ -137,12 +140,14 @@ public class BlueBookForm extends JDialog {
 		descriptionField.setText(bbEntry.getNarrative());
 	
 		 //set picture
+		if(bbEntry.getPhotoFilePath()!=null){
 		 ImageIcon photo = ImageHandler.getScaledImageIcon(
 				 bbEntry.getPhotoFilePath(), 200, 299);
-		 if(photo!=null){
-			photoArea.removeAll();
-			photoArea.add(new JLabel(photo));
-		 }
+			if(photo!=null){
+				photoArea.removeAll();
+				photoArea.add(new JLabel(photo));
+			}
+		}
 		 inputPanel.validate(); 
 	 }
 //-----------------------------------------------------------------------------
@@ -289,9 +294,9 @@ public class BlueBookForm extends JDialog {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	* Save the information input into this form and close the dialog.
-	*/
-	 public void saveAndClose( ) {
+	 * Save the information input into this form and close the dialog.
+	 */
+	 private void saveAndClose( ) {
 		//place the info from the fields into a bbEntry object
 		 putInfoIntoBlueBookEntry();
 		 
@@ -315,7 +320,7 @@ public class BlueBookForm extends JDialog {
 	 /**
 	  * Places the info from the input fields into the global BlueBook object.
 	  */
-	 public void putInfoIntoBlueBookEntry(){
+	 private void putInfoIntoBlueBookEntry(){
 		 String caseNumText, nameText, affiliText, addressText, weapon;
 		 String locationText, descritionText, reasonText;
 		 //String preparedBy;
@@ -377,7 +382,7 @@ public class BlueBookForm extends JDialog {
 			fc.setAccessory(new ImagePreview(fc));
 			int returnVal = fc.showOpenDialog(getParent());
 
-			//if a photo was selected, add it to BOLO and load into photo area
+			//if a photo was selected, add it to BlueBookEntry and load into photo area
 			if(returnVal==JFileChooser.APPROVE_OPTION){
 				//copy the chosen photo into the program's 'Photos' directory
 				final File file = fc.getSelectedFile();
@@ -429,12 +434,16 @@ public class BlueBookForm extends JDialog {
 		descriptionField.setText(null);
 		reasonField.setText(null);
 		
-		/*recreate the photo/video section
+		//recreate the photo/video section
 		photoArea.removeAll();
 		ImageIcon noPhotoImage = ImageHandler.createImageIcon("images/unknownPerson.jpeg");
 		JLabel noPhotoLabel = new JLabel(noPhotoImage);
 		photoArea.add(noPhotoLabel);
-		(photoArea.getParent()).validate();*/
+		(photoArea.getParent()).validate();
+		
 	 }
+//-----------------------------------------------------------------------------
+	 
+	 
 //-----------------------------------------------------------------------------
 }
