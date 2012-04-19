@@ -87,7 +87,7 @@ private static final long serialVersionUID = 1L;
 			});
 
 			//Button to import an existing report
-			JButton importButton = SwingHelper.createImageButton("Import Existing Report", 
+/*		JButton importButton = SwingHelper.createImageButton("Import Existing Report", 
 					"icons/Import.png");
 			importButton.addActionListener(new ActionListener() {
 				//file chooser dialog
@@ -103,7 +103,7 @@ private static final long serialVersionUID = 1L;
 					if(returnVal==JFileChooser.APPROVE_OPTION){
 						//copy the chosen report into the program's 'ShiftCdrReports' directory
 						File file = fc.getSelectedFile();
-						
+					
 //DEBUG	System.out.printf("filepath = %s\n", file.getName(), file.getPath());
 
 						Path filePath = FileHelper.copyShiftCdrReport(file);
@@ -116,7 +116,7 @@ private static final long serialVersionUID = 1L;
 					
 				}
 			});
-
+*/	
 			//Button to search existing reports
 			JButton searchButton = SwingHelper.createImageButton("Search Records", 
 					"icons/search.png");
@@ -154,7 +154,7 @@ private static final long serialVersionUID = 1L;
 			//Create and add the buttons to the bottom of the screen
 	        JPanel buttonsPanel = new JPanel();
 	        buttonsPanel.add(newButton);
-	        buttonsPanel.add(importButton);
+	        //buttonsPanel.add(importButton);
 	        buttonsPanel.add(searchButton);
 	        this.add(buttonsPanel, "dock south");
 		}
