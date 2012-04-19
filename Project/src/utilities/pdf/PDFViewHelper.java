@@ -11,7 +11,6 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-
 import net.miginfocom.swing.MigLayout;
 import org.jpedal.PdfDecoder;
 //-----------------------------------------------------------------------------

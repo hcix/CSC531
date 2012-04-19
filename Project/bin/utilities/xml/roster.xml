@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <roster>
 	<employee>
 		<cnumber>yeahright</cnumber>
@@ -9,6 +9,17 @@
 		<permissions>supervisor</permissions>
 	</employee>
 	<employee>
+<<<<<<< HEAD
+=======
+		<cnumber>XXX</cnumber>
+		<firstname>Heather</firstname>
+		<lastname>Ciechowski</lastname>
+		<caneid>hciechowski</caneid>
+		<email>h.ciechowski@umiami.edu</email>
+		<permissions>supervisor</permissions>
+	</employee>
+	<employee>
+>>>>>>> 2eb24a5b0945f519f25a532da4e12bad2292d1fe
 		<cnumber>12345</cnumber>
 		<firstname>Brosef</firstname>
 		<lastname>Brochacho</lastname>

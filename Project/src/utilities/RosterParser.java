@@ -1,5 +1,8 @@
 package utilities;
 
+import static java.nio.charset.Charset.defaultCharset;
+import static java.nio.file.Files.newBufferedReader;
+import static java.nio.file.Paths.get;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -8,19 +11,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
-
-import static java.nio.charset.Charset.defaultCharset;
-import static java.nio.file.Files.newBufferedReader;
-import static java.nio.file.Paths.get;
-//-----------------------------------------------------------------------------
 
 /**
  * The <code>RosterParser</code> class will be used to read through the .lst 
  * file for each <code>Employee</code>, in order to determine what shifts they work.
  */
 public class RosterParser {
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * Get an <code>ArrayList</code> of <code>Employee</code> names that are working
 	 * 
@@ -33,20 +30,20 @@ public class RosterParser {
 		ArrayList<File> files = new ArrayList<File>();
 		String name, day;
 		int dayAsInt;
-		
+
 		// Directory path here
 		//Path path = Paths.get("Project","PatrolScheduler", "employee"); //JAR
 		Path path = Paths.get("PatrolScheduler", "employee"); //ECLIPSE
-		
+
 		if (currentShiftDate == null) {
-		    Calendar cal = Calendar.getInstance();		    	    
-		    dayAsInt = cal.get(Calendar.DAY_OF_WEEK);
-		    day = getDayAsString(dayAsInt);
+			Calendar cal = Calendar.getInstance();		    	    
+			dayAsInt = cal.get(Calendar.DAY_OF_WEEK);
+			day = getDayAsString(dayAsInt);
 		}
 		else {
 			day = getDayAsString(currentShiftDate.get(Calendar.DAY_OF_WEEK)); //BUG
 		}
-		
+
 		File folder = new File(path.toString());
 		Collections.addAll(files, folder.listFiles());
 
@@ -67,7 +64,7 @@ public class RosterParser {
 		return Employees;
 	}
 
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * Check if an <code>Employee</code> is working
 	 * 
@@ -90,7 +87,7 @@ public class RosterParser {
 		//append leading 0 if necessary
 		if (shiftTime == 6)
 			shiftTimeAsString = "0".concat(shiftTimeAsString);
-		
+
 
 		/*
 		 * Open the reader, read each line and check if the time and day match,
@@ -106,7 +103,7 @@ public class RosterParser {
 					return true;
 				}
 			}
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.out.println("No regular schedule file, line 100 Roster Parser");
@@ -114,7 +111,7 @@ public class RosterParser {
 		}
 		return false;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * Find an <code>Employee</code>'s name from his/her <code>Cnumber</code> if it exists
 	 * 
@@ -128,18 +125,17 @@ public class RosterParser {
 		String[] splitName;
 		//TODO fix this to not use user.dir
 		//employeeFileName = System.getProperty("user.dir")
-			//	+ "\\Project\\PatrolScheduler\\employee\\employees.lst";//JAR
+		//	+ "\\Project\\PatrolScheduler\\employee\\employees.lst";//JAR
 		//employeeFileName = Paths.get("Project", "PatrolScheduler", "employee", "employees.lst").toString(); // FIXED JAR
-		
+
 		//employeeFileName = System.getProperty("user.dir")
-			//	+ "\\PatrolScheduler\\employee\\employees.lst";//ECLIPSE
+		//	+ "\\PatrolScheduler\\employee\\employees.lst";//ECLIPSE
 		employeeFileName = Paths.get("PatrolScheduler", "employee", "employees.lst").toString(); // FIXED ECLIPSE
-		
+
 		/*
 		 * Open the employee list file, check for a match with the cnumber, and
 		 * if one occurs, return the name
 		 */
-
 		try {
 			BufferedReader reader = getReader(employeeFileName);
 			String line = null;
@@ -152,12 +148,11 @@ public class RosterParser {
 				}
 			}
 		} catch (IOException e) {
-			System.out.println("Employee list does not exist");
-			// e.printStackTrace();
+				System.out.println("Employee list does not exist");
+				// e.printStackTrace();
+			}
+			return null;
 		}
-		return null;
-	}
-
 //-----------------------------------------------------------------------------
 	/**
 	 * Gets a <code>BufferedReader</code> to read the given file.
