@@ -9,14 +9,22 @@ import java.awt.event.ActionListener;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+<<<<<<< .merge_file_OLWEJ5
+=======
+import javax.swing.JProgressBar;
+>>>>>>> .merge_file_PdDETk
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import userinterface.MainInterfaceWindow;
@@ -62,7 +70,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		this.rm=rm;
 		
 		//Create entries display area
-		DisplayPanel entriesScroller = createEntriesPanel();
+		entriesScroller = createEntriesPanel();
 		
 		//Create New Entry button
 		JButton newEntryButton = SwingHelper.createImageButton("Create Entry",
@@ -273,9 +281,9 @@ System.out.println("bluebook size = " + bluebook.size());
 			i++;
 		}
 
-		DisplayPanel itemsPanel = new DisplayPanel(items, this, 4);
+		DisplayPanel entriesPanel = new DisplayPanel(items, this, 4);
 		
-		return itemsPanel;
+		return entriesPanel;
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -410,12 +418,15 @@ System.out.println("bluebook size = " + bluebook.size());
 		JPanel[] newItems = createItemsPanels();
 		entriesScroller.refreshContents(newItems);
 		entriesScroller.revalidate();
-		//tabbedPane.revalidate();
-
 	}
 //-----------------------------------------------------------------------------
+<<<<<<< .merge_file_OLWEJ5
 	@Override
 	public void actionPerformed(ActionEvent ev) {
+=======
+	public void actionPerformed(ActionEvent ev) {	
+	    
+>>>>>>> .merge_file_PdDETk
 		//get which entry was click
 		String listId = ev.getActionCommand();
 		int id = Integer.valueOf(listId);

@@ -19,6 +19,7 @@ import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
+import utilities.pdf.PDFView;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
@@ -42,6 +43,7 @@ private static final long serialVersionUID = 1L;
 	BlueBookTab bbTab;
 	/** JDOC */
 	JPanel dialogPanel;
+	PDFView pdfv;
 //-----------------------------------------------------------------------------
 	/**
 	 * Generates the <code>BlueBookPreview</code> window  with all necessary fields 
@@ -53,7 +55,7 @@ private static final long serialVersionUID = 1L;
 	public BlueBookPreview(JFrame parent, BlueBookTab bbTab, BlueBookEntry bbEntry){
 			super(parent, "BlueBook Entry", true);
 //DEBUG
-			System.out.println("BlueBookPreview: constructor ");
+System.out.println("BlueBookPreview: constructor ");
 			//BlueBookEntry object to load info from
 			this.bbEntry = bbEntry;
 			this.parent = parent;
@@ -82,7 +84,6 @@ private static final long serialVersionUID = 1L;
 			dialogPanelScroller.setVerticalScrollBarPolicy(
 					ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-			//TODO pdf stuff and view it
 			
 			//Add the BlueBookEntry "letter head" image to the top
 			//ImageIcon BlueBookEntryHeaderIcon = 
@@ -91,31 +92,38 @@ private static final long serialVersionUID = 1L;
 			//headerPanel.setBackground(Color.WHITE);
 			//headerPanel.add(new JLabel(BlueBookEntryHeaderIcon));
 			//dialogPanel.add(headerPanel, "dock north");
-			dialogPanel.add(new JLabel("" + bbEntry.getBbID()));
 			
-			dialogPanelScroller.setColumnHeaderView(createToolbar());
+			
+			//dialogPanel.add(new JLabel("" + bbEntry.getBbID()));
+			
+			//dialogPanelScroller.setColumnHeaderView(createToolbar());
 		    
 		    //Add the BlueBookEntry form scrolling pane dialog to the screen
-		    Container contentPane = getContentPane();
-		    //contentPane.setLayout(new MigLayout());
-		    contentPane.add(dialogPanelScroller);
-
-//		    
-//		    JScrollPane pdfv = PDFViewHelper.createZoomablePDFDisplay(
-//		    		"/Users/heatherciechowski/CSC531/Project/BlueBookEntryex.pdf", 
-//		    createButtonsPanel());
-//		    pdfv.setColumnHeaderView(buttonsPanel);
-//		    contentPane.add(pdfv, "align center");
+		    //Container contentPane = getContentPane();
+		    //contentPane.add(dialogPanelScroller);
+		    
+		    
+			//Create a PDF from the given BlueBookEntry based on the form template
+			String filename = bbEntry.saveToFileSystem();
+			
+		    JScrollPane scroller = new JScrollPane();
+		    
+			pdfv = new PDFView(filename, scroller, createButtonsPanel());
+			Container contentPane = this.getContentPane();
+			contentPane.add(scroller);
 		    
 		}
 //-----------------------------------------------------------------------------	
 	/**
 	 * JDOC
 	 */
-	private JToolBar createToolbar(){
-	
+	//private JToolBar createToolbar(){
+		private JPanel createButtonsPanel(){
 		JToolBar toolbar = new JToolBar(SwingConstants.HORIZONTAL);
 		toolbar.setFloatable(false);
+		
+		JPanel panel = new JPanel();
+		
 		
 		//Cancel button
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_32.png");
@@ -178,6 +186,7 @@ private static final long serialVersionUID = 1L;
 	    	}
 	    });
 	    
+	    /*
 	    JPanel saveAndCancelButtonsPanel = new JPanel();
 	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
 	    saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
@@ -188,8 +197,21 @@ private static final long serialVersionUID = 1L;
 	    toolbar.add(saveAndCancelButtonsPanel, "shrinky");
 	    toolbar.add(printAndEmailButtonPanel, "growx, shrinky");
 	    toolbar.add(deleteButton);
-	   
-	    return toolbar;
+	    */
+	    
+	    JPanel saveAndCancelButtonsPanel = new JPanel();
+	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
+	    saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
+	    JPanel printAndEmailButtonPanel = new JPanel(new MigLayout("rtl"));
+	    printAndEmailButtonPanel.add(printButton);
+	    printAndEmailButtonPanel.add(emailButton);
+	    printAndEmailButtonPanel.add(editButton);
+	    panel.add(saveAndCancelButtonsPanel, "shrinky");
+	    panel.add(printAndEmailButtonPanel, "growx, shrinky");
+	    panel.add(deleteButton);
+	    
+	    //return toolbar;
+	    return panel;
 	}
 //-----------------------------------------------------------------------------
 	 /**

@@ -4,21 +4,29 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+<<<<<<< .merge_file_kXFKHK
 import java.sql.Time;
+=======
+import java.nio.file.Path;
+import java.nio.file.Paths;
+>>>>>>> .merge_file_XdWcvF
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -28,7 +36,9 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
 
 import net.miginfocom.swing.MigLayout;
+import progAdmin.itemsToReview.ItemToReview;
 import program.ResourceManager;
+import userinterface.HomeTab;
 import utilities.FileHelper;
 import utilities.ui.ImageHandler;
 import utilities.ui.ImagePreview;
@@ -40,14 +50,15 @@ import utilities.ui.SwingHelper;
  * is entered by the user. 
  */
 public class BOLOform extends JDialog {
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	JTextField ageField,raceField,sexField,heightField,weightField,buildField;
 	JTextField eyesField,hairField;
 	JTextField toiField,referenceField,caseNumField,ifYesField;
 	JTextField preparedByField,approvedByField,dateField,timeField;
 	JTextArea otherDescriptField,narrativeText; 
+	JCheckBox toReview;
 	JComboBox<String> statusField;
-	JSpinner incidentDate, incidentTime, preparedDate, preparedTime;
+	JTextField incidentDay,incidentMonth, incidentYear, incidentTime, preparedDate, preparedTime;
 	Bolo bolo;
 	ResourceManager rm;
 	JFrame parent;
@@ -59,7 +70,7 @@ private static final long serialVersionUID = 1L;
 	/** lets the main BOLOtab know if a new BOLO was created during the last
 	 * invocation of this dialog */
 	boolean newBOLOWascreated; 
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * Creates a new window, sets the window and creates a new <code>Bolo</code> instance
 	 * 
@@ -110,35 +121,35 @@ private static final long serialVersionUID = 1L;
 		dialogPanel.add(photoVideoPanel, "align left");
 
 		//Add physical description panel
-	    JPanel physicalDescriptPanel = createPhysicalDescriptionPanel();
-	    dialogPanel.add(physicalDescriptPanel, "align left, wrap");
+		JPanel physicalDescriptPanel = createPhysicalDescriptionPanel();
+		dialogPanel.add(physicalDescriptPanel, "align left, wrap");
 
-	    //Add incident info panel
-	    JPanel incidentInfoPanel = createIncidentInfoPanel();
-	    dialogPanel.add(incidentInfoPanel, "align left, growx");
+		//Add incident info panel
+		JPanel incidentInfoPanel = createIncidentInfoPanel();
+		dialogPanel.add(incidentInfoPanel, "align left, growx");
 
-	    //Add narrative area
-	    JPanel narrativePanel = createNarrativePanel();
-	    dialogPanel.add(narrativePanel, "align left, wrap, growx");
+		//Add narrative area
+		JPanel narrativePanel = createNarrativePanel();
+		dialogPanel.add(narrativePanel, "align left, wrap, growx");
 
-	    //Add administrative panel
-	    JPanel adminPanel = createAdministrativePanel();
-	    dialogPanel.add(adminPanel, "align left");
+		//Add administrative panel
+		JPanel adminPanel = createAdministrativePanel();
+		dialogPanel.add(adminPanel, "align left");
 
-//TODO: Add standard footer
+		//TODO: Add standard footer
 
-	    //Add buttons panel to top of scroll panel as the row header
-	    //	(the buttons panel stays at the top of the screen even if the top of the form isn't
-	    //	currently visible) 
-	    JPanel buttonsPanel = createButtonsPanel();
-	    dialogPanelScroller.setColumnHeaderView(buttonsPanel);	    
+		//Add buttons panel to top of scroll panel as the row header
+		//	(the buttons panel stays at the top of the screen even if the top of the form isn't
+		//	currently visible) 
+		JPanel buttonsPanel = createButtonsPanel();
+		dialogPanelScroller.setColumnHeaderView(buttonsPanel);	    
 
-	    //Add the BOLO form scrolling pane dialog to the screen
-	    Container contentPane = getContentPane();
-	    contentPane.add(dialogPanelScroller);
+		//Add the BOLO form scrolling pane dialog to the screen
+		Container contentPane = getContentPane();
+		contentPane.add(dialogPanelScroller);
 
 	}
-//-----------------------------------------------------------------------------	
+	//-----------------------------------------------------------------------------	
 	/**
 	 * JDOC
 	 * 
@@ -151,7 +162,7 @@ private static final long serialVersionUID = 1L;
 		this.bolo = bolo;
 		loadFromExistingBOLO();
 	}
-//-----------------------------------------------------------------------------	
+	//-----------------------------------------------------------------------------	
 	/**
 	 * 
 	 */
@@ -160,7 +171,7 @@ private static final long serialVersionUID = 1L;
 
 		SwingHelper.addTitledBorder(infoPanel, "Physical Description");
 
-        // create labels
+		// create labels
 		JLabel ageLabel = new JLabel("<html>Approx.<br>Age</html>");
 		JLabel raceLabel = new JLabel("Race");
 		JLabel sexLabel = new JLabel("Sex");
@@ -213,7 +224,7 @@ private static final long serialVersionUID = 1L;
 
 		return infoPanel;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * 
 	 */
@@ -222,7 +233,7 @@ private static final long serialVersionUID = 1L;
 
 		SwingHelper.addTitledBorder(infoPanel, "Incident Info");
 
-        // create labels
+		// create labels
 		JLabel referenceLabel = new JLabel("Reference");
 		JLabel caseNumLabel = new JLabel("Case #");
 		JLabel statusLabel = new JLabel("Status");
@@ -233,11 +244,19 @@ private static final long serialVersionUID = 1L;
 		referenceField = new JTextField(15);
 		caseNumField = new JTextField(15);
 		statusField = new JComboBox<String>(statusStrings);
-		
+
 		//row 1
+<<<<<<< .merge_file_kXFKHK
 		incidentDate = SwingHelper.addDateSpinner(infoPanel, "Date of Incident");
 		incidentTime = SwingHelper.addTimeSpinner(infoPanel, "Time of Incident");
 		
+=======
+		//		incidentDate = SwingHelper.addDateSpinner(infoPanel, "Date of Incident");
+		//		incidentTime = SwingHelper.addTimeSpinner(infoPanel, "Time of Incident");
+		incidentDay =  new JTextField(2);
+		incidentMonth =  new JTextField(2);
+		incidentTime =  new JTextField(2);
+>>>>>>> .merge_file_XdWcvF
 		infoPanel.add(referenceLabel, "align");
 		infoPanel.add(referenceField, "align, wrap");
 		infoPanel.add(caseNumLabel, "align");
@@ -247,7 +266,7 @@ private static final long serialVersionUID = 1L;
 
 		return infoPanel;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * 
 	 */
@@ -268,7 +287,7 @@ private static final long serialVersionUID = 1L;
 
 		return narrativePanel;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * 
 	 */
@@ -277,26 +296,38 @@ private static final long serialVersionUID = 1L;
 
 		SwingHelper.addTitledBorder(adminPanel, "Administrative Info");
 
-        // create labels
+		// create labels
 		JLabel preparedByLabel = new JLabel("BOLO prepared by");
 		JLabel approvedByLabel = new JLabel("BOLO approved by");
+		JLabel dayLabel = new JLabel("Day");
+		JLabel monthLabel = new JLabel("Month");
 
 		// create fields
 		preparedByField = new JTextField(15);
 		approvedByField = new JTextField(15);
+
+		toReview = new JCheckBox("Send BOLO to Items to Review?");
 
 		//add labels & text fields to  panel
 		adminPanel.add(preparedByLabel, "align");
 		adminPanel.add(preparedByField, "align, wrap");
 		adminPanel.add(approvedByLabel, "align");
 		adminPanel.add(approvedByField, "align, wrap");
-		preparedDate = SwingHelper.addDateSpinner(adminPanel, "Date BOLO prepared");
-		preparedTime = SwingHelper.addTimeSpinner(adminPanel, "Time BOLO prepared");
+		//		preparedDate = SwingHelper.addDateSpinner(adminPanel, "Date BOLO prepared");
+		//		preparedTime = SwingHelper.addTimeSpinner(adminPanel, "Time BOLO prepared");
+		adminPanel.add(dayLabel,"align");
+		adminPanel.add(incidentDay, "align, wrap");
+		adminPanel.add(monthLabel,"align");
+		adminPanel.add(incidentMonth, "align, wrap");
+		//adminPanel.add(incidentYear, "align");
+		adminPanel.add(toReview);
+
+
 
 
 		return adminPanel;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * 
 	 */
@@ -321,11 +352,19 @@ private static final long serialVersionUID = 1L;
 			}
 		});
 
-
-
 		JButton addVideoButton = SwingHelper.createImageButton("Add a Video", 
 				"icons/videoCamera.png");
 		addVideoButton.setToolTipText("Attach a video to this BOLO");
+		addVideoButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				loadVideo();
+				
+			}
+		});
+
+
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(addPhotoButton);
 		buttonsPanel.add(addVideoButton);
@@ -334,6 +373,19 @@ private static final long serialVersionUID = 1L;
 
 		return photoVideoPanel;
 	}
+//-----------------------------------------------------------------------------
+	private void loadVideo() {
+		// show choose photo dialog
+			final JFileChooser fc = new JFileChooser();
+			int returnVal = fc.showOpenDialog(parent);
+
+			// if a photo was selected, add it to BOLO and load into photo area
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				// copy the chosen photo into the program's 'Photos' directory
+				File file = fc.getSelectedFile();
+				bolo.setVideoFilePath(Paths.get(file.getAbsolutePath()));
+			}	
+	}	
 //-----------------------------------------------------------------------------
 	/**
 	 * 
@@ -353,6 +405,7 @@ private static final long serialVersionUID = 1L;
 			}
 		});
 
+<<<<<<< .merge_file_kXFKHK
 	    //Save button
 	    JButton saveButton = SwingHelper.createImageButton("Save", 
 	    		"icons/save_48.png");
@@ -395,35 +448,80 @@ private static final long serialVersionUID = 1L;
 	    buttonsPanel.add(saveAndCancelButtonsPanel, "shrinky");
 	    buttonsPanel.add(previewButtonPanel, "growx, shrinky");
 	    return buttonsPanel;
+=======
+		//Save button
+		JButton saveButton = SwingHelper.createImageButton("Save", 
+				"icons/save_48.png");
+		saveButton.setToolTipText("Save BOLO");
+		saveButton.addActionListener(new ActionListener( ) {
+			public void actionPerformed(ActionEvent e) {
+				saveAndClose();
+			}
+		});
+
+		//Preview button
+		JButton previewButton = new JButton("Preview");
+		previewButton.setToolTipText("Preview and print final BOLO document");
+		previewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//setVisible(false);
+				putInfoIntoBoloObject();
+				BOLOpreview preview = new BOLOpreview(rm, bolotab, bolo);
+				preview.setVisible(true);
+				preview.setModal(true);
+				if(preview.isNewBOLOWascreated()){
+					setVisible(false);
+					newBOLOWascreated=true;
+					eraseForm();
+				} else{
+					newBOLOWascreated=false;
+					setVisible(true);
+				}
+			}
+		});
+
+
+		JPanel saveAndCancelButtonsPanel = new JPanel();
+		saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
+		saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
+		JPanel previewButtonPanel = new JPanel(new MigLayout("rtl"));
+		previewButtonPanel.add(previewButton, "tag right");
+		buttonsPanel.add(saveAndCancelButtonsPanel, "shrinky");
+		buttonsPanel.add(previewButtonPanel, "growx, shrinky");
+		return buttonsPanel;
+>>>>>>> .merge_file_XdWcvF
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * Save the information input into this form and close the dialog.
 	 */
 	private void saveAndClose(){
 
 		//place the info from the fields into a BOLO object
-		 putInfoIntoBoloObject();
-		 bolo.createItemToReview();
+		putInfoIntoBoloObject();
+		if (this.toReview.isSelected()) {
+			createItemToReview(bolo);
+		}
 
-		 //add the BOLO object's info to the database
-		 try {
+		//add the BOLO object's info to the database
+		try {
 			bolo.addToDB();
-		 } catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println("error: unable to add BOLO to DB");
 			e.printStackTrace();
-		 }
-//TODO: Create a pdf from the input data
+		}
+		//TODO: Create a pdf from the input data
 
-		 //reset the form
-		 eraseForm();
+		//reset the form
+		eraseForm();
 
-		 newBOLOWascreated=true;
+		newBOLOWascreated=true;
 
-		 this.setVisible(false);
-		 //close the window
-		 this.dispose();	
+		this.setVisible(false);
+		//close the window
+		this.dispose();	
 	}
+<<<<<<< .merge_file_kXFKHK
 //-----------------------------------------------------------------------------
 	 /**
 	  * Places the info from the input fields into the global BOLO object.
@@ -508,17 +606,103 @@ private static final long serialVersionUID = 1L;
 			 ImageIcon photo = ImageHandler.getScaledImageIcon(
 				 bolo.getPhotoFilePath(), 200, 299);
 		 
-			photoArea.removeAll();
-			photoArea.add(new JLabel(photo));
-		 }
-		 dialogPanel.validate();
+=======
+	//-----------------------------------------------------------------------------
+	/**
+	 * Places the info from the input fields into the global BOLO object.
+	 */
+	private void putInfoIntoBoloObject(){
+		String age, race, sex, height, weight, build, eyes, hair;
+		String reference, caseNum, status, weapon;
+		String preparedBy, approvedBy;
+		String otherDescrip, narrative;
+
+		//set the filled in fields in the global BOLO object
+		age = ageField.getText();
+		if(!age.isEmpty()){ bolo.setAge(age); }
+		race = raceField.getText();
+		if(!race.isEmpty()){ bolo.setRace(race); }
+		sex = sexField.getText();
+		if(!sex.isEmpty()){ bolo.setSex(sex); }
+		height = heightField.getText();
+		if(!height.isEmpty()){ bolo.setHeight(height); }
+		weight=weightField.getText();
+		if(!weight.isEmpty()){ bolo.setWeight(weight); }
+		build=buildField.getText();
+		if(!build.isEmpty()){ bolo.setBuild(build); }
+		eyes=eyesField.getText();
+		if(!eyes.isEmpty()){ bolo.setEyes(eyes); }
+		hair=hairField.getText();
+		if(!hair.isEmpty()){ bolo.setHair(hair); }
+		reference=referenceField.getText();
+		if(!reference.isEmpty()){ bolo.setReference(reference); }
+		caseNum=caseNumField.getText();
+		if(!caseNum.isEmpty()){ bolo.setCaseNum(caseNum); }
+		status=(String)statusField.getSelectedItem();
+		if(!status.isEmpty()){ bolo.setStatus(status); }
+		weapon=ifYesField.getText();
+		if(!weapon.isEmpty()){ bolo.setWeapon(weapon); }
+		preparedBy= preparedByField.getText();
+		if(!preparedBy.isEmpty()){ bolo.setPreparedBy(preparedBy); }
+		approvedBy= approvedByField.getText();
+		if(!approvedBy.isEmpty()){ bolo.setApprovedBy(approvedBy); }
+		otherDescrip= otherDescriptField.getText();
+		if(!otherDescrip.isEmpty()){ bolo.setOtherDescrip(otherDescrip); }
+		narrative=narrativeText.getText();
+		if(!narrative.isEmpty()){ bolo.setNarrative(narrative); }
+
+
+		//set the times
+		//bolo.setprepDate(getPrepDateEpoch());
+		//bolo.setincidentDate(getIncidentDateEpoch());
 
 	}
-//-----------------------------------------------------------------------------
-	 /**
-	  * 
-	  */
-	 private void chooseAndAddPhoto(final JPanel photoPanel){
+
+	//-----------------------------------------------------------------------------
+	/**
+	 * Places the info from the input fields into the global BOLO object.
+	 */
+	private void loadFromExistingBOLO(){
+		//set the filled in fields in the global BOLO object
+		ageField.setText(bolo.getAge());
+
+		raceField.setText(bolo.getRace());		
+		sexField.setText(bolo.getSex());		 
+		heightField.setText(bolo.getHeight());
+		weightField.setText(bolo.getWeight());
+		buildField.setText(bolo.getBuild());
+		eyesField.setText(bolo.getEyes());
+		hairField.setText(bolo.getHair());
+		referenceField.setText(bolo.getReference());
+		caseNumField.setText(bolo.getCaseNum());
+		statusField.setSelectedItem(bolo.getStatus());
+		ifYesField.setText(bolo.getWeapon());
+		preparedByField.setText(bolo.getPreparedBy());
+		approvedByField.setText(bolo.getApprovedBy());
+		otherDescriptField.setText(bolo.getOtherDescrip());
+		narrativeText.setText(bolo.getNarrative());
+
+		//TODO: set the times
+
+
+
+		//set picture
+		if(bolo.getPhotoFilePath()!=null){
+			ImageIcon photo = ImageHandler.getScaledImageIcon(
+					bolo.getPhotoFilePath(), 200, 299);
+
+>>>>>>> .merge_file_XdWcvF
+			photoArea.removeAll();
+			photoArea.add(new JLabel(photo));
+		}
+		dialogPanel.validate();
+
+	}
+	//-----------------------------------------------------------------------------
+	/**
+	 * 
+	 */
+	private void chooseAndAddPhoto(final JPanel photoPanel){
 		//show choose photo dialog
 		final JFileChooser fc = new JFileChooser();
 		fc.addChoosableFileFilter(FileHelper.getImageFilter());
@@ -531,12 +715,12 @@ private static final long serialVersionUID = 1L;
 			//copy the chosen photo into the program's 'Photos' directory
 			final File file = fc.getSelectedFile();
 
-//DEBUG System.out.printf("filepath = %s\n", file.getPath());
+			//DEBUG System.out.printf("filepath = %s\n", file.getPath());
 
 			ImageIcon chosenPhoto = new ImageIcon(file.getPath());
 
 			final ResizablePhotoDialog resizeDialog = new ResizablePhotoDialog(
-						chosenPhoto, this, file.getName());
+					chosenPhoto, this, file.getName());
 
 			//if the user pressed the set photo button
 			if(resizeDialog.getNewPhotoFilePath()!=null){
@@ -550,23 +734,23 @@ private static final long serialVersionUID = 1L;
 
 		}
 
-	 }
-//-----------------------------------------------------------------------------
+	}
+	//-----------------------------------------------------------------------------
 	/**
 	 * Erase any fields in the form that have been filled in and close the
 	 * dialog.
 	 */
-	 private void closeAndCancel() {
+	private void closeAndCancel() {
 		//reset the form
 		eraseForm();
 
 		//delete the photo(if any)
 		if(bolo.getPhotoFilePath()!=null){
 
-//DEBUG
+			//DEBUG
 			System.out.printf("\nBOLOform: closeAndCancel(): deleting " +
 					"bolo.getPhotoFilePath().toString() " +
-							"= %s\n", bolo.getPhotoFilePath().toString());
+					"= %s\n", bolo.getPhotoFilePath().toString());
 
 			File f=new File(bolo.getPhotoFilePath().toString());
 			if(f.exists() && f.isFile()){
@@ -578,12 +762,12 @@ private static final long serialVersionUID = 1L;
 		newBOLOWascreated=false;
 		//close the dialog
 		this.dispose();	
-	 }
-//-----------------------------------------------------------------------------
-	 /**
-	  * Erases <code>BOLOfrom</code>
-	  */
-	 private void eraseForm(){
+	}
+	//-----------------------------------------------------------------------------
+	/**
+	 * Erases <code>BOLOfrom</code>
+	 */
+	private void eraseForm(){
 		//set the text of all the form's fields to null
 		ageField.setText(null);
 		raceField.setText(null);
@@ -608,6 +792,7 @@ private static final long serialVersionUID = 1L;
 		JLabel noPhotoLabel = new JLabel(noPhotoImage);
 		photoArea.add(noPhotoLabel);
 		(photoArea.getParent()).validate();
+<<<<<<< .merge_file_kXFKHK
 	 }
 //-----------------------------------------------------------------------------
 	 /**
@@ -677,4 +862,107 @@ private static final long serialVersionUID = 1L;
 		  return this.newBOLOWascreated;
 	  }
 //-----------------------------------------------------------------------------
+=======
+	}
+	//-----------------------------------------------------------------------------
+	/**
+	 *  
+	 * @return preparedCal.getTimeInMillis()/1000
+	 */
+	//	public long getPrepDateEpoch(){
+	//		Date day = new Date();
+	//		Date time = new Date();
+	//
+	//		Calendar preparedCal = Calendar.getInstance();
+	//		Calendar timeCal = Calendar.getInstance();
+	//
+	//		day = ((SpinnerDateModel) preparedDate.getModel()).getDate();
+	//		time = ((SpinnerDateModel) preparedTime.getModel()).getDate();
+	//		timeCal.setTime(time);
+	//
+	//		preparedCal.setTime(day);
+	//		preparedCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
+	//		preparedCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
+	//		preparedCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
+	//
+	//		return (preparedCal.getTimeInMillis()/1000);
+	//	}
+	//-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @return incidentCal.getTimeInMillis()/1000
+	 */
+	//	public long getIncidentDateEpoch(){
+	//		Date day = new Date();
+	//		Date time = new Date();
+	//
+	//		Calendar incidentCal = Calendar.getInstance();
+	//		Calendar timeCal = Calendar.getInstance();
+	//
+	//		day = ((SpinnerDateModel) preparedDate.getModel()).getDate();
+	//		time = ((SpinnerDateModel) preparedTime.getModel()).getDate();
+	//		timeCal.setTime(time);
+	//
+	//		incidentCal.setTime(day);
+	//		incidentCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
+	//		incidentCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
+	//		incidentCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
+	//
+	//		return (incidentCal.getTimeInMillis()/1000); 
+	//	}
+	//-----------------------------------------------------------------------------	
+	/**
+	 * JDOC
+	 * @return this.newBOLOWascreated
+	 */
+	public boolean isNewBOLOWascreated(){
+		return this.newBOLOWascreated;
+	}
+	//-----------------------------------------------------------------------------
+	public void createItemToReview(Bolo bolo) {
+
+		this.bolo = bolo;
+		StringBuilder title = new StringBuilder();
+
+		title.append("BOLO #");
+		title.append(bolo.getCaseNum());
+
+
+		String stringTitle = title.toString();
+		ItemToReview newItem = new ItemToReview(stringTitle,"");
+		rm.addItem(newItem);
+	}
+
+
+
+	//-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @return incidentCal.getTimeInMillis()/1000
+	 */
+	public long getIncidentDateEpoch(){
+		Date day = new Date();
+		Date time = new Date();
+
+		Calendar incidentCal = Calendar.getInstance();
+		Calendar timeCal = Calendar.getInstance();
+
+		//day = ((SpinnerDateModel) preparedDate.getModel()).getDate();
+		//time = ((SpinnerDateModel) preparedTime.getModel()).getDate();
+		timeCal.setTime(time);
+
+		incidentCal.setTime(day);
+		incidentCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
+		incidentCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
+		incidentCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
+
+		SimpleDateFormat df = new SimpleDateFormat();
+		df.applyPattern("dd/MM/yyyy hh:mm a");
+		System.out.println(df.format(incidentCal.getTime()));
+
+		return (incidentCal.getTimeInMillis()/1000); 
+	}
+	//-----------------------------------------------------------------------------	
+
+>>>>>>> .merge_file_XdWcvF
 }

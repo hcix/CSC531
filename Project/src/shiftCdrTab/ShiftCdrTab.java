@@ -432,13 +432,21 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		ArrayList<String> names;
 		ArrayList<RollCall> rollCallList;
 		// get the next roll call
-		if (shiftTime == 10 || shiftTime == 22)
+		if (shiftTime == 10 || shiftTime == 22) {
 			shiftTime -= 4;
-		else if (shiftTime == 18)
+			//currentShiftDate.set(Calendar.HOUR_OF_DAY, shiftTime);
+			currentShiftDate.add(Calendar.HOUR_OF_DAY, -4);
+		}
+		else if (shiftTime == 18) {
 			shiftTime = 10;
+			//currentShiftDate.set(Calendar.HOUR_OF_DAY, shiftTime);
+			currentShiftDate.add(Calendar.HOUR_OF_DAY, -8);
+		}
 		else if (shiftTime == 6) {
 			shiftTime = 22;
-			currentShiftDate.add(Calendar.DAY_OF_MONTH, -1);
+			//currentShiftDate.set(Calendar.HOUR_OF_DAY, shiftTime);
+			currentShiftDate.add(Calendar.HOUR_OF_DAY, -8);
+			//currentShiftDate.add(Calendar.DAY_OF_MONTH, -1);
 		} else {
 			System.out
 					.println("couldn't increment shiftTime:line 226 ShiftCdrTab");
@@ -495,23 +503,27 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		ArrayList<RollCall> rollCallList;
 		
 		//currentShiftDate.set(Calendar.HOUR, shiftTime);
-		//System.out.println("ShiftTime at start of next Roll call is : " + shiftTime);
+		System.out.println("ShiftTime at start of next Roll call is : " + shiftTime);
+		System.out.println("currentShiftTime at start of next Roll call is : " + currentShiftDate.getTime().toString());
 		// get the next roll call
 		if (shiftTime == 6 || shiftTime == 18) {
 			// nextShift = shiftTime + 4;
 			shiftTime += 4;
-			//currentShiftDate.add(Calendar.HOUR, 4);
+			//currentShiftDate.set(Calendar.HOUR_OF_DAY, shiftTime);
+			currentShiftDate.add(Calendar.HOUR_OF_DAY, 4);
 		}
 		else if (shiftTime == 10) {
 			// nextShift = 18;
 			shiftTime = 18;
-			//currentShiftDate.add(Calendar.HOUR, 8);
+			//currentShiftDate.set(Calendar.HOUR_OF_DAY, shiftTime);
+			currentShiftDate.add(Calendar.HOUR_OF_DAY, 8);
 		}
 		else if (shiftTime == 22) {
 			// nextShift = 6;
 			shiftTime = 6;
-			//currentShiftDate.add(Calendar.HOUR, 8);
-			currentShiftDate.add(Calendar.DAY_OF_MONTH, 1);
+			//currentShiftDate.set(Calendar.HOUR_OF_DAY, shiftTime);
+			currentShiftDate.add(Calendar.HOUR_OF_DAY, 8);
+			//currentShiftDate.add(Calendar.DAY_OF_MONTH, 1);
 		} else {
 			System.out
 					.println("couldn't increment shiftTime:line 226 ShiftCdrTab");
@@ -541,8 +553,8 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 
 		if (moveOn) {
 			try {
-				//System.out.println("current shift date is : " + currentShiftDate.getTime().toString());
-				//System.out.println("actual date is : " + Calendar.getInstance().getTime().toString());
+				System.out.println("current shift date is : " + currentShiftDate.getTime().toString());
+				System.out.println("actual date is : " + Calendar.getInstance().getTime().toString());
 				if (currentShiftDate.getTime().compareTo(
 						Calendar.getInstance().getTime()) > 0) {
 					names = rm.getRollCall(shiftTime, currentShiftDate);

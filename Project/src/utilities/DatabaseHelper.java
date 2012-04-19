@@ -186,12 +186,19 @@ public class DatabaseHelper {
 	        	System.out.printf("\nphoto path is null\n");
 	        }
 	        try {
-				photoFileNames = (ArrayList<String>)( BlueBookEntry.
-						getObjectFromBlob(allEntries.getBytes("photofilenames")));
-				for (String string : photoFileNames) {
-					System.out.println("String file name is : " + string);
-					entry.setPhotoFilePaths(photoFileNames);
-				}
+	        	byte[] bytes = allEntries.getBytes("photofilename");
+	        	if (bytes != null && bytes.length == 0) {
+	        		//get the list from the byte object
+				    photoFileNames = (ArrayList<String>)( BlueBookEntry.
+					    	getObjectFromBytes(bytes));
+				    
+				    //DEBUG
+				    for (String string : photoFileNames) {
+					    System.out.println("String file name is : " + string);					    
+				    }
+				    //add the photo file path to the entry
+				    entry.setPhotoFilePaths(photoFileNames);
+	        	}
 			} catch (Exception e) {
 				System.out.println("Couldn't get from byte array to object");
 				e.printStackTrace();
@@ -262,8 +269,9 @@ public class DatabaseHelper {
 		Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
 		
 		Statement stat = conn.createStatement();
-        String query = "DELETE * FROM RollCall WHERE shiftdate = " + "'" + shiftDate + "'" + ";";
-	    ResultSet allEntries = stat.executeQuery(query);
+        String query = "DELETE FROM RollCall WHERE shiftdate = " + "'" + shiftDate + "'" + ";";
+        System.out.println("Query in replace :" + query); //DEBUG
+	    stat.executeUpdate(query);
 		
 		personStatement = conn.prepareStatement(
 			    "INSERT into RollCall(roll_call_ID, name, present, comment, timearrived, shiftdate) " +
@@ -286,7 +294,6 @@ public class DatabaseHelper {
 	    personStatement.executeBatch();
 	    conn.setAutoCommit(true);
 	//Close the connection
-	allEntries.close();
 	conn.close();
 	}
 //-----------------------------------------------------------------------------

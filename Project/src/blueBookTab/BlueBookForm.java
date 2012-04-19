@@ -7,8 +7,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+<<<<<<< .merge_file_RGyGp4
+=======
+import java.nio.file.Path;
+import java.nio.file.Paths;
+>>>>>>> .merge_file_studLR
 import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -300,10 +304,38 @@ public class BlueBookForm extends JDialog {
 				chooseAndAddPhoto(photoPanel);
 			}
 		});
+		
+		JButton addVideoButton = SwingHelper.createImageButton("Add a Video", 
+				"icons/videoCamera.png");
+		addVideoButton.setToolTipText("Attach a video to this BOLO");
+		addVideoButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				loadVideo();
+				
+			}
+		});
+		
 		photoOuterPanel.add(addPhotoButton);
+		photoOuterPanel.add(addVideoButton);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.add(photoOuterPanel);
 		return photoOuterPanel;
+	}
+	 
+//-----------------------------------------------------------------------------
+	private void loadVideo() {
+	    // show choose photo dialog
+		final JFileChooser fc = new JFileChooser();
+		int returnVal = fc.showOpenDialog(this);
+
+		// if a photo was selected, add it to BOLO and load into photo area
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			// copy the chosen photo into the program's 'Photos' directory
+			File file = fc.getSelectedFile();
+			bbEntry.setVideoFilePath(Paths.get(file.getAbsolutePath()));
+		}		
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -336,7 +368,7 @@ public class BlueBookForm extends JDialog {
 	 private void putInfoIntoBlueBookEntry(){
 		 String caseNumText, nameText, affiliText, addressText, weapon;
 		 String locationText, descritionText, reasonText;
-		 //String preparedBy;
+		 String preparedBy;
 		 
 		 //get the filled in fields in the global bbEntry object
 		 caseNumText = caseNumField.getText();
