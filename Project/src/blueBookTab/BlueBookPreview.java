@@ -76,6 +76,7 @@ System.out.println("BlueBookPreview: constructor ");
 
 			//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
 			this.addWindowListener(new WindowAdapter( ) {
+				@Override
 				public void windowClosing(WindowEvent e) {
 					closeAndCancel();
 				}
@@ -135,6 +136,7 @@ System.out.println("BlueBookPreview: constructor ");
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_32.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				closeAndCancel();
 			}
@@ -144,7 +146,8 @@ System.out.println("BlueBookPreview: constructor ");
 	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_32.png");
 	    saveButton.setToolTipText("Save BlueBookEntry");
 	    saveButton.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		saveAndClose();
 	    	}
 	    });
@@ -161,7 +164,8 @@ System.out.println("BlueBookPreview: constructor ");
 	    		"icons/edit_32.png");
 	    editButton.setToolTipText("Edit this BlueBookEntry");
 	    editButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		//BlueBookEntry form dialog
 				BlueBookForm formDialog = new BlueBookForm(parent, bbTab, bbEntry);
 				setVisible(false);
@@ -175,13 +179,13 @@ System.out.println("BlueBookPreview: constructor ");
 	    printButton.setToolTipText("Print this BlueBookEntry document");
 	    printButton.setActionCommand(PRINT_ACTION);
 	    printButton.addActionListener(this);
-	    
-	    
+	
 	    //Email button
 	    JButton emailButton = SwingHelper.createImageButton("Email", "icons/email32.png");
 	    emailButton.setToolTipText("Email this BlueBookEntry document");
 	    emailButton.setActionCommand(EMAIL_ACTION);
 	    emailButton.addActionListener(this);
+
 	    /*
 	    JPanel saveAndCancelButtonsPanel = new JPanel();
 	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
@@ -233,6 +237,7 @@ System.out.println("BlueBookPreview: constructor ");
 		 this.dispose();	
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public void actionPerformed(ActionEvent ev) {
 		if(ev.getActionCommand().equals(DELETE_ACTION)){
 			//attempt to delete the currently displayed BlueBookEntry & close this dialog

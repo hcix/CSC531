@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.sql.rowset.serial.SerialBlob;
 import javax.swing.ImageIcon;
 import utilities.FileHelper;
 import utilities.pdf.PDFHelper;
@@ -400,8 +401,8 @@ public ArrayList<String> getPhotoFilePaths() {
 	    	videoPathName = absVideoFilePath.toString();
 	    } 
 	    prep.setString(13, videoPathName);
+	    //prep.setBlob(15, getBlob(photoFilePaths));
 	    prep.setBytes(15, getBytes(photoFilePaths));
-
 	    prep.addBatch();
 
 	    //Create new row in the table for the data
@@ -419,21 +420,35 @@ public ArrayList<String> getPhotoFilePaths() {
     		ByteArrayOutputStream bos = new ByteArrayOutputStream();
     		ObjectOutput out = new ObjectOutputStream(bos);   
     		out.writeObject(p_photoFilePaths);
-    		
+    		bytes = bos.toByteArray();
+    		//close
     		out.close();
     		out.flush();
     		bos.close();
-    		bytes = bos.toByteArray();
+    		
     		
 		return bytes;
 	}
-
+ //-----------------------------------------------------------------------------
+    private SerialBlob getBlob(ArrayList<String> p_photoFilePaths) throws IOException, SQLException {
+	    SerialBlob blob = null;
+	
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutput out = new ObjectOutputStream(bos);   
+		out.writeObject(p_photoFilePaths);
+		blob = new SerialBlob(bos.toByteArray());
+		//close
+		out.close();
+		out.flush();
+		bos.close();
+		
+		
+	return blob;
+}
 //-----------------------------------------------------------------------------
     public static Object getObjectFromBytes(byte[] bytes) throws SQLException, IOException, ClassNotFoundException {
     	Object o = null;
-    	//blob.getBytes(1, );
     	ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-    	//ByteArrayInputStream bis = (ByteArrayInputStream) blob.getBinaryStream();
     	ObjectInput in = new ObjectInputStream(bis);
     	o = in.readObject(); 
     	

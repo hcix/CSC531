@@ -23,6 +23,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import program.CurrentUser;
+import utilities.DatabaseHelper;
 import utilities.FileHelper;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
@@ -132,6 +133,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 		return buttonsPanel;
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public void actionPerformed(ActionEvent ev) {
 		
 		if(ev.getActionCommand()==LOGIN){
@@ -196,7 +198,6 @@ public class LoginDialog extends JDialog implements ActionListener {
 			  
 			//Set the current user to be the employee that just logged in 
 			CurrentUser.setCurrentUser(user);
-			  
 			//Authenticate the caneID and password info via UM's web portal
 /* *****************************************************************************
 * TODO (BEN) Code to check user name and password against UM's web portal 
@@ -225,7 +226,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			
+			// SET CURRENT USER SET TIME
 			return NO_ERROR;
 		}
 //-----------------------------------------------------------------------------

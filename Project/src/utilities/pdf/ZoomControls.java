@@ -39,6 +39,7 @@ private static final long serialVersionUID = 1L;
 	    zoomIn.setToolTipText("Zoom In"); 
 	    zoomIn.setBorderPainted(false);
 	    zoomIn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 	    		zoomIdx++;
 				if(zoomIdx>8){ zoomIdx=8; }
@@ -57,6 +58,7 @@ private static final long serialVersionUID = 1L;
 		zoomOut.setToolTipText("Zoom Out"); 
 		zoomOut.setBorderPainted(false);
 		zoomOut.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 	    		zoomIdx--;
 	    		if(zoomIdx<0){ zoomIdx=0; }

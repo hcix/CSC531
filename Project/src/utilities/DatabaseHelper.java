@@ -1,5 +1,7 @@
 package utilities;
 
+import homeTab.Change;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -10,6 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+
+import program.CurrentUser;
 import shiftCdrTab.RollCall;
 import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
@@ -35,6 +39,8 @@ public class DatabaseHelper {
 	 * @return boloList - an <code>Arraylist</code> of <code>Bolo</code> objects
 	 * @throws Exception
 	 */
+	
+	
 	public static ArrayList<Bolo> getBOLOsFromDB() throws Exception{
 		ArrayList<Bolo> boloList = new ArrayList<Bolo>();
 		String age, race, sex, height, weight, build, eyes, hair;
@@ -134,6 +140,7 @@ public class DatabaseHelper {
 	 * @return bluebook - an <code>Arraylist</code> of <code>BlueBookEntry</code> objects
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	public static ArrayList<BlueBookEntry> getBluebookFromDB() throws Exception{
 		ArrayList<BlueBookEntry> bluebook = new ArrayList<BlueBookEntry>();
 		ArrayList<String> photoFileNames = new ArrayList<String>();
@@ -422,4 +429,67 @@ public class DatabaseHelper {
 		return date;
 	}
 //-----------------------------------------------------------------------------
+	public static ArrayList<Change> HomeTabPullFromDB() throws Exception
+	{ // this method gets the 
+		
+		final long MILI_IN_WEEK = 604800000;
+		ArrayList<Change> changeList = new ArrayList<Change>();
+		
+		//Create the connection to the database
+    	Class.forName("org.sqlite.JDBC");
+    			
+    	//test to make database file access syst indep, changed added Project
+    	//Path dbFilePath = Paths.get("Project", "Database", "umpd.db");
+    	Path dbFilePath = Paths.get("Database", "umpd.db");
+
+    	String dbFileName = dbFilePath.toString();
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
+    	
+        Statement stat = conn.createStatement();
+        
+        Date now = new Date();
+        String query = "SELECT * from Change WHERE time > " + (now.getTime() - 7*MILI_IN_WEEK) + ";";
+        
+        ResultSet results = stat.executeQuery(query);
+        		
+        while(results.next())
+        {
+        	// add a new Change to the change list
+        	Change c = new Change((results.getString("user")), (results.getLong("time") + 14400000), (results.getString("type")) );
+        	changeList.add(c);
+        }
+        results.close();
+        conn.close();
+        
+		return changeList;
+	}
+	public static void postChangeToDB(Change c) throws Exception // add Change to database table
+	{	
+		//Create the connection to the database
+    	Class.forName("org.sqlite.JDBC");
+    			
+    	//test to make database file access syst indep, changed added Project
+    	//Path dbFilePath = Paths.get("Project", "Database", "umpd.db");
+    	Path dbFilePath = Paths.get("Database", "umpd.db");
+
+    	String dbFileName = dbFilePath.toString();
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
+        
+        Statement stat = conn.createStatement();
+        // insert into Change table the values 'change user', 'change time', 'change type'
+        String query = "INSERT into Change Values(?,?,?)";
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setString(1, c.getUser());
+        ps.setLong(2, c.getDate());
+        ps.setString(3, c.getType());
+        
+        ps.addBatch();
+
+        //Create new row in the table for the data
+	    conn.setAutoCommit(false);
+	    ps.executeBatch();
+	    conn.setAutoCommit(true);
+        
+        conn.close();
+	}
 }

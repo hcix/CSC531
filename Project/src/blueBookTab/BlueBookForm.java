@@ -1,6 +1,5 @@
 package blueBookTab;
 
-import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -246,7 +245,8 @@ public class BlueBookForm extends JDialog {
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		closeAndCancel();
 	    	}
 	    });
@@ -255,7 +255,8 @@ public class BlueBookForm extends JDialog {
 	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
 	    saveButton.setToolTipText("Save bbEntry");
 	    saveButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		saveAndClose();
 	    	}
 	    });
@@ -291,10 +292,12 @@ public class BlueBookForm extends JDialog {
 		noPhotoLabel = new JLabel(noPhotoImage);
 		photoPanel.add(noPhotoLabel, "span, wrap");
 		photoOuterPanel.add(photoPanel, "spanx,grow,wrap");
+		photoOuterPanel.setSize(800, 300); //testing
 		
 		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", "icons/camera.png");
 		addPhotoButton.setToolTipText("Attach a photo to this bbEntry");
 		addPhotoButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				chooseAndAddPhoto(photoPanel);
 			}
@@ -443,7 +446,8 @@ public class BlueBookForm extends JDialog {
 					photoArea.remove(noPhotoLabel);
 					JPanel newPanel = new JPanel();
 					newPanel.add(new JLabel(resizeDialog.getResizedImgIcon()), "span, wrap");
-					photoOuterPanel.add(newPanel);
+					newPanel.setVisible(true);
+					photoArea.add(newPanel);
 					//photoArea.add(new JLabel(resizeDialog.getResizedImgIcon()));
 				    (photoArea.getParent()).validate();
 				}

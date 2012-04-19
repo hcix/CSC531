@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +21,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -40,7 +41,6 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import blueBookTab.BlueBookEntry;
 import net.miginfocom.swing.MigLayout;
 import progAdmin.itemsToReview.ItemsSidePanel;
 import program.ResourceManager;
@@ -98,7 +98,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		tabbedPane.addTab("Shift Commander Summary Reports", summaryReportsTab);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 
-		currentShiftDate = GregorianCalendar.getInstance();
+		currentShiftDate = Calendar.getInstance();
 		tablePanel = makeTablePanel(rm.getRollCall());
 
 		// start test
@@ -170,7 +170,8 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		    // Search dialog
 		    JDialog searchDialog = createSearchDialog(parent);
 
-		    public void actionPerformed(ActionEvent e) {
+		    @Override
+			public void actionPerformed(ActionEvent e) {
 			    searchDialog.setVisible(true);
 		    }
 		});
@@ -187,8 +188,9 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		date = Calendar.getInstance().getTime();
 		format = new SimpleDateFormat("EEEE, MMMM dd, YYYY ");
 		shiftLabel = new JLabel("Shift for " + format.format(date) + " at "
-				+ rm.shiftTimeAsString(shiftTime) + ":00");
 
+				+ rm.shiftTimeAsString(shiftTime) + ":00");
+        shiftLabel.setFont(new Font("Serif", Font.BOLD, 32));
 		// change the font at some point shiftLabel.setFont();
 
 		// place panes in roll call tab
@@ -209,7 +211,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		SimpleDateFormat format = new SimpleDateFormat("EEEE, MMMM dd, YYYY ");
 		shiftLabel.setText("Shift for "
 				+ format.format(currentShiftDate.getTime()) + " at "
-				+ rm.shiftTimeAsString(shiftTime) + ":00");
+				+ ResourceManager.shiftTimeAsString(shiftTime) + ":00");
 		// change the font at some point shiftLabel.setFont();
 	}
 
@@ -221,9 +223,9 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		table = new JTable();
 		table.setShowGrid(true);
 		table.setGridColor(Color.black);
-		table.setPreferredScrollableViewportSize(new Dimension(700, 150));
+		table.setPreferredScrollableViewportSize(new Dimension(1600, 500));
 		table.setFillsViewportHeight(true);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		//table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		// Put the table in a scroll pane
 		JScrollPane tableScrollPane = new JScrollPane();
@@ -235,7 +237,12 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		 * Set the table model to be the one custom created for this table and
 		 * passing in the list of names for the shift
 		 */
+		Font font = new Font("Serif", Font.PLAIN, 20);
+		FontMetrics fm = new FontMetrics(font) {
+		};
 		table.setModel(new RollCallTableModel(names));
+		table.setFont(font);
+		table.setRowHeight(fm.getHeight() * 2);
 
 		// Resize the columns
 		TableColumn col;
@@ -255,6 +262,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	}
 
 	// -----------------------------------------------------------------------------
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == ADD) {
 			((RollCallTableModel) table.getModel()).addRow();
@@ -300,6 +308,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 						"icons/search.png");
 				searchButton.addActionListener(new ActionListener() {
 
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						search();
 						searchDialog.dispose();
@@ -366,15 +375,22 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
 		
 		JPanel tablePanel = new JPanel();
-
+		
 		// Create initially empty table
 		JTable popupTable = new JTable();
 		popupTable.setShowGrid(true);
 		popupTable.setGridColor(Color.black);
 		popupTable.setPreferredScrollableViewportSize(new Dimension(700, 150));
 		popupTable.setFillsViewportHeight(true);
-		popupTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		//popupTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
+		//mess with fonts
+		Font font = new Font("Serif", Font.PLAIN, 20);
+		FontMetrics fm = new FontMetrics(font) {
+		};
+		popupTable.setFont(font);
+		popupTable.setRowHeight(fm.getHeight() * 2);
+		
 		// Put the table in a scroll pane
 		JScrollPane tableScrollPane = new JScrollPane();
 		tableScrollPane.setViewportView(popupTable);
@@ -418,7 +434,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 			col.setWidth(sizes[i]);
 		}
 
-		entriesPanel.add(popupTable);
+		entriesPanel.add(tableScrollPane);
 
 		return entriesPanel;
 	}
@@ -719,6 +735,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 				"Save and Close", "icons/save_48.png");
 		finishedButton.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				popup.dispose();
 			}
@@ -834,21 +851,25 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		}
 
 		// -----------------------------------------------------------------------------
+		@Override
 		public int getColumnCount() {
 			return columnNames.length;
 		}
 
 		// -----------------------------------------------------------------------------
+		@Override
 		public int getRowCount() {
 			return data.length;
 		}
 
 		// -----------------------------------------------------------------------------
+		@Override
 		public String getColumnName(int col) {
 			return columnNames[col];
 		}
 
 		// -----------------------------------------------------------------------------
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data[row][col];
 		}
@@ -937,6 +958,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		}
 
 		// -----------------------------------------------------------------------------
+		@Override
 		public void tableChanged(TableModelEvent e) {
 			/*
 			 * int row = e.getFirstRow(); int column = e.getColumn(); TableModel

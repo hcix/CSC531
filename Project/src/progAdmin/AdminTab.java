@@ -3,6 +3,8 @@
  */
 package progAdmin;
 
+import homeTab.HomeTab;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -14,7 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import progAdmin.itemsToReview.ManageItemsDialog;
 import program.ResourceManager;
-import userinterface.HomeTab;
 import userinterface.MainInterfaceWindow;
 import utilities.FileHelper;
 import utilities.ui.SwingHelper;
@@ -61,6 +62,7 @@ public class AdminTab extends JPanel implements ActionListener {
 		editUsrAcctsButton.addActionListener(new ActionListener() {
 			//Create dialog to edit user accounts
 			EditUsrAccountsDialog usrAcctsDialog = new EditUsrAccountsDialog(parent);
+			@Override
 			public void actionPerformed(ActionEvent e){
 				usrAcctsDialog.setVisible(true);	
 			}
@@ -68,6 +70,7 @@ public class AdminTab extends JPanel implements ActionListener {
 		
 		JButton manageItemsButton = SwingHelper.createImageButton("icons/notepad_48.png");
 		manageItemsButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e){
 				manageItemsDialog.setVisible(true);	
 				manageItemsDialog.setModal(true);
@@ -77,6 +80,7 @@ public class AdminTab extends JPanel implements ActionListener {
 
 		JButton uploadVideoButton = SwingHelper.createImageButton("icons/videoCamera.png");
 		uploadVideoButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e){
 				chooseAndAddVideo();
 			}
@@ -85,6 +89,7 @@ public class AdminTab extends JPanel implements ActionListener {
 		JButton editSystemButton = SwingHelper
 				.createImageButton("icons/gear_48.png");
 		editSystemButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e){
 				//TODO edit syst setting dialog	
 			}
@@ -122,7 +127,8 @@ public class AdminTab extends JPanel implements ActionListener {
 			//		videoPath.toString());
 			rm.setLastestVideoName(videoPath.toString());
 			//set visability true
-            HomeTab.setVideoVisability(true);
+			HomeTab ht = new HomeTab(parent, false);
+            ht.setVideoVisability(true);
 			
 			// put this after chooser has been closed
 			JOptionPane.showMessageDialog(parent, "Video has been loaded "
@@ -137,6 +143,7 @@ public class AdminTab extends JPanel implements ActionListener {
 		manageItemsDialog.refreshItemsTable();
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public void actionPerformed(ActionEvent e) {
 	
 	}

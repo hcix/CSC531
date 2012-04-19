@@ -1,5 +1,6 @@
 package userinterface;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -8,8 +9,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
 import utilities.FileHelper;
@@ -28,29 +31,47 @@ public class HomeTab extends JPanel implements ActionListener {
 	private static final Path ANNOUN_DIR = Paths.get(
 			FileHelper.getProgramDirPathName(), "Videos", "Announcements");
 	LinkedList<Object> llo = new LinkedList<Object>();
+	
+	JTabbedPane homeTabs;
+	JPanel homePanel, recentItemsPanel, messagesPanel;
+	Dimension tabSize;
+	JFrame parent;
 
-	public HomeTab(boolean load) {
-		JPanel homePanel = new JPanel();
+	public HomeTab(final JFrame parent, boolean load) 
+	{
+		this.parent = parent;
+		tabSize = new Dimension(1200, 1000); //TODO: FIX THIS LATER
+		homePanel = new JPanel();
 
 		// llo = getAssets(); // for getting the data from the DB
-
-		homePanel = makeGUI();
+		
+		homePanel.add(makeGUI()); // add tabbed pane created in make GUI
 
 		this.add(homePanel);
 
 	}
 
-	public JPanel makeGUI() {
+	public JTabbedPane makeGUI() {
 		// JScrollPane scrollPane = new JScrollPane();
-		JPanel panel = new JPanel(new MigLayout("flowy"));
-		// JSeparator jsep = new JSeparator(SwingConstants.HORIZONTAL);
-
-		// JPanel homePanel = new JPanel();
-
+		homeTabs = new JTabbedPane();
+		homeTabs.setPreferredSize(tabSize);
+		recentItemsPanel = new JPanel(new MigLayout());
+		messagesPanel = new JPanel(new MigLayout());
+		
+		recentItemsPanel.setPreferredSize(homeTabs.getSize());
+		messagesPanel.setPreferredSize(homeTabs.getSize());
+		
+		homeTabs.addTab("Recent Activity", recentItemsPanel);
+		homeTabs.addTab("Messages and Video", messagesPanel);
+		
+//		// JSeparator jsep = new JSeparator(SwingConstants.HORIZONTAL);
+//
+//		// JPanel homePanel = new JPanel();
+//
 		JLabel welcomeLabel = new JLabel(
 				"<html><font size=\"8\">Welcome, Officer xyz</font>",
 				SwingConstants.CENTER);
-		panel.add(welcomeLabel);
+		messagesPanel.add(welcomeLabel);
 		// panel.add(jsep);
 
 		JLabel welcomeTextLabel = new JLabel(
@@ -58,7 +79,7 @@ public class HomeTab extends JPanel implements ActionListener {
 						+ "I just wanted to say good work on apprehending that BOLO last week.<br>  Keep it up!</font>",
 				SwingConstants.CENTER);
 		// welcomeText.setPreferredSize(new Dimension(100, 100));
-		panel.add(welcomeTextLabel);
+		messagesPanel.add(welcomeTextLabel);
 		// panel.add(jsep);
 
 		/*
@@ -70,7 +91,7 @@ public class HomeTab extends JPanel implements ActionListener {
 		videoLabel = new JLabel(
 				"<html><br /><br /><font size =\"6\"> Click here to "
 						+ "launch video announcement");
-		panel.add(videoLabel);
+		messagesPanel.add(videoLabel);
 
 		videoButton = SwingHelper.createImageButton("Launch",
 				"icons/launcher_48.png");
@@ -85,12 +106,13 @@ public class HomeTab extends JPanel implements ActionListener {
 			videoLabel.setVisible(false);
 		}
 
-		panel.add(videoButton, "align center");
+		messagesPanel.add(videoButton, "align center");
 
-		return panel;
+		return homeTabs;
 	}
 
 	// -----------------------------------------------------------------------------
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == LAUNCH)
 			launchMostRecentVideo();

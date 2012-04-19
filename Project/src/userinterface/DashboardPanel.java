@@ -32,6 +32,7 @@ public class DashboardPanel extends JPanel implements ActionListener {
 		add(logoutButton, BorderLayout.EAST);
 	}
 //-----------------------------------------------------------------------------	
+	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
 		String command = e.getActionCommand();
