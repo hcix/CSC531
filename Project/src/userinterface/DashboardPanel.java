@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import utilities.ui.ImageHandler;
+import utilities.ui.SwingHelper;
 
 public class DashboardPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -21,10 +22,10 @@ public class DashboardPanel extends JPanel implements ActionListener {
 		
 		add(logo);
 		
-		logoutButton = new JButton("Logout");
+		logoutButton = SwingHelper.createImageButton("Logout", "icons/logout64.png");
 		logoutButton.addActionListener(this);
 		logoutButton.setActionCommand("logout");
-		add(logoutButton, BorderLayout.EAST);
+		add(logoutButton);
 	}
 //-----------------------------------------------------------------------------	
 	public void actionPerformed(ActionEvent e) 
