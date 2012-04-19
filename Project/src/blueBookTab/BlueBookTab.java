@@ -9,15 +9,20 @@ import java.awt.event.ActionListener;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.JProgressBar;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import userinterface.MainInterfaceWindow;
@@ -113,8 +118,15 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	}
 //-----------------------------------------------------------------------------
 	/**
+<<<<<<< HEAD
 	 * Creates a search dialog for the <code>BlueBookTab</code> when the
 	 * <code>searchButton</code> is clicked.
+=======
+	 * Creates a search dialog for the <code>BlueBookTab</code> when the 
+	 * <code>searchButton</code> is clicked.
+	 * Creates a search dialog for the <code>BlueBookTab</code> when the
+	 * <code>searchButton</code> is clicked
+>>>>>>> shit ton of homeTab changes and other stuff
 	 * 
 	 * @param parent - Parent JFrame
 	 * @return 
@@ -410,7 +422,9 @@ System.out.println("bluebook size = " + bluebook.size());
 		entriesScroller.revalidate();
 	}
 //-----------------------------------------------------------------------------
-	public void actionPerformed(ActionEvent ev) {
+
+	public void actionPerformed(ActionEvent ev) {	
+	    
 		//get which entry was click
 		String listId = ev.getActionCommand();
 		int id = Integer.valueOf(listId);
@@ -418,7 +432,7 @@ System.out.println("bluebook size = " + bluebook.size());
 		System.out.println("BlueBookTab: actionPerformed: id = " + id);
 		
 		BlueBookEntry selectedEntry = bluebook.get(id);
-		BlueBookPreview bbPreview = new BlueBookPreview(rm.getGuiParent(), this, selectedEntry);
+		BlueBookPreview bbPreview = new BlueBookPreview(rm, this, selectedEntry);
 		bbPreview.setVisible(true);
 		//BlueBookForm form = new BlueBookForm(parent, this, selectedEntry);
 		//form.setVisible(true);

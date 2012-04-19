@@ -23,7 +23,7 @@ public class Core extends JFrame {
 	public static void main(String[] args) {
 	    //Schedule a job for the event dispatch thread: creating and showing the GUI
 	    SwingUtilities.invokeLater(new Runnable() {
-	        @SuppressWarnings("deprecation")
+			@SuppressWarnings("deprecation")
 			public void run() {
 	        	
 	        	//Use the native systems look and feel
@@ -36,7 +36,7 @@ public class Core extends JFrame {
 	        	//Set up and show the login GUI
 	        	//COMMENT NEXT LINE OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
 	        	//MUST ALSO COMMENT OUT 6 LINES IN MAININTERFACEWINDOW AS INDICATED THERE
-	        	//createAndShowLoginGUI();
+	        	createAndShowLoginGUI();
 	        
 	        	rm = new ResourceManager(frame);
 	        	

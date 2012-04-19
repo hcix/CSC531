@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import userinterface.MainInterfaceWindow;
@@ -73,7 +75,7 @@ private static final long serialVersionUID = 1L;
 		//add a title 
 		String title = "<html><h2><center>Items to Review</center></h2></html>";
 		//String title = "Items to Review";
-		JLabel titleLabel = new JLabel(title, JLabel.CENTER);
+		JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
 		
 		toolbar.add(titleLabel, "growx");
 		

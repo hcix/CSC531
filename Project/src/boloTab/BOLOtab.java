@@ -190,7 +190,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 				"icons/search.png");
 		searchButton.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				search();
 				searchDialog.dispose();
@@ -294,7 +293,7 @@ System.out.println("boloList.size() = " + listSize);
 				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
 			}
 
-			boloPanel.add(new JLabel(armedText, JLabel.CENTER), "alignx center,wrap");
+			boloPanel.add(new JLabel(armedText, SwingConstants.CENTER), "alignx center,wrap");
 
 			boloPanel.add(new JLabel(date), "split 3, aligny top");
 			boloPanel.add(new JLabel("Case#: "+caseNum));
@@ -355,7 +354,7 @@ System.out.println("boloList.size() = " + listSize);
 				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
 			}
 
-			boloPanel.add(new JLabel(armedText, JLabel.CENTER), "alignx center,wrap");
+			boloPanel.add(new JLabel(armedText, SwingConstants.CENTER), "alignx center,wrap");
 
 			boloPanel.add(new JLabel(date), "split 3, aligny top");
 			boloPanel.add(new JLabel("Case#: "+caseNum));

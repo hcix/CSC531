@@ -230,7 +230,7 @@ private static final long serialVersionUID = 1L;
         	
         }
 //-----------------------------------------------------------------------------
-        public int getColumnCount() {
+		public int getColumnCount() {
         	return columnNames.length;
         }
 //-----------------------------------------------------------------------------
@@ -239,6 +239,7 @@ private static final long serialVersionUID = 1L;
         	return rm.getItems().size();
         }
 //-----------------------------------------------------------------------------
+		@Override
 		public String getColumnName(int col) {
             return columnNames[col];
 	    }

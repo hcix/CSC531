@@ -1,6 +1,5 @@
 package blueBookTab;
 
-import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -9,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -185,7 +185,7 @@ public class BlueBookForm extends JDialog {
 
 		/*
 		 * create text areas, embed them in a scroll
-		 * pand and set the line wrap and scroll 
+		 * pane and set the line wrap and scroll 
 		 * properties
 		 */
 		locationField = new JTextArea(5, 20);
@@ -289,7 +289,9 @@ public class BlueBookForm extends JDialog {
 		ImageIcon noPhotoImage = ImageHandler.createImageIcon("images/unknownPerson.jpeg");
 		noPhotoLabel = new JLabel(noPhotoImage);
 		photoPanel.add(noPhotoLabel, "span, wrap");
+		photoPanel.setSize(800, 300);
 		photoOuterPanel.add(photoPanel, "spanx,grow,wrap");
+		photoOuterPanel.setSize(800, 300); //testing
 		
 		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", "icons/camera.png");
 		addPhotoButton.setToolTipText("Attach a photo to this bbEntry");
@@ -298,10 +300,37 @@ public class BlueBookForm extends JDialog {
 				chooseAndAddPhoto(photoPanel);
 			}
 		});
+		
+		JButton addVideoButton = SwingHelper.createImageButton("Add a Video", 
+				"icons/videoCamera.png");
+		addVideoButton.setToolTipText("Attach a video to this BOLO");
+		addVideoButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+				loadVideo();
+				
+			}
+		});
+		
 		photoOuterPanel.add(addPhotoButton);
+		photoOuterPanel.add(addVideoButton);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.add(photoOuterPanel);
 		return photoOuterPanel;
+	}
+	 
+//-----------------------------------------------------------------------------
+	private void loadVideo() {
+	    // show choose photo dialog
+		final JFileChooser fc = new JFileChooser();
+		int returnVal = fc.showOpenDialog(this);
+
+		// if a photo was selected, add it to BOLO and load into photo area
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			// copy the chosen photo into the program's 'Photos' directory
+			File file = fc.getSelectedFile();
+			bbEntry.setVideoFilePath(Paths.get(file.getAbsolutePath()));
+		}		
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -413,8 +442,9 @@ public class BlueBookForm extends JDialog {
 					//remove placeholder
 					photoArea.remove(noPhotoLabel);
 					JPanel newPanel = new JPanel();
-					newPanel.add(new JLabel(resizeDialog.getResizedImgIcon()), "span, wrap");
-					photoOuterPanel.add(newPanel);
+					newPanel.add(new JLabel(resizeDialog.getResizedImgIcon()), "span");
+					newPanel.setVisible(true);
+					photoArea.add(newPanel);
 					//photoArea.add(new JLabel(resizeDialog.getResizedImgIcon()));
 				    (photoArea.getParent()).validate();
 				}

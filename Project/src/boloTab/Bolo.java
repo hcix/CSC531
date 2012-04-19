@@ -5,12 +5,10 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.ImageIcon;
 
 import progAdmin.itemsToReview.ItemToReview;
-import program.ResourceManager;
 import utilities.ui.ImageHandler;
 //-----------------------------------------------------------------------------
 /**
@@ -441,7 +439,7 @@ public ImageIcon getPhoto(){
 		prep.setString(18, this.narrative);
 		if(this.boloID!=null){ prep.setInt(21, this.boloID); }
 		prep.setLong(22, this.incidentTime);
-		prep.setLong(22, this.prepTime);
+		prep.setLong(23, this.prepTime);
 
 		if(photoFilePath!=null){
 			Path absPhotoFilePath = photoFilePath.toAbsolutePath();

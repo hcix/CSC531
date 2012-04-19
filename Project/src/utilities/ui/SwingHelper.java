@@ -6,8 +6,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.BorderFactory;
@@ -27,9 +25,6 @@ import javax.swing.SpinnerModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import net.miginfocom.swing.MigLayout;
 import userinterface.MainInterfaceWindow;
 
@@ -51,7 +46,7 @@ public class SwingHelper {
 	public static final int DEFAULT_TEXT_FIELD_LENGTH = 20;
 	
 	public static final Dimension SEARCH_DIALOG_DIMENSION = new Dimension(500, 250);
-	public static final Dimension LOGIN_DIALOG_DIMENSION = new Dimension(450, 250);
+	public static final Dimension LOGIN_DIALOG_DIMENSION = new Dimension(450, 300);
 //-----------------------------------------------------------------------------
 	/** 
 	 * Creates a <code>JSpinner</code> with the specified label text from the given
@@ -309,29 +304,13 @@ public class SwingHelper {
 	            Calendar.DAY_OF_MONTH);
 	    dateSpinner = SwingHelper.addLabeledSpinner(datePanel, "", toModel);       
 	    dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "MM/dd/yyyy"));
-	    dateSpinner.addChangeListener(new ChangeListener() {
-            DateFormat intFormat = new SimpleDateFormat("M");
-            DateFormat strFormat = new SimpleDateFormat("MMM");
-
-			public void stateChanged(ChangeEvent e) {
-				Date date = ((SpinnerDateModel)e.getSource()).getDate();
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
-                int monthIndex = calendar.get(Calendar.MONTH);
-                System.out.printf("monthIndex: %d  month: %s  %s%n",
-                                   monthIndex, 
-                                   intFormat.format(date),
-                                   strFormat.format(date));
-				
-			}
-        });
 	    
 	    return datePanel;
 	}
 //-----------------------------------------------------------------------------	
 	/** 
 	 * Adds a <code>JSpinner</code> used for selecting the a date to the given
-	 * <code>JComponent</code>. The default range is -10 years from today's 
+	 * <code>JComponent</code>. The default range is -100 years from today's 
 	 * date through today's date. 
 	 * @param c - the <code>JCompoent</code> to add the date spinner to
 	 * @param label - the text label to attach to the date spinner; set to ""
@@ -345,13 +324,12 @@ public class SwingHelper {
 		//Set up dates
 		Date initDate = calendar.getTime();
 		Date latestDate = calendar.getTime();		
-	    calendar.add(Calendar.YEAR, -10);        
+	    calendar.add(Calendar.YEAR, -100);        
 	    Date earliestDate = calendar.getTime();
 		
-	   //Date Spinner
-	    
+	   //Date Spinner 
 	    SpinnerModel toModel = new SpinnerDateModel(initDate,earliestDate,latestDate,
-	            Calendar.DAY_OF_MONTH);
+	            Calendar.HOUR_OF_DAY);
 	    dateSpinner = SwingHelper.addLabeledSpinner(c, label, toModel, true);       
 	    dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "MM/dd/yyyy"));
 	    
@@ -364,25 +342,27 @@ public class SwingHelper {
 	 * @return a JPanel containing one time spinner used for specifying a time
 	 */
 	public static JPanel createTimeSpinnerPanel(){
-	// create and set panels
-	JPanel timePanel = new JPanel();
-	timePanel.setLayout(new MigLayout());
-
-    //Set up times
-	Calendar calendar = Calendar.getInstance();
-    calendar.set(Calendar.HOUR_OF_DAY, 1);
-    calendar.set(Calendar.MINUTE, 0);
-    Date initTime = calendar.getTime();
-    calendar.set(Calendar.HOUR_OF_DAY, 24);
-    calendar.set(Calendar.MINUTE, 59);
-    Date finalTime = calendar.getTime();
-    
-    JSpinner timeSpinner;
-    
-	SpinnerModel toTimeModel = new SpinnerDateModel(initTime,initTime,finalTime,Calendar.HOUR);
-	timeSpinner = SwingHelper.addLabeledSpinner(timePanel, "Time of Incident: ", toTimeModel);       
-	timeSpinner.setEditor(new JSpinner.DateEditor(timeSpinner, "hh:mm a"));
-	timePanel.add(timeSpinner);
+		// create and set panels
+		JPanel timePanel = new JPanel();
+		timePanel.setLayout(new MigLayout());
+	
+	    //Set up times
+		Calendar calendar = Calendar.getInstance();
+	    calendar.set(Calendar.HOUR_OF_DAY, 1);
+	    calendar.set(Calendar.MINUTE, 0);
+	    Date initTime = calendar.getTime();
+	    calendar.set(Calendar.HOUR_OF_DAY, 24);
+	    calendar.set(Calendar.MINUTE, 59);
+	    Date finalTime = calendar.getTime();
+	    Date earliestTime = calendar.getTime();
+	    
+	    JSpinner timeSpinner;
+	    
+		SpinnerModel toTimeModel = new SpinnerDateModel(initTime,earliestTime,finalTime,Calendar.HOUR);
+		timeSpinner = SwingHelper.addLabeledSpinner(timePanel, "Time of Incident: ", toTimeModel);       
+		timeSpinner.setEditor(new JSpinner.DateEditor(timeSpinner, "hh:mm a"));
+		timePanel.add(timeSpinner);
+	
 	return timePanel;
 	
 	}
@@ -396,20 +376,17 @@ public class SwingHelper {
 	 */
 	public static JSpinner addTimeSpinner(JComponent c, String label){
 	    //Set up times
+		 JSpinner timeSpinner;
+		
 		Calendar calendar = Calendar.getInstance();
-	    calendar.set(Calendar.HOUR_OF_DAY, 1);
-	    calendar.set(Calendar.MINUTE, 0);
-	    Date initTime = calendar.getTime();
-	    calendar.set(Calendar.HOUR_OF_DAY, 24);
-	    calendar.set(Calendar.MINUTE, 59);
+		Date initTime = calendar.getTime();
+	    //calendar.add(Calendar.MINUTE, 1439); // number of minutes in a day - 1
 	    Date finalTime = calendar.getTime();
 	    
-	    JSpinner timeSpinner;
-	    
-		SpinnerModel toTimeModel = new SpinnerDateModel(initTime,initTime,finalTime,Calendar.HOUR);
+		SpinnerModel toTimeModel = new SpinnerDateModel(initTime,null,finalTime,Calendar.HOUR_OF_DAY);
 		timeSpinner = SwingHelper.addLabeledSpinner(c, label, toTimeModel, true);       
 		timeSpinner.setEditor(new JSpinner.DateEditor(timeSpinner, "hh:mm a"));
-		
+
 		return timeSpinner;
 	}
 //-----------------------------------------------------------------------------

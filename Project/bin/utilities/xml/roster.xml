@@ -9,11 +9,115 @@
 		<permissions>supervisor</permissions>
 	</employee>
 	<employee>
+		<cnumber>sucka</cnumber>
+		<firstname>Brendan</firstname>
+		<lastname>Loyot</lastname>
+		<caneid>b.loyot</caneid>
+		<email>b.loyot@umiami.edu</email>
+		<permissions>supervisor</permissions> 
+	</employee>
+	<employee>
 		<cnumber>XXX</cnumber>
 		<firstname>Heather</firstname>
 		<lastname>Ciechowski</lastname>
 		<caneid>hciechowski</caneid>
 		<email>h.ciechowski@umiami.edu</email>
 		<permissions>supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>e</cnumber>
+		<firstname>a</firstname>
+		<lastname>b</lastname>
+		<caneid>c</caneid>
+		<email>d</email>
+		<permissions>Supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>a</cnumber>
+		<firstname>e</firstname>
+		<lastname>d</lastname>
+		<caneid>c</caneid>
+		<email>b</email>
+		<permissions>Supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>12345</cnumber>
+		<firstname>stuff</firstname>
+		<lastname>bro</lastname>
+		<caneid>bro</caneid>
+		<email>bro</email>
+		<permissions>Supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>bro</cnumber>
+		<firstname>bro</firstname>
+		<lastname>bro</lastname>
+		<caneid>bro</caneid>
+		<email>bro</email>
+		<permissions>Supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>b</cnumber>
+		<firstname>b</firstname>
+		<lastname>b</lastname>
+		<caneid>b</caneid>
+		<email>b</email>
+		<permissions>Supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>a</cnumber>
+		<firstname>a</firstname>
+		<lastname>a</lastname>
+		<caneid>a</caneid>
+		<email>a</email>
+		<permissions>Supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>b</cnumber>
+		<firstname>b</firstname>
+		<lastname>b</lastname>
+		<caneid>b</caneid>
+		<email>b</email>
+		<permissions>Supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>s</cnumber>
+		<firstname>s</firstname>
+		<lastname>ss</lastname>
+		<caneid>s</caneid>
+		<email>s</email>
+		<permissions>Supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>d</cnumber>
+		<firstname>d</firstname>
+		<lastname>d</lastname>
+		<caneid>d</caneid>
+		<email>d</email>
+		<permissions>Supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>g</cnumber>
+		<firstname>g</firstname>
+		<lastname>g</lastname>
+		<caneid>g</caneid>
+		<email>g</email>
+		<permissions>Supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>m</cnumber>
+		<firstname>m</firstname>
+		<lastname>m</lastname>
+		<caneid>m</caneid>
+		<email>m</email>
+		<permissions>Supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>lknlkn</cnumber>
+		<firstname>sdjbs</firstname>
+		<lastname>lknlkn</lastname>
+		<caneid>lknlkj</caneid>
+		<email>lknlkn</email>
+		<permissions>Supervisor</permissions>
 	</employee>
 </roster>

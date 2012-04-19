@@ -10,6 +10,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+
 import net.miginfocom.swing.MigLayout;
 //-----------------------------------------------------------------------------
 /**
@@ -40,14 +42,14 @@ private static final long serialVersionUID = 1L;
 	Color pressedColor;
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l){
-		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.l=l;
 		mainPanel = createMainPanel(items);
 		this.setViewportView(mainPanel);
 	}
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l, int wrap){
-		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.wrap=wrap;
 		this.l=l;
 		mainPanel = createMainPanel(items);
@@ -56,7 +58,7 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l, int wrap, int gap){
-		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.wrap=wrap;
 		this.l=l;
 		this.gap=gap;

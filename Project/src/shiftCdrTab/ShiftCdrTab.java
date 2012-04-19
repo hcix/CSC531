@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +21,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -40,7 +41,6 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import blueBookTab.BlueBookEntry;
 import net.miginfocom.swing.MigLayout;
 import progAdmin.itemsToReview.ItemsSidePanel;
 import program.ResourceManager;
@@ -98,7 +98,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		tabbedPane.addTab("Shift Commander Summary Reports", summaryReportsTab);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 
-		currentShiftDate = GregorianCalendar.getInstance();
+		currentShiftDate = Calendar.getInstance();
 		tablePanel = makeTablePanel(rm.getRollCall());
 
 		// start test
@@ -170,7 +170,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		    // Search dialog
 		    JDialog searchDialog = createSearchDialog(parent);
 
-		    public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 			    searchDialog.setVisible(true);
 		    }
 		});
@@ -187,8 +187,9 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		date = Calendar.getInstance().getTime();
 		format = new SimpleDateFormat("EEEE, MMMM dd, YYYY ");
 		shiftLabel = new JLabel("Shift for " + format.format(date) + " at "
-				+ rm.shiftTimeAsString(shiftTime) + ":00");
 
+				+ rm.shiftTimeAsString(shiftTime) + ":00");
+        shiftLabel.setFont(new Font("Serif", Font.BOLD, 32));
 		// change the font at some point shiftLabel.setFont();
 
 		// place panes in roll call tab
@@ -209,7 +210,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		SimpleDateFormat format = new SimpleDateFormat("EEEE, MMMM dd, YYYY ");
 		shiftLabel.setText("Shift for "
 				+ format.format(currentShiftDate.getTime()) + " at "
-				+ rm.shiftTimeAsString(shiftTime) + ":00");
+				+ ResourceManager.shiftTimeAsString(shiftTime) + ":00");
 		// change the font at some point shiftLabel.setFont();
 	}
 
@@ -221,9 +222,9 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		table = new JTable();
 		table.setShowGrid(true);
 		table.setGridColor(Color.black);
-		table.setPreferredScrollableViewportSize(new Dimension(700, 150));
+		table.setPreferredScrollableViewportSize(new Dimension(1600, 500));
 		table.setFillsViewportHeight(true);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		//table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		// Put the table in a scroll pane
 		JScrollPane tableScrollPane = new JScrollPane();
@@ -235,7 +236,12 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		 * Set the table model to be the one custom created for this table and
 		 * passing in the list of names for the shift
 		 */
+		Font font = new Font("Serif", Font.PLAIN, 20);
+		FontMetrics fm = new FontMetrics(font) {
+		};
 		table.setModel(new RollCallTableModel(names));
+		table.setFont(font);
+		table.setRowHeight(fm.getHeight() * 2);
 
 		// Resize the columns
 		TableColumn col;
@@ -366,15 +372,22 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
 		
 		JPanel tablePanel = new JPanel();
-
+		
 		// Create initially empty table
 		JTable popupTable = new JTable();
 		popupTable.setShowGrid(true);
 		popupTable.setGridColor(Color.black);
 		popupTable.setPreferredScrollableViewportSize(new Dimension(700, 150));
 		popupTable.setFillsViewportHeight(true);
-		popupTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		//popupTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
+		//mess with fonts
+		Font font = new Font("Serif", Font.PLAIN, 20);
+		FontMetrics fm = new FontMetrics(font) {
+		};
+		popupTable.setFont(font);
+		popupTable.setRowHeight(fm.getHeight() * 2);
+		
 		// Put the table in a scroll pane
 		JScrollPane tableScrollPane = new JScrollPane();
 		tableScrollPane.setViewportView(popupTable);
@@ -418,7 +431,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 			col.setWidth(sizes[i]);
 		}
 
-		entriesPanel.add(popupTable);
+		entriesPanel.add(tableScrollPane);
 
 		return entriesPanel;
 	}
@@ -431,13 +444,21 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		ArrayList<String> names;
 		ArrayList<RollCall> rollCallList;
 		// get the next roll call
-		if (shiftTime == 10 || shiftTime == 22)
+		if (shiftTime == 10 || shiftTime == 22) {
 			shiftTime -= 4;
-		else if (shiftTime == 18)
+			//currentShiftDate.set(Calendar.HOUR_OF_DAY, shiftTime);
+			currentShiftDate.add(Calendar.HOUR_OF_DAY, -4);
+		}
+		else if (shiftTime == 18) {
 			shiftTime = 10;
+			//currentShiftDate.set(Calendar.HOUR_OF_DAY, shiftTime);
+			currentShiftDate.add(Calendar.HOUR_OF_DAY, -8);
+		}
 		else if (shiftTime == 6) {
 			shiftTime = 22;
-			currentShiftDate.add(Calendar.DAY_OF_MONTH, -1);
+			//currentShiftDate.set(Calendar.HOUR_OF_DAY, shiftTime);
+			currentShiftDate.add(Calendar.HOUR_OF_DAY, -8);
+			//currentShiftDate.add(Calendar.DAY_OF_MONTH, -1);
 		} else {
 			System.out
 					.println("couldn't increment shiftTime:line 226 ShiftCdrTab");
@@ -494,23 +515,27 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		ArrayList<RollCall> rollCallList;
 		
 		//currentShiftDate.set(Calendar.HOUR, shiftTime);
-		//System.out.println("ShiftTime at start of next Roll call is : " + shiftTime);
+		System.out.println("ShiftTime at start of next Roll call is : " + shiftTime);
+		System.out.println("currentShiftTime at start of next Roll call is : " + currentShiftDate.getTime().toString());
 		// get the next roll call
 		if (shiftTime == 6 || shiftTime == 18) {
 			// nextShift = shiftTime + 4;
 			shiftTime += 4;
-			//currentShiftDate.add(Calendar.HOUR, 4);
+			//currentShiftDate.set(Calendar.HOUR_OF_DAY, shiftTime);
+			currentShiftDate.add(Calendar.HOUR_OF_DAY, 4);
 		}
 		else if (shiftTime == 10) {
 			// nextShift = 18;
 			shiftTime = 18;
-			//currentShiftDate.add(Calendar.HOUR, 8);
+			//currentShiftDate.set(Calendar.HOUR_OF_DAY, shiftTime);
+			currentShiftDate.add(Calendar.HOUR_OF_DAY, 8);
 		}
 		else if (shiftTime == 22) {
 			// nextShift = 6;
 			shiftTime = 6;
-			//currentShiftDate.add(Calendar.HOUR, 8);
-			currentShiftDate.add(Calendar.DAY_OF_MONTH, 1);
+			//currentShiftDate.set(Calendar.HOUR_OF_DAY, shiftTime);
+			currentShiftDate.add(Calendar.HOUR_OF_DAY, 8);
+			//currentShiftDate.add(Calendar.DAY_OF_MONTH, 1);
 		} else {
 			System.out
 					.println("couldn't increment shiftTime:line 226 ShiftCdrTab");
@@ -540,8 +565,8 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 
 		if (moveOn) {
 			try {
-				//System.out.println("current shift date is : " + currentShiftDate.getTime().toString());
-				//System.out.println("actual date is : " + Calendar.getInstance().getTime().toString());
+				System.out.println("current shift date is : " + currentShiftDate.getTime().toString());
+				System.out.println("actual date is : " + Calendar.getInstance().getTime().toString());
 				if (currentShiftDate.getTime().compareTo(
 						Calendar.getInstance().getTime()) > 0) {
 					names = rm.getRollCall(shiftTime, currentShiftDate);
@@ -629,7 +654,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	private void launchScheduler() {
 		// launch schedule program
 		try {
-			// TODO changed to add project, FIX USER DIR!!!!!
+			 //TODO changed to add project, FIX USER DIR!!!!!
 			// Runtime.getRuntime().exec(System.getProperty("user.dir")
 			// + "/Project/PatrolScheduler/UMPatrolScheduler.exe");//JAR
 			Runtime.getRuntime().exec(
@@ -832,6 +857,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		}
 
 		// -----------------------------------------------------------------------------
+		@Override
 		public String getColumnName(int col) {
 			return columnNames[col];
 		}
