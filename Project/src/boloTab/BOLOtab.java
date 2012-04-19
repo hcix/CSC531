@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
+import userinterface.MainInterfaceWindow;
 import utilities.DatabaseHelper;
 import utilities.SearchHelper;
 import utilities.ui.DisplayPanel;
@@ -36,13 +37,16 @@ import utilities.ui.SwingHelper;
  */
 public class BOLOtab extends JPanel implements ActionListener {
 private static final long serialVersionUID = 1L;
-	BOLOform newFormDialog;
-	ArrayList<Bolo> boloList;
-	JPanel recentBolosTab;
 	JDialog searchDialog;
 	JTextField caseNumField;
 	JComboBox<String> statusList;
 	ResourceManager rm;
+	MainInterfaceWindow mainInterface;
+	JPanel recentBolosTab;
+	DisplayPanel entriesScroller;
+	BOLOform newFormDialog;
+	ArrayList<Bolo> boloList;
+	JTabbedPane tabbedPane;
 //-----------------------------------------------------------------------------
 	/**
 	 * Create the <code>BOLOtab</code> to hold Recent <code>Bolo</code>s and 
@@ -50,16 +54,18 @@ private static final long serialVersionUID = 1L;
 	 * 
 	 * @param parent 
 	 */
-	public BOLOtab(final ResourceManager rm){
+	public BOLOtab(final ResourceManager rm, final MainInterfaceWindow mainInterface){
 		this.setLayout(new BorderLayout());
 		this.rm=rm;
+		this.mainInterface=mainInterface;
 		
 		//Create BOLOs tabbed display area
-		final JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane = new JTabbedPane();
 
 		//Add recent BOLOs tab
-		recentBolosTab = createRecentBOLOsTab();
-		tabbedPane.addTab("Recent BOLOs", recentBolosTab);
+		//recentBolosTab = createRecentBOLOsTab();
+		entriesScroller = createRecentBOLOsTab();
+		tabbedPane.addTab("Recent BOLOs", entriesScroller);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
 
 	    //Add archived BOLOs tab 
@@ -82,13 +88,15 @@ private static final long serialVersionUID = 1L;
 				
 				//refresh to display any changes
 				refreshRecentBOLOsTab();
-
-				//unneeded/repetative, waiting to make sure no errors b4 deleting
-				/*refresh to display any changes
-				recentBolosTab.removeAll();
-				recentBolosTab.add(createRecentBOLOsTab());
-				tabbedPane.revalidate();
+				
+				/*OLIVIA: TODO: If the new bolo created was also created as a item
+				(aka the create item from this bolo checkbox was selected) then
+				call the following two methods:
+					mainInterface.refreshItemsList();
+					mainInterface.refreshItemsTable();
+				Otherwise, it is not necessary to call these methods
 				*/
+				
 			}
 		});
 
@@ -228,12 +236,72 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * 
+	 */
+	private JPanel[] createItemsPanels(){
+		JPanel boloPanel;
+		Date prepDate;
+
+		try {
+			boloList = DatabaseHelper.getBOLOsFromDB();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		int listSize = boloList.size();
+//DEBUG		
+System.out.println("boloList.size() = " + listSize);
+		
+		JPanel[] items = new JPanel[listSize];
+		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
+
+		int i=0;
+		for(Bolo bolo: boloList){
+			String listId = "" + boloList.indexOf(bolo);
+
+			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
+
+			String date = formatter.format(prepDate);
+			String caseNum = "";
+			if(bolo.getCaseNum()!=null){ caseNum=bolo.getCaseNum(); }
+			String status = "";
+			if(bolo.getStatus()!=null){ status=bolo.getStatus(); }
+
+			boloPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
+			
+			if(bolo.getPhoto()!=null){
+				JLabel photoLabel = new JLabel(
+						ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
+				boloPanel.add(photoLabel);
+			}
+			
+			String armedText = "";
+			if(bolo.getWeapon()!=null){ 
+				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
+			}
+
+			boloPanel.add(new JLabel(armedText, JLabel.CENTER), "alignx center,wrap");
+
+			boloPanel.add(new JLabel(date), "split 3, aligny top");
+			boloPanel.add(new JLabel("Case#: "+caseNum));
+			boloPanel.add(new JLabel(status));
+			boloPanel.setSize(new Dimension(130, 150));
+			boloPanel.setPreferredSize(new Dimension(130, 150));
+
+			boloPanel.setName(listId);
+			items[i]=boloPanel;
+			i++;
+		}
+		return items;
+	}	
+//-----------------------------------------------------------------------------
+	/**
 	 * In the <code>BOLOtab</code> create and set a recent BOLO tab as a JPanel
 	 * <p>This displays the bolos in 
 	 * 
 	 * @return recentBOLOsPanel
 	 */
-	private JPanel createRecentBOLOsTab(){
+	private DisplayPanel createRecentBOLOsTab(){
 		JPanel recentBOLOsPanel = new JPanel(new MigLayout());
 		JPanel boloPanel;
 		Date prepDate;
@@ -289,9 +357,9 @@ private static final long serialVersionUID = 1L;
 
 		DisplayPanel entriesPanel = new DisplayPanel(items, this, 4);
 
-		recentBOLOsPanel.add(entriesPanel);
+		//recentBOLOsPanel.add(entriesPanel);
 
-		return recentBOLOsPanel;
+		return entriesPanel;
 	}
 //-----------------------------------------------------------------------------
 	public JPanel createSearchBOLOsTab(ArrayList<Bolo> boloList){
@@ -354,10 +422,9 @@ private static final long serialVersionUID = 1L;
 
 //-----------------------------------------------------------------------------		
 	public void refreshRecentBOLOsTab(){
-		recentBolosTab.removeAll();
-		recentBolosTab.add(createRecentBOLOsTab());
-		this.revalidate();
-		this.repaint();
+		JPanel[] newItems = createItemsPanels();
+		entriesScroller.refreshContents(newItems);
+		tabbedPane.revalidate();
 	}
 //-----------------------------------------------------------------------------	
 	/**

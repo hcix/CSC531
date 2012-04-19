@@ -9,56 +9,72 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import net.miginfocom.swing.MigLayout;
 //-----------------------------------------------------------------------------
 /**
  * This is a panel that allows the user to toggle between different views to
  * see items within the program and select/"click" items. This panel will 
  * notify the given action listener when a <code>JPanel</code> is "clicked".
+ * 
+ * TODO: Test if this shit works
+ * TODO: Adds a border around the entire thing somewhere, but where? 
+ * Here? In BOLOtab? In BlueBookTab? Does it happen in the scroll dialogs too?
  */
-public class DisplayPanel extends JPanel implements MouseListener {
+public class DisplayPanel extends JScrollPane implements MouseListener {
 private static final long serialVersionUID = 1L;
 	private static final int DEFAULT_GAP_VAL = 15;
 	private static final int DEFAULT_WRAP_VAL = 4;
-	
-	JPanel mainPanel;
+	/** the gap to place between components **/
+	private int gap=DEFAULT_GAP_VAL;
+	/** the wrap value to indicate the number of components per row **/
+	private int wrap=DEFAULT_WRAP_VAL;
 	int itemWidthPerc=0, itemHeightPerc=0;
-	/** the ActionListener to be notified if a panel is clicked on **/
+	/** the main panel displayed in the <code>DisplayPanel</code>'s viewport */
+	JPanel mainPanel;
+	/** the ActionListener to be notified if a panel is 'clicked' on **/
 	ActionListener l;
 	/** reference to the JPanel's original color **/
 	Color originalColor;
 	/** the color that should be displayed when usr clicks panel **/
 	Color pressedColor;
-	/** the gap to place between components **/
-	int gap=DEFAULT_GAP_VAL;
-	/** the wrap value to indicate the number of components per row **/
-	int wrap=DEFAULT_WRAP_VAL;
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l){
+		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		this.l=l;
-		createMainPanel(items);
+		mainPanel = createMainPanel(items);
+		this.setViewportView(mainPanel);
 	}
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l, int wrap){
+		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		this.wrap=wrap;
 		this.l=l;
-		createMainPanel(items);
+		mainPanel = createMainPanel(items);
+		//createMainPanel(items);
+		this.setViewportView(mainPanel);
 	}
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l, int wrap, int gap){
+		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		this.wrap=wrap;
 		this.l=l;
 		this.gap=gap;
-		createMainPanel(items);
+		mainPanel = createMainPanel(items);
+		//createMainPanel(items);
+		this.setViewportView(mainPanel);
 	}
 //-----------------------------------------------------------------------------
-	private void createMainPanel(JPanel items[]){
-		//TODO: make scrollable!
+	/**
+	 * JDOC
+	 */
+	private JPanel createMainPanel(JPanel items[]){
 		String gapString = "gap " + gap;
 		String wrapString = "wrap " + wrap;
-		mainPanel = new JPanel(new MigLayout(gapString + ", " + wrapString));		
-		this.add(mainPanel);
-		this.addItemsToPanel(items);
+		//create the main panel to display in scroller
+		//mainPanel = new JPanel(new MigLayout(gapString + ", " + wrapString));		
+		JPanel panel = new JPanel(new MigLayout(gapString + ", " + wrapString));	
+		addItemsToPanel(items, panel);
 		
 		//save a reference to the original color & set the pressed color
 		if(items.length>0){
@@ -68,29 +84,26 @@ private static final long serialVersionUID = 1L;
 			originalColor = this.getBackground();
 			pressedColor = originalColor.darker(); 
 		}
+		return panel;
 	}
 //-----------------------------------------------------------------------------
-	public void addItemsToPanel(JPanel items[]){
+	public void addItemsToPanel(JPanel items[], JPanel panel){
 		for(int i=0; i<items.length; i++){
 			items[i].setBorder(BorderFactory.createRaisedBevelBorder());
 			items[i].addMouseListener(this);
-			mainPanel.add(items[i]);
+			panel.add(items[i]);
 		}
 	}
 //-----------------------------------------------------------------------------
-	public void addItemToPanel(JPanel item){
-		String constraints="";
-		
-		if(itemWidthPerc!=0){
-			constraints = "width " + itemWidthPerc;
-			//if there's also an itemHeight to be set, add a separator to the string
-			if(itemHeightPerc!=0){ constraints = constraints.concat(", "); }
-		}
-		if(itemHeightPerc!=0){
-			constraints=constraints.concat("height" + itemHeightPerc);
-		}
-		mainPanel.add(item);
-	}
+	/**
+	 * Refresh this <code>DisplayPanel</code>'s contents based on the new
+	 * items passed in.
+	 */
+	public void refreshContents(JPanel[] items){
+		mainPanel.removeAll();
+		mainPanel = createMainPanel(items);
+		this.setViewportView(mainPanel);
+	} 
 //-----------------------------------------------------------------------------
 	/**
 	 * Sets the value indicating what percentage of the total width of the panel
@@ -118,14 +131,18 @@ private static final long serialVersionUID = 1L;
 		this.itemHeightPerc=itemHeightPerc;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * If a component is clicked, notify the listener given in construction of this
+	 * obj JDOC
+	 */
 	public void mouseClicked(MouseEvent e) {
 		//let the ActionListener know who's been clicked
 		
 		String name = ((Component) e.getSource()).getName();
 //DEBUG System.out.println("ItemsViewerPanel: mouseClicked(): name = "+name);
 		
-		ActionEvent ev = new ActionEvent((e.getSource()), ActionEvent.ACTION_PERFORMED, name);
-	
+		ActionEvent ev = new ActionEvent((e.getSource()), 
+				ActionEvent.ACTION_PERFORMED, name);
 		l.actionPerformed(ev);
 	}
 //-----------------------------------------------------------------------------
@@ -143,8 +160,7 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	public void mouseEntered(MouseEvent e) {
-		//TODO highlight outline on panel so user knows it's "selected"
-		
+		//TODO highlight outline on panel so user knows it's "selected" ?
 	}
 //-----------------------------------------------------------------------------
 	public void mouseExited(MouseEvent e) {

@@ -15,10 +15,12 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import boloTab.BOLOform;
 import net.miginfocom.swing.MigLayout;
+import program.ResourceManager;
+import userinterface.MainInterfaceWindow;
 import utilities.DatabaseHelper;
 import utilities.SearchHelper;
 import utilities.ui.DisplayPanel;
@@ -28,8 +30,7 @@ import utilities.ui.SwingHelper;
 /*
  * BUG When you try to upload multiple blue book entries back to back, opens the preview for the last created bbentry 
  * instead of a new form 
- */
-/*
+ *
  * BUG doesn't refresh after creating a bolo, have to reopen project
  */
 //-----------------------------------------------------------------------------	
@@ -39,13 +40,15 @@ import utilities.ui.SwingHelper;
  */
 public class BlueBookTab extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	ArrayList<BlueBookEntry> bluebook;
-	BlueBookForm newFormDialog;
-	JFrame parent;
+	//Search Fields
 	JTextField caseNumField;
 	JTextField locationField;
 	JTextField nameField;
-	JPanel entriesPanel;
+	MainInterfaceWindow mainInterface;
+	ResourceManager rm;
+	BlueBookForm newFormDialog;
+	ArrayList<BlueBookEntry> bluebook;
+	DisplayPanel entriesScroller;
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates and sets the <code>BlueBookTab</code> to view all the
@@ -54,15 +57,13 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	 * 
 	 * @param parent
 	 */
-	public BlueBookTab(final JFrame parent) {
+	public BlueBookTab(final ResourceManager rm, MainInterfaceWindow mainInterface) {
 		this.setLayout(new BorderLayout());
-		this.parent = parent;
-		
-		final JPanel panel = new JPanel();
+		this.mainInterface=mainInterface;
+		this.rm=rm;
 		
 		//Create entries display area
-		entriesPanel = createEntriesPanel();
-		panel.add(entriesPanel);
+		DisplayPanel entriesScroller = createEntriesPanel();
 		
 		//Create New Entry button
 		JButton newEntryButton = SwingHelper.createImageButton("Create Entry",
@@ -75,12 +76,13 @@ public class BlueBookTab extends JPanel implements ActionListener {
 				//wait for the dialog to be dismissed before continuing
 				newFormDialog.setModal(true);
 				//refresh to display any changes
+				
 				refreshBBtab();
 
 				//refresh to display any changes
-				entriesPanel.removeAll();
-				entriesPanel.add(createEntriesPanel());
-				panel.revalidate();
+//				entriesPanel.removeAll();
+//				entriesPanel.add(createEntriesPanel());
+//				panel.revalidate();
 			}
 		});
 
@@ -89,24 +91,25 @@ public class BlueBookTab extends JPanel implements ActionListener {
 				"Search Blue Book", "icons/search.png");
 		searchButton.addActionListener(new ActionListener() {
 			// Search dialog
-			JDialog searchDialog = createSearchDialog(parent);
+			JDialog searchDialog = createSearchDialog(rm.getGuiParent());
 
 			public void actionPerformed(ActionEvent e) {
 				searchDialog.setVisible(true);
 			}
 		});
 
-		// add the components to this panel
+		
+		// add the components to this tab
 
 		//this.add(entriesPanel, BorderLayout.CENTER);
-		this.add(panel, BorderLayout.CENTER);
+		this.add(entriesScroller, BorderLayout.CENTER);
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(newEntryButton);
 		buttonsPanel.add(searchButton);
 		this.add(buttonsPanel, BorderLayout.PAGE_END);
 		
 		//TODO: Change below to be happening on bg thread so usr doesn't have to wait
-		newFormDialog = new BlueBookForm(parent, this);
+		newFormDialog = new BlueBookForm(rm.getGuiParent(), this);
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -197,7 +200,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 			System.out.println("Couldn't run search in bluebook"); 
 			e.printStackTrace();
 		}
-		JDialog searchDialog = new JDialog(parent, "Search Results", true);
+		JDialog searchDialog = new JDialog(rm.getGuiParent(), "Search Results", true);
 		JPanel searchEntriesPanel = createSearchEntriesPanel(searchResults);
 		searchDialog.add(searchEntriesPanel, BorderLayout.CENTER);
 		searchDialog.setLocationByPlatform(true);
@@ -208,17 +211,14 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Create the <code>entriesPanel</code> and populate it with data from the
+	 * Create the <code>DisplayPanel</code> and populate it with data from the
 	 * database.
 	 * 
-	 * @return entriesPanel
+	 * @return   ... JDOC
 	 */
-	public JPanel createEntriesPanel() {
-		JPanel entriesPanel = new JPanel(new MigLayout());
+	public DisplayPanel createEntriesPanel() {
 		JPanel entryPanel;
 		// Date prepDate;
-
-		// TODO: make scrollable!
 
 		try {
 			bluebook = DatabaseHelper.getBluebookFromDB();
@@ -272,16 +272,73 @@ System.out.println("bluebook size = " + bluebook.size());
 		}
 
 		DisplayPanel itemsPanel = new DisplayPanel(items, this, 4);
+		
+		return itemsPanel;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * 
+	 */
+	public JPanel[] createItemsPanels() {
+		JPanel entryPanel;
+		// Date prepDate;
 
-		entriesPanel.add(itemsPanel);
+		try {
+			bluebook = DatabaseHelper.getBluebookFromDB();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-		return entriesPanel;
+		int listSize = bluebook.size();
+//DEBUG
+System.out.println("bluebook size = " + bluebook.size());
+		
+		JPanel[] items = new JPanel[listSize];
+		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
+
+		int i = 0;
+		for (BlueBookEntry entry : bluebook) {
+			String listId = "" + bluebook.indexOf(entry);
+			
+			entryPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
+			
+			if (entry.getPhotoFilePath() != null) {
+				JLabel photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
+						entry.getPhoto(), 100, 100));
+				entryPanel.add(photoLabel);
+			}
+			String caseNum = "";
+			if (entry.getCaseNum() != null) {
+				caseNum = entry.getCaseNum();
+			}
+			String status = "";
+			if (entry.getStatus() != null) {
+				status = entry.getStatus();
+			}
+			String armedText = "";
+			if (entry.getWeapon() != null) {
+				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
+			}
+
+			entryPanel.add(new JLabel(armedText, SwingConstants.CENTER),
+					"alignx center,wrap");
+
+			entryPanel.add(new JLabel(" "), "split 3, aligny top");
+			entryPanel.add(new JLabel("Case#: " + caseNum));
+			entryPanel.add(new JLabel(status));
+			entryPanel.setSize(new Dimension(130, 150));
+			entryPanel.setPreferredSize(new Dimension(130, 150));
+			
+			entryPanel.setName(listId);
+			items[i] = entryPanel;
+			i++;
+		}
+		return items;
 	}
 //-----------------------------------------------------------------------------
 	/**
 	 * Create the <code>entriesPanel</code> and populate it with data from the
-	 * database
-	 * 
+	 * database.
 	 * @return entriesPanel
 	 */
 	public JPanel createSearchEntriesPanel(ArrayList<BlueBookEntry> bluebook) {
@@ -339,7 +396,7 @@ System.out.println("bluebook size = " + bluebook.size());
 
 		DisplayPanel itemsPanel = new DisplayPanel(items, this, 4);
 
-		entriesPanel.add(itemsPanel);
+		entriesPanel.add(itemsPanel, BorderLayout.CENTER);
 
 		return entriesPanel;
 	}
@@ -348,10 +405,11 @@ System.out.println("bluebook size = " + bluebook.size());
 	 * JDOC 
 	 */
 	public void refreshBBtab(){
-		entriesPanel.removeAll();
-		entriesPanel.add(createEntriesPanel());
-		this.revalidate();
-		this.repaint();
+		JPanel[] newItems = createItemsPanels();
+		entriesScroller.refreshContents(newItems);
+		entriesScroller.revalidate();
+		//tabbedPane.revalidate();
+
 	}
 //-----------------------------------------------------------------------------
 	public void actionPerformed(ActionEvent ev) {
@@ -362,7 +420,7 @@ System.out.println("bluebook size = " + bluebook.size());
 		System.out.println("BlueBookTab: actionPerformed: id = " + id);
 		
 		BlueBookEntry selectedEntry = bluebook.get(id);
-		BlueBookPreview bbPreview = new BlueBookPreview(parent, this, selectedEntry);
+		BlueBookPreview bbPreview = new BlueBookPreview(rm.getGuiParent(), this, selectedEntry);
 		bbPreview.setVisible(true);
 		//BlueBookForm form = new BlueBookForm(parent, this, selectedEntry);
 		//form.setVisible(true);
