@@ -101,8 +101,8 @@ private static final long serialVersionUID = 1L;
 			 }
 		});
 		
-		JButton markAsUnreadButton = new JButton("Mark Item as Unread");
-				SwingHelper.createImageButton("Mark Item as Unread", "icons/redCheck_32.png");
+		JButton markAsUnreadButton = 
+				SwingHelper.createImageButton("Mark Item as Unread", "icons/markUnread32.png");
 		markAsUnreadButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				System.out.println("before set false");
