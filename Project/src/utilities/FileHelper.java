@@ -40,6 +40,7 @@ public class FileHelper {
     public final static String FORMS_SUBDIR = "FormTemplates";
     public final static String ANNOUN_SUB_DIR = "Announcements";
     public final static String SFT_RPTS_SUBDIR = "ShiftReports";
+    public final static String BB_ENTRIES_DIR = "BlueBookEntries";
     
     public final static String PATH_SEP = File.pathSeparator;
 //-----------------------------------------------------------------------------
@@ -48,9 +49,7 @@ public class FileHelper {
   	 * <code>FileHelper</code>. Also serves to get the path of the directory
   	 * that this program and it's associated files are in.
   	 */
-  	public FileHelper() { 
-  		
-  	}
+  	public FileHelper() { }
 //-----------------------------------------------------------------------------
 	/**
 	 * Gets the name of the absolute path to the file where the document 
@@ -58,6 +57,8 @@ public class FileHelper {
 	 * 
 	 * @param doc - the local path of the document
 	 * @return docName - the absolute path of the document
+	 * @deprecated use the method corresponding to name of subdir to 
+	 * access instead
 	 */
 	public static String getDocumentPathName(String doc){
 		File progDir = new File("..");
@@ -78,20 +79,74 @@ public class FileHelper {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Gets the name of the absolute path to the file where the report 
-	 * is stored on the file system
+	 * Gets the name of the absolute path to the file where the pdf of the
+	 * <code>BlueBookEntry</code> is stored
 	 * 
-	 * @param reportName - the local path of the report
-	 * @return docName - the absolute path of the report
+	 * @param bbPdfName - the local path of the report
+	 * @return the absolute path of the report
 	 */
-	public static String getReportPathName(String reportName){
+	public static String getBBEntryPdfPathName(String bbPdfName){
 		File progDir = new File("..");
 		Path docPath=null;
 		String docName=null;
 			
 		try{
 		docPath = Paths.get(progDir.getCanonicalPath(), 
-				DOC_DIR, SFT_RPTS_SUBDIR, reportName);
+				DOC_DIR, BB_ENTRIES_DIR, bbPdfName);
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		
+		docName = docPath.toString();
+		
+//DEBUG	
+System.out.println("getBBEntryPdfPathName = " + docName);	
+		return docName;
+		
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Gets the name of the absolute path to the directory where the pdf of the
+	 * <code>BlueBookEntry</code> is stored on the filesystem
+	 * 
+	 * @return the canonical path name of the reports
+	 * @see getCanonicalPath()
+	 */
+	public static String getStoredBBentriesDir(){
+		File progDir = new File(getProgramDirPathName());
+		Path dirPath=null;
+		String dirName=null;
+			
+		try{
+			dirPath = Paths.get(progDir.getCanonicalPath(), 
+				DOC_DIR, BB_ENTRIES_DIR);
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		
+		dirName = dirPath.toString();
+		
+//DEBUG 
+System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);	
+
+		return dirName;	
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Gets the name of the absolute path to the file where the report 
+	 * is stored on the file system
+	 * 
+	 * @param reportName - the local path of the report
+	 * @return the absolute path of the report
+	 */
+	public static String getReportPathName(String reportName){
+		File progDir = new File(getProgramDirPathName());
+		Path docPath=null;
+		String docName=null;
+			
+		try{
+		docPath = Paths.get(progDir.getCanonicalPath(), 
+				DOC_DIR, BB_ENTRIES_DIR, reportName);
 		} catch (IOException e){
 			e.printStackTrace();
 		}

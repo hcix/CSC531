@@ -10,7 +10,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -335,7 +334,7 @@ public class BlueBookForm extends JDialog {
 	 private void putInfoIntoBlueBookEntry(){
 		 String caseNumText, nameText, affiliText, addressText, weapon;
 		 String locationText, descritionText, reasonText;
-		 //String preparedBy;
+		 String preparedBy;
 		 
 		 //get the filled in fields in the global bbEntry object
 		 caseNumText = caseNumField.getText();
