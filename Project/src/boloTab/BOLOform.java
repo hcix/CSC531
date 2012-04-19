@@ -237,8 +237,8 @@ public class BOLOform extends JDialog {
 		statusField = new JComboBox<String>(statusStrings);
 
 		//row 1
-//		incidentDate = SwingHelper.addDateSpinner(infoPanel, "Date of Incident");
-//		incidentTime = SwingHelper.addTimeSpinner(infoPanel, "Time of Incident");
+		//		incidentDate = SwingHelper.addDateSpinner(infoPanel, "Date of Incident");
+		//		incidentTime = SwingHelper.addTimeSpinner(infoPanel, "Time of Incident");
 		incidentDay =  new JTextField(2);
 		incidentMonth =  new JTextField(2);
 		incidentTime =  new JTextField(2);
@@ -286,11 +286,11 @@ public class BOLOform extends JDialog {
 		JLabel approvedByLabel = new JLabel("BOLO approved by");
 		JLabel dayLabel = new JLabel("Day");
 		JLabel monthLabel = new JLabel("Month");
-		
+
 		// create fields
 		preparedByField = new JTextField(15);
 		approvedByField = new JTextField(15);
-		
+
 		toReview = new JCheckBox("Send BOLO to Items to Review?");
 
 		//add labels & text fields to  panel
@@ -298,16 +298,16 @@ public class BOLOform extends JDialog {
 		adminPanel.add(preparedByField, "align, wrap");
 		adminPanel.add(approvedByLabel, "align");
 		adminPanel.add(approvedByField, "align, wrap");
-//		preparedDate = SwingHelper.addDateSpinner(adminPanel, "Date BOLO prepared");
-//		preparedTime = SwingHelper.addTimeSpinner(adminPanel, "Time BOLO prepared");
+		//		preparedDate = SwingHelper.addDateSpinner(adminPanel, "Date BOLO prepared");
+		//		preparedTime = SwingHelper.addTimeSpinner(adminPanel, "Time BOLO prepared");
 		adminPanel.add(dayLabel,"align");
 		adminPanel.add(incidentDay, "align, wrap");
 		adminPanel.add(monthLabel,"align");
 		adminPanel.add(incidentMonth, "align, wrap");
 		//adminPanel.add(incidentYear, "align");
 		adminPanel.add(toReview);
-		
-		
+
+
 
 
 		return adminPanel;
@@ -489,39 +489,39 @@ public class BOLOform extends JDialog {
 
 	}
 
-//-----------------------------------------------------------------------------
-	 /**
-	  * Places the info from the input fields into the global BOLO object.
-	  */
-	 private void loadFromExistingBOLO(){
-		 //set the filled in fields in the global BOLO object
-		 ageField.setText(bolo.getAge());
+	//-----------------------------------------------------------------------------
+	/**
+	 * Places the info from the input fields into the global BOLO object.
+	 */
+	private void loadFromExistingBOLO(){
+		//set the filled in fields in the global BOLO object
+		ageField.setText(bolo.getAge());
 
-		 raceField.setText(bolo.getRace());		
-		 sexField.setText(bolo.getSex());		 
-		 heightField.setText(bolo.getHeight());
-		 weightField.setText(bolo.getWeight());
-		 buildField.setText(bolo.getBuild());
-		 eyesField.setText(bolo.getEyes());
-		 hairField.setText(bolo.getHair());
-		 referenceField.setText(bolo.getReference());
-		 caseNumField.setText(bolo.getCaseNum());
-		 statusField.setSelectedItem(bolo.getStatus());
-		 ifYesField.setText(bolo.getWeapon());
-		 preparedByField.setText(bolo.getPreparedBy());
-		 approvedByField.setText(bolo.getApprovedBy());
-		 otherDescriptField.setText(bolo.getOtherDescrip());
-		 narrativeText.setText(bolo.getNarrative());
+		raceField.setText(bolo.getRace());		
+		sexField.setText(bolo.getSex());		 
+		heightField.setText(bolo.getHeight());
+		weightField.setText(bolo.getWeight());
+		buildField.setText(bolo.getBuild());
+		eyesField.setText(bolo.getEyes());
+		hairField.setText(bolo.getHair());
+		referenceField.setText(bolo.getReference());
+		caseNumField.setText(bolo.getCaseNum());
+		statusField.setSelectedItem(bolo.getStatus());
+		ifYesField.setText(bolo.getWeapon());
+		preparedByField.setText(bolo.getPreparedBy());
+		approvedByField.setText(bolo.getApprovedBy());
+		otherDescriptField.setText(bolo.getOtherDescrip());
+		narrativeText.setText(bolo.getNarrative());
 
-		 //TODO: set the times
-		 
-		 
-		 
-		 //set picture
-		 if(bolo.getPhotoFilePath()!=null){
-			 ImageIcon photo = ImageHandler.getScaledImageIcon(
-				 bolo.getPhotoFilePath(), 200, 299);
-		 
+		//TODO: set the times
+
+
+
+		//set picture
+		if(bolo.getPhotoFilePath()!=null){
+			ImageIcon photo = ImageHandler.getScaledImageIcon(
+					bolo.getPhotoFilePath(), 200, 299);
+
 			photoArea.removeAll();
 			photoArea.add(new JLabel(photo));
 		}
@@ -628,47 +628,47 @@ public class BOLOform extends JDialog {
 	 *  
 	 * @return preparedCal.getTimeInMillis()/1000
 	 */
-//	public long getPrepDateEpoch(){
-//		Date day = new Date();
-//		Date time = new Date();
-//
-//		Calendar preparedCal = Calendar.getInstance();
-//		Calendar timeCal = Calendar.getInstance();
-//
-//		day = ((SpinnerDateModel) preparedDate.getModel()).getDate();
-//		time = ((SpinnerDateModel) preparedTime.getModel()).getDate();
-//		timeCal.setTime(time);
-//
-//		preparedCal.setTime(day);
-//		preparedCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
-//		preparedCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
-//		preparedCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
-//
-//		return (preparedCal.getTimeInMillis()/1000);
-//	}
+	//	public long getPrepDateEpoch(){
+	//		Date day = new Date();
+	//		Date time = new Date();
+	//
+	//		Calendar preparedCal = Calendar.getInstance();
+	//		Calendar timeCal = Calendar.getInstance();
+	//
+	//		day = ((SpinnerDateModel) preparedDate.getModel()).getDate();
+	//		time = ((SpinnerDateModel) preparedTime.getModel()).getDate();
+	//		timeCal.setTime(time);
+	//
+	//		preparedCal.setTime(day);
+	//		preparedCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
+	//		preparedCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
+	//		preparedCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
+	//
+	//		return (preparedCal.getTimeInMillis()/1000);
+	//	}
 	//-----------------------------------------------------------------------------
 	/**
 	 * 
 	 * @return incidentCal.getTimeInMillis()/1000
 	 */
-//	public long getIncidentDateEpoch(){
-//		Date day = new Date();
-//		Date time = new Date();
-//
-//		Calendar incidentCal = Calendar.getInstance();
-//		Calendar timeCal = Calendar.getInstance();
-//
-//		day = ((SpinnerDateModel) preparedDate.getModel()).getDate();
-//		time = ((SpinnerDateModel) preparedTime.getModel()).getDate();
-//		timeCal.setTime(time);
-//
-//		incidentCal.setTime(day);
-//		incidentCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
-//		incidentCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
-//		incidentCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
-//
-//		return (incidentCal.getTimeInMillis()/1000); 
-//	}
+	//	public long getIncidentDateEpoch(){
+	//		Date day = new Date();
+	//		Date time = new Date();
+	//
+	//		Calendar incidentCal = Calendar.getInstance();
+	//		Calendar timeCal = Calendar.getInstance();
+	//
+	//		day = ((SpinnerDateModel) preparedDate.getModel()).getDate();
+	//		time = ((SpinnerDateModel) preparedTime.getModel()).getDate();
+	//		timeCal.setTime(time);
+	//
+	//		incidentCal.setTime(day);
+	//		incidentCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
+	//		incidentCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
+	//		incidentCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
+	//
+	//		return (incidentCal.getTimeInMillis()/1000); 
+	//	}
 	//-----------------------------------------------------------------------------	
 	/**
 	 * JDOC
@@ -679,56 +679,48 @@ public class BOLOform extends JDialog {
 	}
 	//-----------------------------------------------------------------------------
 	public void createItemToReview(Bolo bolo) {
-		
+
 		this.bolo = bolo;
 		StringBuilder title = new StringBuilder();
 
 		title.append("BOLO #");
 		title.append(bolo.getCaseNum());
 
-<<<<<<< HEAD
+
 		String stringTitle = title.toString();
 		ItemToReview newItem = new ItemToReview(stringTitle,"");
 		rm.addItem(newItem);
 	}
-=======
-		  return (preparedCal.getTimeInMillis()/1000);
-	  }
-//-----------------------------------------------------------------------------
-	  /**
-	   * 
-	   * @return incidentCal.getTimeInMillis()/1000
-	   */
-	  public long getIncidentDateEpoch(){
-		  Date day = new Date();
-		  Date time = new Date();
 
-		  Calendar incidentCal = Calendar.getInstance();
-		  Calendar timeCal = Calendar.getInstance();
 
-		  day = ((SpinnerDateModel) preparedDate.getModel()).getDate();
-		  time = ((SpinnerDateModel) preparedTime.getModel()).getDate();
-		  timeCal.setTime(time);
 
-		  incidentCal.setTime(day);
-		  incidentCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
-		  incidentCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
-		  incidentCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
+	//-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @return incidentCal.getTimeInMillis()/1000
+	 */
+	public long getIncidentDateEpoch(){
+		Date day = new Date();
+		Date time = new Date();
 
-		  SimpleDateFormat df = new SimpleDateFormat();
-	      df.applyPattern("dd/MM/yyyy hh:mm a");
-	      System.out.println(df.format(incidentCal.getTime()));
-	      
-		  return (incidentCal.getTimeInMillis()/1000); 
-	  }
-//-----------------------------------------------------------------------------	
-	  /**
-	   * JDOC
-	   * @return this.newBOLOWascreated
-	   */
-	  public boolean isNewBOLOWascreated(){
-		  return this.newBOLOWascreated;
-	  }
-//-----------------------------------------------------------------------------
->>>>>>> 122342e36f4224abb1cd97776152019918527907
+		Calendar incidentCal = Calendar.getInstance();
+		Calendar timeCal = Calendar.getInstance();
+
+		day = ((SpinnerDateModel) preparedDate.getModel()).getDate();
+		time = ((SpinnerDateModel) preparedTime.getModel()).getDate();
+		timeCal.setTime(time);
+
+		incidentCal.setTime(day);
+		incidentCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
+		incidentCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
+		incidentCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
+
+		SimpleDateFormat df = new SimpleDateFormat();
+		df.applyPattern("dd/MM/yyyy hh:mm a");
+		System.out.println(df.format(incidentCal.getTime()));
+
+		return (incidentCal.getTimeInMillis()/1000); 
+	}
+	//-----------------------------------------------------------------------------	
+
 }

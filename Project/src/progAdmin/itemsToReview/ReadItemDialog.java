@@ -78,7 +78,6 @@ private static final long serialVersionUID = 1L;
 		JTextArea blank = new JTextArea("");
 		
 		buttonPanel = createButtonsPanel();
-		//buttonPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY));
 		mainPanel.add(buttonPanel, "dock north");
 		mainPanel.add(titleLabel,"alignx left");
 		mainPanel.add(titleTextField, "alignx center, wrap");

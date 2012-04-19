@@ -85,18 +85,17 @@ public class BOLOtab extends JPanel implements ActionListener {
 				newFormDialog.setVisible(true);	
 				//wait for the dialog to be dismissed before continuing
 				newFormDialog.setModal(true);
-<<<<<<< HEAD
+
 
 				refreshRecentBOLOsTab();
 				mainInterface.refreshItemsList();
 				mainInterface.refreshItemsTable();
 
-=======
+
 				
 				//refresh to display any changes
 				refreshRecentBOLOsTab();
-				
->>>>>>> 122342e36f4224abb1cd97776152019918527907
+
 				/*OLIVIA: TODO: If the new bolo created was also created as a item
 				(aka the create item from this bolo checkbox was selected) then
 				call the following two methods:
@@ -112,10 +111,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 				recentBolosTab.add(createRecentBOLOsTab());
 				tabbedPane.revalidate();
 				 */
-=======
-				*/
-				
->>>>>>> 122342e36f4224abb1cd97776152019918527907
+
 			}
 		});
 
@@ -443,7 +439,7 @@ System.out.println("boloList.size() = " + listSize);
 		JPanel[] newItems = createItemsPanels();
 		entriesScroller.refreshContents(newItems);
 		tabbedPane.revalidate();
-<<<<<<< HEAD
+
 		//this.revalidate();
 		//entriesScroller.refreshContents(regenerateBOLOsList());
 		//this.revalidate();
@@ -451,8 +447,7 @@ System.out.println("boloList.size() = " + listSize);
 		//		recentBolosTab.add(createRecentBOLOsTab());
 		//		this.revalidate();
 		//		this.repaint();
-=======
->>>>>>> 122342e36f4224abb1cd97776152019918527907
+
 	}
 	//-----------------------------------------------------------------------------	
 	/**
