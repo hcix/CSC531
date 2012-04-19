@@ -42,15 +42,17 @@ private static final long serialVersionUID = 1L;
 	public DisplayPanel(JPanel[] items, ActionListener l){
 		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		this.l=l;
-		this.setViewportView(createMainPanel(items));
+		mainPanel = createMainPanel(items);
+		this.setViewportView(mainPanel);
 	}
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l, int wrap){
 		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		this.wrap=wrap;
 		this.l=l;
+		mainPanel = createMainPanel(items);
 		//createMainPanel(items);
-		this.setViewportView(createMainPanel(items));
+		this.setViewportView(mainPanel);
 	}
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l, int wrap, int gap){
@@ -58,8 +60,9 @@ private static final long serialVersionUID = 1L;
 		this.wrap=wrap;
 		this.l=l;
 		this.gap=gap;
+		mainPanel = createMainPanel(items);
 		//createMainPanel(items);
-		this.setViewportView(createMainPanel(items));
+		this.setViewportView(mainPanel);
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -69,8 +72,9 @@ private static final long serialVersionUID = 1L;
 		String gapString = "gap " + gap;
 		String wrapString = "wrap " + wrap;
 		//create the main panel to display in scroller
-		mainPanel = new JPanel(new MigLayout(gapString + ", " + wrapString));		
-		addItemsToPanel(items);
+		//mainPanel = new JPanel(new MigLayout(gapString + ", " + wrapString));		
+		JPanel panel = new JPanel(new MigLayout(gapString + ", " + wrapString));	
+		addItemsToPanel(items, panel);
 		
 		//save a reference to the original color & set the pressed color
 		if(items.length>0){
@@ -80,42 +84,26 @@ private static final long serialVersionUID = 1L;
 			originalColor = this.getBackground();
 			pressedColor = originalColor.darker(); 
 		}
-		return mainPanel;
+		return panel;
 	}
 //-----------------------------------------------------------------------------
-	public void addItemsToPanel(JPanel items[]){
+	public void addItemsToPanel(JPanel items[], JPanel panel){
 		for(int i=0; i<items.length; i++){
 			items[i].setBorder(BorderFactory.createRaisedBevelBorder());
 			items[i].addMouseListener(this);
-			mainPanel.add(items[i]);
+			panel.add(items[i]);
 		}
-	}
-//-----------------------------------------------------------------------------
-	public void addItemToPanel(JPanel item){
-		String constraints="";
-		
-		if(itemWidthPerc!=0){
-			constraints = "width " + itemWidthPerc;
-			//if there's also an itemHeight to be set, add a separator to the string
-			if(itemHeightPerc!=0){ constraints = constraints.concat(", "); }
-		}
-		if(itemHeightPerc!=0){
-			constraints=constraints.concat("height" + itemHeightPerc);
-		}
-		mainPanel.add(item);
 	}
 //-----------------------------------------------------------------------------
 	/**
 	 * Refresh this <code>DisplayPanel</code>'s contents based on the new
 	 * items passed in.
-	
-	public void refreshContents(JPanel[] newItems){
-		this.removeAll();
+	 */
+	public void refreshContents(JPanel[] items){
 		mainPanel.removeAll();
-		this.setViewportView(createMainPanel(newItems));
-		this.revalidate();
-		this.repaint();
-	} */
+		mainPanel = createMainPanel(items);
+		this.setViewportView(mainPanel);
+	} 
 //-----------------------------------------------------------------------------
 	/**
 	 * Sets the value indicating what percentage of the total width of the panel

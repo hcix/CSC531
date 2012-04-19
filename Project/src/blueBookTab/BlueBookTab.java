@@ -48,6 +48,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	ResourceManager rm;
 	BlueBookForm newFormDialog;
 	ArrayList<BlueBookEntry> bluebook;
+	DisplayPanel entriesScroller;
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates and sets the <code>BlueBookTab</code> to view all the
@@ -76,7 +77,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 				newFormDialog.setModal(true);
 				//refresh to display any changes
 				
-				//refreshBBtab();
+				refreshBBtab();
 
 				//refresh to display any changes
 //				entriesPanel.removeAll();
@@ -219,8 +220,6 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		JPanel entryPanel;
 		// Date prepDate;
 
-		// TODO: make scrollable!
-
 		try {
 			bluebook = DatabaseHelper.getBluebookFromDB();
 		} catch (Exception e) {
@@ -275,6 +274,66 @@ System.out.println("bluebook size = " + bluebook.size());
 		DisplayPanel itemsPanel = new DisplayPanel(items, this, 4);
 		
 		return itemsPanel;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * 
+	 */
+	public JPanel[] createItemsPanels() {
+		JPanel entryPanel;
+		// Date prepDate;
+
+		try {
+			bluebook = DatabaseHelper.getBluebookFromDB();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		int listSize = bluebook.size();
+//DEBUG
+System.out.println("bluebook size = " + bluebook.size());
+		
+		JPanel[] items = new JPanel[listSize];
+		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
+
+		int i = 0;
+		for (BlueBookEntry entry : bluebook) {
+			String listId = "" + bluebook.indexOf(entry);
+			
+			entryPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
+			
+			if (entry.getPhotoFilePath() != null) {
+				JLabel photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
+						entry.getPhoto(), 100, 100));
+				entryPanel.add(photoLabel);
+			}
+			String caseNum = "";
+			if (entry.getCaseNum() != null) {
+				caseNum = entry.getCaseNum();
+			}
+			String status = "";
+			if (entry.getStatus() != null) {
+				status = entry.getStatus();
+			}
+			String armedText = "";
+			if (entry.getWeapon() != null) {
+				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
+			}
+
+			entryPanel.add(new JLabel(armedText, SwingConstants.CENTER),
+					"alignx center,wrap");
+
+			entryPanel.add(new JLabel(" "), "split 3, aligny top");
+			entryPanel.add(new JLabel("Case#: " + caseNum));
+			entryPanel.add(new JLabel(status));
+			entryPanel.setSize(new Dimension(130, 150));
+			entryPanel.setPreferredSize(new Dimension(130, 150));
+			
+			entryPanel.setName(listId);
+			items[i] = entryPanel;
+			i++;
+		}
+		return items;
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -346,11 +405,11 @@ System.out.println("bluebook size = " + bluebook.size());
 	 * JDOC 
 	 */
 	public void refreshBBtab(){
-		
-//		entriesPanel.removeAll();
-//		entriesPanel.add(createEntriesPanel());
-//		this.revalidate();
-//		this.repaint();
+		JPanel[] newItems = createItemsPanels();
+		entriesScroller.refreshContents(newItems);
+		entriesScroller.revalidate();
+		//tabbedPane.revalidate();
+
 	}
 //-----------------------------------------------------------------------------
 	public void actionPerformed(ActionEvent ev) {

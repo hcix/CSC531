@@ -86,10 +86,9 @@ private static final long serialVersionUID = 1L;
 				//wait for the dialog to be dismissed before continuing
 				newFormDialog.setModal(true);
 				
-				refreshRecentBOLOsTab();
 				//refresh to display any changes
-				//refreshRecentBOLOsTab();
-
+				refreshRecentBOLOsTab();
+				
 				/*OLIVIA: TODO: If the new bolo created was also created as a item
 				(aka the create item from this bolo checkbox was selected) then
 				call the following two methods:
@@ -98,12 +97,6 @@ private static final long serialVersionUID = 1L;
 				Otherwise, it is not necessary to call these methods
 				*/
 				
-				//unneeded/repetative, waiting to make sure no errors b4 deleting
-				/*refresh to display any changes
-				recentBolosTab.removeAll();
-				recentBolosTab.add(createRecentBOLOsTab());
-				tabbedPane.revalidate();
-				*/
 			}
 		});
 
@@ -243,6 +236,66 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * 
+	 */
+	private JPanel[] createItemsPanels(){
+		JPanel boloPanel;
+		Date prepDate;
+
+		try {
+			boloList = DatabaseHelper.getBOLOsFromDB();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		int listSize = boloList.size();
+//DEBUG		
+System.out.println("boloList.size() = " + listSize);
+		
+		JPanel[] items = new JPanel[listSize];
+		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
+
+		int i=0;
+		for(Bolo bolo: boloList){
+			String listId = "" + boloList.indexOf(bolo);
+
+			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
+
+			String date = formatter.format(prepDate);
+			String caseNum = "";
+			if(bolo.getCaseNum()!=null){ caseNum=bolo.getCaseNum(); }
+			String status = "";
+			if(bolo.getStatus()!=null){ status=bolo.getStatus(); }
+
+			boloPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
+			
+			if(bolo.getPhoto()!=null){
+				JLabel photoLabel = new JLabel(
+						ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
+				boloPanel.add(photoLabel);
+			}
+			
+			String armedText = "";
+			if(bolo.getWeapon()!=null){ 
+				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
+			}
+
+			boloPanel.add(new JLabel(armedText, JLabel.CENTER), "alignx center,wrap");
+
+			boloPanel.add(new JLabel(date), "split 3, aligny top");
+			boloPanel.add(new JLabel("Case#: "+caseNum));
+			boloPanel.add(new JLabel(status));
+			boloPanel.setSize(new Dimension(130, 150));
+			boloPanel.setPreferredSize(new Dimension(130, 150));
+
+			boloPanel.setName(listId);
+			items[i]=boloPanel;
+			i++;
+		}
+		return items;
+	}	
+//-----------------------------------------------------------------------------
+	/**
 	 * In the <code>BOLOtab</code> create and set a recent BOLO tab as a JPanel
 	 * <p>This displays the bolos in 
 	 * 
@@ -369,16 +422,9 @@ private static final long serialVersionUID = 1L;
 
 //-----------------------------------------------------------------------------		
 	public void refreshRecentBOLOsTab(){
-		entriesScroller.removeAll();
-		entriesScroller = createRecentBOLOsTab();
+		JPanel[] newItems = createItemsPanels();
+		entriesScroller.refreshContents(newItems);
 		tabbedPane.revalidate();
-		//this.revalidate();
-		//entriesScroller.refreshContents(regenerateBOLOsList());
-		//this.revalidate();
-//		recentBolosTab.removeAll();
-//		recentBolosTab.add(createRecentBOLOsTab());
-//		this.revalidate();
-//		this.repaint();
 	}
 //-----------------------------------------------------------------------------	
 	/**
