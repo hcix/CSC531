@@ -134,6 +134,7 @@ public class DatabaseHelper {
 	 * @return bluebook - an <code>Arraylist</code> of <code>BlueBookEntry</code> objects
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	public static ArrayList<BlueBookEntry> getBluebookFromDB() throws Exception{
 		ArrayList<BlueBookEntry> bluebook = new ArrayList<BlueBookEntry>();
 		ArrayList<String> photoFileNames = new ArrayList<String>();
