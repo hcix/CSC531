@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -24,7 +26,7 @@ public class ReadItemDialog extends JDialog {
 private static final long serialVersionUID = 1L;
 	private JFrame parent;
 	private ItemToReview item;
-	private JTextField titleTextField;
+	private JTextArea titleTextField;
 	private JTextArea detailsTextPane;
 	private JPanel mainPanel;
 	String detailsText, titleText;
@@ -53,9 +55,9 @@ private static final long serialVersionUID = 1L;
 		mainPanel = new JPanel(new MigLayout());
 		
 		titleText = item.getTitle();
-		titleTextField = new JTextField();
+		titleTextField = new JTextArea();
 		Font titleFont = new Font("Serif", Font.PLAIN, 20);
-		titleTextField.setFont(titleFont);
+		//titleTextField.setFont(titleFont);
 		titleTextField.setEditable(false);
 		titleTextField.setText(titleText);
 		titleTextField.setBackground(mainPanel.getBackground());
@@ -70,6 +72,7 @@ private static final long serialVersionUID = 1L;
 		detailsTextPane.setBackground(mainPanel.getBackground());
 				
 		buttonPanel = createButtonsPanel();
+		//buttonPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY));
 		mainPanel.add(buttonPanel, "dock north");
 		mainPanel.add(titleTextField, "alignx center, wrap");
 		mainPanel.add(detailsTextPane, "alignx center");
@@ -91,7 +94,7 @@ private static final long serialVersionUID = 1L;
 		});
 		
 		JButton markAsUnreadButton = new JButton("Mark Item as Unread");
-				//SwingHelper.createImageButton("Mark Item as Unread", "icons/redCheck_32.png");
+				SwingHelper.createImageButton("Mark Item as Unread", "icons/redCheck_32.png");
 		markAsUnreadButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				System.out.println("before set false");

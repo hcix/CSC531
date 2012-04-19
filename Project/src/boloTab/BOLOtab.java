@@ -128,7 +128,7 @@ private static final long serialVersionUID = 1L;
         this.add(buttonsPanel, BorderLayout.PAGE_END);
         
         //TODO: Change below to be happening on bg thread so usr doesn't have to wait
-        newFormDialog = new BOLOform(parent, this);
+        newFormDialog = new BOLOform(rm, this);
 
 	}
 //-----------------------------------------------------------------------------
