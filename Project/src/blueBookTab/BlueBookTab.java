@@ -271,9 +271,9 @@ System.out.println("bluebook size = " + bluebook.size());
 			i++;
 		}
 
-		DisplayPanel itemsPanel = new DisplayPanel(items, this, 4);
+		DisplayPanel entriesPanel = new DisplayPanel(items, this, 4);
 		
-		return itemsPanel;
+		return entriesPanel;
 	}
 //-----------------------------------------------------------------------------
 	/**
