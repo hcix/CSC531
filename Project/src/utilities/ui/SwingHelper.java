@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.BorderFactory;
@@ -25,6 +27,9 @@ import javax.swing.SpinnerModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import net.miginfocom.swing.MigLayout;
 import userinterface.MainInterfaceWindow;
 
@@ -304,6 +309,22 @@ public class SwingHelper {
 	            Calendar.DAY_OF_MONTH);
 	    dateSpinner = SwingHelper.addLabeledSpinner(datePanel, "", toModel);       
 	    dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "MM/dd/yyyy"));
+	    dateSpinner.addChangeListener(new ChangeListener() {
+            DateFormat intFormat = new SimpleDateFormat("M");
+            DateFormat strFormat = new SimpleDateFormat("MMM");
+
+			public void stateChanged(ChangeEvent e) {
+				Date date = ((SpinnerDateModel)e.getSource()).getDate();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                int monthIndex = calendar.get(Calendar.MONTH);
+                System.out.printf("monthIndex: %d  month: %s  %s%n",
+                                   monthIndex, 
+                                   intFormat.format(date),
+                                   strFormat.format(date));
+				
+			}
+        });
 	    
 	    return datePanel;
 	}

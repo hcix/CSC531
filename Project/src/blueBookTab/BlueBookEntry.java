@@ -1,12 +1,24 @@
 package blueBookTab;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.nio.file.Path;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import javax.sql.rowset.serial.SerialBlob;
 import javax.swing.ImageIcon;
+
 import utilities.ui.ImageHandler;
 
 //-----------------------------------------------------------------------------
@@ -301,7 +313,13 @@ public class BlueBookEntry {
 	public void setVideoFilePath(Path videoFilePath) {
 		this.videoFilePath = videoFilePath;
 	}
-//-----------------------------------------------------------------------------
+public ArrayList<String> getPhotoFilePaths() {
+		return photoFilePaths;
+	}
+	public void setPhotoFilePaths(ArrayList<String> photoFilePaths) {
+		this.photoFilePaths = photoFilePaths;
+	}
+	//-----------------------------------------------------------------------------
 	/**
 	 * @return videoFilePath - where on the disk the associated video lies
 	 */
@@ -336,9 +354,9 @@ public class BlueBookEntry {
 	    //Create a prepared statement to add the crime data
 	    PreparedStatement prep = conn.prepareStatement(
 	      "REPLACE into bluebook(armed, narrative, description, location, address, affili," +
-	      " dob, name, caseNum, time, date, photoFileName, " +
-	      " videoFileName, bbID)" + 
-	      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+	      " dob, name, caseNum, time, date, photoFileName," +
+	      " videoFileName, bbID, photofilenames)" + 
+	      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
 
 	    //Add the data to the prepared statement
 	    if(isArmed){ prep.setInt(1, 1); } else { prep.setInt(1, 0); }
@@ -367,6 +385,7 @@ public class BlueBookEntry {
 	    	videoPathName = absVideoFilePath.toString();
 	    } 
 	    prep.setString(13, videoPathName);
+	    prep.setBytes(15, getBytes(photoFilePaths));
 
 	    prep.addBatch();
 
@@ -378,6 +397,37 @@ public class BlueBookEntry {
 	    //Close the connection
 	    conn.close();
 	}
+//-----------------------------------------------------------------------------
+    private byte[] getBytes(ArrayList<String> p_photoFilePaths) throws IOException, SQLException {
+    	
+    	
+    		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    		ObjectOutput out = new ObjectOutputStream(bos);   
+    		out.writeObject(p_photoFilePaths);
+    		byte[] bytes = bos.toByteArray();
+    	     
+    		//Blob blob = new SerialBlob(bytes);
+    		//blob.setBytes(1, bytes );
+    		
+    		out.close();
+    		bos.close();
+    		
+		return bytes;
+	}
+	//-----------------------------------------------------------------------------
+    public static Object getObjectFromBlob(byte[] bytes) throws SQLException, IOException, ClassNotFoundException {
+    	
+    	//blob.getBytes(1, );
+    	ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+    	//ByteArrayInputStream bis = (ByteArrayInputStream) blob.getBinaryStream();
+    	ObjectInput in = new ObjectInputStream(bis);
+    	Object o = in.readObject(); 
+    	
+    	bis.close();
+    	in.close();
+    	
+    	return o;
+    }
 //-----------------------------------------------------------------------------
 	/**
 	 * Deletes this BlueBook Entry object from the 'BlueBook Entry' table in the database.

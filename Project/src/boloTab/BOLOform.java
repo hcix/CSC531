@@ -8,6 +8,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -685,8 +686,49 @@ public class BOLOform extends JDialog {
 		title.append("BOLO #");
 		title.append(bolo.getCaseNum());
 
+<<<<<<< HEAD
 		String stringTitle = title.toString();
 		ItemToReview newItem = new ItemToReview(stringTitle,"");
 		rm.addItem(newItem);
 	}
+=======
+		  return (preparedCal.getTimeInMillis()/1000);
+	  }
+//-----------------------------------------------------------------------------
+	  /**
+	   * 
+	   * @return incidentCal.getTimeInMillis()/1000
+	   */
+	  public long getIncidentDateEpoch(){
+		  Date day = new Date();
+		  Date time = new Date();
+
+		  Calendar incidentCal = Calendar.getInstance();
+		  Calendar timeCal = Calendar.getInstance();
+
+		  day = ((SpinnerDateModel) preparedDate.getModel()).getDate();
+		  time = ((SpinnerDateModel) preparedTime.getModel()).getDate();
+		  timeCal.setTime(time);
+
+		  incidentCal.setTime(day);
+		  incidentCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
+		  incidentCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
+		  incidentCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
+
+		  SimpleDateFormat df = new SimpleDateFormat();
+	      df.applyPattern("dd/MM/yyyy hh:mm a");
+	      System.out.println(df.format(incidentCal.getTime()));
+	      
+		  return (incidentCal.getTimeInMillis()/1000); 
+	  }
+//-----------------------------------------------------------------------------	
+	  /**
+	   * JDOC
+	   * @return this.newBOLOWascreated
+	   */
+	  public boolean isNewBOLOWascreated(){
+		  return this.newBOLOWascreated;
+	  }
+//-----------------------------------------------------------------------------
+>>>>>>> 122342e36f4224abb1cd97776152019918527907
 }

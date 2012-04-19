@@ -1,5 +1,6 @@
 package blueBookTab;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -7,6 +8,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.nio.file.Path;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -60,6 +64,9 @@ public class BlueBookForm extends JDialog {
 	/** a reference to the main <code>BlueBooktab</code> used to tell 
 	 * <code>BlueBooktab</code> to refresh its contents after a delete operation */
 	BlueBookTab bbTab;
+	ArrayList<String> photoFilePaths = new ArrayList<String>();
+	JPanel photoOuterPanel;
+	JLabel noPhotoLabel;
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates a pop-up window, sets the window and creates a new 
@@ -274,12 +281,16 @@ public class BlueBookForm extends JDialog {
 	 * @return photoPanel
 	 */ 
 	 private JPanel createPhotoPanel(){
+		photoOuterPanel = new JPanel(new MigLayout("fill"));
+		//photoOuterPanel.setSize(500, 250);
+		
 		final JPanel photoPanel = new JPanel(new MigLayout());
 		photoArea = photoPanel;
 		//Create initial no-photo place holder photo
 		ImageIcon noPhotoImage = ImageHandler.createImageIcon("images/unknownPerson.jpeg");
-		JLabel noPhotoLabel = new JLabel(noPhotoImage);
+		noPhotoLabel = new JLabel(noPhotoImage);
 		photoPanel.add(noPhotoLabel, "span, wrap");
+		photoOuterPanel.add(photoPanel, "spanx,grow,wrap");
 		
 		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", "icons/camera.png");
 		addPhotoButton.setToolTipText("Attach a photo to this bbEntry");
@@ -288,9 +299,10 @@ public class BlueBookForm extends JDialog {
 				chooseAndAddPhoto(photoPanel);
 			}
 		});
-		photoPanel.add(addPhotoButton);
-		
-		return photoPanel;
+		photoOuterPanel.add(addPhotoButton);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.add(photoOuterPanel);
+		return photoOuterPanel;
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -299,7 +311,7 @@ public class BlueBookForm extends JDialog {
 	 private void saveAndClose( ) {
 		//place the info from the fields into a bbEntry object
 		 putInfoIntoBlueBookEntry();
-		 
+		 bbEntry.setPhotoFilePaths(photoFilePaths);
 		 //add the bbEntry object's info to the database
 		 try {
 			bbEntry.addToDB();
@@ -397,11 +409,15 @@ public class BlueBookForm extends JDialog {
 				//if the user pressed the set photo button
 				if(resizeDialog.getNewPhotoFilePath()!=null){
 					bbEntry.setPhotoFilePath(resizeDialog.getNewPhotoFilePath());
-					photoPanel.removeAll();
+					photoFilePaths.add(resizeDialog.getNewPhotoFilePath().toString());
 					
-					photoPanel.add(new JLabel(resizeDialog.getResizedImgIcon()));
-
-					(photoPanel.getParent()).validate();
+					//remove placeholder
+					photoArea.remove(noPhotoLabel);
+					JPanel newPanel = new JPanel();
+					newPanel.add(new JLabel(resizeDialog.getResizedImgIcon()), "span, wrap");
+					photoOuterPanel.add(newPanel);
+					//photoArea.add(new JLabel(resizeDialog.getResizedImgIcon()));
+				    (photoArea.getParent()).validate();
 				}
 
 			}
