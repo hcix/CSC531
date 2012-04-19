@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -644,6 +645,10 @@ private static final long serialVersionUID = 1L;
 		  incidentCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
 		  incidentCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
 
+		  SimpleDateFormat df = new SimpleDateFormat();
+	      df.applyPattern("dd/MM/yyyy hh:mm a");
+	      System.out.println(df.format(incidentCal.getTime()));
+	      
 		  return (incidentCal.getTimeInMillis()/1000); 
 	  }
 //-----------------------------------------------------------------------------	
