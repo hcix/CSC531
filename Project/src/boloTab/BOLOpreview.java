@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import program.ResourceManager;
 import net.miginfocom.swing.MigLayout;
 import utilities.ui.ImageHandler;
 import utilities.ui.SwingHelper;
@@ -40,6 +41,7 @@ private static final long serialVersionUID = 1L;
 	 * <code>BOLOtab</code> to refresh its contents after a delete operation */
 	BOLOtab bolotab;
 	JPanel dialogPanel;
+	ResourceManager rm;
 	boolean newBOLOWascreated;
 //-----------------------------------------------------------------------------
 	/**
@@ -49,13 +51,14 @@ private static final long serialVersionUID = 1L;
 	 * @param parent
 	 * @param bolo
 	 */
-	public BOLOpreview(JFrame parent, BOLOtab bolotab, Bolo bolo){
-		super(parent, "BOLO", true);
+	public BOLOpreview(ResourceManager rm, BOLOtab bolotab, Bolo bolo){
+		super(rm.getGuiParent(), "BOLO", true);
 
 		//BOLO object to load info from
 		this.bolo = bolo;
 		this.parent = parent;
 		this.bolotab=bolotab;
+		this.rm=rm;
 		
 		//Set the size of the page
 		this.setPreferredSize(new Dimension(800,900));
@@ -295,7 +298,7 @@ private static final long serialVersionUID = 1L;
 	    editButton.addActionListener(new ActionListener( ) {
 	    	public void actionPerformed(ActionEvent e) {
 	    		//BOLO form dialog
-				BOLOform formDialog = new BOLOform(parent, bolotab, bolo);
+				BOLOform formDialog = new BOLOform(rm, bolotab, bolo);
 				setVisible(false);
 				formDialog.setVisible(true);
 	    	}

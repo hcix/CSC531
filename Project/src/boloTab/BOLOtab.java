@@ -21,13 +21,12 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import blueBookTab.BlueBookEntry;
-import blueBookTab.BlueBookForm;
 import net.miginfocom.swing.MigLayout;
+import program.ResourceManager;
 import utilities.DatabaseHelper;
 import utilities.SearchHelper;
-import utilities.ui.ImageHandler;
 import utilities.ui.DisplayPanel;
+import utilities.ui.ImageHandler;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
@@ -44,6 +43,7 @@ private static final long serialVersionUID = 1L;
 	JDialog searchDialog;
 	JTextField caseNumField;
 	JComboBox<String> statusList;
+	ResourceManager rm;
 //-----------------------------------------------------------------------------
 	/**
 	 * Create the <code>BOLOtab</code> to hold Recent <code>Bolo</code>s and 
@@ -51,9 +51,9 @@ private static final long serialVersionUID = 1L;
 	 * 
 	 * @param parent 
 	 */
-	public BOLOtab(final JFrame parent){
+	public BOLOtab(ResourceManager rm){
 		this.setLayout(new BorderLayout());
-
+		this.rm=rm;
 		this.parent = parent;
 		
 		
@@ -132,7 +132,8 @@ private static final long serialVersionUID = 1L;
         this.add(buttonsPanel, BorderLayout.PAGE_END);
         
         //TODO: Change below to be happening on bg thread so usr doesn't have to wait
-        newFormDialog = new BOLOform(parent, this);
+        newFormDialog = new BOLOform(rm, this);
+
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -371,7 +372,7 @@ private static final long serialVersionUID = 1L;
 		int id = Integer.valueOf(listId);
 
 		Bolo selectedBOLO = boloList.get(id);
-		BOLOpreview preview = new BOLOpreview(parent, this, selectedBOLO);
+		BOLOpreview preview = new BOLOpreview(rm, this, selectedBOLO);
 
 		preview.setVisible(true);
 //		preview.setModal(true);

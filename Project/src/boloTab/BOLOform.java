@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -23,9 +24,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+
 import net.miginfocom.swing.MigLayout;
+import program.ResourceManager;
 import utilities.FileHelper;
 import utilities.ui.ImageHandler;
 import utilities.ui.ImagePreview;
@@ -46,6 +47,7 @@ private static final long serialVersionUID = 1L;
 	JComboBox<String> statusField;
 	JSpinner incidentDate, incidentTime, preparedDate, preparedTime;
 	Bolo bolo;
+	ResourceManager rm;
 	JFrame parent;
 	JPanel photoArea;
 	JPanel dialogPanel;
@@ -61,9 +63,9 @@ private static final long serialVersionUID = 1L;
 	 * 
 	 * @param parent
 	 */
-	public BOLOform(JFrame parent, BOLOtab bolotab){
-		super(parent, "New BOLO", true);
-
+	public BOLOform(ResourceManager rm, BOLOtab bolotab){
+		super(rm.getGuiParent(), "New BOLO", true);
+		this.rm=rm;
 		this.parent = parent;
 		this.bolotab=bolotab;
 
@@ -141,8 +143,8 @@ private static final long serialVersionUID = 1L;
 	 * @param bolo
 	 * @see loadFromExistingBOLO()
 	 */
-	public BOLOform(JFrame parent, BOLOtab bolotab, Bolo bolo){
-		this(parent, bolotab);
+	public BOLOform(ResourceManager rm, BOLOtab bolotab, Bolo bolo){
+		this(rm, bolotab);
 		this.bolo = bolo;
 		loadFromExistingBOLO();
 	}
@@ -362,7 +364,7 @@ private static final long serialVersionUID = 1L;
 	    	public void actionPerformed(ActionEvent e) {
 	    		//setVisible(false);
 	    		putInfoIntoBoloObject();
-	    		BOLOpreview preview = new BOLOpreview(parent, bolotab, bolo);
+	    		BOLOpreview preview = new BOLOpreview(rm, bolotab, bolo);
 	    		preview.setVisible(true);
 	    		preview.setModal(true);
 	    		if(preview.isNewBOLOWascreated()){
@@ -394,6 +396,7 @@ private static final long serialVersionUID = 1L;
 
 		//place the info from the fields into a BOLO object
 		 putInfoIntoBoloObject();
+		 bolo.createItemToReview();
 
 		 //add the BOLO object's info to the database
 		 try {
