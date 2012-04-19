@@ -399,29 +399,27 @@ public ArrayList<String> getPhotoFilePaths() {
 	}
 //-----------------------------------------------------------------------------
     private byte[] getBytes(ArrayList<String> p_photoFilePaths) throws IOException, SQLException {
-    	
+    	    byte[] bytes = null;
     	
     		ByteArrayOutputStream bos = new ByteArrayOutputStream();
     		ObjectOutput out = new ObjectOutputStream(bos);   
     		out.writeObject(p_photoFilePaths);
-    		byte[] bytes = bos.toByteArray();
-    	     
-    		//Blob blob = new SerialBlob(bytes);
-    		//blob.setBytes(1, bytes );
     		
     		out.close();
+    		out.flush();
     		bos.close();
+    		bytes = bos.toByteArray();
     		
 		return bytes;
 	}
 	//-----------------------------------------------------------------------------
-    public static Object getObjectFromBlob(byte[] bytes) throws SQLException, IOException, ClassNotFoundException {
-    	
+    public static Object getObjectFromBytes(byte[] bytes) throws SQLException, IOException, ClassNotFoundException {
+    	Object o = null;
     	//blob.getBytes(1, );
     	ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
     	//ByteArrayInputStream bis = (ByteArrayInputStream) blob.getBinaryStream();
     	ObjectInput in = new ObjectInputStream(bis);
-    	Object o = in.readObject(); 
+    	o = in.readObject(); 
     	
     	bis.close();
     	in.close();

@@ -63,7 +63,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		this.rm=rm;
 		
 		//Create entries display area
-		DisplayPanel entriesScroller = createEntriesPanel();
+		entriesScroller = createEntriesPanel();
 		
 		//Create New Entry button
 		JButton newEntryButton = SwingHelper.createImageButton("Create Entry",
