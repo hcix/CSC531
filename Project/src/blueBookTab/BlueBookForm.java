@@ -9,6 +9,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -298,10 +299,38 @@ public class BlueBookForm extends JDialog {
 				chooseAndAddPhoto(photoPanel);
 			}
 		});
+		
+		JButton addVideoButton = SwingHelper.createImageButton("Add a Video", 
+				"icons/videoCamera.png");
+		addVideoButton.setToolTipText("Attach a video to this BOLO");
+		addVideoButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				loadVideo();
+				
+			}
+		});
+		
 		photoOuterPanel.add(addPhotoButton);
+		photoOuterPanel.add(addVideoButton);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.add(photoOuterPanel);
 		return photoOuterPanel;
+	}
+	 
+//-----------------------------------------------------------------------------
+	private void loadVideo() {
+	    // show choose photo dialog
+		final JFileChooser fc = new JFileChooser();
+		int returnVal = fc.showOpenDialog(this);
+
+		// if a photo was selected, add it to BOLO and load into photo area
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			// copy the chosen photo into the program's 'Photos' directory
+			File file = fc.getSelectedFile();
+			bbEntry.setVideoFilePath(Paths.get(file.getAbsolutePath()));
+		}		
 	}
 //-----------------------------------------------------------------------------
 	/**

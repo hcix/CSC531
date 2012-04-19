@@ -9,15 +9,19 @@ import java.awt.event.ActionListener;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import userinterface.MainInterfaceWindow;
@@ -410,7 +414,8 @@ System.out.println("bluebook size = " + bluebook.size());
 		entriesScroller.revalidate();
 	}
 //-----------------------------------------------------------------------------
-	public void actionPerformed(ActionEvent ev) {
+	public void actionPerformed(ActionEvent ev) {	
+	    
 		//get which entry was click
 		String listId = ev.getActionCommand();
 		int id = Integer.valueOf(listId);

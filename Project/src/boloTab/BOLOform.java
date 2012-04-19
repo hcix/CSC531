@@ -8,6 +8,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +22,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -31,6 +34,7 @@ import javax.swing.SpinnerDateModel;
 import net.miginfocom.swing.MigLayout;
 import progAdmin.itemsToReview.ItemToReview;
 import program.ResourceManager;
+import userinterface.HomeTab;
 import utilities.FileHelper;
 import utilities.ui.ImageHandler;
 import utilities.ui.ImagePreview;
@@ -339,6 +343,14 @@ public class BOLOform extends JDialog {
 		JButton addVideoButton = SwingHelper.createImageButton("Add a Video", 
 				"icons/videoCamera.png");
 		addVideoButton.setToolTipText("Attach a video to this BOLO");
+		addVideoButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				loadVideo();
+				
+			}
+		});
 
 
 		JPanel buttonsPanel = new JPanel();
@@ -349,7 +361,20 @@ public class BOLOform extends JDialog {
 
 		return photoVideoPanel;
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+	private void loadVideo() {
+		// show choose photo dialog
+			final JFileChooser fc = new JFileChooser();
+			int returnVal = fc.showOpenDialog(parent);
+
+			// if a photo was selected, add it to BOLO and load into photo area
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				// copy the chosen photo into the program's 'Photos' directory
+				File file = fc.getSelectedFile();
+				bolo.setVideoFilePath(Paths.get(file.getAbsolutePath()));
+			}	
+	}	
+//-----------------------------------------------------------------------------
 	/**
 	 * 
 	 */
