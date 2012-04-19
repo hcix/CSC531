@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -89,6 +90,7 @@ private static final long serialVersionUID = 1L;
 
 		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
 		this.addWindowListener(new WindowAdapter( ) {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				closeAndCancel();
 			}
@@ -235,6 +237,7 @@ private static final long serialVersionUID = 1L;
 		//row 1
 		incidentDate = SwingHelper.addDateSpinner(infoPanel, "Date of Incident");
 		incidentTime = SwingHelper.addTimeSpinner(infoPanel, "Time of Incident");
+		
 		infoPanel.add(referenceLabel, "align");
 		infoPanel.add(referenceField, "align, wrap");
 		infoPanel.add(caseNumLabel, "align");
@@ -312,6 +315,7 @@ private static final long serialVersionUID = 1L;
 				"icons/camera.png");
 		addPhotoButton.setToolTipText("Attach a photo to this BOLO");
 		addPhotoButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				chooseAndAddPhoto(photoPanel);
 			}
@@ -343,6 +347,7 @@ private static final long serialVersionUID = 1L;
 				"icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				closeAndCancel();
 			}
@@ -353,7 +358,8 @@ private static final long serialVersionUID = 1L;
 	    		"icons/save_48.png");
 	    saveButton.setToolTipText("Save BOLO");
 	    saveButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		saveAndClose();
 	    	}
 	    });
@@ -362,7 +368,8 @@ private static final long serialVersionUID = 1L;
 	    JButton previewButton = new JButton("Preview");
 	    previewButton.setToolTipText("Preview and print final BOLO document");
 	    previewButton.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		//setVisible(false);
 	    		putInfoIntoBoloObject();
 	    		BOLOpreview preview = new BOLOpreview(rm, bolotab, bolo);
@@ -463,8 +470,9 @@ private static final long serialVersionUID = 1L;
 
 
 		 //set the times
-		 bolo.setprepDate(getPrepDateEpoch());
+		 //bolo.setprepDate(getPrepDateEpoch());
 		 bolo.setincidentDate(getIncidentDateEpoch());
+		 bolo.setincidentTime(getIncidentTimeEpoch());
 
 	}
 //-----------------------------------------------------------------------------
@@ -492,9 +500,9 @@ private static final long serialVersionUID = 1L;
 		 narrativeText.setText(bolo.getNarrative());
 
 		 //TODO: set the times
-		 
-		 
-		 
+		 incidentDate.setValue(new Date (bolo.getincidentDate()));
+		 incidentTime.setValue(new Date (bolo.getincidentTime()));
+		 		 
 		 //set picture
 		 if(bolo.getPhotoFilePath()!=null){
 			 ImageIcon photo = ImageHandler.getScaledImageIcon(
@@ -627,31 +635,40 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	  /**
 	   * 
-	   * @return incidentCal.getTimeInMillis()/1000
+	   * @return 
 	   */
 	  public long getIncidentDateEpoch(){
-		  Date day = new Date();
-		  Date time = new Date();
+		  Date incidentDateLong; //to be converted
 
-		  Calendar incidentCal = Calendar.getInstance();
-		  Calendar timeCal = Calendar.getInstance();
-
-		  day = ((SpinnerDateModel) preparedDate.getModel()).getDate();
-		  time = ((SpinnerDateModel) preparedTime.getModel()).getDate();
-		  timeCal.setTime(time);
-
-		  incidentCal.setTime(day);
-		  incidentCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
-		  incidentCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
-		  incidentCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
-
+		  incidentDate.getAccessibleContext(); //grabs from the JSpinner
+		  incidentDateLong = (Date)incidentDate.getValue();
+			  
+		  //error checking
 		  SimpleDateFormat df = new SimpleDateFormat();
-	      df.applyPattern("dd/MM/yyyy hh:mm a");
-	      System.out.println(df.format(incidentCal.getTime()));
+		  df.applyPattern("dd/MM/yyyy");
+	      System.out.println(df.format((Date)incidentDate.getValue()));
+	      System.out.println(incidentDateLong.getTime());
 	      
-		  return (incidentCal.getTimeInMillis()/1000); 
+	      
+		  
+		  return (incidentDateLong.getTime());
 	  }
 //-----------------------------------------------------------------------------	
+	  public long getIncidentTimeEpoch(){
+		  Date incidentTimeLong;
+	      incidentTime.getAccessibleContext();//to be converted
+	      incidentTimeLong = (Date)incidentTime.getValue();
+	      
+	      //error checking
+	      SimpleDateFormat df1 = new SimpleDateFormat();
+		  df1.applyPattern("dd/MM/yyyy hh:mm a");
+	      System.out.println(df1.format((Date)incidentTime.getValue()));
+	      System.out.println(incidentTimeLong.getTime());
+		  
+		  return (incidentTimeLong.getTime());
+	  }
+//-----------------------------------------------------------------------------	
+
 	  /**
 	   * JDOC
 	   * @return this.newBOLOWascreated

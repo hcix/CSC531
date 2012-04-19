@@ -68,6 +68,7 @@ private static final long serialVersionUID = 1L;
 
 			//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
 			this.addWindowListener(new WindowAdapter( ) {
+				@Override
 				public void windowClosing(WindowEvent e) {
 					closeAndCancel();
 				}
@@ -120,6 +121,7 @@ private static final long serialVersionUID = 1L;
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_32.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				closeAndCancel();
 			}
@@ -129,7 +131,8 @@ private static final long serialVersionUID = 1L;
 	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_32.png");
 	    saveButton.setToolTipText("Save BlueBookEntry");
 	    saveButton.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		saveAndClose();
 	    	}
 	    });
@@ -145,7 +148,8 @@ private static final long serialVersionUID = 1L;
 	    		"icons/edit_32.png");
 	    editButton.setToolTipText("Edit this BlueBookEntry");
 	    editButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		//BlueBookEntry form dialog
 				BlueBookForm formDialog = new BlueBookForm(parent, bbTab, bbEntry);
 				setVisible(false);
@@ -158,7 +162,8 @@ private static final long serialVersionUID = 1L;
 	    		SwingHelper.createImageButton("Print", "icons/print_32.png");
 	    printButton.setToolTipText("Print this BlueBookEntry document");
 	    printButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	 //   		PrintHelper ph = new PrintHelper(dialogPanel);
 	    	}
 	    });
@@ -167,7 +172,8 @@ private static final long serialVersionUID = 1L;
 	    JButton emailButton = SwingHelper.createImageButton("Email", "icons/email32.png");
 	    emailButton.setToolTipText("Email this BlueBookEntry document");
 	    emailButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		//TODO implement email
 	    	}
 	    });
@@ -209,6 +215,7 @@ private static final long serialVersionUID = 1L;
 		 this.dispose();	
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public void actionPerformed(ActionEvent ev) {
 		//attempt to delete the currently displayed BlueBookEntry & close this dialog
 		deleteEntryAndClose();	

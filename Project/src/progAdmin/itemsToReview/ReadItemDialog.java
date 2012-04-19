@@ -9,13 +9,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import utilities.ui.SwingHelper;
 
@@ -87,6 +85,7 @@ private static final long serialVersionUID = 1L;
 				SwingHelper.createImageButton("Mark Item as Read", 
 						"icons/redCheck_32.png");
 		markAsReadButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent e){
 				item.setReviewed(true);
 				saveAndClose();
@@ -96,6 +95,7 @@ private static final long serialVersionUID = 1L;
 		JButton markAsUnreadButton = new JButton("Mark Item as Unread");
 				SwingHelper.createImageButton("Mark Item as Unread", "icons/redCheck_32.png");
 		markAsUnreadButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent e){
 				System.out.println("before set false");
 				item.setReviewed(false);
@@ -108,6 +108,7 @@ private static final long serialVersionUID = 1L;
 		editButton = SwingHelper.createImageButton("Edit Item", 
 				"icons/edit_32.png");
 		editButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent e){
 				editButton.setVisible(false);
 				editButton.setEnabled(false);
@@ -122,6 +123,7 @@ private static final long serialVersionUID = 1L;
 		saveButton = SwingHelper.createImageButton("Save Item", 
 				"icons/save_32.png");
 		saveButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent e){
 				saveAndClose();
 			 }
