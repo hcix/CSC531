@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import program.ResourceManager;
 import net.miginfocom.swing.MigLayout;
 import utilities.ui.ImageHandler;
 import utilities.ui.SwingHelper;
@@ -34,12 +35,11 @@ private static final long serialVersionUID = 1L;
 	String otherDescrip, narrative;
 	/** the BOLO holding the info currently displayed in this dialog **/
 	Bolo bolo;
-	/** a reference to the main JFrame used to create & display this dialog */
-	JFrame parent;
 	/** a reference to the main <code>BOLOtab</code> used to tell 
 	 * <code>BOLOtab</code> to refresh its contents after a delete operation */
 	BOLOtab bolotab;
 	JPanel dialogPanel;
+	ResourceManager rm;
 	boolean newBOLOWascreated;
 //-----------------------------------------------------------------------------
 	/**
@@ -49,13 +49,13 @@ private static final long serialVersionUID = 1L;
 	 * @param parent
 	 * @param bolo
 	 */
-	public BOLOpreview(JFrame parent, BOLOtab bolotab, Bolo bolo){
-		super(parent, "BOLO", true);
+	public BOLOpreview(ResourceManager rm, BOLOtab bolotab, Bolo bolo){
+		super(rm.getGuiParent(), "BOLO", true);
 
 		//BOLO object to load info from
 		this.bolo = bolo;
-		this.parent = parent;
 		this.bolotab=bolotab;
+		this.rm=rm;
 		
 		//Set the size of the page
 		this.setPreferredSize(new Dimension(800,900));
@@ -140,7 +140,6 @@ private static final long serialVersionUID = 1L;
 				"Approx. Weight: ", "Build: ", "Eyes: ", "Hair: ", 
 				"Other Description/Info: " 
 				};
-		
 		
 		//get the info from the BOLO object
 		String[] fieldsArray = bolo.getStringFields();
@@ -240,12 +239,12 @@ private static final long serialVersionUID = 1L;
 		JPanel photoVideoPanel = new JPanel(new MigLayout());
 		photoVideoPanel.setBackground(Color.WHITE);
 		
-		Path photoPath = bolo.getPhotoFilePath();
-		
-		if(photoPath!=null){
+		if(bolo.getPhotoFilePath()!=null){
+			Path photoPath = bolo.getPhotoFilePath();
 			ImageIcon photo = ImageHandler.getScaledImageIcon(photoPath, 200, 299);
 			photoVideoPanel.add(new JLabel(photo));
 		}
+		
 		return photoVideoPanel;
 	}
 //-----------------------------------------------------------------------------
@@ -296,7 +295,7 @@ private static final long serialVersionUID = 1L;
 	    editButton.addActionListener(new ActionListener( ) {
 	    	public void actionPerformed(ActionEvent e) {
 	    		//BOLO form dialog
-				BOLOform formDialog = new BOLOform(parent, bolotab, bolo);
+				BOLOform formDialog = new BOLOform(rm, bolotab, bolo);
 				setVisible(false);
 				formDialog.setVisible(true);
 	    	}
@@ -374,7 +373,7 @@ private static final long serialVersionUID = 1L;
 		} catch (Exception ex) {
 			//delete unsuccesssful, show error message and close
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(parent, "Error occured while " +
+			JOptionPane.showMessageDialog(rm.getGuiParent(), "Error occured while " +
 					"attempting to delete BOLO from database", "Database Error",
 					JOptionPane.ERROR_MESSAGE);
 			this.setVisible(false);
@@ -388,7 +387,7 @@ private static final long serialVersionUID = 1L;
 		
 		this.setVisible(false);
 		
-		JOptionPane.showMessageDialog(parent, "This BOLO has been deleted.", 
+		JOptionPane.showMessageDialog(rm.getGuiParent(), "This BOLO has been deleted.", 
 				"BOLO Deleted", JOptionPane.INFORMATION_MESSAGE);
 		
 	}

@@ -136,6 +136,7 @@ public class DatabaseHelper {
 	 */
 	public static ArrayList<BlueBookEntry> getBluebookFromDB() throws Exception{
 		ArrayList<BlueBookEntry> bluebook = new ArrayList<BlueBookEntry>();
+		ArrayList<String> photoFileNames = new ArrayList<String>();
 		String name, caseNum, time, date;
 		String narrative, description, location, address, affili, dob;
 		String preparedBy, approvedBy, photoPath, videoPath;
@@ -155,13 +156,14 @@ public class DatabaseHelper {
 	    BlueBookEntry entry;
 	    while (allEntries.next()) {
 	    	entry = new BlueBookEntry();
-	    	entry.setBluebkID(allEntries.getInt("bbID"));
+	    	entry.setBbID(allEntries.getInt("bbID"));
 	    	
 	    	name = allEntries.getString("name");
 	        if(name!=null){ entry.setName(name); }
-	        narrative = allEntries.getString("narrartive");
-	        if(narrative!=null){ entry.setNarrative(narrative); }
-	       // preparedBy = allEntries.getString("preparedBy");
+	     //   narrative = allEntries.getString("narrative");
+	     //   if(narrative!=null){ entry.setNarrative(narrative); }
+	       
+	        // preparedBy = allEntries.getString("preparedBy");
 	       // if(preparedBy!=null){ entry.setPreparedBy(preparedBy); }
 	        address = allEntries.getString("address");
 	        if(address!=null){ entry.setAddress(address); }
@@ -183,6 +185,17 @@ public class DatabaseHelper {
 	        } else { 
 	        	System.out.printf("\nphoto path is null\n");
 	        }
+	        try {
+				photoFileNames = (ArrayList<String>)( BlueBookEntry.
+						getObjectFromBlob(allEntries.getBytes("photofilenames")));
+				for (String string : photoFileNames) {
+					System.out.println("String file name is : " + string);
+					entry.setPhotoFilePaths(photoFileNames);
+				}
+			} catch (Exception e) {
+				System.out.println("Couldn't get from byte array to object");
+				e.printStackTrace();
+			}	        
 	        bluebook.add(entry);
 	    }
 	    	

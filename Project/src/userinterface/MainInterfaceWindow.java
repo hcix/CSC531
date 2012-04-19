@@ -40,7 +40,7 @@ private static final long serialVersionUID = 1L;
 		homeTab.setPreferredSize(dim);
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         
-        boloTab = new BOLOtab(parent);
+        boloTab = new BOLOtab(rm);
         boloTab.setPreferredSize(dim);
         tabbedPane.addTab("BOLOs", boloTab);
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);

@@ -21,12 +21,12 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import blueBookTab.BlueBookEntry;
 import net.miginfocom.swing.MigLayout;
+import program.ResourceManager;
 import utilities.DatabaseHelper;
 import utilities.SearchHelper;
-import utilities.ui.ImageHandler;
 import utilities.ui.DisplayPanel;
+import utilities.ui.ImageHandler;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
@@ -38,11 +38,11 @@ public class BOLOtab extends JPanel implements ActionListener {
 private static final long serialVersionUID = 1L;
 	BOLOform newFormDialog;
 	ArrayList<Bolo> boloList;
-	JFrame parent;
 	JPanel recentBolosTab;
 	JDialog searchDialog;
 	JTextField caseNumField;
 	JComboBox<String> statusList;
+	ResourceManager rm;
 //-----------------------------------------------------------------------------
 	/**
 	 * Create the <code>BOLOtab</code> to hold Recent <code>Bolo</code>s and 
@@ -50,11 +50,9 @@ private static final long serialVersionUID = 1L;
 	 * 
 	 * @param parent 
 	 */
-	public BOLOtab(final JFrame parent){
+	public BOLOtab(final ResourceManager rm){
 		this.setLayout(new BorderLayout());
-
-		this.parent = parent;
-		
+		this.rm=rm;
 		
 		//Create BOLOs tabbed display area
 		final JTabbedPane tabbedPane = new JTabbedPane();
@@ -81,13 +79,16 @@ private static final long serialVersionUID = 1L;
 				newFormDialog.setVisible(true);	
 				//wait for the dialog to be dismissed before continuing
 				newFormDialog.setModal(true);
+				
 				//refresh to display any changes
 				refreshRecentBOLOsTab();
 
-				//refresh to display any changes
+				//unneeded/repetative, waiting to make sure no errors b4 deleting
+				/*refresh to display any changes
 				recentBolosTab.removeAll();
 				recentBolosTab.add(createRecentBOLOsTab());
 				tabbedPane.revalidate();
+				*/
 			}
 		});
 
@@ -103,7 +104,7 @@ private static final long serialVersionUID = 1L;
 
 				//In response to a button click:
 			//	int returnVal = 
-						fc.showOpenDialog(parent);
+						fc.showOpenDialog(rm.getGuiParent());
 			}
 		});
 
@@ -112,7 +113,7 @@ private static final long serialVersionUID = 1L;
 				"icons/search.png");
 		searchButton.addActionListener(new ActionListener() {
 			//Search dialog
-			JDialog searchDialog = createSearchDialog(parent);
+			JDialog searchDialog = createSearchDialog(rm.getGuiParent());
 			public void actionPerformed(ActionEvent e){
 				searchDialog.setVisible(true);
 			}
@@ -128,7 +129,7 @@ private static final long serialVersionUID = 1L;
         this.add(buttonsPanel, BorderLayout.PAGE_END);
         
         //TODO: Change below to be happening on bg thread so usr doesn't have to wait
-        newFormDialog = new BOLOform(parent, this);
+        newFormDialog = new BOLOform(rm, this);
 
 	}
 //-----------------------------------------------------------------------------
@@ -215,7 +216,7 @@ private static final long serialVersionUID = 1L;
 			System.out.println("Couldn't run search in bolo"); 
 			e.printStackTrace();
 		}
-		JDialog searchDialog = new JDialog(parent, "Search Results", true);
+		JDialog searchDialog = new JDialog(rm.getGuiParent(), "Search Results", true);
 		JPanel searchEntriesPanel = createSearchBOLOsTab(searchResults);
 		searchDialog.add(searchEntriesPanel, BorderLayout.CENTER);
 		searchDialog.setLocationByPlatform(true);
@@ -254,9 +255,8 @@ private static final long serialVersionUID = 1L;
 
 			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
 
-			JLabel photoLabel = new JLabel(
-					ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
-
+			
+			
 			String date = formatter.format(prepDate);
 			String caseNum = "";
 			if(bolo.getCaseNum()!=null){ caseNum=bolo.getCaseNum(); }
@@ -264,8 +264,11 @@ private static final long serialVersionUID = 1L;
 			if(bolo.getStatus()!=null){ status=bolo.getStatus(); }
 
 			boloPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
-			boloPanel.add(photoLabel);
-
+			if(bolo.getPhoto()!=null){
+				JLabel photoLabel = new JLabel(
+						ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
+				boloPanel.add(photoLabel);
+			}
 			String armedText = "";
 			if(bolo.getWeapon()!=null){ 
 				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
@@ -366,7 +369,7 @@ private static final long serialVersionUID = 1L;
 		int id = Integer.valueOf(listId);
 
 		Bolo selectedBOLO = boloList.get(id);
-		BOLOpreview preview = new BOLOpreview(parent, this, selectedBOLO);
+		BOLOpreview preview = new BOLOpreview(rm, this, selectedBOLO);
 
 		preview.setVisible(true);
 //		preview.setModal(true);

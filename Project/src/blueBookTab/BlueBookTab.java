@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import boloTab.BOLOform;
 import net.miginfocom.swing.MigLayout;
 import utilities.DatabaseHelper;
 import utilities.SearchHelper;
@@ -39,11 +40,13 @@ import utilities.ui.SwingHelper;
 public class BlueBookTab extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	ArrayList<BlueBookEntry> bluebook;
+	BlueBookForm newFormDialog;
 	JFrame parent;
 	JTextField caseNumField;
 	JTextField locationField;
 	JTextField nameField;
-	// -----------------------------------------------------------------------------
+	JPanel entriesPanel;
+//-----------------------------------------------------------------------------
 	/**
 	 * Creates and sets the <code>BlueBookTab</code> to view all the
 	 * <code>BlueBookEntry</code>s, create <code>BlueBookEntry</code>s and
@@ -54,21 +57,34 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	public BlueBookTab(final JFrame parent) {
 		this.setLayout(new BorderLayout());
 		this.parent = parent;
-
-		JPanel entriesPanel = createEntriesPanel();
-		// Create a button to create a new Blue Book entry
+		
+		final JPanel panel = new JPanel();
+		
+		//Create entries display area
+		entriesPanel = createEntriesPanel();
+		panel.add(entriesPanel);
+		
+		//Create New Entry button
 		JButton newEntryButton = SwingHelper.createImageButton("Create Entry",
 				"icons/plusSign_48.png");
 		newEntryButton.addActionListener(new ActionListener() {
 			// Create new Blue Book entry form dialog
-			BlueBookForm formDialog = new BlueBookForm(parent);
-
 			public void actionPerformed(ActionEvent e) {
-				formDialog.setVisible(true);
+				//Display the new BlueBookEntry form dialog
+				newFormDialog.setVisible(true);
+				//wait for the dialog to be dismissed before continuing
+				newFormDialog.setModal(true);
+				//refresh to display any changes
+				refreshBBtab();
+
+				//refresh to display any changes
+				entriesPanel.removeAll();
+				entriesPanel.add(createEntriesPanel());
+				panel.revalidate();
 			}
 		});
 
-		// Create search button
+		//Search button
 		JButton searchButton = SwingHelper.createImageButton(
 				"Search Blue Book", "icons/search.png");
 		searchButton.addActionListener(new ActionListener() {
@@ -82,23 +98,20 @@ public class BlueBookTab extends JPanel implements ActionListener {
 
 		// add the components to this panel
 
-		// this.add(tabbedPane, BorderLayout.CENTER);
-		this.add(entriesPanel, BorderLayout.CENTER);
+		//this.add(entriesPanel, BorderLayout.CENTER);
+		this.add(panel, BorderLayout.CENTER);
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(newEntryButton);
 		buttonsPanel.add(searchButton);
 		this.add(buttonsPanel, BorderLayout.PAGE_END);
+		
+		//TODO: Change below to be happening on bg thread so usr doesn't have to wait
+		newFormDialog = new BlueBookForm(parent, this);
 	}
-
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
-<<<<<<< HEAD
-	 * Creates a search dialog for the <code>BlueBookTab</code> when the 
-	 * <code>searchButton</code> is clicked.
-=======
 	 * Creates a search dialog for the <code>BlueBookTab</code> when the
-	 * <code>searchButton</code> is clicked
->>>>>>> c7dbd3929905b3433d3b67b6e4901ced664023d1
+	 * <code>searchButton</code> is clicked.
 	 * 
 	 * @param parent - Parent JFrame
 	 * @return 
@@ -154,9 +167,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		contentPane.add(searchPanel);
 		return searchDialog;
 	}
-
-	// -----------------------------------------------------------------------------
-
+//-----------------------------------------------------------------------------
 	@SuppressWarnings("unchecked")
 	public void search() {
 		ArrayList<BlueBookEntry> searchResults = new ArrayList<BlueBookEntry>();
@@ -195,8 +206,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		searchDialog.setSize(dialogDim); 
 		searchDialog.setVisible(true);
 	}
-
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * Create the <code>entriesPanel</code> and populate it with data from the
 	 * database.
@@ -204,7 +214,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	 * @return entriesPanel
 	 */
 	public JPanel createEntriesPanel() {
-		JPanel entriesPanel = new JPanel(new MigLayout("gapx 30, wrap 4"));
+		JPanel entriesPanel = new JPanel(new MigLayout());
 		JPanel entryPanel;
 		// Date prepDate;
 
@@ -217,14 +227,18 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		}
 
 		int listSize = bluebook.size();
+//DEBUG
+System.out.println("bluebook size = " + bluebook.size());
+		
 		JPanel[] items = new JPanel[listSize];
 		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
 
 		int i = 0;
 		for (BlueBookEntry entry : bluebook) {
-			entryPanel = new JPanel(
-					new MigLayout("flowy", "[][]", "[][center]"));
 			String listId = "" + bluebook.indexOf(entry);
+			
+			entryPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
+			
 			if (entry.getPhotoFilePath() != null) {
 				JLabel photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
 						entry.getPhoto(), 100, 100));
@@ -257,13 +271,13 @@ public class BlueBookTab extends JPanel implements ActionListener {
 			i++;
 		}
 
-		DisplayPanel itemsPanel = new DisplayPanel(items, this);
+		DisplayPanel itemsPanel = new DisplayPanel(items, this, 4);
 
 		entriesPanel.add(itemsPanel);
 
 		return entriesPanel;
 	}
-// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * Create the <code>entriesPanel</code> and populate it with data from the
 	 * database
@@ -329,19 +343,29 @@ public class BlueBookTab extends JPanel implements ActionListener {
 
 		return entriesPanel;
 	}
-// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------		
 	/**
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 * JDOC 
 	 */
-
+	public void refreshBBtab(){
+		entriesPanel.removeAll();
+		entriesPanel.add(createEntriesPanel());
+		this.revalidate();
+		this.repaint();
+	}
+//-----------------------------------------------------------------------------
 	public void actionPerformed(ActionEvent ev) {
-
+		//get which entry was click
 		String listId = ev.getActionCommand();
 		int id = Integer.valueOf(listId);
+//DEBUG
 		System.out.println("BlueBookTab: actionPerformed: id = " + id);
+		
 		BlueBookEntry selectedEntry = bluebook.get(id);
-		BlueBookForm form = new BlueBookForm(parent, selectedEntry);
-		form.setVisible(true);
+		BlueBookPreview bbPreview = new BlueBookPreview(parent, this, selectedEntry);
+		bbPreview.setVisible(true);
+		//BlueBookForm form = new BlueBookForm(parent, this, selectedEntry);
+		//form.setVisible(true);
 	}
-	// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 }
