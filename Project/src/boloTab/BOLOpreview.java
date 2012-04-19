@@ -11,7 +11,6 @@ import java.nio.file.Path;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -74,6 +73,7 @@ private static final long serialVersionUID = 1L;
 
 		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
 		this.addWindowListener(new WindowAdapter( ) {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				closeAndCancel();
 			}
@@ -268,6 +268,7 @@ private static final long serialVersionUID = 1L;
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_32.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				closeAndCancel();
 			}
@@ -277,7 +278,8 @@ private static final long serialVersionUID = 1L;
 	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_32.png");
 	    saveButton.setToolTipText("Save BOLO");
 	    saveButton.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		saveAndClose();
 	    	}
 	    });
@@ -293,7 +295,8 @@ private static final long serialVersionUID = 1L;
 	    		"icons/edit_32.png");
 	    editButton.setToolTipText("Edit this BOLO");
 	    editButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		//BOLO form dialog
 				BOLOform formDialog = new BOLOform(rm, bolotab, bolo);
 				setVisible(false);
@@ -306,7 +309,8 @@ private static final long serialVersionUID = 1L;
 	    		SwingHelper.createImageButton("Print", "icons/print_32.png");
 	    printButton.setToolTipText("Print this BOLO document");
 	    printButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	 //   		PrintHelper ph = new PrintHelper(dialogPanel);
 	    	}
 	    });
@@ -315,7 +319,8 @@ private static final long serialVersionUID = 1L;
 	    JButton emailButton = SwingHelper.createImageButton("Email", "icons/email_32.png");
 	    emailButton.setToolTipText("Email this BOLO document");
 	    emailButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		//TODO implement email
 	    	}
 	    });
@@ -358,6 +363,7 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 
+	@Override
 	public void actionPerformed(ActionEvent ev) {
 		//attempt to delete the currently displayed BOLO & close this dialog
 		deleteBOLOAndClose();	

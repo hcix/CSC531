@@ -1,6 +1,5 @@
 package blueBookTab;
 
-import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -246,7 +245,8 @@ public class BlueBookForm extends JDialog {
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		closeAndCancel();
 	    	}
 	    });
@@ -255,7 +255,8 @@ public class BlueBookForm extends JDialog {
 	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
 	    saveButton.setToolTipText("Save bbEntry");
 	    saveButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		saveAndClose();
 	    	}
 	    });
@@ -296,6 +297,7 @@ public class BlueBookForm extends JDialog {
 		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", "icons/camera.png");
 		addPhotoButton.setToolTipText("Attach a photo to this bbEntry");
 		addPhotoButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				chooseAndAddPhoto(photoPanel);
 			}

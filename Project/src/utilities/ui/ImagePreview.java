@@ -72,7 +72,8 @@ private static final long serialVersionUID = 1L;
         }
     }
 
-    public void propertyChange(PropertyChangeEvent e) {
+    @Override
+	public void propertyChange(PropertyChangeEvent e) {
         boolean update = false;
         String prop = e.getPropertyName();
 

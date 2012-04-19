@@ -10,6 +10,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+
 import net.miginfocom.swing.MigLayout;
 //-----------------------------------------------------------------------------
 /**
@@ -40,14 +42,14 @@ private static final long serialVersionUID = 1L;
 	Color pressedColor;
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l){
-		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.l=l;
 		mainPanel = createMainPanel(items);
 		this.setViewportView(mainPanel);
 	}
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l, int wrap){
-		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.wrap=wrap;
 		this.l=l;
 		mainPanel = createMainPanel(items);
@@ -56,7 +58,7 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l, int wrap, int gap){
-		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.wrap=wrap;
 		this.l=l;
 		this.gap=gap;
@@ -135,6 +137,7 @@ private static final long serialVersionUID = 1L;
 	 * If a component is clicked, notify the listener given in construction of this
 	 * obj JDOC
 	 */
+	@Override
 	public void mouseClicked(MouseEvent e) {
 		//let the ActionListener know who's been clicked
 		
@@ -146,6 +149,7 @@ private static final long serialVersionUID = 1L;
 		l.actionPerformed(ev);
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public void mousePressed(MouseEvent e) {
 		//make panel appear pressed like a button would
 	
@@ -153,16 +157,19 @@ private static final long serialVersionUID = 1L;
 		((JComponent)(e.getSource())).setBorder(BorderFactory.createLoweredBevelBorder());
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public void mouseReleased(MouseEvent e) {
 		//make panel appear normal again
 		((Component)(e.getSource())).setBackground(originalColor);
 		((JComponent)(e.getSource())).setBorder(BorderFactory.createRaisedBevelBorder());
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public void mouseEntered(MouseEvent e) {
 		//TODO highlight outline on panel so user knows it's "selected" ?
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public void mouseExited(MouseEvent e) {
 		//make panel appear normal again
 		((Component)(e.getSource())).setBackground(originalColor);

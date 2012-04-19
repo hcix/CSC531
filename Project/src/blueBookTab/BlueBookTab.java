@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -74,6 +75,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 				"icons/plusSign_48.png");
 		newEntryButton.addActionListener(new ActionListener() {
 			// Create new Blue Book entry form dialog
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Display the new BlueBookEntry form dialog
 				newFormDialog.setVisible(true);
@@ -97,6 +99,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 			// Search dialog
 			JDialog searchDialog = createSearchDialog(rm.getGuiParent());
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				searchDialog.setVisible(true);
 			}
@@ -150,6 +153,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 				"icons/search.png");
 		searchButton.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				search();
 				searchDialog.dispose();
@@ -414,6 +418,7 @@ System.out.println("bluebook size = " + bluebook.size());
 		entriesScroller.revalidate();
 	}
 //-----------------------------------------------------------------------------
+
 	public void actionPerformed(ActionEvent ev) {	
 	    
 		//get which entry was click

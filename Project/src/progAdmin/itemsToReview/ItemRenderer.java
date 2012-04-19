@@ -36,6 +36,7 @@ public class ItemRenderer implements ListCellRenderer, ListDataListener {
 		listModel = itemsList.getModel();
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public Component getListCellRendererComponent(JList list,Object value,int index,
             boolean isSelected, boolean hasFocus) {
 
@@ -139,16 +140,19 @@ System.out.println("ItemRenderer: itemStateChanged: called");
 	public void mouseExited(MouseEvent e) {
 		//System.out.println("ItemRenderer: mouseExited(): CALLED!!");	
 	}
+	@Override
 	public void intervalAdded(ListDataEvent e) {
 //DEBUG
 System.out.println("ItemRenderer: intervalAdded: called");		
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public void intervalRemoved(ListDataEvent e) {
 //DEBUG
 System.out.println("ItemRenderer: intervalRemoved: called");	
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public void contentsChanged(ListDataEvent e) {
 //DEBUG
 System.out.println("ItemRenderer: contentsChanged: called");	

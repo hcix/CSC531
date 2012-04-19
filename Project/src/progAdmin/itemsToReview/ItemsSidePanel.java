@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import userinterface.MainInterfaceWindow;
@@ -73,7 +75,7 @@ private static final long serialVersionUID = 1L;
 		//add a title 
 		String title = "<html><h2><center>Items to Review</center></h2></html>";
 		//String title = "Items to Review";
-		JLabel titleLabel = new JLabel(title, JLabel.CENTER);
+		JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
 		
 		toolbar.add(titleLabel, "growx");
 		
@@ -106,6 +108,7 @@ private static final long serialVersionUID = 1L;
 		this.setViewportView(panel);
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public void mouseClicked(MouseEvent e) {
 
 //DEBUG System.out.println("ItemRenderer: mouseClicked(): CALLED!!");
@@ -126,6 +129,7 @@ private static final long serialVersionUID = 1L;
 		
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		AddItemDialog itemDialog = new AddItemDialog(rm);
 		itemDialog.setVisible(true);
@@ -140,12 +144,16 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 //	@Override
+	@Override
 	public void mousePressed(MouseEvent e) { }
 //-----------------------------------------------------------------------------
+	@Override
 	public void mouseReleased(MouseEvent e) { }
 //-----------------------------------------------------------------------------
+	@Override
 	public void mouseEntered(MouseEvent e) { }
 //-----------------------------------------------------------------------------
+	@Override
 	public void mouseExited(MouseEvent e) { }
 //=============================================================================
 }

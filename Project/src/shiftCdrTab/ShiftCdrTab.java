@@ -21,7 +21,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -42,7 +41,6 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import blueBookTab.BlueBookEntry;
 import net.miginfocom.swing.MigLayout;
 import progAdmin.itemsToReview.ItemsSidePanel;
 import program.ResourceManager;
@@ -100,7 +98,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		tabbedPane.addTab("Shift Commander Summary Reports", summaryReportsTab);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 
-		currentShiftDate = GregorianCalendar.getInstance();
+		currentShiftDate = Calendar.getInstance();
 		tablePanel = makeTablePanel(rm.getRollCall());
 
 		// start test
@@ -172,7 +170,8 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		    // Search dialog
 		    JDialog searchDialog = createSearchDialog(parent);
 
-		    public void actionPerformed(ActionEvent e) {
+		    @Override
+			public void actionPerformed(ActionEvent e) {
 			    searchDialog.setVisible(true);
 		    }
 		});
@@ -189,6 +188,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		date = Calendar.getInstance().getTime();
 		format = new SimpleDateFormat("EEEE, MMMM dd, YYYY ");
 		shiftLabel = new JLabel("Shift for " + format.format(date) + " at "
+
 				+ rm.shiftTimeAsString(shiftTime) + ":00");
         shiftLabel.setFont(new Font("Serif", Font.BOLD, 32));
 		// change the font at some point shiftLabel.setFont();
@@ -211,7 +211,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		SimpleDateFormat format = new SimpleDateFormat("EEEE, MMMM dd, YYYY ");
 		shiftLabel.setText("Shift for "
 				+ format.format(currentShiftDate.getTime()) + " at "
-				+ rm.shiftTimeAsString(shiftTime) + ":00");
+				+ ResourceManager.shiftTimeAsString(shiftTime) + ":00");
 		// change the font at some point shiftLabel.setFont();
 	}
 
@@ -262,6 +262,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	}
 
 	// -----------------------------------------------------------------------------
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == ADD) {
 			((RollCallTableModel) table.getModel()).addRow();
@@ -307,6 +308,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 						"icons/search.png");
 				searchButton.addActionListener(new ActionListener() {
 
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						search();
 						searchDialog.dispose();
@@ -733,6 +735,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 				"Save and Close", "icons/save_48.png");
 		finishedButton.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				popup.dispose();
 			}
@@ -848,21 +851,25 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		}
 
 		// -----------------------------------------------------------------------------
+		@Override
 		public int getColumnCount() {
 			return columnNames.length;
 		}
 
 		// -----------------------------------------------------------------------------
+		@Override
 		public int getRowCount() {
 			return data.length;
 		}
 
 		// -----------------------------------------------------------------------------
+		@Override
 		public String getColumnName(int col) {
 			return columnNames[col];
 		}
 
 		// -----------------------------------------------------------------------------
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data[row][col];
 		}
@@ -951,6 +958,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		}
 
 		// -----------------------------------------------------------------------------
+		@Override
 		public void tableChanged(TableModelEvent e) {
 			/*
 			 * int row = e.getFirstRow(); int column = e.getColumn(); TableModel

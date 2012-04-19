@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -162,6 +161,7 @@ public class AddUserDialog extends JDialog implements ActionListener
 		cnumberF.setText(e.getCnumber());
 		permissionsB.setSelectedItem(e.getPermissions());
 	}
+	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
 		String command = e.getActionCommand();

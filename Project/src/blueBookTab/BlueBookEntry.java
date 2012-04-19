@@ -9,7 +9,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.nio.file.Path;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -22,6 +21,9 @@ import java.util.Date;
 
 import javax.sql.rowset.serial.SerialBlob;
 import javax.swing.ImageIcon;
+
+import SQLite.Blob;
+
 import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.PdfStamper;
 
@@ -427,8 +429,8 @@ public ArrayList<String> getPhotoFilePaths() {
 		return bytes;
 	}
  //-----------------------------------------------------------------------------
-    private Blob getBlob(ArrayList<String> p_photoFilePaths) throws IOException, SQLException {
-	    Blob blob = null;
+    private SerialBlob getBlob(ArrayList<String> p_photoFilePaths) throws IOException, SQLException {
+	    SerialBlob blob = null;
 	
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ObjectOutput out = new ObjectOutputStream(bos);   

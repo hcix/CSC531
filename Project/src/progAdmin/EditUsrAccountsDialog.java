@@ -24,10 +24,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableColumn;
 import progAdmin.itemsToReview.ItemToReview;
 import net.miginfocom.swing.MigLayout;
-import progAdmin.itemsToReview.ItemToReview;
 import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
@@ -140,6 +138,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		this.dispose();
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if(command.equals(ADD_USER))
@@ -216,22 +215,27 @@ else if(command.equals(DELETE_USER))
 		EmployeeTableModel(ArrayList<Employee> employeeList){
 		}
 	//-----------------------------------------------------------------------------
+		@Override
 		public void tableChanged(TableModelEvent e) {
 			//don't need to implement this bc table is only editable thru dialogs
 		}
 	 //-----------------------------------------------------------------------------
+		@Override
 		public int getColumnCount() {
 			return columnNames.length;
 		}
 	//-----------------------------------------------------------------------------
+		@Override
 		public String getColumnName(int col) {
 	        return columnNames[col];
 	    }
 	//-----------------------------------------------------------------------------
+		@Override
 		public int getRowCount() {
 			return employeeList.size();
 		}
 	//-----------------------------------------------------------------------------
+		@Override
 		public Object getValueAt(int row, int col) {
 			if(col==0){//cnumber
 				return employeeList.get(row).getCnumber();
@@ -255,6 +259,7 @@ else if(command.equals(DELETE_USER))
 	     * editor for each cell. In this case, all cells are strings so
 	     * this is simple.
 	     */
+		@Override
 		public Class getColumnClass(int c) {
 	        return getValueAt(0, c).getClass();
 	    }
