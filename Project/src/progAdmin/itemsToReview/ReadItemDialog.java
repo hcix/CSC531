@@ -13,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -54,9 +55,12 @@ private static final long serialVersionUID = 1L;
 	    
 		mainPanel = new JPanel(new MigLayout());
 		
+		JLabel titleLabel = new JLabel("Title:");
+		JLabel descLabel = new JLabel("Description:");
+		
 		titleText = item.getTitle();
 		titleTextField = new JTextArea();
-		Font titleFont = new Font("Serif", Font.PLAIN, 20);
+		//Font titleFont = new Font("Serif", Font.PLAIN, 20);
 		//titleTextField.setFont(titleFont);
 		titleTextField.setEditable(false);
 		titleTextField.setText(titleText);
@@ -70,11 +74,16 @@ private static final long serialVersionUID = 1L;
 		detailsTextPane.setLineWrap(true);
 		detailsTextPane.setWrapStyleWord(true);
 		detailsTextPane.setBackground(mainPanel.getBackground());
-				
+			
+		JTextArea blank = new JTextArea("");
+		
 		buttonPanel = createButtonsPanel();
 		//buttonPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY));
 		mainPanel.add(buttonPanel, "dock north");
+		mainPanel.add(titleLabel,"alignx left");
 		mainPanel.add(titleTextField, "alignx center, wrap");
+		mainPanel.add(blank,"alignx left, wrap");
+		mainPanel.add(descLabel, "alignx left");
 		mainPanel.add(detailsTextPane, "alignx center");
 		
 	    Container contentPane = getContentPane();
