@@ -408,8 +408,6 @@ System.out.println("bluebook size = " + bluebook.size());
 		JPanel[] newItems = createItemsPanels();
 		entriesScroller.refreshContents(newItems);
 		entriesScroller.revalidate();
-		//tabbedPane.revalidate();
-
 	}
 //-----------------------------------------------------------------------------
 	public void actionPerformed(ActionEvent ev) {

@@ -2,6 +2,7 @@ package blueBookTab;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
@@ -14,11 +15,19 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.sql.rowset.serial.SerialBlob;
 import javax.swing.ImageIcon;
+import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.PdfStamper;
 
+import shiftCdrTab.OfficerAssignment;
+import utilities.FileHelper;
+import utilities.pdf.PDFHelper;
 import utilities.ui.ImageHandler;
 
 //-----------------------------------------------------------------------------
@@ -66,6 +75,10 @@ public class BlueBookEntry {
 	ArrayList<String> photoFilePaths;
 	/**JDOC*/
 	private String[] fieldArray;
+	/** JDOC */
+	String filename;
+	/** JDOC */
+	String formPathName = FileHelper.getFormTemplatePathName("BlueBookForm.pdf");
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates a new <code>BlueBookEntry</code> with all fields initially empty
@@ -414,7 +427,7 @@ public ArrayList<String> getPhotoFilePaths() {
     		
 		return bytes;
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
     public static Object getObjectFromBlob(byte[] bytes) throws SQLException, IOException, ClassNotFoundException {
     	
     	//blob.getBytes(1, );
@@ -452,5 +465,81 @@ public ArrayList<String> getPhotoFilePaths() {
 	    conn.close();
 
 	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Save this ShiftCdrReport's information in a pdf on the file system
+	 * 
+	 */
+	public String saveToFileSystem(){
+		//create the filename the saved form will have
+		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getDateInstance();
+		dateFormat.applyPattern("MM_dd_yyyy_HH_mm");
+		Date date = new Date(System.currentTimeMillis());
+		String dateTime = dateFormat.format(date);
+		String saveAs = FileHelper.getBBEntryPdfPathName("BlueBookForm" + dateTime + ".pdf");
+		this.date=dateTime;
+		
+		//used to save text to the form
+		File saveAsFile = new File(saveAs);
+		PdfStamper stamper;
+		
+		if(saveAsFile.exists()){
+			stamper = PDFHelper.getPdfStampler(saveAs);
+		} else{
+			stamper = PDFHelper.getPdfStampler(formPathName, saveAs);
+		}
+		
+		fill(stamper);
+		
+		//flattens the form so fields cannot be edited
+		stamper.setFormFlattening(true);
+		
+		try{ stamper.close(); return saveAs; } 
+		catch(Exception e){ e.printStackTrace(); return null; }
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Save this ShiftCdrReport's information in a pdf on the file system
+	 * 
+	 */
+	public void loadInfoIntoForm(String saveAs){
+		//used to put text into the form
+		PdfStamper stamper = PDFHelper.getPdfStampler(formPathName, saveAs);
+		
+		fill(stamper);
+		
+		//flattens the form so fields cannot be edited
+		stamper.setFormFlattening(false);
+		
+		try{ stamper.close(); } 
+		catch(Exception e){ e.printStackTrace(); }
+	}
+//-----------------------------------------------------------------------------
+    /**
+     * Fill out the fields using this Entry's info.
+     * @param form - the form object
+     */
+    public void fill(PdfStamper stamper) {
+    	AcroFields form = stamper.getAcroFields();
+    	
+    	try{
+    		if(this.caseNum!=null)
+    			form.setField("caseNum", this.getCaseNum()); 
+	    	if(this.date!=null)
+	    		form.setField("date", this.getDate());
+	        if(this.name!=null)
+	        	form.setField("name", this.getName());
+	       //TODO: finish extracting the rest of these fields!
+	        //The png of the form with the fields names in in dropbox!!!
+	        //Do it!
+	        //You! Now!
+	     // ...
+	        
+	        //TODO: add photo(s)
+    	} catch(Exception e){
+    		e.printStackTrace();
+    	}
+        
+    }
 //-----------------------------------------------------------------------------
 }

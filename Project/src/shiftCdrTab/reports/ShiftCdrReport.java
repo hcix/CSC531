@@ -49,7 +49,7 @@ public class ShiftCdrReport {
 	/** the filename that this report will be saved as **/
 	String saveAs;	
 	/** the path name of the original form template **/
-	String formPathName = FileHelper.getFormTemplatePathName("ShiftCDRSumReport.pdf");;
+	String formPathName = FileHelper.getFormTemplatePathName("ShiftCDRSumReport.pdf");
 //-----------------------------------------------------------------------------
 	ShiftCdrReport(){
 		//create the filename the saved form will have
@@ -326,7 +326,7 @@ public class ShiftCdrReport {
 		
 		try{ stamper.close(); } 
 		catch(Exception e){ e.printStackTrace(); }
-	}
+	} 
 //-----------------------------------------------------------------------------
     /**
      * Fill out the fields using this ShiftCdrReport's info.
