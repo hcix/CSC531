@@ -491,7 +491,9 @@ private static final long serialVersionUID = 1L;
 		 narrativeText.setText(bolo.getNarrative());
 
 		 //TODO: set the times
-
+		 
+		 
+		 
 		 //set picture
 		 if(bolo.getPhotoFilePath()!=null){
 			 ImageIcon photo = ImageHandler.getScaledImageIcon(
