@@ -7,11 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-<<<<<<< .merge_file_RGyGp4
-=======
 import java.nio.file.Path;
 import java.nio.file.Paths;
->>>>>>> .merge_file_studLR
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;

@@ -17,10 +17,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-<<<<<<< .merge_file_OLWEJ5
-=======
 import javax.swing.JProgressBar;
->>>>>>> .merge_file_PdDETk
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -420,13 +418,9 @@ System.out.println("bluebook size = " + bluebook.size());
 		entriesScroller.revalidate();
 	}
 //-----------------------------------------------------------------------------
-<<<<<<< .merge_file_OLWEJ5
-	@Override
-	public void actionPerformed(ActionEvent ev) {
-=======
+
 	public void actionPerformed(ActionEvent ev) {	
 	    
->>>>>>> .merge_file_PdDETk
 		//get which entry was click
 		String listId = ev.getActionCommand();
 		int id = Integer.valueOf(listId);
