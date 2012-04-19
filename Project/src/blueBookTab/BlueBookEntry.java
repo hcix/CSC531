@@ -344,6 +344,20 @@ public ArrayList<String> getPhotoFilePaths() {
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * @return filename - 
+	 */
+	public String getFilename() {
+		return filename;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * @param filename - the filename value to set
+	 */
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+//-----------------------------------------------------------------------------
+	/**
 	 * 
 	 * @return photo - an ImageIcon of the respective photo
 	 */
@@ -510,22 +524,16 @@ public ArrayList<String> getPhotoFilePaths() {
 		//create the filename the saved form will have
 		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getDateInstance();
 		dateFormat.applyPattern("MM_dd_yyyy_HH_mm");
-		Date date = new Date(System.currentTimeMillis());
+		Date date = new Date();
 		String dateTime = dateFormat.format(date);
-		String saveAs = FileHelper.getBBEntryPdfPathName("BlueBookForm" + dateTime + ".pdf");
 		this.date=dateTime;
 		
 		//if a file w/ this name already exists, append extra extension to end
-		File saveAsFile = new File(saveAs);
-		int i=0;
-		while((i<100) && (saveAsFile.exists())){
-			i++;
-			String newFileName = FileHelper.getNameWithoutExtension(saveAs.toString()) 
-					+"_v" + i + "." + FileHelper.getFileExtension(saveAsFile);
-			saveAsFile = new File(saveAs);
-		}
-		
-		return saveAsFile.toString();
+		String filename = FileHelper.createNewUniqueFilename(
+				FileHelper.BLUE_BK_ENTRY_FILE);
+	
+		this.filename = filename;
+		return filename;
 	}
 //-----------------------------------------------------------------------------
 	/**

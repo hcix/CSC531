@@ -60,8 +60,7 @@ public class BlueBookPreview extends JDialog implements ActionListener {
 	 */
 	public BlueBookPreview(ResourceManager rm, BlueBookTab bbTab, BlueBookEntry bbEntry){
 			super(rm.getGuiParent(), "BlueBook Entry", true);
-//DEBUG
-System.out.println("BlueBookPreview: constructor ");
+//DEBUG System.out.println("BlueBookPreview: constructor ");
 			//BlueBookEntry object to load info from
 			this.bbEntry = bbEntry;
 			this.rm=rm;
@@ -174,7 +173,7 @@ System.out.println("BlueBookPreview: constructor ");
 	    JButton printButton = 
 	    		SwingHelper.createImageButton("Print", "icons/print_32.png");
 	    printButton.setToolTipText("Print this BlueBookEntry document");
-	    printButton.setActionCommand(PRINT_ACTION);
+	    printButton.setActionCommand(bbEntry.getFilename());
 	    printButton.addActionListener(this);
 	
 	    //Email button
@@ -238,8 +237,8 @@ System.out.println("BlueBookPreview: constructor ");
 		if(ev.getActionCommand().equals(DELETE_ACTION)){
 			//attempt to delete the currently displayed BlueBookEntry & close this dialog
 			deleteEntryAndClose();	
-		} else if(ev.getActionCommand().equals(PRINT_ACTION)){
-			
+		} else if(ev.getActionCommand().equals(bbEntry.getFilename())){
+			rm.onPrintFile(ev);
 		} else if(ev.getActionCommand().equals(EMAIL_ACTION)){
 			//Desktop.Action action = Desktop.Action.OPEN;
 			rm.onLaunchMail(ev);

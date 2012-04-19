@@ -48,8 +48,11 @@ public class ResourceManager {
     ArrayList<ItemToReview> items;
     boolean mailIsSupported = false;
     boolean printIsSupported = false;
-    //Desktop.Action browse_action = Desktop.Action.BROWSE;
 //-----------------------------------------------------------------------------
+    /**
+     * Creates a new <code>ResourceManager</code>. Only one instance of
+     * resource
+     */
     protected ResourceManager(JFrame parent){
     	this.parent = parent;
     	
@@ -88,7 +91,7 @@ public class ResourceManager {
      * protocol and the text supplied by the user.
      *
      */
-    public void onLaunchMail(ActionEvent evt) {
+    public void onLaunchMail(ActionEvent ev) {
         String mailTo = " ";//txtMailTo.getText();
         URI uriMailTo = null;
         try {
@@ -105,6 +108,27 @@ public class ResourceManager {
         }
     }
 //-----------------------------------------------------------------------------
+    /**
+     * Launch the default application associated with a specific
+     * filename and use it to print the file. The filename is to be
+     * set as the action command on the ActionEvent so it can be retrieved
+     * by the onPrintFile() method. 
+     *
+     */
+    public void onPrintFile(ActionEvent ev) {
+        String fileName = ev.getActionCommand();
+        File file = new File(fileName);
+        
+        try {
+        	desktop.print(file);
+        } catch (IOException ioe) {
+            //ioe.printStackTrace();
+        	//JOptionPane
+            System.out.println("Cannot perform the given operation to the " + file + " file");
+        }
+    }
+//-----------------------------------------------------------------------------
+    
     /**
 	* Launch the default application associated with a specific
 	* filename using the preset Desktop.Action.

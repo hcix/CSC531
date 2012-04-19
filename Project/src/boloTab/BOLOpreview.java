@@ -180,11 +180,8 @@ private static final long serialVersionUID = 1L;
 	    JButton printButton = 
 	    		SwingHelper.createImageButton("Print", "icons/print_32.png");
 	    printButton.setToolTipText("Print this BOLO document");
-	    printButton.addActionListener(new ActionListener( ) {
-			public void actionPerformed(ActionEvent e) {
-	 //   		PrintHelper ph = new PrintHelper(dialogPanel);
-	    	}
-	    });
+	    printButton.setActionCommand(bolo.getFilename());
+	    printButton.addActionListener(this);
 	    
 	    //Add email button
 	    JButton emailButton = SwingHelper.createImageButton("Email", "icons/email_32.png");
@@ -235,10 +232,9 @@ private static final long serialVersionUID = 1L;
 			//attempt to delete the currently displayed BlueBookEntry & close this dialog
 			deleteBOLOAndClose();	
 		} else if(ev.getActionCommand().equals(PRINT_ACTION)){
-			
+			rm.onPrintFile(ev);
 		} else if(ev.getActionCommand().equals(EMAIL_ACTION)){
 			rm.onLaunchMail(ev);
-			
 		}
 	}
 //-----------------------------------------------------------------------------

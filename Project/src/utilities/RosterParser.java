@@ -31,7 +31,7 @@ public class RosterParser {
 		String name, day;
 		int dayAsInt;
 
-		// Directory path here
+		//Directory path here:
 		//Path path = Paths.get("Project", "PatrolScheduler", "employee"); //JAR
 		Path path = Paths.get("PatrolScheduler", "employee"); //ECLIPSE
 

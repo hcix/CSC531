@@ -6,9 +6,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.ImageIcon;
 
 import progAdmin.itemsToReview.ItemToReview;
+import utilities.FileHelper;
 import utilities.ui.ImageHandler;
 //-----------------------------------------------------------------------------
 /**
@@ -25,6 +29,8 @@ public class Bolo {
 	private long incidentDate=0, incidentTime=0, prepDate=0, prepTime=0;
 	private String[] fieldArray;
 	private Integer boloID=null;
+	/** the name of the pdf file associated with this <code>Bolo</code> object */
+	private String filename=null;
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates a new <code>Bolo</code> object with all fields initially null
@@ -374,6 +380,20 @@ public Path getVideoFilePath() {
 	return videoFilePath;
 }
 //-----------------------------------------------------------------------------
+	/**
+	 * @return filename - 
+	 */
+	public String getFilename() {
+		return filename;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * @param filename - the filename value to set
+	 */
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+//-----------------------------------------------------------------------------
 /**
  * Returns an array filled with the values of the sting
  * fields within this BOLO. The fields are placed in the same order
@@ -393,6 +413,20 @@ public ImageIcon getPhoto(){
 	if(photo==null){ System.out.printf("null photo\n"); }
 	return photo;
 }
+//-----------------------------------------------------------------------------
+	/**
+	 * Create a unique filename to save an instance of the related form version
+	 * of this Entry entity.
+	 */
+	public String createNewUniqueFilename(){
+		//create the filename the saved form will have
+		String filename = FileHelper.createNewUniqueFilename(
+				FileHelper.BOLO_FILE);
+	
+		this.filename = filename;
+		return filename;
+	
+	}
 //-----------------------------------------------------------------------------
 	/**
 	 * <b> addToDB </b>

@@ -8,6 +8,9 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -40,7 +43,13 @@ public class FileHelper {
     public final static String FORMS_SUBDIR = "FormTemplates";
     public final static String ANNOUN_SUB_DIR = "Announcements";
     public final static String SFT_RPTS_SUBDIR = "ShiftReports";
-    public final static String BB_ENTRIES_DIR = "BlueBookEntries";
+    public final static String BB_SUBDIR = "BlueBookEntries";
+    public final static String BOLOS_SUBDIR = "Bolos";
+    
+    //Codes to use for the various kinds of files/forms 
+    public final static int BLUE_BK_ENTRY_FILE = 0;
+    public final static int BOLO_FILE = 1;
+    public final static int SHIFT_CDR_RPT_FILE = 2;
     
     public final static String PATH_SEP = File.pathSeparator;
 //-----------------------------------------------------------------------------
@@ -92,7 +101,7 @@ public class FileHelper {
 			
 		try{
 		docPath = Paths.get(progDir.getCanonicalPath(), 
-				DOC_DIR, BB_ENTRIES_DIR, bbPdfName);
+				DOC_DIR, BB_SUBDIR, bbPdfName);
 		} catch (IOException e){
 			e.printStackTrace();
 		}
@@ -101,6 +110,32 @@ public class FileHelper {
 		
 //DEBUG	
 System.out.println("getBBEntryPdfPathName = " + docName);	
+		return docName;
+		
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Gets the name of the absolute path to the file where the pdf of the
+	 * <code>BlueBookEntry</code> is stored
+	 * 
+	 * @param bbPdfName - the local path of the report
+	 * @return the absolute path of the report
+	 */
+	public static String getBoloPdfPathName(String bolofn){
+		File progDir = new File(getProgramDirPathName());
+		Path docPath=null;
+		String docName=null;
+			
+		try{
+			docPath = Paths.get(progDir.getCanonicalPath(), 
+				DOC_DIR, BOLOS_SUBDIR, bolofn);
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		
+		docName = docPath.toString();
+		
+//DEBUG	System.out.println("getBBEntryPdfPathName = " + docName);	
 		return docName;
 		
 	}
@@ -119,7 +154,7 @@ System.out.println("getBBEntryPdfPathName = " + docName);
 			
 		try{
 			dirPath = Paths.get(progDir.getCanonicalPath(), 
-				DOC_DIR, BB_ENTRIES_DIR);
+				DOC_DIR, BB_SUBDIR);
 		} catch (IOException e){
 			e.printStackTrace();
 		}
@@ -146,7 +181,7 @@ System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);
 			
 		try{
 		docPath = Paths.get(progDir.getCanonicalPath(), 
-				DOC_DIR, BB_ENTRIES_DIR, reportName);
+				DOC_DIR, BB_SUBDIR, reportName);
 		} catch (IOException e){
 			e.printStackTrace();
 		}
@@ -456,6 +491,51 @@ System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);
 		//100 files with this file's same name (and diff numbers after) already exist, 
 		//tell the user to pick a new name
 		return newPath;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Create a unique filename to save an instance of the related form in
+	 * the correct directory.
+	 * 
+	 * @param formTypeInt - the int corresponding to the type of form 
+	 */
+	public static String createNewUniqueFilename(int formTypeInt){
+		String saveAs;
+		//create the filename the saved form will have
+		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getDateInstance();
+		dateFormat.applyPattern("MM_dd_yyyy_HH_mm");
+		
+		Date date = new Date(System.currentTimeMillis());
+		String dateTime = dateFormat.format(date);
+		
+		if(formTypeInt==BLUE_BK_ENTRY_FILE){
+			saveAs = FileHelper.getBBEntryPdfPathName("BlueBookForm" + dateTime + ".pdf");
+			File saveAsFile = new File(saveAs);
+			int i=0;
+			while((i<100) && (saveAsFile.exists())){
+				i++;
+				String newFileName = FileHelper.getNameWithoutExtension(saveAs.toString()) 
+						+"_v" + i + "." + FileHelper.getFileExtension(saveAsFile);
+				saveAsFile = new File(saveAs);
+			}
+			//return the saveAsFile name 
+			return saveAsFile.toString();
+		} else if(formTypeInt==BOLO_FILE){
+			saveAs = FileHelper.getBoloPdfPathName("Bolo" + dateTime + ".pdf");
+			File saveAsFile = new File(saveAs);
+			int i=0;
+			while((i<100) && (saveAsFile.exists())){
+				i++;
+				String newFileName = FileHelper.getNameWithoutExtension(saveAs.toString()) 
+						+"_v" + i + "." + FileHelper.getFileExtension(saveAsFile);
+				saveAsFile = new File(saveAs);
+			}
+			//return the saveAsFile name 
+			return saveAsFile.toString();
+		}
+			//error occured, return null
+			return null;
+		
 	}
 //-----------------------------------------------------------------------------
   	/** 
