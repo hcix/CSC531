@@ -185,7 +185,7 @@ public class BlueBookForm extends JDialog {
 
 		/*
 		 * create text areas, embed them in a scroll
-		 * pand and set the line wrap and scroll 
+		 * pane and set the line wrap and scroll 
 		 * properties
 		 */
 		locationField = new JTextArea(5, 20);
@@ -291,6 +291,7 @@ public class BlueBookForm extends JDialog {
 		ImageIcon noPhotoImage = ImageHandler.createImageIcon("images/unknownPerson.jpeg");
 		noPhotoLabel = new JLabel(noPhotoImage);
 		photoPanel.add(noPhotoLabel, "span, wrap");
+		photoPanel.setSize(800, 300);
 		photoOuterPanel.add(photoPanel, "spanx,grow,wrap");
 		photoOuterPanel.setSize(800, 300); //testing
 		
@@ -445,7 +446,7 @@ public class BlueBookForm extends JDialog {
 					//remove placeholder
 					photoArea.remove(noPhotoLabel);
 					JPanel newPanel = new JPanel();
-					newPanel.add(new JLabel(resizeDialog.getResizedImgIcon()), "span, wrap");
+					newPanel.add(new JLabel(resizeDialog.getResizedImgIcon()), "span");
 					newPanel.setVisible(true);
 					photoArea.add(newPanel);
 					//photoArea.add(new JLabel(resizeDialog.getResizedImgIcon()));
