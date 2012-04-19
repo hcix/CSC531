@@ -88,29 +88,12 @@ public class BlueBookPreview extends JDialog implements ActionListener {
 			JScrollPane dialogPanelScroller = new JScrollPane(dialogPanel);
 			dialogPanelScroller.setVerticalScrollBarPolicy(
 					ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-
-			
-			//Add the BlueBookEntry "letter head" image to the top
-			//ImageIcon BlueBookEntryHeaderIcon = 
-			//		ImageHandler.createImageIcon("images/.png");
-			//JPanel headerPanel = new JPanel();
-			//headerPanel.setBackground(Color.WHITE);
-			//headerPanel.add(new JLabel(BlueBookEntryHeaderIcon));
-			//dialogPanel.add(headerPanel, "dock north");
-			
-			
-			//dialogPanel.add(new JLabel("" + bbEntry.getBbID()));
-			
-			//dialogPanelScroller.setColumnHeaderView(createToolbar());
-		    
-		    //Add the BlueBookEntry form scrolling pane dialog to the screen
-		    //Container contentPane = getContentPane();
-		    //contentPane.add(dialogPanelScroller);
-		    
 		    
 			//Create a PDF from the given BlueBookEntry based on the form template
 			String filename="";
 			try{
+				//filename = bbEntry.createPdf(bbEntry.createNewUniqueFilename());
+				//bbEntry.createNewUniqueFilename();
 				filename = bbEntry.createPdf(bbEntry.createNewUniqueFilename());
 			} catch(Exception e){ e.printStackTrace(); }
 			
@@ -177,23 +160,10 @@ public class BlueBookPreview extends JDialog implements ActionListener {
 	    printButton.addActionListener(this);
 	
 	    //Email button
-	    JButton emailButton = SwingHelper.createImageButton("Email", "icons/email32.png");
+	    JButton emailButton = SwingHelper.createImageButton("Email", "icons/email_32.png");
 	    emailButton.setToolTipText("Email this BlueBookEntry document");
 	    emailButton.setActionCommand(EMAIL_ACTION);
 	    emailButton.addActionListener(this);
-
-	    /*
-	    JPanel saveAndCancelButtonsPanel = new JPanel();
-	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
-	    saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
-	    JPanel printAndEmailButtonPanel = new JPanel(new MigLayout("rtl"));
-	    printAndEmailButtonPanel.add(printButton);
-	    printAndEmailButtonPanel.add(emailButton);
-	    printAndEmailButtonPanel.add(editButton);
-	    toolbar.add(saveAndCancelButtonsPanel, "shrinky");
-	    toolbar.add(printAndEmailButtonPanel, "growx, shrinky");
-	    toolbar.add(deleteButton);
-	    */
 	    
 	    JPanel saveAndCancelButtonsPanel = new JPanel();
 	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");

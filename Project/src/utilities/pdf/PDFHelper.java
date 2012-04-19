@@ -1,5 +1,6 @@
 package utilities.pdf;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import com.itextpdf.text.pdf.AcroFields;
@@ -75,6 +76,31 @@ public class PDFHelper {
 	 * @return a PdfStamper for the newly created PDF form 
 	 */
 	public static PdfStamper getPdfStampler(String form){
+		PdfReader reader = null;
+		PdfStamper stamper = null;
+		
+        try {
+			reader = new PdfReader(form);
+			stamper = new PdfStamper(reader, new FileOutputStream(form));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+        return stamper;   
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Gets a PdfStamper for the given PDF specified by the absolute filename
+	 * given by the form parameter. The PdfStamper object can be used to write 
+	 * information to the PDF form. This version of getPdfStampler() writes data
+	 * to a ByteArrayOutputStream rather than straight to the file, thus it can
+	 * be further manipulated after the initial data is filled in. If the form 
+	 * specified does not exist or is not a PDF form, the exception is caught 
+	 * and null is returned.
+	 * 
+	 * @return a PdfStamper for the newly created PDF form 
+	 */
+	public static PdfStamper getPdfStampler(String form, ByteArrayOutputStream baos){
 		PdfReader reader = null;
 		PdfStamper stamper = null;
 		

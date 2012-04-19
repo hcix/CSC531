@@ -3,7 +3,6 @@ package blueBookTab;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
@@ -25,13 +24,15 @@ import utilities.FileHelper;
 import utilities.pdf.PDFHelper;
 import utilities.ui.ImageHandler;
 import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfStamper;
-import com.itextpdf.text.pdf.PdfWriter;
 
 //-----------------------------------------------------------------------------
 /**
@@ -539,12 +540,22 @@ public ArrayList<String> getPhotoFilePaths() {
 	/**
 	 * Save this BlueBookEntry's information in a pdf on the file system.
 	 */
-	public void loadInfoIntoForm(String saveAs){
+	public void loadInfoIntoForm(String saveAs) throws IOException, DocumentException{
 		//used to put text into the form
 		PdfStamper stamper = PDFHelper.getPdfStampler(formPathName, saveAs);
 		
 		fill(stamper);
 		
+		Image img = Image.getInstance((this.getPhotoFilePath().toString()));
+    	img.setBorder(Image.BOX);
+
+              
+    	PdfContentByte content = stamper.getOverContent(1);
+
+    	img.setAbsolutePosition(10f, 100f);
+
+    	content.addImage(img);
+
 		//flattens the form so fields cannot be edited
 		stamper.setFormFlattening(false);
 		
@@ -571,7 +582,7 @@ public ArrayList<String> getPhotoFilePaths() {
 	        //Do it!
 	        //You! Now!
 	     // ...
-	        
+
 	        //TODO: add photo(s)!
 	        
     	} catch(Exception e){
@@ -580,18 +591,32 @@ public ArrayList<String> getPhotoFilePaths() {
         
     }
 //-----------------------------------------------------------------------------
-  /*  public void addPhotoToForm(PdfStamper stamper) {
-    	PdfWriter writer = stamper.getWriter();
-    	writer.
-    	*/
-    	/*
-    	 * 
-   java.awt.Image awtImage = Toolkit.getDefaultToolkit().createImage(RESOURCE);
-  img = com.itextpdf.text.Image.getInstance(awtImage, null);
-  document.add(img);
-    	 */
-    //}
-    
+    public String createPdf(String fn) throws IOException, DocumentException{
+    	loadInfoIntoForm(fn);
+    	
+    	//add pics
+    /*	PdfReader reader = new PdfReader(fn);
+    	PDFHelper.getPdfStampler(fn);
+    	PdfStamper stamper = new PdfStamper(reader, 
+    			(new FileOutputStream(fn)),'\0', true);
+
+    	//Image image = Image.getInstance("watermark.png");
+    	Image img = Image.getInstance((this.getPhotoFilePath().toString()));
+    	img.setBorder(Image.BOX);
+
+              
+    	PdfContentByte content = stamper.getUnderContent(1);
+
+              img.setAbsolutePosition(10f, 700f);
+
+              content.addImage(img);
+
+    stamper.close();
+    */
+    return fn;
+    }
+//-----------------------------------------------------------------------------
+    /*
     public String createPdf(String filename)
             throws IOException, DocumentException {
         	// step 1
@@ -599,7 +624,7 @@ public ArrayList<String> getPhotoFilePaths() {
             // step 2
             PdfWriter.getInstance(document, new FileOutputStream(filename));
             // step 3
-            document.open();
+            document.open();PdfReader reader = new PdfReader(baos.toByteArray());
             // step 4
             document.add(createParagraph(
                 "My favorite movie featuring River Phoenix was ", "0092005"));
@@ -613,7 +638,7 @@ public ArrayList<String> getPhotoFilePaths() {
             document.close();
             
             return filename;
-        }
+        }*/
 //-----------------------------------------------------------------------------
     /**
      * Creates a paragraph with some text and an image.
