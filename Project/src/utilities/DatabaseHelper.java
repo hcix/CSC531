@@ -155,11 +155,11 @@ public class DatabaseHelper {
 	    BlueBookEntry entry;
 	    while (allEntries.next()) {
 	    	entry = new BlueBookEntry();
-	    	entry.setBluebkID(allEntries.getInt("bbID"));
+	    	entry.setBbID(allEntries.getInt("bbID"));
 	    	
 	    	name = allEntries.getString("name");
 	        if(name!=null){ entry.setName(name); }
-	        narrative = allEntries.getString("narrartive");
+	        narrative = allEntries.getString("narrative");
 	        if(narrative!=null){ entry.setNarrative(narrative); }
 	       // preparedBy = allEntries.getString("preparedBy");
 	       // if(preparedBy!=null){ entry.setPreparedBy(preparedBy); }

@@ -135,10 +135,11 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------	
 	/**
-	 * @JDOC
-	 * @see loadFromExistingBOLO()
+	 * JDOC
+	 * 
 	 * @param parent
 	 * @param bolo
+	 * @see loadFromExistingBOLO()
 	 */
 	public BOLOform(JFrame parent, BOLOtab bolotab, Bolo bolo){
 		this(parent, bolotab);

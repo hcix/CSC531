@@ -274,20 +274,20 @@ public void setNarrative(String narrative) {
 	fieldArray[14]=narrative;
 }
 //-----------------------------------------------------------------------------
-/**
- * @return the weapon
- */
-public String getWeapon() {
-	return weapon;
-}
+	/**
+	 * @return the weapon
+	 */
+	public String getWeapon() {
+		return weapon;
+	}
 //-----------------------------------------------------------------------------
-/**
- * @param weapon the weapon to set
- */
-public void setWeapon(String weapon) {
-	this.weapon = weapon;
-	fieldArray[15]=weapon;
-}
+	/**
+	 * @param weapon the weapon to set
+	 */
+	public void setWeapon(String weapon) {
+		this.weapon = weapon;
+		fieldArray[15]=weapon;
+	}
 //-----------------------------------------------------------------------------
 /**
  * @return the incidentDate

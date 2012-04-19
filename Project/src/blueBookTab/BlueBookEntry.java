@@ -4,6 +4,8 @@ import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import utilities.ui.ImageHandler;
 
@@ -14,46 +16,53 @@ import utilities.ui.ImageHandler;
  * date, time, location, case number, weapon, and attached photos and videos
  */
 public class BlueBookEntry {
-	/** Name of individual associated with a BOLO */
+	/** Name of individual associated with Entry */
 	private String name;
-	/** Date of birth of individual associated with a BOLO*/
+	/** Date of birth of individual associated with Entry*/
 	private String dob;
-	/** Affiliation of individual associated with a BOLO */
+	/** Affiliation of individual associated with Entry */
 	private String affili;
-	/** Address of a reported BOLO */
+	/** Address of a reported BlueBook Entry */
 	private String address;
-	/** Description of crime associated with a BOLO */
+	/** Description of crime associated with a BlueBook Entry */
 	private String crimeDescrip;
-	/** Narrative of individual reporting a BOLO */
+	/** Narrative of individual reporting a BlueBook Entry */
 	private String narrative;
-	/** Date BOLO was reported */
+	/** Date BlueBook Entry was reported */
 	private String date;
-	/** Time BOLO was reported */
+	/** Time BlueBook Entry was reported */
 	private String time;
-	/** Location BOLO was reported at*/
+	/** Location BlueBook Entry was reported at*/
 	private String location;
-	/** BOLO's case number */
+	/** BlueBook Entry's case number */
 	private String caseNum;
-	/** Status of BOLO */
+	/** Status of BlueBook Entry */
 	private String status;
-	/** Weapon carried by an individual associated with the BOLO */
+	/** Weapon carried by an individual associated with the BlueBook Entry */
 	private String weapon;
 	/** Indicates if associated individual is armed with a weapon */
 	private boolean isArmed=false;
-	/** Officer that prepared the BOLO */
+	/** Officer that prepared the BlueBook Entry */
 	private String preparedBy;
-	/** Path in file system leading to photo pertaining to the BOLO*/
+	/** Path in file system leading to photo pertaining to the BlueBook Entry*/
 	private Path photoFilePath = null;
-	/** Path in file system leading to a video pertaining to the BOLO*/
+	/** Path in file system leading to a video pertaining to the BlueBook Entry*/
 	private Path videoFilePath = null;
-	/** ID of BOLO in the Blue book*/
-	private int bluebkID=0;
+	/** ID of BlueBook Entry in the Blue book*/
+	private Integer bbID=null;
+	/** list of absolute filenames of photos associated with this BlueBook Entry */
+	ArrayList<String> photoFilePaths;
+	/**JDOC*/
+	private String[] fieldArray;
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates a new <code>BlueBookEntry</code> with all fields initially empty
 	 */
 	public BlueBookEntry(){
-		
+		fieldArray = new String[16];
+		for(int i=0; i<fieldArray.length; i++){
+			fieldArray[i]=null;
+		}
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -259,17 +268,17 @@ public class BlueBookEntry {
 	}		
 //-----------------------------------------------------------------------------
 	 /**
-	 * @return bluebkID - unique ID used in the database
+	 * @return bbID - unique ID used in the database
 	 */
-	public int getBluebkID() {
-		return bluebkID;
+	public int getBbID() {
+		return bbID;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param bluebkID - unique ID used in the database
+	 * @param bbID - unique ID used in the database
 	 */
-	public void setBluebkID(int bluebkID) {
-		this.bluebkID = bluebkID;
+	public void setBbID(int bbID) {
+		this.bbID = bbID;
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -323,14 +332,14 @@ public class BlueBookEntry {
 		//Create the connection to the database
 		Class.forName("org.sqlite.JDBC");
 	    Connection conn = DriverManager.getConnection("jdbc:sqlite:Database/umpd.db");
-	
+
 	    //Create a prepared statement to add the crime data
 	    PreparedStatement prep = conn.prepareStatement(
-	      "REPLACE into bluebook(armed, narrartive, description, location, address, affili," +
-	      " dob, name, caseNum, time, date, photoFileName, " +
+	      "REPLACE into bluebook(armed, narrative, description, location, address, affili," +
+	      " dob, offenderName, caseNum, incidentTime, incidentDate, photoFileName, " +
 	      " videoFileName, bbID)" + 
 	      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
-	
+
 	    //Add the data to the prepared statement
 	    if(isArmed){ prep.setInt(1, 1); } else { prep.setInt(1, 0); }
 	    prep.setString(2, this.narrative);
@@ -343,32 +352,55 @@ public class BlueBookEntry {
 	    prep.setString(9, this.caseNum);
 	    prep.setString(10, this.time);
 	    prep.setString(11, this.date);
-	    
-	    if(this.bluebkID!=0){ prep.setInt(14, this.bluebkID); }
-	
+
+	    if(this.bbID!=0){ prep.setInt(14, this.bbID); }
+
 	    if(photoFilePath!=null){
 		    Path absPhotoFilePath = photoFilePath.toAbsolutePath();
 		    photoPathName = absPhotoFilePath.toString();
 		    System.out.println("photoPathName = " + photoPathName);
 	    }
 	    prep.setString(12, photoPathName);	    
-	    
+
 	    if(videoFilePath!=null){
 	    	Path absVideoFilePath = videoFilePath.toAbsolutePath();
 	    	videoPathName = absVideoFilePath.toString();
 	    } 
 	    prep.setString(13, videoPathName);
-	    
+
 	    prep.addBatch();
-	    
+
 	    //Create new row in the table for the data
 	    conn.setAutoCommit(false);
 	    prep.executeBatch();
 	    conn.setAutoCommit(true);
-	    
+
 	    //Close the connection
 	    conn.close();
-	    
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Deletes this BlueBook Entry object from the 'BlueBook Entry' table in the database.
+	 * @throws Exception
+	 */
+	public void deleteFromDB() throws Exception {
+		//check that this BlueBook Entry is in the DB before attempting to delete it
+		if(bbID==null){
+			//do nothing, this BlueBook Entry was never written to the database 
+			return;
+		}
+
+		//create the connection to the database
+		Class.forName("org.sqlite.JDBC");
+	    Connection conn = DriverManager.getConnection("jdbc:sqlite:Database/umpd.db");	
+	    Statement stat = conn.createStatement();
+
+	    //perform delete
+	    stat.executeUpdate("DELETE FROM bluebook WHERE bbID = " + bbID);
+
+	    //close the connection
+	    conn.close();
+
 	}
 //-----------------------------------------------------------------------------
 }

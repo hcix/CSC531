@@ -22,6 +22,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import blueBookTab.BlueBookEntry;
+import blueBookTab.BlueBookForm;
 import net.miginfocom.swing.MigLayout;
 import utilities.DatabaseHelper;
 import utilities.SearchHelper;
@@ -81,13 +82,16 @@ private static final long serialVersionUID = 1L;
 				newFormDialog.setVisible(true);	
 				//wait for the dialog to be dismissed before continuing
 				newFormDialog.setModal(true);
+				
 				//refresh to display any changes
 				refreshRecentBOLOsTab();
 
-				//refresh to display any changes
+				//unneeded/repetative, waiting to make sure no errors b4 deleting
+				/*refresh to display any changes
 				recentBolosTab.removeAll();
 				recentBolosTab.add(createRecentBOLOsTab());
 				tabbedPane.revalidate();
+				*/
 			}
 		});
 
@@ -129,7 +133,6 @@ private static final long serialVersionUID = 1L;
         
         //TODO: Change below to be happening on bg thread so usr doesn't have to wait
         newFormDialog = new BOLOform(parent, this);
-
 	}
 //-----------------------------------------------------------------------------
 	/**

@@ -141,7 +141,6 @@ private static final long serialVersionUID = 1L;
 				"Other Description/Info: " 
 				};
 		
-		
 		//get the info from the BOLO object
 		String[] fieldsArray = bolo.getStringFields();
 		JLabel label;
