@@ -38,7 +38,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 private static final long serialVersionUID = 1L;
 	BOLOform newFormDialog;
 	ArrayList<Bolo> boloList;
-	JFrame parent;
 	JPanel recentBolosTab;
 	JDialog searchDialog;
 	JTextField caseNumField;
@@ -51,11 +50,9 @@ private static final long serialVersionUID = 1L;
 	 * 
 	 * @param parent 
 	 */
-	public BOLOtab(ResourceManager rm){
+	public BOLOtab(final ResourceManager rm){
 		this.setLayout(new BorderLayout());
 		this.rm=rm;
-		this.parent = parent;
-		
 		
 		//Create BOLOs tabbed display area
 		final JTabbedPane tabbedPane = new JTabbedPane();
@@ -107,7 +104,7 @@ private static final long serialVersionUID = 1L;
 
 				//In response to a button click:
 			//	int returnVal = 
-						fc.showOpenDialog(parent);
+						fc.showOpenDialog(rm.getGuiParent());
 			}
 		});
 
@@ -116,7 +113,7 @@ private static final long serialVersionUID = 1L;
 				"icons/search.png");
 		searchButton.addActionListener(new ActionListener() {
 			//Search dialog
-			JDialog searchDialog = createSearchDialog(parent);
+			JDialog searchDialog = createSearchDialog(rm.getGuiParent());
 			public void actionPerformed(ActionEvent e){
 				searchDialog.setVisible(true);
 			}
@@ -219,7 +216,7 @@ private static final long serialVersionUID = 1L;
 			System.out.println("Couldn't run search in bolo"); 
 			e.printStackTrace();
 		}
-		JDialog searchDialog = new JDialog(parent, "Search Results", true);
+		JDialog searchDialog = new JDialog(rm.getGuiParent(), "Search Results", true);
 		JPanel searchEntriesPanel = createSearchBOLOsTab(searchResults);
 		searchDialog.add(searchEntriesPanel, BorderLayout.CENTER);
 		searchDialog.setLocationByPlatform(true);

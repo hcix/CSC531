@@ -35,8 +35,6 @@ private static final long serialVersionUID = 1L;
 	String otherDescrip, narrative;
 	/** the BOLO holding the info currently displayed in this dialog **/
 	Bolo bolo;
-	/** a reference to the main JFrame used to create & display this dialog */
-	JFrame parent;
 	/** a reference to the main <code>BOLOtab</code> used to tell 
 	 * <code>BOLOtab</code> to refresh its contents after a delete operation */
 	BOLOtab bolotab;
@@ -56,7 +54,6 @@ private static final long serialVersionUID = 1L;
 
 		//BOLO object to load info from
 		this.bolo = bolo;
-		this.parent = parent;
 		this.bolotab=bolotab;
 		this.rm=rm;
 		
@@ -242,12 +239,12 @@ private static final long serialVersionUID = 1L;
 		JPanel photoVideoPanel = new JPanel(new MigLayout());
 		photoVideoPanel.setBackground(Color.WHITE);
 		
-		Path photoPath = bolo.getPhotoFilePath();
-		
-		if(photoPath!=null){
+		if(bolo.getPhotoFilePath()!=null){
+			Path photoPath = bolo.getPhotoFilePath();
 			ImageIcon photo = ImageHandler.getScaledImageIcon(photoPath, 200, 299);
 			photoVideoPanel.add(new JLabel(photo));
 		}
+		
 		return photoVideoPanel;
 	}
 //-----------------------------------------------------------------------------
@@ -376,7 +373,7 @@ private static final long serialVersionUID = 1L;
 		} catch (Exception ex) {
 			//delete unsuccesssful, show error message and close
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(parent, "Error occured while " +
+			JOptionPane.showMessageDialog(rm.getGuiParent(), "Error occured while " +
 					"attempting to delete BOLO from database", "Database Error",
 					JOptionPane.ERROR_MESSAGE);
 			this.setVisible(false);
@@ -390,7 +387,7 @@ private static final long serialVersionUID = 1L;
 		
 		this.setVisible(false);
 		
-		JOptionPane.showMessageDialog(parent, "This BOLO has been deleted.", 
+		JOptionPane.showMessageDialog(rm.getGuiParent(), "This BOLO has been deleted.", 
 				"BOLO Deleted", JOptionPane.INFORMATION_MESSAGE);
 		
 	}

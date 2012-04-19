@@ -490,12 +490,13 @@ private static final long serialVersionUID = 1L;
 		 otherDescriptField.setText(bolo.getOtherDescrip());
 		 narrativeText.setText(bolo.getNarrative());
 
-		 //set the times
+		 //TODO: set the times
 
 		 //set picture
-		 ImageIcon photo = ImageHandler.getScaledImageIcon(
+		 if(bolo.getPhotoFilePath()!=null){
+			 ImageIcon photo = ImageHandler.getScaledImageIcon(
 				 bolo.getPhotoFilePath(), 200, 299);
-		 if(photo!=null){
+		 
 			photoArea.removeAll();
 			photoArea.add(new JLabel(photo));
 		 }
