@@ -269,8 +269,9 @@ public class DatabaseHelper {
 		Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
 		
 		Statement stat = conn.createStatement();
-        String query = "DELETE * FROM RollCall WHERE shiftdate = " + "'" + shiftDate + "'" + ";";
-	    ResultSet allEntries = stat.executeQuery(query);
+        String query = "DELETE FROM RollCall WHERE shiftdate = " + "'" + shiftDate + "'" + ";";
+        System.out.println("Query in replace :" + query); //DEBUG
+	    stat.executeUpdate(query);
 		
 		personStatement = conn.prepareStatement(
 			    "INSERT into RollCall(roll_call_ID, name, present, comment, timearrived, shiftdate) " +
@@ -293,7 +294,6 @@ public class DatabaseHelper {
 	    personStatement.executeBatch();
 	    conn.setAutoCommit(true);
 	//Close the connection
-	allEntries.close();
 	conn.close();
 	}
 //-----------------------------------------------------------------------------
