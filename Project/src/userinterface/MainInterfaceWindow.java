@@ -40,12 +40,12 @@ private static final long serialVersionUID = 1L;
 		homeTab.setPreferredSize(dim);
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         
-        boloTab = new BOLOtab(rm);
+        boloTab = new BOLOtab(rm, this);
         boloTab.setPreferredSize(dim);
         tabbedPane.addTab("BOLOs", boloTab);
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
         
-        blueBookTab = new BlueBookTab(parent);
+        blueBookTab = new BlueBookTab(rm, this);
         tabbedPane.addTab("Blue Book", blueBookTab);
         tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
         
