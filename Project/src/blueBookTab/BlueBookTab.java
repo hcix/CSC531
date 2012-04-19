@@ -15,9 +15,9 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import boloTab.BOLOform;
 import net.miginfocom.swing.MigLayout;
 import utilities.DatabaseHelper;
 import utilities.SearchHelper;
@@ -28,8 +28,7 @@ import utilities.ui.SwingHelper;
 /*
  * BUG When you try to upload multiple blue book entries back to back, opens the preview for the last created bbentry 
  * instead of a new form 
- */
-/*
+ *
  * BUG doesn't refresh after creating a bolo, have to reopen project
  */
 //-----------------------------------------------------------------------------	
@@ -45,7 +44,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	JTextField caseNumField;
 	JTextField locationField;
 	JTextField nameField;
-	JPanel entriesPanel;
+	JScrollPane entriesScroller;
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates and sets the <code>BlueBookTab</code> to view all the
@@ -58,11 +57,11 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		this.setLayout(new BorderLayout());
 		this.parent = parent;
 		
-		final JPanel panel = new JPanel();
+		//final JPanel panel = new JPanel();
 		
 		//Create entries display area
-		entriesPanel = createEntriesPanel();
-		panel.add(entriesPanel);
+		entriesScroller = createEntriesPanel();
+		//panel.add(entriesPanel);
 		
 		//Create New Entry button
 		JButton newEntryButton = SwingHelper.createImageButton("Create Entry",
@@ -78,9 +77,9 @@ public class BlueBookTab extends JPanel implements ActionListener {
 				refreshBBtab();
 
 				//refresh to display any changes
-				entriesPanel.removeAll();
-				entriesPanel.add(createEntriesPanel());
-				panel.revalidate();
+//				entriesPanel.removeAll();
+//				entriesPanel.add(createEntriesPanel());
+//				panel.revalidate();
 			}
 		});
 
@@ -96,10 +95,11 @@ public class BlueBookTab extends JPanel implements ActionListener {
 			}
 		});
 
-		// add the components to this panel
+		
+		// add the components to this tab
 
 		//this.add(entriesPanel, BorderLayout.CENTER);
-		this.add(panel, BorderLayout.CENTER);
+		this.add(entriesScroller, BorderLayout.CENTER);
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(newEntryButton);
 		buttonsPanel.add(searchButton);
@@ -213,8 +213,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	 * 
 	 * @return entriesPanel
 	 */
-	public JPanel createEntriesPanel() {
-		JPanel entriesPanel = new JPanel(new MigLayout());
+	public JScrollPane createEntriesPanel() {
 		JPanel entryPanel;
 		// Date prepDate;
 
@@ -272,16 +271,15 @@ System.out.println("bluebook size = " + bluebook.size());
 		}
 
 		DisplayPanel itemsPanel = new DisplayPanel(items, this, 4);
-
-		entriesPanel.add(itemsPanel);
-
-		return entriesPanel;
+		
+		entriesScroller.setViewportView(itemsPanel);
+		
+		return entriesScroller;
 	}
 //-----------------------------------------------------------------------------
 	/**
 	 * Create the <code>entriesPanel</code> and populate it with data from the
-	 * database
-	 * 
+	 * database.
 	 * @return entriesPanel
 	 */
 	public JPanel createSearchEntriesPanel(ArrayList<BlueBookEntry> bluebook) {
@@ -339,7 +337,7 @@ System.out.println("bluebook size = " + bluebook.size());
 
 		DisplayPanel itemsPanel = new DisplayPanel(items, this, 4);
 
-		entriesPanel.add(itemsPanel);
+		entriesPanel.add(itemsPanel, BorderLayout.CENTER);
 
 		return entriesPanel;
 	}
@@ -348,10 +346,11 @@ System.out.println("bluebook size = " + bluebook.size());
 	 * JDOC 
 	 */
 	public void refreshBBtab(){
-		entriesPanel.removeAll();
-		entriesPanel.add(createEntriesPanel());
-		this.revalidate();
-		this.repaint();
+		
+//		entriesPanel.removeAll();
+//		entriesPanel.add(createEntriesPanel());
+//		this.revalidate();
+//		this.repaint();
 	}
 //-----------------------------------------------------------------------------
 	public void actionPerformed(ActionEvent ev) {
