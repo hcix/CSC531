@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseEvent;
+
+import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,7 +45,8 @@ public class ItemRenderer implements ListCellRenderer, ListDataListener {
 		if(value instanceof ItemToReview){
 			ItemToReview item = (ItemToReview)value;
 			itemPanel.setSize(new Dimension(280, 110));
-			itemPanel.setPreferredSize(new Dimension(280, 110));
+			itemPanel.setBorder(BorderFactory.createMatteBorder(1,0,0,0,Color.gray) );
+			itemPanel.setPreferredSize(new Dimension(280, 75));
 			JCheckBox cb = new JCheckBox();
 			String num = "" + index;
 			cb.setActionCommand(num);
