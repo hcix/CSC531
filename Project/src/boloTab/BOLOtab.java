@@ -245,7 +245,6 @@ private static final long serialVersionUID = 1L;
 		this.revalidate();
 		this.repaint();
 	}
-
 //-----------------------------------------------------------------------------	
 	/**
 	 * Invoked by the <code>DisplayPanel</code> when a BOLO is 'clicked'
