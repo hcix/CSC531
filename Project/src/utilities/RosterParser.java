@@ -146,30 +146,16 @@ public class RosterParser {
 					name = name.concat(splitName[1]);
 					return name;
 				}
-<<<<<<< HEAD
-=======
-			}
-		} catch (IOException e) {
-				System.out.println("Employee list does not exist");
-				// e.printStackTrace();
->>>>>>> 9ef71f54947ea50bc3c76579903ca676a14d3f41
+
 			}
 		} catch (IOException e) {
 			System.out.println("Employee list does not exist");
 			// e.printStackTrace();
 		}
-<<<<<<< HEAD
 		return null;
 	}
-
-
-	//-----------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------
 
-	//-----------------------------------------------------------------------------
-=======
-//-----------------------------------------------------------------------------
->>>>>>> 9ef71f54947ea50bc3c76579903ca676a14d3f41
 	/**
 	 * Gets a <code>BufferedReader</code> to read the given file.
 	 * 
@@ -205,14 +191,8 @@ public class RosterParser {
 			return "Saturday";
 		default:
 			return null;
-<<<<<<< HEAD
 
-=======
->>>>>>> 9ef71f54947ea50bc3c76579903ca676a14d3f41
 		}
 	}
-<<<<<<< HEAD
-=======
-//-----------------------------------------------------------------------------
->>>>>>> 9ef71f54947ea50bc3c76579903ca676a14d3f41
+
 }
