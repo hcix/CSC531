@@ -50,7 +50,7 @@ public class ShiftCdrReport {
 	String saveAs;	
 	/** the path name of the original form template **/
 	String formPathName = FileHelper.getFormTemplatePathName("ShiftCDRSumReport.pdf");
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	ShiftCdrReport(){
 		//create the filename the saved form will have
 		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getDateInstance();
@@ -58,47 +58,47 @@ public class ShiftCdrReport {
 		Date date = new Date(System.currentTimeMillis());
 		String dateTime = dateFormat.format(date);
 		saveAs = FileHelper.getReportPathName("ShiftCDRSumReport" + dateTime + ".pdf");
-		
+
 		this.shiftDate = dateTime;
-		
+
 		//get the form template to save the info in
 		//formPathName = FileHelper.getFormTemplatePathName("ShiftCDRSumReport.pdf");
-		
+
 		//initialize the lists
 		assignmentsList = new ArrayList<OfficerAssignment>();
 		attendanceList = new ArrayList<AttendanceRecord>();
 		patrols = new ArrayList<PatrolActivity>();
-		
+
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	ShiftCdrReport(String filename){
 
 		this.saveAs = filename;
 		File file = new File(saveAs);
-		
+
 		this.shiftDate = file.getName();
 
 		//initialize the lists
 		assignmentsList = new ArrayList<OfficerAssignment>();
 		attendanceList = new ArrayList<AttendanceRecord>();
 		patrols = new ArrayList<PatrolActivity>();
-		
+
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @return the assignments
 	 */
 	public ArrayList<OfficerAssignment> getAssignmentsList() {
 		return assignmentsList;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @param assignments the assignments to set
 	 */
 	public void setAssignmentsArrayList(ArrayList<OfficerAssignment> assignmentsList) {
 		this.assignmentsList = assignmentsList;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * Add an <code>OfficerAssignment</code> to the list of assignments for
 	 * the shift represented by this ShiftCdrReport.
@@ -107,14 +107,14 @@ public class ShiftCdrReport {
 	public void addOfficerAssignment(OfficerAssignment assignment) {
 		assignmentsList.add(assignment);
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * Set the name for the specified <code>OfficerAssignment</code>.
 	 * @param name - the name to set 
 	 * @param num - the num assignment of the name to set (index = num-1)
 	 */
 	public void addOfficerAssignmentName(String name, int num) {
-		
+
 		//add an OfficerAssignment object for the specified num if one dones't exist
 		if(assignmentsList.size()<num){
 			int elementsToAdd = num - assignmentsList.size();
@@ -122,12 +122,12 @@ public class ShiftCdrReport {
 				assignmentsList.add(new OfficerAssignment());
 			}
 		}
-			
+
 		//set the name of the specified OfficerAssignment
 		//(assignmentsArrayList.get(num-1)).setName(name);
-		
+
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @return the attendanceList for the shift represented by this 
 	 * <code>ShiftCdrReport</code>
@@ -135,7 +135,7 @@ public class ShiftCdrReport {
 	public ArrayList<AttendanceRecord> getAttendanceList() {
 		return attendanceList;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @param attendanceList - the attendanceList to set for the shift represented
 	 * by this <code>ShiftCdrReport</code>
@@ -143,126 +143,126 @@ public class ShiftCdrReport {
 	public void setAttendanceList(ArrayList<AttendanceRecord> attendancelist) {
 		this.attendanceList = attendancelist;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @return the patrols
 	 */
 	public ArrayList<PatrolActivity> getPatrols() {
 		return patrols;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @param patrols the patrols to set
 	 */
 	public void setPatrols(ArrayList<PatrolActivity> patrols) {
 		this.patrols = patrols;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @return the incidents
 	 */
 	public ArrayList<Crime> getIncidents() {
 		return incidents;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @param incidents the incidents to set
 	 */
 	public void setIncidents(ArrayList<Crime> incidents) {
 		this.incidents = incidents;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @return the remarks
 	 */
 	public String getRemarks() {
 		return remarks;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @param remarks the remarks to set
 	 */
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @return the completedBy
 	 */
 	public String getCompletedBy() {
 		return completedBy;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @param completedBy the completedBy to set
 	 */
 	public void setCompletedBy(String completedBy) {
 		this.completedBy = completedBy;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @return the relievedBy
 	 */
 	public String getRelievedBy() {
 		return relievedBy;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @param relievedBy the relievedBy to set
 	 */
 	public void setRelievedBy(String relievedBy) {
 		this.relievedBy = relievedBy;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @return the shiftDate
 	 */
 	public String getShiftDate() {
 		return shiftDate;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @param shiftDate the shiftDate to set
 	 */
 	public void setShiftDate(String shiftDate) {
 		this.shiftDate = shiftDate;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @return the shiftCode
 	 */
 	public String getShiftCode() {
 		return shiftCode;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @param shiftCode the shiftCode to set
 	 */
 	public void setShiftCode(String shiftCode) {
 		this.shiftCode = shiftCode;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @return the timeRecieved
 	 */
 	public Date getTimeRecieved() {
 		return timeRecieved;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @param timeRecieved the timeRecieved to set
 	 */
 	public void setTimeRecieved(Date timeRecieved) {
 		this.timeRecieved = timeRecieved;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @return the ucrCrime
 	 */
 	public boolean isUcrCrimeOccurred() {
 		return ucrCrimeOccurred;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @param ucrCrimeOccured - true if a UCR crime occurred during the shift
 	 * represented by this ShiftCdrReport object; no need to call this method
@@ -272,21 +272,21 @@ public class ShiftCdrReport {
 	public void setUcrCrimeOccurred(boolean ucrCrimeOccurred) {
 		this.ucrCrimeOccurred = ucrCrimeOccurred;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @return JDOC
 	 */
 	public boolean isCurrentlyVisable() {
 		return isCurrentlyVisable;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * @param isCurrentlyVisable - JDOC
 	 */
 	public void setIsCurrentlyVisable(boolean isCurrentlyVisable) {
 		this.isCurrentlyVisable = isCurrentlyVisable;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * Save this ShiftCdrReport's information in a pdf on the file system
 	 * 
@@ -295,22 +295,22 @@ public class ShiftCdrReport {
 		//used to save text to the form
 		File saveAsFile = new File(saveAs);
 		PdfStamper stamper;
-		
+
 		if(saveAsFile.exists()){
 			stamper = PDFHelper.getPdfStampler(saveAs);
 		} else{
 			stamper = PDFHelper.getPdfStampler(formPathName, saveAs);
 		}
-		
+
 		fill(stamper);
-		
+
 		//flattens the form so fields cannot be edited
 		stamper.setFormFlattening(true);
-		
+
 		try{ stamper.close(); return saveAs; } 
 		catch(Exception e){ e.printStackTrace(); return null; }
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * Save this ShiftCdrReport's information in a pdf on the file system
 	 * 
@@ -318,42 +318,131 @@ public class ShiftCdrReport {
 	public void loadInfoIntoForm(){
 		//used to put text into the form
 		PdfStamper stamper = PDFHelper.getPdfStampler(formPathName, saveAs);
-		
+
 		fill(stamper);
-		
+
 		//flattens the form so fields cannot be edited
 		stamper.setFormFlattening(false);
-		
+
 		try{ stamper.close(); } 
 		catch(Exception e){ e.printStackTrace(); }
 	} 
-//-----------------------------------------------------------------------------
-    /**
-     * Fill out the fields using this ShiftCdrReport's info.
-     * @param form - the form object
-     */
-    public void fill(PdfStamper stamper) {
-    	AcroFields form = stamper.getAcroFields();
-    	
-    	try{
-    		if(this.shiftDate!=null)
-    			form.setField("shift_date", this.getShiftDate()); 
-	    	if(this.shiftCode!=null)
-	    		form.setField("shift_code", this.getShiftCode());
-	        if(this.completedBy!=null)
-	        	form.setField("completed_by", this.getCompletedBy());
-	        if(this.remarks!=null)
-	        	form.setField("remarks_box", this.getRemarks());
-	        
-	        for(OfficerAssignment assignment:assignmentsList){
-	        	//form.setField(name, value)
-	        }
-	     // ...
-	        
-    	} catch(Exception e){
-    		e.printStackTrace();
-    	}
-        
-    }
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
+	/**
+	 * Fill out the fields using this ShiftCdrReport's info.
+	 * @param form - the form object
+	 */
+	public void fill(PdfStamper stamper) {
+		AcroFields form = stamper.getAcroFields();
+
+		int i;
+
+		try{
+			if(this.shiftDate!=null)
+				form.setField("shift_date", this.getShiftDate()); 
+			if(this.shiftCode!=null)
+				form.setField("shift_code", this.getShiftCode());
+			if(this.completedBy!=null)
+				form.setField("completed_by", this.getCompletedBy());
+			if(this.remarks!=null)
+				form.setField("remarks_box", this.getRemarks());
+			i = 0;
+			for(OfficerAssignment assignment:assignmentsList){
+				if (assignment.getOfficer()!=null) {
+					form.setField("offAssign_name"+""+i, assignment.getOfficer());
+					i++;
+				}
+			}
+			i = 0;
+			for (OfficerAssignment assignment:assignmentsList) {
+				if (assignment.getOfficer()!=null) {
+					form.setField("offAssign_patrol"+""+i, assignment.getPatrolAssignments().get(0).toString());
+					i++;
+				}
+			}
+			i = 0;
+			for (OfficerAssignment assignment:assignmentsList) {
+				if (assignment.getOfficer()!=null) {
+					form.setField("offAssign_build"+""+i, assignment.getBuildingChecks().get(0));
+					i++;
+				}
+			}
+			i = 0;
+			for (OfficerAssignment assignment:assignmentsList) {
+				if (assignment.getOfficer()!=null) {
+					form.setField("offAssign_vehi"+""+i, Integer.toString(assignment.getVehicleID()));
+					i++;
+				}
+			}
+			// Other duties
+			i = 0;
+			for (AttendanceRecord attend:attendanceList) {
+				if (attend.getEmployee()!=null) {
+					form.setField("attend_name"+""+i, attend.getEmployee());
+					i++;
+				}
+			}
+			i = 1;
+			for (AttendanceRecord attend:attendanceList) {
+				if (attend.getLeaveType()!=null) {
+					form.setField("attendleave_type"+""+i, attend.getLeaveType());
+					i++;
+				}
+			}
+			i = 1;
+			for (AttendanceRecord attend:attendanceList) {
+				if (attend.getCoveredBy()!=null) {
+					form.setField("covered_by"+""+i, attend.getCoveredBy());
+					i++;
+				}
+			}
+			i = 1;
+			for (PatrolActivity patrol:patrols) {
+				if(patrol.getLocation()!=null) {
+					form.setField("LocationRow"+""+i, patrol.getLocation());
+					i++;
+				}
+			}
+			i = 1;
+			for (PatrolActivity patrol:patrols) {
+				if(patrol.getActivity()!=null) {
+					form.setField("ActivityRow"+""+i, patrol.getLocation());
+					i++;
+				}
+			}
+			i = 1;
+			for (Crime crime:incidents) {
+				if(crime.getIncident()!=null) {
+					form.setField("OffenseIncidentRow1"+""+i, crime.getIncident());
+					i++;
+				}
+			}
+			i = 1;
+			for (Crime crime:incidents) {
+				if(crime.getCaseNum()!=null) {
+					form.setField("case_num"+""+i,crime.getCaseNum());
+					i++;
+				}
+			}
+			i = 1;
+			for (Crime crime:incidents) {
+				if(crime.getLocationName()!=null) {
+					form.setField("LocationRow"+""+i+"_2", crime.getLocationName());
+					i++;
+				}
+			}
+			i = 1;
+			for (Crime crime:incidents) {
+				if(crime.getCaseStatus()!=null) {
+					form.setField("remarks"+""+i, crime.getCaseStatus());
+					i++;
+				}
+			}
+			
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+
+	}
+	//-----------------------------------------------------------------------------
 }
