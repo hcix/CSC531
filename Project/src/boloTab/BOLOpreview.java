@@ -55,6 +55,7 @@ private static final long serialVersionUID = 1L;
 		//BOLO object to load info from
 		this.bolo = bolo;
 		this.parent = parent;
+		this.bolotab=bolotab;
 		
 		//Set the size of the page
 		this.setPreferredSize(new Dimension(800,900));
@@ -384,6 +385,7 @@ private static final long serialVersionUID = 1L;
 		// ( delete file: CSC531/Documents/BOLOs/thisBolo.pdf )
 		//close and show message confirming delete was successful
 		bolotab.refreshRecentBOLOsTab();
+		
 		this.setVisible(false);
 		
 		JOptionPane.showMessageDialog(parent, "This BOLO has been deleted.", 
