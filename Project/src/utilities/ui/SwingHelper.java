@@ -46,7 +46,7 @@ public class SwingHelper {
 	public static final int DEFAULT_TEXT_FIELD_LENGTH = 20;
 	
 	public static final Dimension SEARCH_DIALOG_DIMENSION = new Dimension(500, 250);
-	public static final Dimension LOGIN_DIALOG_DIMENSION = new Dimension(450, 250);
+	public static final Dimension LOGIN_DIALOG_DIMENSION = new Dimension(450, 300);
 //-----------------------------------------------------------------------------
 	/** 
 	 * Creates a <code>JSpinner</code> with the specified label text from the given
@@ -519,7 +519,6 @@ public class SwingHelper {
         JLabel armedLabel = new JLabel("Armed?");
 		JCheckBox armedFieldNo = new JCheckBox("No");
 		armedFieldNo.addActionListener(new ActionListener(){
-			@Override
 			public void actionPerformed(ActionEvent ae) {
 				ifYesField.setVisible(false);
 			}
@@ -527,7 +526,6 @@ public class SwingHelper {
 		
 		JCheckBox armedFieldYes = new JCheckBox("Yes");
 		armedFieldYes.addActionListener(new ActionListener(){
-			@Override
 			public void actionPerformed(ActionEvent ae) {
 				ifYesField.setVisible(true);
 			}

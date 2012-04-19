@@ -32,6 +32,7 @@ import progAdmin.itemsToReview.ItemToReview;
 import program.CurrentUser;
 import utilities.ChangeHelper;
 import utilities.DatabaseHelper;
+import utilities.ChangeHelper;
 import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
@@ -220,7 +221,6 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		//-----------------------------------------------------------------------------
 		EmployeeTableModel(ArrayList<Employee> employeeList){
 		}
-		@Override
 		//-----------------------------------------------------------------------------
 		public void tableChanged(TableModelEvent e) {
 			//don't need to implement this bc table is only editable thru dialogs
@@ -255,7 +255,6 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			//if col is out of range, return null
 			return null;
 		}
-
 //-----------------------------------------------------------------------------
 		/*
 		 * JTable uses this method to determine the default renderer/
@@ -265,7 +264,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		public Class getColumnClass(int c) {
 			return getValueAt(0, c).getClass();
 		}
-		//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	}
-	//=============================================================================
+//=============================================================================
 }

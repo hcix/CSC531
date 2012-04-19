@@ -108,7 +108,6 @@ private static final long serialVersionUID = 1L;
 		this.setViewportView(panel);
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseClicked(MouseEvent e) {
 
 //DEBUG System.out.println("ItemRenderer: mouseClicked(): CALLED!!");
@@ -129,7 +128,6 @@ private static final long serialVersionUID = 1L;
 		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		AddItemDialog itemDialog = new AddItemDialog(rm);
 		itemDialog.setVisible(true);
@@ -144,16 +142,12 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 //	@Override
-	@Override
 	public void mousePressed(MouseEvent e) { }
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseReleased(MouseEvent e) { }
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseEntered(MouseEvent e) { }
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseExited(MouseEvent e) { }
 //=============================================================================
 }

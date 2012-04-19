@@ -80,7 +80,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 		newBOLOButton.addActionListener(new ActionListener() {
 			//BOLO form dialog
 
-			@Override
 			public void actionPerformed(ActionEvent e){
 				//Display the new BOLO form dialog
 				newFormDialog.setVisible(true);	
@@ -120,7 +119,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 				"icons/Import.png");
 		importBOLOButton.addActionListener(new ActionListener() {
 			//file chooser dialog
-			@Override
 			public void actionPerformed(ActionEvent e){
 				//file chooser dialog .setVisable(true);
 				//create a file chooser
@@ -138,7 +136,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 		searchButton.addActionListener(new ActionListener() {
 			//Search dialog
 			JDialog searchDialog = createSearchDialog(rm.getGuiParent());
-			@Override
 			public void actionPerformed(ActionEvent e){
 				searchDialog.setVisible(true);
 			}
@@ -193,7 +190,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 				"icons/search.png");
 		searchButton.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				search();
 				searchDialog.dispose();
@@ -456,7 +452,6 @@ System.out.println("boloList.size() = " + listSize);
 	 * Invoked by the <code>DisplayPanel</code> when a BOLO is 'clicked'
 	 * on.
 	 */
-	@Override
 	public void actionPerformed(ActionEvent ev) {
 		String listId = ev.getActionCommand();
 		int id = Integer.valueOf(listId);

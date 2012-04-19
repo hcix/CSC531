@@ -57,7 +57,6 @@ private static final long serialVersionUID = 1L;
 			newButton.addActionListener(new ActionListener() {
 				//Shift CDR form dialog
 				//ShiftReportForm formDialog = new ShiftReportForm(rm, null);
-				@Override
 				public void actionPerformed(ActionEvent e){
 					String mostRecentShift = System.getProperty("UMPD.latestShiftTime");
 					ArrayList<RollCall> rollCall;
@@ -121,7 +120,6 @@ private static final long serialVersionUID = 1L;
 			searchButton.addActionListener(new ActionListener() {
 				//Search dialog
 				JDialog searchDialog = createSearchDialog(parent);
-				@Override
 				public void actionPerformed(ActionEvent e){
 					searchDialog.setVisible(true);
 					//TODO Implement Search
@@ -254,7 +252,6 @@ private static final long serialVersionUID = 1L;
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
-			@Override
 			public void actionPerformed(ActionEvent ae) {
 				//closeAndCancel( );
 			}
@@ -264,7 +261,6 @@ private static final long serialVersionUID = 1L;
 	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
 	    saveButton.setToolTipText("Save Report");
 	    saveButton.addActionListener(new ActionListener( ) {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 	    		//closeAndSave();
 	    	}
@@ -279,7 +275,6 @@ private static final long serialVersionUID = 1L;
 	    return buttonsPanel;
 	}
 //-----------------------------------------------------------------------------	
-	@Override
 	public void mouseClicked(MouseEvent e) {
 //DEBUG
 System.out.println("ReportListRenderer: mouseClicked(): CALLED!!");
@@ -302,22 +297,18 @@ System.out.println("ReportListRenderer: mouseClicked(): CALLED!!");
 		
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mousePressed(MouseEvent e) {
 		//System.out.println("ItemRenderer: mousePressed(): CALLED!!");
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		//System.out.println("ItemRenderer: mouseReleased(): CALLED!!");
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseEntered(MouseEvent e) {
 		//System.out.println("ItemRenderer: mouseEntered(): CALLED!!");	
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void mouseExited(MouseEvent e) {
 		//System.out.println("ItemRenderer: mouseExited(): CALLED!!");	
 	}

@@ -245,8 +245,7 @@ public class BlueBookForm extends JDialog {
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener( ) {
-	    	@Override
-			public void actionPerformed(ActionEvent e) {
+	    	public void actionPerformed(ActionEvent e) {
 	    		closeAndCancel();
 	    	}
 	    });
@@ -255,8 +254,7 @@ public class BlueBookForm extends JDialog {
 	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
 	    saveButton.setToolTipText("Save bbEntry");
 	    saveButton.addActionListener(new ActionListener( ) {
-	    	@Override
-			public void actionPerformed(ActionEvent e) {
+	    	public void actionPerformed(ActionEvent e) {
 	    		saveAndClose();
 	    	}
 	    });
@@ -298,7 +296,6 @@ public class BlueBookForm extends JDialog {
 		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", "icons/camera.png");
 		addPhotoButton.setToolTipText("Attach a photo to this bbEntry");
 		addPhotoButton.addActionListener(new ActionListener(){
-			@Override
 			public void actionPerformed(ActionEvent ae) {
 				chooseAndAddPhoto(photoPanel);
 			}
@@ -309,7 +306,6 @@ public class BlueBookForm extends JDialog {
 		addVideoButton.setToolTipText("Attach a video to this BOLO");
 		addVideoButton.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				loadVideo();
 				

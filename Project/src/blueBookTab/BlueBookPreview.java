@@ -2,6 +2,7 @@ package blueBookTab;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,7 +12,6 @@ import java.nio.file.Path;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -19,6 +19,7 @@ import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
+import program.ResourceManager;
 import utilities.pdf.PDFView;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
@@ -28,7 +29,10 @@ import utilities.ui.SwingHelper;
  * can be edited, saved, printed, and emailed.
  */
 public class BlueBookPreview extends JDialog implements ActionListener {
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
+	private static String DELETE_ACTION = "delete";
+	private static String PRINT_ACTION = "print";
+	private static String EMAIL_ACTION = "email";
 	private String name, dob, affili, address, crimeDescrip, narrative;
 	private String date, time, location, caseNum, status, weapon;
 	private Integer bbID=null;
@@ -44,6 +48,8 @@ private static final long serialVersionUID = 1L;
 	/** JDOC */
 	JPanel dialogPanel;
 	PDFView pdfv;
+	ResourceManager rm;
+	    private Desktop.Action action = Desktop.Action.OPEN;
 //-----------------------------------------------------------------------------
 	/**
 	 * Generates the <code>BlueBookPreview</code> window  with all necessary fields 
@@ -52,13 +58,13 @@ private static final long serialVersionUID = 1L;
 	 * @param parent - JDOC
 	 * @param bbEntry - JDOC
 	 */
-	public BlueBookPreview(JFrame parent, BlueBookTab bbTab, BlueBookEntry bbEntry){
-			super(parent, "BlueBook Entry", true);
+	public BlueBookPreview(ResourceManager rm, BlueBookTab bbTab, BlueBookEntry bbEntry){
+			super(rm.getGuiParent(), "BlueBook Entry", true);
 //DEBUG
 System.out.println("BlueBookPreview: constructor ");
 			//BlueBookEntry object to load info from
 			this.bbEntry = bbEntry;
-			this.parent = parent;
+			this.rm=rm;
 			this.bbTab=bbTab;
 			
 			//Set the size of the page
@@ -104,9 +110,12 @@ System.out.println("BlueBookPreview: constructor ");
 		    
 		    
 			//Create a PDF from the given BlueBookEntry based on the form template
-			String filename = bbEntry.saveToFileSystem();
+			String filename="";
+			try{
+				filename = bbEntry.createPdf(bbEntry.createNewUniqueFilename());
+			} catch(Exception e){ e.printStackTrace(); }
 			
-		    JScrollPane scroller = new JScrollPane();
+			JScrollPane scroller = new JScrollPane();
 		    
 			pdfv = new PDFView(filename, scroller, createButtonsPanel());
 			Container contentPane = this.getContentPane();
@@ -117,19 +126,16 @@ System.out.println("BlueBookPreview: constructor ");
 	/**
 	 * JDOC
 	 */
-	//private JToolBar createToolbar(){
 		private JPanel createButtonsPanel(){
 		JToolBar toolbar = new JToolBar(SwingConstants.HORIZONTAL);
 		toolbar.setFloatable(false);
 		
 		JPanel panel = new JPanel();
 		
-		
 		//Cancel button
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_32.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
-			@Override
 			public void actionPerformed(ActionEvent ae) {
 				closeAndCancel();
 			}
@@ -139,7 +145,6 @@ System.out.println("BlueBookPreview: constructor ");
 	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_32.png");
 	    saveButton.setToolTipText("Save BlueBookEntry");
 	    saveButton.addActionListener(new ActionListener() {
-	    	@Override
 			public void actionPerformed(ActionEvent e) {
 	    		saveAndClose();
 	    	}
@@ -149,6 +154,7 @@ System.out.println("BlueBookPreview: constructor ");
 	    JButton deleteButton = SwingHelper.createImageButton("Delete", 
 	    		"icons/delete_32.png");
 	    deleteButton.setToolTipText("Delete BlueBookEntry");
+	    deleteButton.setActionCommand(DELETE_ACTION);
 	    deleteButton.addActionListener(this);
 	    
 	    //Edit button
@@ -156,7 +162,6 @@ System.out.println("BlueBookPreview: constructor ");
 	    		"icons/edit_32.png");
 	    editButton.setToolTipText("Edit this BlueBookEntry");
 	    editButton.addActionListener(new ActionListener( ) {
-	    	@Override
 			public void actionPerformed(ActionEvent e) {
 	    		//BlueBookEntry form dialog
 				BlueBookForm formDialog = new BlueBookForm(parent, bbTab, bbEntry);
@@ -169,23 +174,15 @@ System.out.println("BlueBookPreview: constructor ");
 	    JButton printButton = 
 	    		SwingHelper.createImageButton("Print", "icons/print_32.png");
 	    printButton.setToolTipText("Print this BlueBookEntry document");
-	    printButton.addActionListener(new ActionListener( ) {
-	    	@Override
-			public void actionPerformed(ActionEvent e) {
-	 //   		PrintHelper ph = new PrintHelper(dialogPanel);
-	    	}
-	    });
-	    
+	    printButton.setActionCommand(PRINT_ACTION);
+	    printButton.addActionListener(this);
+	
 	    //Email button
 	    JButton emailButton = SwingHelper.createImageButton("Email", "icons/email32.png");
 	    emailButton.setToolTipText("Email this BlueBookEntry document");
-	    emailButton.addActionListener(new ActionListener( ) {
-	    	@Override
-			public void actionPerformed(ActionEvent e) {
-	    		//TODO implement email
-	    	}
-	    });
-	    
+	    emailButton.setActionCommand(EMAIL_ACTION);
+	    emailButton.addActionListener(this);
+
 	    /*
 	    JPanel saveAndCancelButtonsPanel = new JPanel();
 	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
@@ -237,10 +234,17 @@ System.out.println("BlueBookPreview: constructor ");
 		 this.dispose();	
 	}
 //-----------------------------------------------------------------------------
-	@Override
 	public void actionPerformed(ActionEvent ev) {
-		//attempt to delete the currently displayed BlueBookEntry & close this dialog
-		deleteEntryAndClose();	
+		if(ev.getActionCommand().equals(DELETE_ACTION)){
+			//attempt to delete the currently displayed BlueBookEntry & close this dialog
+			deleteEntryAndClose();	
+		} else if(ev.getActionCommand().equals(PRINT_ACTION)){
+			rm.launchDefaultApplication(bbEntry.filename);
+		} else if(ev.getActionCommand().equals(EMAIL_ACTION)){
+			Desktop.Action action = Desktop.Action.OPEN;
+			//rm.launchMail(ev);
+			
+		}
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -273,6 +277,7 @@ System.out.println("BlueBookPreview: constructor ");
 		
 	}
 //-----------------------------------------------------------------------------
+	
 }
 
 

@@ -79,6 +79,8 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 		populateVideoPanel();
 		populateActivityPanel();
 		
+		rAP.revalidate();
+		
 		homeTabs.addTab("Videos", videoPanel);
 		homeTabs.addTab("Recent Activity", rAP);
 		return homeTabs;
