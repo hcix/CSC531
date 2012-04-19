@@ -14,8 +14,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import utilities.ui.SwingHelper;
 import net.miginfocom.swing.MigLayout;
+import utilities.ui.SwingHelper;
 
 /**
  * JDOC 

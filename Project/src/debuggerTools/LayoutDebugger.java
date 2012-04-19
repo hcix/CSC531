@@ -1,12 +1,11 @@
 package debuggerTools;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import net.miginfocom.swing.MigLayout;
 import utilities.ui.SwingHelper;
-import javax.swing.JTextField;
 
 //-----------------------------------------------------------------------------
 
