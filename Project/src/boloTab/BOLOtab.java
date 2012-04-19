@@ -348,10 +348,7 @@ private static final long serialVersionUID = 1L;
 		
 		return recentBOLOsPanel;
 	}
-//-----------------------------------------------------------------------------
-	/** 
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-=======
+
 //-----------------------------------------------------------------------------		
 	public void refreshRecentBOLOsTab(){
 		recentBolosTab.removeAll();
@@ -364,7 +361,6 @@ private static final long serialVersionUID = 1L;
 	/**
 	 * Invoked by the <code>DisplayPanel</code> when a BOLO is 'clicked'
 	 * on.
->>>>>>> 36ae44d5fa768f728e404add147150fd5c71d937
 	 */
 	public void actionPerformed(ActionEvent ev) {
 		String listId = ev.getActionCommand();
