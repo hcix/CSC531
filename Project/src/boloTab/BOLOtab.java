@@ -302,7 +302,6 @@ System.out.println("boloList.size() = " + listSize);
 	 * @return recentBOLOsPanel
 	 */
 	private DisplayPanel createRecentBOLOsTab(){
-		JPanel recentBOLOsPanel = new JPanel(new MigLayout());
 		JPanel boloPanel;
 		Date prepDate;
 
