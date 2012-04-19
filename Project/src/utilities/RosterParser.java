@@ -148,14 +148,16 @@ public class RosterParser {
 					name = name.concat(splitName[1]);
 					return name;
 				}
+
 			}
 		} catch (IOException e) {
-				System.out.println("Employee list does not exist");
-				// e.printStackTrace();
-			}
-			return null;
+			System.out.println("Employee list does not exist");
+			// e.printStackTrace();
 		}
-//-----------------------------------------------------------------------------
+		return null;
+	}
+	//-----------------------------------------------------------------------------
+
 	/**
 	 * Gets a <code>BufferedReader</code> to read the given file.
 	 * 
@@ -165,7 +167,7 @@ public class RosterParser {
 	private BufferedReader getReader(String filename) throws IOException {
 		return newBufferedReader(get(filename), defaultCharset());
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * Using an integer date, get date as a <code>String</code>
 	 * 
@@ -191,6 +193,7 @@ public class RosterParser {
 			return "Saturday";
 		default:
 			return null;
+
 		}
 	}
 }
