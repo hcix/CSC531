@@ -136,13 +136,9 @@ public class RosterParser {
 		 * Open the employee list file, check for a match with the cnumber, and
 		 * if one occurs, return the name
 		 */
-<<<<<<< HEAD
-		try {
-=======
 
 		try 
 		{
->>>>>>> ben commit
 			BufferedReader reader = getReader(employeeFileName);
 			String line = null;
 			while ((line = reader.readLine()) != null) {
@@ -159,10 +155,6 @@ public class RosterParser {
 			}
 			return null;
 		}
-<<<<<<< HEAD
-=======
-
->>>>>>> ben commit
 //-----------------------------------------------------------------------------
 	/**
 	 * Gets a <code>BufferedReader</code> to read the given file.
@@ -201,9 +193,4 @@ public class RosterParser {
 			return null;
 		}
 	}
-<<<<<<< HEAD
-//-----------------------------------------------------------------------------
 }
-=======
-}
->>>>>>> ben commit
