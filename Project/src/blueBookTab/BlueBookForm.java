@@ -291,6 +291,7 @@ public class BlueBookForm extends JDialog {
 		noPhotoLabel = new JLabel(noPhotoImage);
 		photoPanel.add(noPhotoLabel, "span, wrap");
 		photoOuterPanel.add(photoPanel, "spanx,grow,wrap");
+		photoOuterPanel.setSize(800, 300); //testing
 		
 		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", "icons/camera.png");
 		addPhotoButton.setToolTipText("Attach a photo to this bbEntry");
@@ -443,7 +444,8 @@ public class BlueBookForm extends JDialog {
 					photoArea.remove(noPhotoLabel);
 					JPanel newPanel = new JPanel();
 					newPanel.add(new JLabel(resizeDialog.getResizedImgIcon()), "span, wrap");
-					photoOuterPanel.add(newPanel);
+					newPanel.setVisible(true);
+					photoArea.add(newPanel);
 					//photoArea.add(new JLabel(resizeDialog.getResizedImgIcon()));
 				    (photoArea.getParent()).validate();
 				}
