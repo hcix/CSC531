@@ -94,7 +94,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 
 				
 				//refresh to display any changes
-				refreshRecentBOLOsTab();
+				//refreshRecentBOLOsTab();
 
 				/*OLIVIA: TODO: If the new bolo created was also created as a item
 				(aka the create item from this bolo checkbox was selected) then
@@ -102,7 +102,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 					mainInterface.refreshItemsList();
 					mainInterface.refreshItemsTable();
 				Otherwise, it is not necessary to call these methods
-<<<<<<< HEAD
 				 */
 
 				//unneeded/repetative, waiting to make sure no errors b4 deleting

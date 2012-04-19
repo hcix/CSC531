@@ -17,15 +17,19 @@ public class DashboardPanel extends JPanel implements ActionListener {
 	public DashboardPanel(){
 		super();
 		
+		JLabel blankLabel = new JLabel("                   ");
+		
+		add(blankLabel,BorderLayout.WEST);
+		
 		ImageIcon logoIcon = ImageHandler.createImageIcon("images/ProgramLogo.png");
 		JLabel logo = new JLabel(logoIcon);
 		
-		add(logo);
+		add(logo,BorderLayout.CENTER);
 		
 		logoutButton = SwingHelper.createImageButton("Logout", "icons/logout64.png");
 		logoutButton.addActionListener(this);
 		logoutButton.setActionCommand("logout");
-		add(logoutButton);
+		add(logoutButton, BorderLayout.EAST);
 	}
 //-----------------------------------------------------------------------------	
 	public void actionPerformed(ActionEvent e) 
