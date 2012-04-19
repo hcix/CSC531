@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -14,10 +14,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import utilities.ui.SwingHelper;
-
 import net.miginfocom.swing.MigLayout;
+import utilities.ui.SwingHelper;
 
 /**
  * 
@@ -35,6 +33,8 @@ public class AddUserDialog extends JDialog implements ActionListener
 	Dimension dialogDim;
 	JButton ok, cancel;
 	
+	private boolean wasCanceled = false;
+	
 	public AddUserDialog(JFrame parent, Employee editEmployee)
 	{
 		super(parent, "", true);
@@ -49,6 +49,7 @@ public class AddUserDialog extends JDialog implements ActionListener
 		
 		this.setPreferredSize(dialogDim);
 		this.setSize(dialogDim);
+		this.setResizable(false);
 
 		//Put the form in the middle of the screen
 		this.setLocationRelativeTo(null);
@@ -127,7 +128,7 @@ public class AddUserDialog extends JDialog implements ActionListener
 		mainPanel.add(ok, "align left");
 		mainPanel.add(cancel, "align left");
 	}
-	private void saveAndClose()
+	private void saveAndCloseAdd()
 	{
 		employee = new Employee();
 		employee.setCaneID(caneidF.getText().trim());
@@ -143,7 +144,13 @@ public class AddUserDialog extends JDialog implements ActionListener
 	{
 		return employee;
 	}
-	private void closeAndCancel(){
+	public boolean checkCanceled()
+	{
+		return wasCanceled;
+	}
+	private void closeAndCancel()
+	{
+		wasCanceled = true;
 		this.dispose();
 	}
 	private void populate(Employee e)
@@ -161,7 +168,7 @@ public class AddUserDialog extends JDialog implements ActionListener
 		
 		if(command.equals("ok"))
 		{
-			saveAndClose();
+			saveAndCloseAdd();
 		}
 		else if(command.equals("cancel"))
 		{

@@ -30,9 +30,15 @@
  */ 
 package utilities.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.Scrollable;
+import javax.swing.SwingConstants;
 
 public class ScrollablePicture extends JLabel 
 							implements Scrollable,MouseMotionListener {

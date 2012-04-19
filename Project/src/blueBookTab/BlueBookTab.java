@@ -9,9 +9,6 @@ import java.awt.event.ActionListener;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -20,12 +17,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
 import net.miginfocom.swing.MigLayout;
 import utilities.DatabaseHelper;
 import utilities.SearchHelper;
-import utilities.ui.ImageHandler;
 import utilities.ui.DisplayPanel;
+import utilities.ui.ImageHandler;
 import utilities.ui.SwingHelper;
 
 /*
@@ -38,7 +34,7 @@ import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------	
 /**
  * The <code>BlueBookTab</code> class creates a tab on the UMPD Management
- * System to hold information of <code>BlueBookEntry</code>s.
+ * System to hold information of <code>BlueBookEntry</code>s. 
  */
 public class BlueBookTab extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -96,11 +92,16 @@ public class BlueBookTab extends JPanel implements ActionListener {
 
 	// -----------------------------------------------------------------------------
 	/**
+<<<<<<< HEAD
+	 * Creates a search dialog for the <code>BlueBookTab</code> when the 
+	 * <code>searchButton</code> is clicked.
+=======
 	 * Creates a search dialog for the <code>BlueBookTab</code> when the
 	 * <code>searchButton</code> is clicked
+>>>>>>> c7dbd3929905b3433d3b67b6e4901ced664023d1
 	 * 
-	 * @param parent
-	 * @return
+	 * @param parent - Parent JFrame
+	 * @return 
 	 */
 	public JDialog createSearchDialog(JFrame parent) {
 		// Create the dialog and set the size
@@ -129,7 +130,6 @@ public class BlueBookTab extends JPanel implements ActionListener {
 				"icons/search.png");
 		searchButton.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				search();
 				searchDialog.dispose();
@@ -199,7 +199,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	// -----------------------------------------------------------------------------
 	/**
 	 * Create the <code>entriesPanel</code> and populate it with data from the
-	 * database
+	 * database.
 	 * 
 	 * @return entriesPanel
 	 */

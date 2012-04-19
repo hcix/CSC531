@@ -10,12 +10,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -30,11 +27,17 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import progAdmin.itemsToReview.ItemToReview;
 import net.miginfocom.swing.MigLayout;
+import progAdmin.itemsToReview.ItemToReview;
 import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
 /**
  * JDOC
+ * 
+ * 
+ * 
+ * 
+ * TODO: Lots of debugging in this class here. 
  */
 public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -48,8 +51,11 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 	
 	JTable table;
 	Dimension dialogDim;
-	List<Employee> employeeList = new ArrayList<Employee>();
+	ArrayList<Employee> employeeList = new ArrayList<Employee>();
 //-----------------------------------------------------------------------------
+	/**
+	 * JDOC
+	 */
 	public EditUsrAccountsDialog(JFrame parent){
 		super(parent, "User Accounts", true);
 		
@@ -97,20 +103,17 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		toolbar.add(editUserButton);	
 		toolbar.setFloatable(false);
 		
-		//JSeparator jsep = new JSeparator();
+		employeeList = XmlParser.getRoster();
 		
-		
-		//tableScrollPane.setViewportView(createTable());
-		//tableScrollPane.add(createTable());
-		
-		EmployeeTableModel tableModel = new EmployeeTableModel();
-		mainPanel.add(toolbar, BorderLayout.NORTH);
+		EmployeeTableModel tableModel = new EmployeeTableModel(employeeList);
+
 		
 		table = createTable(tableModel);	
 		JScrollPane tableScrollPane = new JScrollPane(table);
-		//mainPanel.add(jsep, BorderLayout.CENTER);
 		mainPanel.add(tableScrollPane, BorderLayout.CENTER);
 
+		mainPanel.add(toolbar, BorderLayout.NORTH);
+		
 	    Container contentPane = getContentPane();
 	    contentPane.add(mainPanel);
 	}
@@ -124,8 +127,6 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 	    table.setFillsViewportHeight(true);
 	    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-	    employeeList = XmlParser.getRoster();
-	    
 		return table;
 	}
 //-----------------------------------------------------------------------------
@@ -148,17 +149,18 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			aud.setVisible(true);
 			aud.setModal(true);
 			
-			Employee emp = aud.getEmployee();
-			employeeList.add(emp);
-			
-			
-			try {
-				XmlParser.saveRoster(employeeList);
-			} catch (Exception ee) {
-				ee.printStackTrace();
-			}
-			//refresh table
-			table.repaint();
+			if(aud.checkCanceled() != true)
+			{
+				Employee emp = aud.getEmployee();
+				employeeList.add(emp);
+				try {
+					XmlParser.saveRoster(employeeList);
+				} catch (Exception ee) {
+					ee.printStackTrace();
+				}
+				//refresh table
+				table.repaint();
+			}	
 		}
 		else if(command.equals(EDIT_USER))
 		{
@@ -167,27 +169,30 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			AddUserDialog aud = new AddUserDialog(parent, emp);
 			aud.setVisible(true);
 			aud.setModal(true);
-			//TODO: make edit user dialog
-			//TODO: open edit user dialog
-			int empLoc = employeeList.indexOf(emp);
-			employeeList.remove(emp);
-			employeeList.add(empLoc, aud.getEmployee());
-			table.repaint();
+			if(aud.checkCanceled() != true)
+			{
+				int empLoc = employeeList.indexOf(emp);
+				employeeList.remove(emp);
+				employeeList.add(empLoc, aud.getEmployee());
+				try {
+					XmlParser.saveRoster(employeeList);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				table.repaint();
+			}
 		}
-		else if(command.equals(DELETE_USER))
+else if(command.equals(DELETE_USER))
 		{
-			int rowIndex = table.getSelectedRow();
-			//rm.removeItem(rowIndex);
 			int selected = table.getSelectedRow();
 			Employee emp = employeeList.get(selected);
 			
-			DeleteUserPrompt dup = new DeleteUserPrompt("Are you sure you want to delete user " + emp.getFirstname() + " " + emp.getLastname() + "?");
-			dup.setVisible(true);
-			dup.setModal(true);
+			int confirm = JOptionPane.showConfirmDialog(parent, ("Are you sure you want to" +
+					" delete user" + emp.getLastname() + "?"), ("Delete User?"), 
+					JOptionPane.YES_NO_OPTION);
 			
-			int result = dup.getResult();
-			if(result == 0) // ok to delete
-			{
+			//if delete was confirmed, perform delete
+			if(confirm == JOptionPane.YES_OPTION){ // ok to delete
 				employeeList.remove(emp);
 				try {
 					XmlParser.saveRoster(employeeList);
@@ -197,17 +202,18 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			}
 			table.repaint();
 		}
+		this.getContentPane().revalidate();
 	}
 //=============================================================================
 	/** INNER CLASS **/
 	private class EmployeeTableModel extends AbstractTableModel implements TableModelListener 
 	{
 		private static final long serialVersionUID = 1L;
-		private String [] columnNames =  {"cnumber", "firstname", "lastname",
+		public String [] columnNames =  {"cnumber", "firstname", "lastname",
 				"caneid", "email", "permissions"};	
+		
 	//-----------------------------------------------------------------------------
-		EmployeeTableModel(){
-			
+		EmployeeTableModel(ArrayList<Employee> employeeList){
 		}
 	//-----------------------------------------------------------------------------
 		public void tableChanged(TableModelEvent e) {
@@ -228,17 +234,17 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 	//-----------------------------------------------------------------------------
 		public Object getValueAt(int row, int col) {
 			if(col==0){//cnumber
-				employeeList.get(row).getCnumber();
+				return employeeList.get(row).getCnumber();
 			}else if(col==1){//firstname
-				employeeList.get(row).getFirstname();
+				return employeeList.get(row).getFirstname();
 			}else if(col==2){//lastname
-				employeeList.get(row).getLastname();
+				return employeeList.get(row).getLastname();
 			}else if(col==3){//caneid
-				employeeList.get(row).getCaneID();
+				return employeeList.get(row).getCaneID();
 			}else if(col==4){//email
-				employeeList.get(row).getEmail();
+				return employeeList.get(row).getEmail();
 			}else if(col==5){//permissions
-				employeeList.get(row).getPermissions();
+				return employeeList.get(row).getPermissions();
 			}
 			//if col is out of range, return null
 			return null;
@@ -249,9 +255,8 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 	     * editor for each cell. In this case, all cells are strings so
 	     * this is simple.
 	     */
-		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int c) {
-	        return String.class;
+	        return getValueAt(0, c).getClass();
 	    }
 	//-----------------------------------------------------------------------------
 	}

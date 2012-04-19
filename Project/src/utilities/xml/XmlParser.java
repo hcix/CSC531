@@ -57,7 +57,7 @@ public class XmlParser {
 	 * @return a <code>List</code> of <code>Employee</code> objects containing
 	 * all employees currently represented in the roster.xml file
 	 */
-	public static List<Employee> getRoster() {
+	public static ArrayList<Employee> getRoster() {
 		String rosterFileName = FileHelper.getRosterFilePathName();
 		ArrayList<Employee> roster = new ArrayList<Employee>();
 		try {
@@ -151,7 +151,7 @@ public class XmlParser {
 		return roster;
 	}
 //-----------------------------------------------------------------------------	
-	public static void saveRoster(List<Employee> roster) throws Exception {
+	public static void saveRoster(ArrayList<Employee> roster) throws Exception {
 		String rosterFileName = FileHelper.getRosterFilePathName();
 		//Create a XMLOutputFactory
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();

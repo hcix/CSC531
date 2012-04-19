@@ -3,13 +3,10 @@ package userinterface;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import program.Core;
 import utilities.ui.ImageHandler;
 
 public class DashboardPanel extends JPanel implements ActionListener {
