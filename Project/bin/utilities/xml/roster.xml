@@ -16,4 +16,39 @@
 		<email>h.ciechowski@umiami.edu</email>
 		<permissions>supervisor</permissions>
 	</employee>
+<<<<<<< HEAD
+=======
+	<employee>
+		<cnumber>e</cnumber>
+		<firstname>a</firstname>
+		<lastname>b</lastname>
+		<caneid>c</caneid>
+		<email>d</email>
+		<permissions>Supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>a</cnumber>
+		<firstname>e</firstname>
+		<lastname>d</lastname>
+		<caneid>c</caneid>
+		<email>b</email>
+		<permissions>Supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>12345</cnumber>
+		<firstname>stuff</firstname>
+		<lastname>bro</lastname>
+		<caneid>bro</caneid>
+		<email>bro</email>
+		<permissions>Supervisor</permissions>
+	</employee>
+	<employee>
+		<cnumber>bro</cnumber>
+		<firstname>bro</firstname>
+		<lastname>bro</lastname>
+		<caneid>bro</caneid>
+		<email>bro</email>
+		<permissions>Supervisor</permissions>
+	</employee>
+>>>>>>> shit ton of homeTab changes and other stuff
 </roster>

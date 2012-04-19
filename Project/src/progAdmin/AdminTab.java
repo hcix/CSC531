@@ -3,6 +3,8 @@
  */
 package progAdmin;
 
+import homeTab.HomeTab;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -14,7 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import progAdmin.itemsToReview.ManageItemsDialog;
 import program.ResourceManager;
-import userinterface.HomeTab;
 import userinterface.MainInterfaceWindow;
 import utilities.FileHelper;
 import utilities.ui.SwingHelper;
@@ -126,7 +127,8 @@ public class AdminTab extends JPanel implements ActionListener {
 			//		videoPath.toString());
 			rm.setLastestVideoName(videoPath.toString());
 			//set visability true
-            HomeTab.setVideoVisability(true);
+			HomeTab ht = new HomeTab(parent, false);
+            ht.setVideoVisability(true);
 			
 			// put this after chooser has been closed
 			JOptionPane.showMessageDialog(parent, "Video has been loaded "

@@ -120,8 +120,15 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	}
 //-----------------------------------------------------------------------------
 	/**
+<<<<<<< HEAD
 	 * Creates a search dialog for the <code>BlueBookTab</code> when the
 	 * <code>searchButton</code> is clicked.
+=======
+	 * Creates a search dialog for the <code>BlueBookTab</code> when the 
+	 * <code>searchButton</code> is clicked.
+	 * Creates a search dialog for the <code>BlueBookTab</code> when the
+	 * <code>searchButton</code> is clicked
+>>>>>>> shit ton of homeTab changes and other stuff
 	 * 
 	 * @param parent - Parent JFrame
 	 * @return 
