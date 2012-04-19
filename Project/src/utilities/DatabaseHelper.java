@@ -214,62 +214,68 @@ public class DatabaseHelper {
 		Path dbFilePath = Paths.get("Database", "umpd.db");
 		String dbFileName = dbFilePath.toString();
 		Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
+		personStatement = conn.prepareStatement(
+				"INSERT into RollCall(roll_call_ID, name, present, comment, timearrived, shiftdate) " +
+				"VALUES(?,?,?,?,?,?);"
+		    );
 		
-		//check for already existing shift
-//		Statement stat = conn.createStatement();
-//		ResultSet allEntries = stat.executeQuery("SELECT * FROM RollCall WHERE ShiftDate = shiftDate AND Name = name;");
-//		
-//		allEntries.next();
-//		
-//		try {
-//			rollCallID = ((Integer)allEntries.getInt("roll_call_ID"));
-//			replace = true;
-//		} catch (Exception e) {
-//			/*
-//			 * If code reaches this spot, then the record is not in the
-//			 * database and needs not be replaced. Not the most elegant way 
-//			 * to do it, but I'm running out of options and time.
-//			 */
-//			replace = false; //redundant but for code clarity
-//		}
-//		
-		
-//		if (replace) {
-//		    //insert into person table
-//		    personStatement = conn.prepareStatement(
-//				    "REPLACE into RollCall(roll_call_ID, Name, Present, Comment, TimeArrived, ShiftDate) " +
-//				    "VALUES(?,?,?,?,?,?);"
-//		        );
-//		
-//		    personStatement.setInt(1, Integer.valueOf(rollCallID));
-//		    //long shiftDateEpoch = convertDateToEpoch(shiftDate);
-//		}
-//		else {
-			personStatement = conn.prepareStatement(
-				    "REPLACE into RollCall(roll_call_ID, name, present, comment, timearrived, shiftdate) " +
-				    "VALUES(?,?,?,?,?,?);"
-		        );
-		
-		    personStatement.setString(1, null);
-			
-		//}
-		
-		    personStatement.setString(2,name);
-		    personStatement.setString(3,present);
-		    personStatement.setString(4,comment);
-		    personStatement.setString(5,timeArrived);
-		    personStatement.setString(6,shiftDate);
-		    personStatement.addBatch();
+		personStatement.setString(1, null);
+		personStatement.setString(2,name);
+		personStatement.setString(3,present);
+		personStatement.setString(4,comment);
+		personStatement.setString(5,timeArrived);
+		personStatement.setString(6,shiftDate);
+		personStatement.addBatch();
 
-	        //Create new row in the table for the data
-		    conn.setAutoCommit(false);
-		    personStatement.executeBatch();
-		    conn.setAutoCommit(true);
+	    //Create new row in the table for the data
+		conn.setAutoCommit(false);
+	    personStatement.executeBatch();
+		conn.setAutoCommit(true);
 		//Close the connection
 		//allEntries.close();
 		conn.close();
     }
+//-----------------------------------------------------------------------------
+	public void replaceRollCall(String name, String present, String comment, 
+			String timeArrived, String shiftDate) throws ClassNotFoundException, SQLException {
+		PreparedStatement personStatement;
+		Integer rollCallID = null;
+		boolean replace = false;
+		
+		//Create the connection to the database
+		Class.forName("org.sqlite.JDBC");
+		Path dbFilePath = Paths.get("Database", "umpd.db");
+		String dbFileName = dbFilePath.toString();
+		Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
+		
+		Statement stat = conn.createStatement();
+        String query = "DELETE * FROM RollCall WHERE shiftdate = " + "'" + shiftDate + "'" + ";";
+	    ResultSet allEntries = stat.executeQuery(query);
+		
+		personStatement = conn.prepareStatement(
+			    "INSERT into RollCall(roll_call_ID, name, present, comment, timearrived, shiftdate) " +
+			    "VALUES(?,?,?,?,?,?);"
+	        );
+	
+	    personStatement.setString(1, null);
+		
+	//}
+	
+	    personStatement.setString(2,name);
+	    personStatement.setString(3,present);
+	    personStatement.setString(4,comment);
+	    personStatement.setString(5,timeArrived);
+	    personStatement.setString(6,shiftDate);
+	    personStatement.addBatch();
 
+        //Create new row in the table for the data
+	    conn.setAutoCommit(false);
+	    personStatement.executeBatch();
+	    conn.setAutoCommit(true);
+	//Close the connection
+	allEntries.close();
+	conn.close();
+	}
 //-----------------------------------------------------------------------------
     /**
      * Takes <code>RollCall</code> data stored in the database and populate the 
@@ -296,39 +302,9 @@ public class DatabaseHelper {
         Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
     	
         Statement stat = conn.createStatement();
-        //ResultSet allEntries = stat.executeQuery("SELECT * FROM RollCall WHERE ShiftDate = '17Apr2012:10:00';");
         String query = "SELECT * FROM RollCall WHERE shiftdate = " + "'" + shiftDate + "'" + ";";
 	    ResultSet allEntries = stat.executeQuery(query);
-    	
-	    //RollCall rollCall;
 	    
-	    /*
-	    // hacktastic method
-	    int i = 0;
-	    
-	    int count = 0;
-	    while (allEntries.next()) {
-	    	count++;
-	    }
-	    
-	    ResultSet allEntries2 = stat.executeQuery("SELECT * FROM RollCall WHERE ShiftDate = shiftDate;");
-	    RollCall[] rollCallArray = new RollCall[count];
-	 
-	    int m = 0;
-	    while (allEntries2.next()) {
-	        rollCall = new RollCall();
-	    
-	        rollCall.setName(allEntries.getString("Name")); 
-	        rollCall.setPresent(allEntries.getString("Present"));
-	        rollCall.setComment(allEntries.getString("Comment"));
-	        rollCall.setTimeArrived(allEntries.getString("TimeArrived"));
-	        
-	        rollCallArray[m++] = rollCall;
-	    }
-	    Collections.addAll(rollCallList, rollCallArray);
-	    */
-	    
-	    //right method, that doesn't fucking work! 
 	    //Update, works, but not the way I originally wanted it to / it should
 	    RollCall rollCall;
 	    while (allEntries.next()) {
@@ -342,6 +318,7 @@ public class DatabaseHelper {
 	    allEntries.close();
 	    conn.close();
 	   
+	    //DEBUG
 	    for (RollCall testrollCall : rollCallList) {   	
         	System.out.println(testrollCall.getName());
         }
