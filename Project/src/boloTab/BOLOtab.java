@@ -257,9 +257,8 @@ private static final long serialVersionUID = 1L;
 
 			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
 
-			JLabel photoLabel = new JLabel(
-					ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
-
+			
+			
 			String date = formatter.format(prepDate);
 			String caseNum = "";
 			if(bolo.getCaseNum()!=null){ caseNum=bolo.getCaseNum(); }
@@ -267,8 +266,11 @@ private static final long serialVersionUID = 1L;
 			if(bolo.getStatus()!=null){ status=bolo.getStatus(); }
 
 			boloPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
-			boloPanel.add(photoLabel);
-
+			if(bolo.getPhoto()!=null){
+				JLabel photoLabel = new JLabel(
+						ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
+				boloPanel.add(photoLabel);
+			}
 			String armedText = "";
 			if(bolo.getWeapon()!=null){ 
 				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");

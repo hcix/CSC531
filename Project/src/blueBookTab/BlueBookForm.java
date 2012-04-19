@@ -140,12 +140,14 @@ public class BlueBookForm extends JDialog {
 		descriptionField.setText(bbEntry.getNarrative());
 	
 		 //set picture
+		if(bbEntry.getPhotoFilePath()!=null){
 		 ImageIcon photo = ImageHandler.getScaledImageIcon(
 				 bbEntry.getPhotoFilePath(), 200, 299);
-		 if(photo!=null){
-			photoArea.removeAll();
-			photoArea.add(new JLabel(photo));
-		 }
+			if(photo!=null){
+				photoArea.removeAll();
+				photoArea.add(new JLabel(photo));
+			}
+		}
 		 inputPanel.validate(); 
 	 }
 //-----------------------------------------------------------------------------
@@ -294,7 +296,7 @@ public class BlueBookForm extends JDialog {
 	/**
 	 * Save the information input into this form and close the dialog.
 	 */
-	 public void saveAndClose( ) {
+	 private void saveAndClose( ) {
 		//place the info from the fields into a bbEntry object
 		 putInfoIntoBlueBookEntry();
 		 
@@ -318,7 +320,7 @@ public class BlueBookForm extends JDialog {
 	 /**
 	  * Places the info from the input fields into the global BlueBook object.
 	  */
-	 public void putInfoIntoBlueBookEntry(){
+	 private void putInfoIntoBlueBookEntry(){
 		 String caseNumText, nameText, affiliText, addressText, weapon;
 		 String locationText, descritionText, reasonText;
 		 //String preparedBy;
@@ -380,7 +382,7 @@ public class BlueBookForm extends JDialog {
 			fc.setAccessory(new ImagePreview(fc));
 			int returnVal = fc.showOpenDialog(getParent());
 
-			//if a photo was selected, add it to BOLO and load into photo area
+			//if a photo was selected, add it to BlueBookEntry and load into photo area
 			if(returnVal==JFileChooser.APPROVE_OPTION){
 				//copy the chosen photo into the program's 'Photos' directory
 				final File file = fc.getSelectedFile();
@@ -432,12 +434,12 @@ public class BlueBookForm extends JDialog {
 		descriptionField.setText(null);
 		reasonField.setText(null);
 		
-		/*recreate the photo/video section
+		//recreate the photo/video section
 		photoArea.removeAll();
 		ImageIcon noPhotoImage = ImageHandler.createImageIcon("images/unknownPerson.jpeg");
 		JLabel noPhotoLabel = new JLabel(noPhotoImage);
 		photoArea.add(noPhotoLabel);
-		(photoArea.getParent()).validate();*/
+		(photoArea.getParent()).validate();
 		
 	 }
 //-----------------------------------------------------------------------------

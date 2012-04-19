@@ -336,7 +336,7 @@ public class BlueBookEntry {
 	    //Create a prepared statement to add the crime data
 	    PreparedStatement prep = conn.prepareStatement(
 	      "REPLACE into bluebook(armed, narrative, description, location, address, affili," +
-	      " dob, offenderName, caseNum, incidentTime, incidentDate, photoFileName, " +
+	      " dob, name, caseNum, time, date, photoFileName, " +
 	      " videoFileName, bbID)" + 
 	      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
 
@@ -353,7 +353,7 @@ public class BlueBookEntry {
 	    prep.setString(10, this.time);
 	    prep.setString(11, this.date);
 
-	    if(this.bbID!=0){ prep.setInt(14, this.bbID); }
+	    if(this.bbID!=null){ prep.setInt(14, this.bbID); }
 
 	    if(photoFilePath!=null){
 		    Path absPhotoFilePath = photoFilePath.toAbsolutePath();

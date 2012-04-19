@@ -8,8 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -17,9 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
-import utilities.ui.ImageHandler;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
@@ -53,7 +52,8 @@ private static final long serialVersionUID = 1L;
 	 */
 	public BlueBookPreview(JFrame parent, BlueBookTab bbTab, BlueBookEntry bbEntry){
 			super(parent, "BlueBook Entry", true);
-
+//DEBUG
+			System.out.println("BlueBookPreview: constructor ");
 			//BlueBookEntry object to load info from
 			this.bbEntry = bbEntry;
 			this.parent = parent;
@@ -63,14 +63,6 @@ private static final long serialVersionUID = 1L;
 			this.setPreferredSize(new Dimension(800,900));
 			this.setSize(new Dimension(800,900));
 			
-			dialogPanel = new JPanel(new MigLayout("ins 20"));
-			dialogPanel.setBackground(Color.WHITE);
-			
-			//Make the page scrollable
-			JScrollPane dialogPanelScroller = new JScrollPane(dialogPanel);
-			dialogPanelScroller.setVerticalScrollBarPolicy(
-					ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-
 			//Put the form in the middle of the screen
 			this.setLocationRelativeTo(null);
 
@@ -80,37 +72,49 @@ private static final long serialVersionUID = 1L;
 					closeAndCancel();
 				}
 			});
+			
+			dialogPanel = new JPanel(new MigLayout("ins 20"));
+			dialogPanel.setBackground(Color.WHITE);
+			
+			//Make the page scrollable
+			JScrollPane dialogPanelScroller = new JScrollPane(dialogPanel);
+			dialogPanelScroller.setVerticalScrollBarPolicy(
+					ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-			/*Set up the BlueBookEntry page*/
+			//TODO pdf stuff and view it
 			
 			//Add the BlueBookEntry "letter head" image to the top
-			ImageIcon BlueBookEntryHeaderIcon = 
-					ImageHandler.createImageIcon("images/.png");
-			JPanel headerPanel = new JPanel();
-			headerPanel.setBackground(Color.WHITE);
-			headerPanel.add(new JLabel(BlueBookEntryHeaderIcon));
-			dialogPanel.add(headerPanel, "dock north");
-		
+			//ImageIcon BlueBookEntryHeaderIcon = 
+			//		ImageHandler.createImageIcon("images/.png");
+			//JPanel headerPanel = new JPanel();
+			//headerPanel.setBackground(Color.WHITE);
+			//headerPanel.add(new JLabel(BlueBookEntryHeaderIcon));
+			//dialogPanel.add(headerPanel, "dock north");
+			dialogPanel.add(new JLabel("" + bbEntry.getBbID()));
+			
+			dialogPanelScroller.setColumnHeaderView(createToolbar());
 		    
 		    //Add the BlueBookEntry form scrolling pane dialog to the screen
 		    Container contentPane = getContentPane();
-		    contentPane.setLayout(new MigLayout());
+		    //contentPane.setLayout(new MigLayout());
 		    contentPane.add(dialogPanelScroller);
 
-		 //   JScrollPane pdfv = PDFViewHelper.createZoomablePDFDisplay(
-		 //   		"/Users/heatherciechowski/CSC531/Project/BlueBookEntryex.pdf", 
-		    //createButtonsPanel());
-		  //  pdfv.setColumnHeaderView(buttonsPanel);
-		 //   contentPane.add(pdfv, "align center");
+//		    
+//		    JScrollPane pdfv = PDFViewHelper.createZoomablePDFDisplay(
+//		    		"/Users/heatherciechowski/CSC531/Project/BlueBookEntryex.pdf", 
+//		    createButtonsPanel());
+//		    pdfv.setColumnHeaderView(buttonsPanel);
+//		    contentPane.add(pdfv, "align center");
 		    
 		}
 //-----------------------------------------------------------------------------	
 	/**
 	 * JDOC
 	 */
-	private JPanel createToolbar(){
+	private JToolBar createToolbar(){
 	
-		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
+		JToolBar toolbar = new JToolBar(SwingConstants.HORIZONTAL);
+		toolbar.setFloatable(false);
 		
 		//Cancel button
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_32.png");
@@ -175,11 +179,11 @@ private static final long serialVersionUID = 1L;
 	    printAndEmailButtonPanel.add(printButton);
 	    printAndEmailButtonPanel.add(emailButton);
 	    printAndEmailButtonPanel.add(editButton);
-	    buttonsPanel.add(saveAndCancelButtonsPanel, "shrinky");
-	    buttonsPanel.add(printAndEmailButtonPanel, "growx, shrinky");
-	    buttonsPanel.add(deleteButton);
+	    toolbar.add(saveAndCancelButtonsPanel, "shrinky");
+	    toolbar.add(printAndEmailButtonPanel, "growx, shrinky");
+	    toolbar.add(deleteButton);
 	   
-	    return buttonsPanel;
+	    return toolbar;
 	}
 //-----------------------------------------------------------------------------
 	 /**

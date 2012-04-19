@@ -159,9 +159,10 @@ public class DatabaseHelper {
 	    	
 	    	name = allEntries.getString("name");
 	        if(name!=null){ entry.setName(name); }
-	        narrative = allEntries.getString("narrative");
-	        if(narrative!=null){ entry.setNarrative(narrative); }
-	       // preparedBy = allEntries.getString("preparedBy");
+	     //   narrative = allEntries.getString("narrative");
+	     //   if(narrative!=null){ entry.setNarrative(narrative); }
+	       
+	        // preparedBy = allEntries.getString("preparedBy");
 	       // if(preparedBy!=null){ entry.setPreparedBy(preparedBy); }
 	        address = allEntries.getString("address");
 	        if(address!=null){ entry.setAddress(address); }

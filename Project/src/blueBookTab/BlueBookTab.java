@@ -69,13 +69,11 @@ public class BlueBookTab extends JPanel implements ActionListener {
 				"icons/plusSign_48.png");
 		newEntryButton.addActionListener(new ActionListener() {
 			// Create new Blue Book entry form dialog
-
 			public void actionPerformed(ActionEvent e) {
 				//Display the new BlueBookEntry form dialog
 				newFormDialog.setVisible(true);
 				//wait for the dialog to be dismissed before continuing
 				newFormDialog.setModal(true);
-
 				//refresh to display any changes
 				refreshBBtab();
 
@@ -108,7 +106,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		this.add(buttonsPanel, BorderLayout.PAGE_END);
 		
 		//TODO: Change below to be happening on bg thread so usr doesn't have to wait
-		newFormDialog = new BlueBookForm(parent, null);
+		newFormDialog = new BlueBookForm(parent, this);
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -216,7 +214,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	 * @return entriesPanel
 	 */
 	public JPanel createEntriesPanel() {
-		JPanel entriesPanel = new JPanel(new MigLayout("gapx 30, wrap 4"));
+		JPanel entriesPanel = new JPanel(new MigLayout());
 		JPanel entryPanel;
 		// Date prepDate;
 
@@ -229,14 +227,18 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		}
 
 		int listSize = bluebook.size();
+//DEBUG
+System.out.println("bluebook size = " + bluebook.size());
+		
 		JPanel[] items = new JPanel[listSize];
 		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
 
 		int i = 0;
 		for (BlueBookEntry entry : bluebook) {
-			entryPanel = new JPanel(
-					new MigLayout("flowy", "[][]", "[][center]"));
 			String listId = "" + bluebook.indexOf(entry);
+			
+			entryPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
+			
 			if (entry.getPhotoFilePath() != null) {
 				JLabel photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
 						entry.getPhoto(), 100, 100));
@@ -269,7 +271,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 			i++;
 		}
 
-		DisplayPanel itemsPanel = new DisplayPanel(items, this);
+		DisplayPanel itemsPanel = new DisplayPanel(items, this, 4);
 
 		entriesPanel.add(itemsPanel);
 
@@ -353,13 +355,17 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	}
 //-----------------------------------------------------------------------------
 	public void actionPerformed(ActionEvent ev) {
-
+		//get which entry was click
 		String listId = ev.getActionCommand();
 		int id = Integer.valueOf(listId);
+//DEBUG
 		System.out.println("BlueBookTab: actionPerformed: id = " + id);
+		
 		BlueBookEntry selectedEntry = bluebook.get(id);
-		BlueBookForm form = new BlueBookForm(parent, this, selectedEntry);
-		form.setVisible(true);
+		BlueBookPreview bbPreview = new BlueBookPreview(parent, this, selectedEntry);
+		bbPreview.setVisible(true);
+		//BlueBookForm form = new BlueBookForm(parent, this, selectedEntry);
+		//form.setVisible(true);
 	}
 //-----------------------------------------------------------------------------
 }
