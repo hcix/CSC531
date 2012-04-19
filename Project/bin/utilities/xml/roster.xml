@@ -9,6 +9,8 @@
 		<permissions>supervisor</permissions>
 	</employee>
 	<employee>
+<<<<<<< HEAD
+=======
 		<cnumber>XXX</cnumber>
 		<firstname>Heather</firstname>
 		<lastname>Ciechowski</lastname>
@@ -16,7 +18,8 @@
 		<email>h.ciechowski@umiami.edu</email>
 		<permissions>supervisor</permissions>
 	</employee>
-	</roster>
+	<employee>
+>>>>>>> 2eb24a5b0945f519f25a532da4e12bad2292d1fe
 		<cnumber>12345</cnumber>
 		<firstname>Brosef</firstname>
 		<lastname>Brochacho</lastname>

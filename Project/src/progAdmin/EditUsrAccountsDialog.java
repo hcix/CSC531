@@ -116,7 +116,6 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		
 	    Container contentPane = getContentPane();
 	    contentPane.add(mainPanel);
-	    this.setVisible(true);
 	}
 //-----------------------------------------------------------------------------
 	private JTable createTable(EmployeeTableModel tableModel)

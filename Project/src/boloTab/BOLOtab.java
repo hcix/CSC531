@@ -243,6 +243,7 @@ private static final long serialVersionUID = 1L;
 		recentBolosTab.removeAll();
 		recentBolosTab.add(createRecentBOLOsTab());
 		this.revalidate();
+		this.repaint();
 	}
 
 //-----------------------------------------------------------------------------	
