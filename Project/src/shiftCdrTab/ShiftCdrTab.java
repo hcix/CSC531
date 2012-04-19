@@ -111,12 +111,12 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		launchButton.setActionCommand(LAUNCH);
 		
 		
-		JButton nextShiftButton = SwingHelper.createImageButton("Next", "icons/save_48.png");
+		JButton nextShiftButton = SwingHelper.createImageButton("Next", "icons/nextArrow48.png");
 		nextShiftButton.setActionCommand(NEXT);
 		nextShiftButton.addActionListener(this);
 		
 		
-		JButton prevShiftButton = SwingHelper.createImageButton("Previous", "icons/save_48.png");
+		JButton prevShiftButton = SwingHelper.createImageButton("Previous", "icons/prevArrow48.png");
 		prevShiftButton.setActionCommand(PREV);
 		prevShiftButton.addActionListener(this);
 		
