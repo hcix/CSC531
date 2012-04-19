@@ -439,7 +439,7 @@ public ImageIcon getPhoto(){
 		prep.setString(18, this.narrative);
 		if(this.boloID!=null){ prep.setInt(21, this.boloID); }
 		prep.setLong(22, this.incidentTime);
-		prep.setLong(22, this.prepTime);
+		prep.setLong(23, this.prepTime);
 
 		if(photoFilePath!=null){
 			Path absPhotoFilePath = photoFilePath.toAbsolutePath();

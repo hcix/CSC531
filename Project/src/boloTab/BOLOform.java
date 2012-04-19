@@ -69,7 +69,7 @@ public class BOLOform extends JDialog {
 	/** lets the main BOLOtab know if a new BOLO was created during the last
 	 * invocation of this dialog */
 	boolean newBOLOWascreated; 
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * Creates a new window, sets the window and creates a new <code>Bolo</code> instance
 	 * 
@@ -148,7 +148,7 @@ public class BOLOform extends JDialog {
 		contentPane.add(dialogPanelScroller);
 
 	}
-	//-----------------------------------------------------------------------------	
+//-----------------------------------------------------------------------------	
 	/**
 	 * JDOC
 	 * 
@@ -161,7 +161,7 @@ public class BOLOform extends JDialog {
 		this.bolo = bolo;
 		loadFromExistingBOLO();
 	}
-	//-----------------------------------------------------------------------------	
+//-----------------------------------------------------------------------------	
 	/**
 	 * 
 	 */
@@ -223,7 +223,7 @@ public class BOLOform extends JDialog {
 
 		return infoPanel;
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * 
 	 */
@@ -246,10 +246,8 @@ public class BOLOform extends JDialog {
 
 		//row 1
 		incidentDate = SwingHelper.addDateSpinner(infoPanel, "Date of Incident");
-		incidentTime = SwingHelper.addTimeSpinner(infoPanel, "Time of Incident");
+		//DEBUG incidentTime = SwingHelper.addTimeSpinner(infoPanel, "Time of Incident");
 		
-		//		incidentDate = SwingHelper.addDateSpinner(infoPanel, "Date of Incident");
-		//		incidentTime = SwingHelper.addTimeSpinner(infoPanel, "Time of Incident");
 		infoPanel.add(referenceLabel, "align");
 		infoPanel.add(referenceField, "align, wrap");
 		infoPanel.add(caseNumLabel, "align");
@@ -259,7 +257,7 @@ public class BOLOform extends JDialog {
 
 		return infoPanel;
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * 
 	 */
@@ -280,7 +278,7 @@ public class BOLOform extends JDialog {
 
 		return narrativePanel;
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * 
 	 */
@@ -292,8 +290,7 @@ public class BOLOform extends JDialog {
 		// create labels
 		JLabel preparedByLabel = new JLabel("BOLO prepared by");
 		JLabel approvedByLabel = new JLabel("BOLO approved by");
-		JLabel dayLabel = new JLabel("Day");
-		JLabel monthLabel = new JLabel("Month");
+		
 
 		// create fields
 		preparedByField = new JTextField(15);
@@ -306,20 +303,16 @@ public class BOLOform extends JDialog {
 		adminPanel.add(preparedByField, "align, wrap");
 		adminPanel.add(approvedByLabel, "align");
 		adminPanel.add(approvedByField, "align, wrap");
-		//		preparedDate = SwingHelper.addDateSpinner(adminPanel, "Date BOLO prepared");
+		preparedDate = SwingHelper.addDateSpinner(adminPanel, "Date BOLO prepared");
 		//		preparedTime = SwingHelper.addTimeSpinner(adminPanel, "Time BOLO prepared");
-		adminPanel.add(dayLabel,"align");
-
-		adminPanel.add(monthLabel,"align");
+		
+		
 		//adminPanel.add(incidentYear, "align");
 		adminPanel.add(toReview);
 
-
-
-
 		return adminPanel;
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * 
 	 */
@@ -430,7 +423,6 @@ public class BOLOform extends JDialog {
 	    	}
 	    });
 
-
 	    JPanel saveAndCancelButtonsPanel = new JPanel();
 	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
 	    saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
@@ -442,7 +434,7 @@ public class BOLOform extends JDialog {
 
 
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * Save the information input into this form and close the dialog.
 	 */
@@ -549,7 +541,7 @@ public class BOLOform extends JDialog {
 
 		 //TODO: set the times
 		 incidentDate.setValue(new Date (bolo.getincidentDate()));
-		 incidentTime.setValue(new Date (bolo.getincidentTime()));
+		 //DEBUG: incidentTime.setValue(new Date (bolo.getincidentTime()));
 		 		 
 		 //set picture
 		 if(bolo.getPhotoFilePath()!=null){
@@ -562,7 +554,7 @@ public class BOLOform extends JDialog {
 		dialogPanel.validate();
 
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * 
 	 */
@@ -599,7 +591,7 @@ public class BOLOform extends JDialog {
 		}
 
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * Erase any fields in the form that have been filled in and close the
 	 * dialog.
@@ -627,7 +619,7 @@ public class BOLOform extends JDialog {
 		//close the dialog
 		this.dispose();	
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * Erases <code>BOLOfrom</code>
 	 */
@@ -693,16 +685,15 @@ public class BOLOform extends JDialog {
 			  
 		  //error checking
 		  SimpleDateFormat df = new SimpleDateFormat();
-		  df.applyPattern("dd/MM/yyyy");
-	      System.out.println(df.format((Date)incidentDate.getValue()));
-	      System.out.println(incidentDateLong.getTime());
-	      
+		  df.applyPattern("dd/MM/yyyy hh:mm a");
+	      System.out.println("getIncidentDate: "+ df.format((Date)incidentDate.getValue()));
+	      System.out.println("getIncidentDate: "+ incidentDateLong.getTime());
 	      
 		  
 		  return (incidentDateLong.getTime());
 	  }
 //-----------------------------------------------------------------------------	
-	  public long getIncidentTimeEpoch(){
+	  public long getIncidentTimeEpoch() {
 		  Date incidentTimeLong;
 	      incidentTime.getAccessibleContext();//to be converted
 	      incidentTimeLong = (Date)incidentTime.getValue();
@@ -710,11 +701,12 @@ public class BOLOform extends JDialog {
 	      //error checking
 	      SimpleDateFormat df1 = new SimpleDateFormat();
 		  df1.applyPattern("dd/MM/yyyy hh:mm a");
-	      System.out.println(df1.format((Date)incidentTime.getValue()));
-	      System.out.println(incidentTimeLong.getTime());
+	      System.out.println("getIncidentTime: "+ df1.format((Date)incidentTime.getValue()));
+	      System.out.println("getIncidentTime: "+ incidentTimeLong.getTime());
 		  
 		  return (incidentTimeLong.getTime());
 	  }
+//-----------------------------------------------------------------------------
 
 	/**
 	 * JDOC
@@ -723,7 +715,7 @@ public class BOLOform extends JDialog {
 	public boolean isNewBOLOWascreated(){
 		return this.newBOLOWascreated;
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	public void createItemToReview(Bolo bolo) {
 
 		this.bolo = bolo;
