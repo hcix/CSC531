@@ -1,5 +1,7 @@
 package progAdmin;
 
+import homeTab.Change;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -26,6 +28,13 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import progAdmin.itemsToReview.ItemToReview;
 import net.miginfocom.swing.MigLayout;
+<<<<<<< HEAD
+=======
+import progAdmin.itemsToReview.ItemToReview;
+import program.CurrentUser;
+import utilities.ChangeHelper;
+import utilities.DatabaseHelper;
+>>>>>>> shit ton of homeTab changes and other stuff
 import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
@@ -46,17 +55,17 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 	private static final String ADD_USER = "ADD_USER";
 	private static final String EDIT_USER = "EDIT_USER";
 	private static final String DELETE_USER = "DELETE_USER";
-	
+
 	JTable table;
 	Dimension dialogDim;
 	ArrayList<Employee> employeeList = new ArrayList<Employee>();
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	/**
 	 * JDOC
 	 */
 	public EditUsrAccountsDialog(JFrame parent){
 		super(parent, "User Accounts", true);
-		
+
 		this.parent=parent;
 		Toolkit toolkit =  Toolkit.getDefaultToolkit ();
 		dialogDim = new Dimension(toolkit.getScreenSize().width/2, toolkit.getScreenSize().height/2);
@@ -75,70 +84,74 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		});
 
 		JPanel mainPanel = new JPanel(new MigLayout());
-		
+
 		//Add User button
 		JButton addNewUserButton = SwingHelper
-				.createImageButton("Add", "icons/addUser_48.png");
+		.createImageButton("Add", "icons/addUser_48.png");
 		addNewUserButton.addActionListener(this);
 		addNewUserButton.setActionCommand(ADD_USER);
 
 		//Edit User button
 		JButton editUserButton = SwingHelper
-				.createImageButton("Edit", "icons/editUser_48.png");
+		.createImageButton("Edit", "icons/editUser_48.png");
 		editUserButton.addActionListener(this);
 		editUserButton.setActionCommand(EDIT_USER);
 
 		//Delete User button
 		JButton deleteUserButton = SwingHelper
-				.createImageButton("Delete", "icons/deleteUser_48.png");
+		.createImageButton("Delete", "icons/deleteUser_48.png");
 		deleteUserButton.addActionListener(this);
 		deleteUserButton.setActionCommand(DELETE_USER);
-		
-		
+
+
 		JToolBar toolbar = new JToolBar("Toolbar", SwingConstants.HORIZONTAL);
 		toolbar.add(addNewUserButton);
 		toolbar.add(deleteUserButton);
 		toolbar.add(editUserButton);	
 		toolbar.setFloatable(false);
-		
+
 		employeeList = XmlParser.getRoster();
-		
+
 		EmployeeTableModel tableModel = new EmployeeTableModel(employeeList);
 
-		
+
 		table = createTable(tableModel);	
 		JScrollPane tableScrollPane = new JScrollPane(table);
 		mainPanel.add(tableScrollPane, BorderLayout.CENTER);
 
 		mainPanel.add(toolbar, BorderLayout.NORTH);
-		
-	    Container contentPane = getContentPane();
-	    contentPane.add(mainPanel);
+
+		Container contentPane = getContentPane();
+		contentPane.add(mainPanel);
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	private JTable createTable(EmployeeTableModel tableModel)
 	{
 		table = new JTable(tableModel);
 		table.setShowGrid(true);
 		table.setGridColor(Color.black);
 		table.setPreferredScrollableViewportSize(dialogDim);
-	    table.setFillsViewportHeight(true);
-	    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.setFillsViewportHeight(true);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		return table;
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	private void saveAndClose()
 	{	
 		this.dispose();
 	}
-//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	private void closeAndCancel()
 	{
 		this.dispose();
 	}
+<<<<<<< HEAD
 //-----------------------------------------------------------------------------
 	@Override
+=======
+	//-----------------------------------------------------------------------------
+>>>>>>> shit ton of homeTab changes and other stuff
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if(command.equals(ADD_USER))
@@ -147,13 +160,14 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			AddUserDialog aud = new AddUserDialog(parent, null);
 			aud.setVisible(true);
 			aud.setModal(true);
-			
+
 			if(aud.checkCanceled() != true)
 			{
 				Employee emp = aud.getEmployee();
 				employeeList.add(emp);
 				try {
 					XmlParser.saveRoster(employeeList);
+					ChangeHelper.makeChange(ChangeHelper.ADD_USER);
 				} catch (Exception ee) {
 					ee.printStackTrace();
 				}
@@ -181,15 +195,15 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 				table.repaint();
 			}
 		}
-else if(command.equals(DELETE_USER))
+		else if(command.equals(DELETE_USER))
 		{
 			int selected = table.getSelectedRow();
 			Employee emp = employeeList.get(selected);
-			
+
 			int confirm = JOptionPane.showConfirmDialog(parent, ("Are you sure you want to" +
-					" delete user" + emp.getLastname() + "?"), ("Delete User?"), 
+					" delete user " + emp.getFirstname() + " " + emp.getLastname() + "?"), ("Delete User?"), 
 					JOptionPane.YES_NO_OPTION);
-			
+
 			//if delete was confirmed, perform delete
 			if(confirm == JOptionPane.YES_OPTION){ // ok to delete
 				employeeList.remove(emp);
@@ -203,17 +217,18 @@ else if(command.equals(DELETE_USER))
 		}
 		this.getContentPane().revalidate();
 	}
-//=============================================================================
+	//=============================================================================
 	/** INNER CLASS **/
 	private class EmployeeTableModel extends AbstractTableModel implements TableModelListener 
 	{
 		private static final long serialVersionUID = 1L;
 		public String [] columnNames =  {"cnumber", "firstname", "lastname",
 				"caneid", "email", "permissions"};	
-		
-	//-----------------------------------------------------------------------------
+
+		//-----------------------------------------------------------------------------
 		EmployeeTableModel(ArrayList<Employee> employeeList){
 		}
+<<<<<<< HEAD
 	//-----------------------------------------------------------------------------
 		@Override
 		public void tableChanged(TableModelEvent e) {
@@ -236,6 +251,25 @@ else if(command.equals(DELETE_USER))
 		}
 	//-----------------------------------------------------------------------------
 		@Override
+=======
+		//-----------------------------------------------------------------------------
+		public void tableChanged(TableModelEvent e) {
+			//don't need to implement this bc table is only editable thru dialogs
+		}
+		//-----------------------------------------------------------------------------
+		public int getColumnCount() {
+			return columnNames.length;
+		}
+		//-----------------------------------------------------------------------------
+		public String getColumnName(int col) {
+			return columnNames[col];
+		}
+		//-----------------------------------------------------------------------------
+		public int getRowCount() {
+			return employeeList.size();
+		}
+		//-----------------------------------------------------------------------------
+>>>>>>> shit ton of homeTab changes and other stuff
 		public Object getValueAt(int row, int col) {
 			if(col==0){//cnumber
 				return employeeList.get(row).getCnumber();
@@ -253,6 +287,7 @@ else if(command.equals(DELETE_USER))
 			//if col is out of range, return null
 			return null;
 		}
+<<<<<<< HEAD
 	//-----------------------------------------------------------------------------
 	    /*
 	     * JTable uses this method to determine the default renderer/
@@ -260,10 +295,18 @@ else if(command.equals(DELETE_USER))
 	     * this is simple.
 	     */
 		@Override
+=======
+		//-----------------------------------------------------------------------------
+		/*
+		 * JTable uses this method to determine the default renderer/
+		 * editor for each cell. In this case, all cells are strings so
+		 * this is simple.
+		 */
+>>>>>>> shit ton of homeTab changes and other stuff
 		public Class getColumnClass(int c) {
-	        return getValueAt(0, c).getClass();
-	    }
-	//-----------------------------------------------------------------------------
+			return getValueAt(0, c).getClass();
+		}
+		//-----------------------------------------------------------------------------
 	}
-//=============================================================================
+	//=============================================================================
 }
