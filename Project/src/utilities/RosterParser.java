@@ -32,8 +32,8 @@ public class RosterParser {
 		int dayAsInt;
 
 		// Directory path here
-		//Path path = Paths.get("Project","PatrolScheduler", "employee"); //JAR
-		Path path = Paths.get("PatrolScheduler", "employee"); //ECLIPSE
+		Path path = Paths.get("Project","PatrolScheduler", "employee"); //JAR
+		//Path path = Paths.get("PatrolScheduler", "employee"); //ECLIPSE
 
 		if (currentShiftDate == null) {
 			Calendar cal = Calendar.getInstance();		    	    
@@ -126,11 +126,11 @@ public class RosterParser {
 		//TODO fix this to not use user.dir
 		//employeeFileName = System.getProperty("user.dir")
 		//	+ "\\Project\\PatrolScheduler\\employee\\employees.lst";//JAR
-		//employeeFileName = Paths.get("Project", "PatrolScheduler", "employee", "employees.lst").toString(); // FIXED JAR
+		employeeFileName = Paths.get("Project", "PatrolScheduler", "employee", "employees.lst").toString(); // FIXED JAR
 
 		//employeeFileName = System.getProperty("user.dir")
 		//	+ "\\PatrolScheduler\\employee\\employees.lst";//ECLIPSE
-		employeeFileName = Paths.get("PatrolScheduler", "employee", "employees.lst").toString(); // FIXED ECLIPSE
+		//employeeFileName = Paths.get("PatrolScheduler", "employee", "employees.lst").toString(); // FIXED ECLIPSE
 
 		/*
 		 * Open the employee list file, check for a match with the cnumber, and

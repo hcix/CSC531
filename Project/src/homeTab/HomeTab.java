@@ -1,6 +1,7 @@
 package homeTab;
 
 import java.awt.Dimension;
+import java.awt.Scrollbar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;

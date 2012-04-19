@@ -657,12 +657,12 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	private void launchScheduler() {
 		// launch schedule program
 		try {
-			// TODO changed to add project, FIX USER DIR!!!!!
-			// Runtime.getRuntime().exec(System.getProperty("user.dir")
-			// + "/Project/PatrolScheduler/UMPatrolScheduler.exe");//JAR
-			Runtime.getRuntime().exec(
-					System.getProperty("user.dir")
-							+ "/PatrolScheduler/UMPatrolScheduler.exe");// ECLIPSE
+			 //TODO changed to add project, FIX USER DIR!!!!!
+			 Runtime.getRuntime().exec(System.getProperty("user.dir")
+			 + "/Project/PatrolScheduler/UMPatrolScheduler.exe");//JAR
+//			Runtime.getRuntime().exec(
+//					System.getProperty("user.dir")
+//							+ "/PatrolScheduler/UMPatrolScheduler.exe");// ECLIPSE
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("Could not launch Scheduler");

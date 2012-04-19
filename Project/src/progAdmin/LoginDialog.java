@@ -224,7 +224,8 @@ public class LoginDialog extends JDialog implements ActionListener {
 					return ERROR_BAD_PASSWORD;
 				}
 			}catch(Exception e){
-				e.printStackTrace();
+				System.out.println("Caught exception in file reader in python script");
+				//e.printStackTrace();
 			}
 			// SET CURRENT USER SET TIME
 			return NO_ERROR;

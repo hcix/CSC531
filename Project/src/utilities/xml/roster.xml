@@ -9,6 +9,14 @@
 		<permissions>supervisor</permissions>
 	</employee>
 	<employee>
+		<cnumber>sucka</cnumber>
+		<firstname>Brendan</firstname>
+		<lastname>Loyot</lastname>
+		<caneid>b.loyot</caneid>
+		<email>b.loyot@umiami.edu</email>
+		<permissions>supervisor</permissions> 
+	</employee>
+	<employee>
 		<cnumber>XXX</cnumber>
 		<firstname>Heather</firstname>
 		<lastname>Ciechowski</lastname>

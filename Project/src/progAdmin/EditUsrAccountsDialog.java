@@ -28,13 +28,10 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import progAdmin.itemsToReview.ItemToReview;
 import net.miginfocom.swing.MigLayout;
-<<<<<<< HEAD
-=======
 import progAdmin.itemsToReview.ItemToReview;
 import program.CurrentUser;
 import utilities.ChangeHelper;
 import utilities.DatabaseHelper;
->>>>>>> shit ton of homeTab changes and other stuff
 import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
@@ -146,12 +143,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 	{
 		this.dispose();
 	}
-<<<<<<< HEAD
 //-----------------------------------------------------------------------------
-	@Override
-=======
-	//-----------------------------------------------------------------------------
->>>>>>> shit ton of homeTab changes and other stuff
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if(command.equals(ADD_USER))
@@ -228,30 +220,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		//-----------------------------------------------------------------------------
 		EmployeeTableModel(ArrayList<Employee> employeeList){
 		}
-<<<<<<< HEAD
-	//-----------------------------------------------------------------------------
 		@Override
-		public void tableChanged(TableModelEvent e) {
-			//don't need to implement this bc table is only editable thru dialogs
-		}
-	 //-----------------------------------------------------------------------------
-		@Override
-		public int getColumnCount() {
-			return columnNames.length;
-		}
-	//-----------------------------------------------------------------------------
-		@Override
-		public String getColumnName(int col) {
-	        return columnNames[col];
-	    }
-	//-----------------------------------------------------------------------------
-		@Override
-		public int getRowCount() {
-			return employeeList.size();
-		}
-	//-----------------------------------------------------------------------------
-		@Override
-=======
 		//-----------------------------------------------------------------------------
 		public void tableChanged(TableModelEvent e) {
 			//don't need to implement this bc table is only editable thru dialogs
@@ -269,7 +238,6 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			return employeeList.size();
 		}
 		//-----------------------------------------------------------------------------
->>>>>>> shit ton of homeTab changes and other stuff
 		public Object getValueAt(int row, int col) {
 			if(col==0){//cnumber
 				return employeeList.get(row).getCnumber();
@@ -287,22 +255,13 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			//if col is out of range, return null
 			return null;
 		}
-<<<<<<< HEAD
-	//-----------------------------------------------------------------------------
-	    /*
-	     * JTable uses this method to determine the default renderer/
-	     * editor for each cell. In this case, all cells are strings so
-	     * this is simple.
-	     */
-		@Override
-=======
-		//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
 		/*
 		 * JTable uses this method to determine the default renderer/
 		 * editor for each cell. In this case, all cells are strings so
 		 * this is simple.
 		 */
->>>>>>> shit ton of homeTab changes and other stuff
 		public Class getColumnClass(int c) {
 			return getValueAt(0, c).getClass();
 		}
