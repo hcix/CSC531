@@ -3,13 +3,13 @@ package blueBookTab;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.nio.file.Path;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,16 +19,18 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import javax.sql.rowset.serial.SerialBlob;
 import javax.swing.ImageIcon;
-import com.itextpdf.text.pdf.AcroFields;
-import com.itextpdf.text.pdf.PdfStamper;
-
-import shiftCdrTab.OfficerAssignment;
 import utilities.FileHelper;
 import utilities.pdf.PDFHelper;
 import utilities.ui.ImageHandler;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.PdfWriter;
 
 //-----------------------------------------------------------------------------
 /**
@@ -426,7 +428,7 @@ public ArrayList<String> getPhotoFilePaths() {
 		return bytes;
 	}
 
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
     public static Object getObjectFromBytes(byte[] bytes) throws SQLException, IOException, ClassNotFoundException {
     	Object o = null;
     	//blob.getBytes(1, );
@@ -466,10 +468,30 @@ public ArrayList<String> getPhotoFilePaths() {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Save this ShiftCdrReport's information in a pdf on the file system
+	 * Save this BlueBookEntry to a pdf file based on a template.
 	 * 
 	 */
-	public String saveToFileSystem(){
+	public String saveToFileSystem(String filename){
+		File saveAsFile = new File(filename);
+		
+		PdfStamper stamper;
+				
+		if(saveAsFile.exists()){
+			stamper = PDFHelper.getPdfStampler(filename);
+		} else{
+			stamper = PDFHelper.getPdfStampler(formPathName, filename);
+		}
+		
+		fill(stamper);
+		
+		//flattens the form so fields cannot be edited
+		stamper.setFormFlattening(true);
+		
+		try{ stamper.close(); return filename; } 
+		catch(Exception e){ e.printStackTrace(); return null; }
+	}
+//-----------------------------------------------------------------------------
+	public String createNewUniqueFilename(){
 		//create the filename the saved form will have
 		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getDateInstance();
 		dateFormat.applyPattern("MM_dd_yyyy_HH_mm");
@@ -478,23 +500,17 @@ public ArrayList<String> getPhotoFilePaths() {
 		String saveAs = FileHelper.getBBEntryPdfPathName("BlueBookForm" + dateTime + ".pdf");
 		this.date=dateTime;
 		
-		//used to save text to the form
+		//if a file w/ this name already exists, append extra extension to end
 		File saveAsFile = new File(saveAs);
-		PdfStamper stamper;
-		
-		if(saveAsFile.exists()){
-			stamper = PDFHelper.getPdfStampler(saveAs);
-		} else{
-			stamper = PDFHelper.getPdfStampler(formPathName, saveAs);
+		int i=0;
+		while((i<100) && (saveAsFile.exists())){
+			i++;
+			String newFileName = FileHelper.getNameWithoutExtension(saveAs.toString()) 
+					+"_v" + i + "." + FileHelper.getFileExtension(saveAsFile);
+			saveAsFile = new File(saveAs);
 		}
 		
-		fill(stamper);
-		
-		//flattens the form so fields cannot be edited
-		stamper.setFormFlattening(true);
-		
-		try{ stamper.close(); return saveAs; } 
-		catch(Exception e){ e.printStackTrace(); return null; }
+		return saveAsFile.toString();
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -539,6 +555,59 @@ public ArrayList<String> getPhotoFilePaths() {
     		e.printStackTrace();
     	}
         
+    }
+//-----------------------------------------------------------------------------
+  /*  public void addPhotoToForm(PdfStamper stamper) {
+    	PdfWriter writer = stamper.getWriter();
+    	writer.
+    	*/
+    	/*
+    	 * 
+   java.awt.Image awtImage = Toolkit.getDefaultToolkit().createImage(RESOURCE);
+  img = com.itextpdf.text.Image.getInstance(awtImage, null);
+  document.add(img);
+    	 */
+    //}
+    
+    public String createPdf(String filename)
+            throws IOException, DocumentException {
+        	// step 1
+            Document document = new Document();
+            // step 2
+            PdfWriter.getInstance(document, new FileOutputStream(filename));
+            // step 3
+            document.open();
+            // step 4
+            document.add(createParagraph(
+                "My favorite movie featuring River Phoenix was ", "0092005"));
+            document.add(createParagraph(
+                "River Phoenix was nominated for an academy award for his role in ", "0096018"));
+            document.add(createParagraph(
+                "River Phoenix played the young Indiana Jones in ", "0097576"));
+            document.add(createParagraph(
+                "His best role was probably in ", "0102494"));
+            // step 5
+            document.close();
+            
+            return filename;
+        }
+//-----------------------------------------------------------------------------
+    /**
+     * Creates a paragraph with some text about a movie with River Phoenix,
+     * and a poster of the corresponding movie.
+     * @param text the text about the movie
+     * @param imdb the IMDB code referring to the poster
+     * @throws DocumentException
+     * @throws IOException
+     */
+    public Paragraph createParagraph(String text, String imdb)
+        throws DocumentException, IOException {
+        Paragraph p = new Paragraph(text);
+        Image img = Image.getInstance((this.getPhotoFilePath().toString()));
+        img.scaleToFit(1000, 72);
+        img.setRotationDegrees(-30);
+        p.add(new Chunk(img, 0, -15, true));
+        return p;
     }
 //-----------------------------------------------------------------------------
 }

@@ -423,7 +423,7 @@ System.out.println("bluebook size = " + bluebook.size());
 		System.out.println("BlueBookTab: actionPerformed: id = " + id);
 		
 		BlueBookEntry selectedEntry = bluebook.get(id);
-		BlueBookPreview bbPreview = new BlueBookPreview(rm.getGuiParent(), this, selectedEntry);
+		BlueBookPreview bbPreview = new BlueBookPreview(rm, this, selectedEntry);
 		bbPreview.setVisible(true);
 		//BlueBookForm form = new BlueBookForm(parent, this, selectedEntry);
 		//form.setVisible(true);

@@ -69,11 +69,23 @@ public class ResourceManager {
     		
     }
 //-----------------------------------------------------------------------------
+    /**
+     * Set the Desktop.Action to PRINT before invoking
+     * the default application.
+     */
+    private void onPrintAction(ActionEvent evt) {
+        action = Desktop.Action.PRINT;
+    }
+//-----------------------------------------------------------------------------
+    /**
+
+     *
+     */
+
+//-----------------------------------------------------------------------------
 	/**
-     * Check if each of the actions are enabled on this host. For any
-     * actions not enabled load the backup modules to support them.
-     * The actions: open browser, open email client, open, edit, 
-     * and print files using their associated default application.
+     * Launch the default email client using the "mailto"
+     * protocol and the text supplied by the user.
      * 
      */
     private void verifyAllActions() {
@@ -134,16 +146,17 @@ public class ResourceManager {
 		
     }
 //-----------------------------------------------------------------------------
-	/**
+	 /**
      * Launch the default email client using the "mailto"
      * protocol and the text supplied by the user.
-     * @param destEmailAddr - the destination's email address
-     */
-    public void launchMail(ActionEvent evt, String destEmailAddr) {
+     *
+     *//*
+    private void onLaunchMail(ActionEvent evt) {
+        String mailTo = txtMailTo.getText();
         URI uriMailTo = null;
         try {
-            if (destEmailAddr.length() > 0) {
-                uriMailTo = new URI("mailto", destEmailAddr, null);
+            if (mailTo.length() > 0) {
+                uriMailTo = new URI("mailto", mailTo, null);
                 desktop.mail(uriMailTo);
             } else {
                 desktop.mail();
@@ -153,7 +166,7 @@ public class ResourceManager {
         } catch(URISyntaxException use) {
             use.printStackTrace();
         }
-    }
+    }*/
 //-----------------------------------------------------------------------------  
 	/**
 	 * Show the user an error dialog.
