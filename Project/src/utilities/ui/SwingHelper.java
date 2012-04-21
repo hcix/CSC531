@@ -323,8 +323,9 @@ public class SwingHelper {
 		
 		//Set up dates
 		Date initDate = calendar.getTime();
+		
 		Date latestDate = calendar.getTime();		
-	    calendar.add(Calendar.YEAR, -100);        
+		calendar.add(Calendar.YEAR, -100);      
 	    Date earliestDate = calendar.getTime();
 		
 	   //Date Spinner 
@@ -383,7 +384,7 @@ public class SwingHelper {
 	    //calendar.add(Calendar.MINUTE, 1439); // number of minutes in a day - 1
 	    Date finalTime = calendar.getTime();
 	    
-		SpinnerModel toTimeModel = new SpinnerDateModel(initTime,null,finalTime,Calendar.HOUR_OF_DAY);
+		SpinnerModel toTimeModel = new SpinnerDateModel(initTime,initTime,finalTime,Calendar.HOUR_OF_DAY);
 		timeSpinner = SwingHelper.addLabeledSpinner(c, label, toTimeModel, true);       
 		timeSpinner.setEditor(new JSpinner.DateEditor(timeSpinner, "hh:mm a"));
 

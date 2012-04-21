@@ -301,10 +301,9 @@ public class BOLOform extends JDialog {
 		adminPanel.add(approvedByLabel, "align");
 		adminPanel.add(approvedByField, "align, wrap");
 		preparedDate = SwingHelper.addDateSpinner(adminPanel, "Date BOLO prepared");
-		//		preparedTime = SwingHelper.addTimeSpinner(adminPanel, "Time BOLO prepared");
+		//DEBUG:	preparedTime = SwingHelper.addTimeSpinner(adminPanel, "Time BOLO prepared");
 		
 		
-		//adminPanel.add(incidentYear, "align");
 		adminPanel.add(toReview);
 
 		return adminPanel;
@@ -502,9 +501,10 @@ public class BOLOform extends JDialog {
 
 
 		 //set the times
-//HAD TO COMMENT OUT TO WMAKE WORK
-		// bolo.setincidentDate(getIncidentDateEpoch());
-		// bolo.setincidentTime(getIncidentTimeEpoch());
+
+		 //bolo.setprepDate(getPrepDateEpoch());
+		 bolo.setincidentDate(getIncidentDateEpoch());
+		 //DEBUG: bolo.setincidentTime(getIncidentTimeEpoch());
 
 	}
 //-----------------------------------------------------------------------------
@@ -673,7 +673,7 @@ public class BOLOform extends JDialog {
 		  Date incidentDateLong; //to be converted
 
 		  incidentDate.getAccessibleContext(); //grabs from the JSpinner
-		  incidentDateLong = (Date)incidentDate.getValue();
+		  incidentDateLong = (Date)(incidentDate.getValue());
 			  
 		  //error checking
 		  SimpleDateFormat df = new SimpleDateFormat();

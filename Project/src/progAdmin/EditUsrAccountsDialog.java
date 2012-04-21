@@ -28,10 +28,6 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import progAdmin.itemsToReview.ItemToReview;
 import net.miginfocom.swing.MigLayout;
-import progAdmin.itemsToReview.ItemToReview;
-import program.CurrentUser;
-import utilities.ChangeHelper;
-import utilities.DatabaseHelper;
 import utilities.ChangeHelper;
 import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
@@ -144,7 +140,9 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 	{
 		this.dispose();
 	}
+
 //-----------------------------------------------------------------------------
+
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if(command.equals(ADD_USER))
@@ -221,6 +219,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		//-----------------------------------------------------------------------------
 		EmployeeTableModel(ArrayList<Employee> employeeList){
 		}
+
 		//-----------------------------------------------------------------------------
 		public void tableChanged(TableModelEvent e) {
 			//don't need to implement this bc table is only editable thru dialogs
@@ -255,7 +254,9 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			//if col is out of range, return null
 			return null;
 		}
+
 //-----------------------------------------------------------------------------
+
 		/*
 		 * JTable uses this method to determine the default renderer/
 		 * editor for each cell. In this case, all cells are strings so
