@@ -1,7 +1,7 @@
 package shiftCdrTab;
 
 import java.util.Date;
-import shiftCdrTab.reports.ShiftCdrReport;
+import shiftCdrTab.gui.ShiftCdrReport;
 
 //-----------------------------------------------------------------------------	
 /**
@@ -52,6 +52,11 @@ public class AttendanceRecord {
 	AttendanceRecord(String creator){
 		this.creator = creator;
 	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Creates a new, initially empty, <code>AttendanceRecord</code> object.
+	 */
+	public AttendanceRecord(){ }
 //-----------------------------------------------------------------------------	
 	/**
 	 * @return the name of the non-present employee

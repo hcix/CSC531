@@ -533,7 +533,7 @@ public class BOLOform extends JDialog {
 
 		 //TODO: set the times
 		 incidentDate.setValue(new Date (bolo.getincidentDate()));
-		 //DEBUG: incidentTime.setValue(new Date (bolo.getincidentTime()));
+//DEBUG incidentTime.setValue(new Date (bolo.getincidentTime()));
 		 		 
 		 //set picture
 		 if(bolo.getPhotoFilePath()!=null){

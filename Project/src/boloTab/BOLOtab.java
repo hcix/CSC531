@@ -63,7 +63,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 		tabbedPane = new JTabbedPane();
 
 		//Add recent BOLOs tab
-		//recentBolosTab = createRecentBOLOsTab();
 		entriesScroller = createRecentBOLOsTab();
 		tabbedPane.addTab("Recent BOLOs", entriesScroller);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
@@ -74,7 +73,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_3);
 
 
-		//Create BOLO button
+		//Create BOLO Button
 		JButton newBOLOButton = SwingHelper.createImageButton("Create BOLO", 
 				"icons/plusSign_48.png");
 		newBOLOButton.addActionListener(new ActionListener() {
@@ -90,8 +89,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 				refreshRecentBOLOsTab();
 				mainInterface.refreshItemsList();
 				mainInterface.refreshItemsTable();
-
-
 				
 				//refresh to display any changes
 				//refreshRecentBOLOsTab();
@@ -247,7 +244,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 		searchDialog.setVisible(true);
 
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * 
 	 */
@@ -262,8 +259,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 		}
 
 		int listSize = boloList.size();
-//DEBUG		
-System.out.println("boloList.size() = " + listSize);
+//DEBUG		System.out.println("boloList.size() = " + listSize);
 		
 		JPanel[] items = new JPanel[listSize];
 		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
@@ -325,7 +321,7 @@ System.out.println("boloList.size() = " + listSize);
 		}
 
 		int listSize = boloList.size();
-		System.out.println("boloList.size() = " + listSize);
+//DEBUG System.out.println("boloList.size() = " + listSize);
 		JPanel[] items = new JPanel[listSize];
 		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
 

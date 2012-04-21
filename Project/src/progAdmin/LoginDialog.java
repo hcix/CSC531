@@ -42,10 +42,16 @@ public class LoginDialog extends JDialog implements ActionListener {
 	private static final int NO_ERROR = 0;
 	private static final int ERROR_BAD_PASSWORD = 1;
 	private static final int ERROR_USR_DNE = 2;
-	JLabel retryLabel;
-	JTextField caneIdField;
-	//JTextField passwordField;
-	JPasswordField passwordField;
+	//error messages
+	private static final String USR_DNE_MESSAGE = "<html><b><font color=#ff0000>" +
+			"The caneID you have entered does not correspond to an existing user. " +
+			"Please renter your information or see your <br> supervisor to be added" +
+			" to the system.</font></b></html>";
+	private static final String BAD_PASSWORD_MESSAGE = "<html><b><font color=#ff0000>" +
+			"You entered incorrect credentials.<br> Please try again.</font></b></html>";
+	private JLabel retryLabel;
+	private JTextField caneIdField;
+	private JPasswordField passwordField;
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates Login JFrame
@@ -92,12 +98,9 @@ public class LoginDialog extends JDialog implements ActionListener {
 		caneIdField = SwingHelper.addLabeledTextField(inputPanel, "Cane ID: ", 
 				SwingHelper.DEFAULT_TEXT_FIELD_LENGTH, true);
 		
-//TODO make this a password field instead of a JTextField
+
 		passwordField = SwingHelper.addLabeledPwdField(inputPanel, "Password: ",
 				SwingHelper.DEFAULT_TEXT_FIELD_LENGTH,true);
-		//passwordField = SwingHelper.addLabeledTextField(inputPanel, "Password: ", 
-			//	SwingHelper.DEFAULT_TEXT_FIELD_LENGTH, true);
-		
 		
 		return inputPanel;
 	}
@@ -181,34 +184,37 @@ public class LoginDialog extends JDialog implements ActionListener {
 			String caneID = caneIdField.getText().trim();
 			String password = passwordField.getText().trim();
 			Employee user = null;
-			 
+			
 			//Get the employee object that matches the given caneID
 			user = PersonnelManager.getEmployeeByCaneID(caneID);
 			  
+			//If user matching given caneID isn't in system, don't bother checking password
 			if(user==null){ 
 				//employee matching the given caneID not found in system
 				return ERROR_USR_DNE; 
 			}
 			  
-//DEBUG: 
-			System.out.println("caneID field = " + caneIdField.getText() + " and user" +
-					"caneID = "  + user.getCaneID());
+//DEBUG System.out.println("caneID field = " + caneIdField.getText() + " and user" +
+//"caneID = "  + user.getCaneID());
 		  
-			  
 			//Set the current user to be the employee that just logged in 
 			CurrentUser.setCurrentUser(user);
+				//BEN: Is it ok to use the CurrentUser class this way?
+			
+			//Check if attempting to run in demo mode & perform appropriate actions
+			if(caneID.equals("demo")){
+				return NO_ERROR;
+			}
+			
+			
 			//Authenticate the caneID and password info via UM's web portal
-/* *****************************************************************************
-* TODO (BEN) Code to check user name and password against UM's web portal 
-* Currently, the program runs as if it always receives true from 
-* the web portal. 
-*******************************************************************************/
 			String login_site = "https://caneid.miami.edu/cas/login"; // login url for umiami
 
 			ScriptEngineManager manager = new ScriptEngineManager();
 			ScriptEngine engine = manager.getEngineByName("python");
 			if(engine==null){ System.out.println("engine is null"); }
 			
+			//retrieve the python script that sends the info to the server
 			String passwdScript = FileHelper.getPasswordScript();
 			
 			try{
@@ -226,10 +232,16 @@ public class LoginDialog extends JDialog implements ActionListener {
 				System.out.println("Caught exception in file reader in python script");
 				//e.printStackTrace();
 			}
-			// SET CURRENT USER SET TIME
+			
+			//TODO: SET CURRENT USER SET TIME
 			return NO_ERROR;
 		}
 //-----------------------------------------------------------------------------
+	  /**
+	   * Returns whether or not the most recent login attempt was successful.
+	   * 
+	   * @return true if login was successful; false otherwise
+	   */
 	  public boolean isSuccessful() {
 		  return loginSuccessful;
 	  }
@@ -244,13 +256,10 @@ public class LoginDialog extends JDialog implements ActionListener {
 		  //Display the error corresponding to the gven error code
 		  switch(errorID){
 		  case ERROR_BAD_PASSWORD:
-			  retryLabel.setText("<html><b><font color=#ff0000>You entered incorrect credentials.<br>" +
-					  "Please try again.</font></b></html>");
+			  retryLabel.setText(BAD_PASSWORD_MESSAGE);
 			  break;
 		  case ERROR_USR_DNE:
-			  retryLabel.setText("<html><b><font color=#ff0000>The caneID you have entered does not " +
-		  			"correspond to an existing user. Please renter your information or see your <br>" +
-		  			"supervisor to be added to the system.</font></b></html>");
+			  retryLabel.setText(USR_DNE_MESSAGE);
 			  break;
 		  }
 

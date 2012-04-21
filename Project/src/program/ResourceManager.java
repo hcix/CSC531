@@ -19,7 +19,6 @@ import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import progAdmin.itemsToReview.ItemToReview;
-import utilities.EmailHandler;
 import utilities.FileHelper;
 import utilities.PdfHandler;
 import utilities.RosterParser;
@@ -43,7 +42,6 @@ public class ResourceManager {
     //JDOC
     JFrame parent;
     PdfHandler pdfHandler;
-    EmailHandler emailHandler;
     Properties progProps;
     ArrayList<ItemToReview> items;
     boolean mailIsSupported = false;

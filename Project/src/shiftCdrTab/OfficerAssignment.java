@@ -1,7 +1,7 @@
 package shiftCdrTab;
 
 import java.util.ArrayList;
-import shiftCdrTab.reports.ShiftCdrReport;
+import shiftCdrTab.gui.ShiftCdrReport;
 //-----------------------------------------------------------------------------	
 /**
  * The <code>OfficerAssignment</code> class represents a single officer's assigned
@@ -32,6 +32,7 @@ public class OfficerAssignment {
 	/** the id number of the vehicle used by the officer */
 	//TODO: provide workaround for bikes
 	int vehicleID;
+	String vehicleIDString;
 	/** other duties/assignments performed by the officer */
 	String otherDuties;
 //-----------------------------------------------------------------------------	
@@ -48,8 +49,8 @@ public class OfficerAssignment {
 	 * @param officer
 	 */
 	OfficerAssignment(String officer){
+		this();
 		this.officer = officer;
-		//call other OfficerAssignment constructor
 	}
 //-----------------------------------------------------------------------------	
 	/**
@@ -125,6 +126,20 @@ public class OfficerAssignment {
 	 */
 	public void setVehicleID(int vehicleID) {
 		this.vehicleID = vehicleID;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * @return vehicleIDString - 
+	 */
+	public String getVehicleIDString() {
+		return vehicleIDString;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * @param vehicleIDString - the vehicleIDString value to set
+	 */
+	public void setVehicleIDString(String vehicleIDString) {
+		this.vehicleIDString = vehicleIDString;
 	}
 //-----------------------------------------------------------------------------
 	/**

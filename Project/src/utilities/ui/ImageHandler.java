@@ -134,7 +134,7 @@ public class ImageHandler {
 		ImageIcon tmpIcon = null;
 		 
 		if(path==null){
-			System.out.printf("NULL; path \n");
+//DEBUG System.out.printf("NULL; path \n");
 			return null;
 		}
 		

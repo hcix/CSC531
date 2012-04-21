@@ -1,6 +1,6 @@
 package shiftCdrTab;
 
-import shiftCdrTab.reports.ShiftCdrReport;
+import shiftCdrTab.gui.ShiftCdrReport;
 
 //-----------------------------------------------------------------------------
 /**
@@ -24,11 +24,19 @@ import shiftCdrTab.reports.ShiftCdrReport;
 public class PatrolAssignment {
 //-----------------------------------------------------------------------------
 	/** name of the patrol route */
-	String name;
+	String name="";
 	/** the time range the patrol route was patrolled 
 	 * desired format: 'HH:mm - HH:mm' where HH represents the hour given in
 	 * 24 hour format (12am/midnight = 00) */
-	String timePatroled;
+	String timePatroled="";
+//-----------------------------------------------------------------------------
+	public PatrolAssignment(){
+		
+	}
+//-----------------------------------------------------------------------------
+	public PatrolAssignment(String name){
+		this.name=name;
+	}
 //-----------------------------------------------------------------------------
 	/**
 	 * @return the name of the patrol route
@@ -66,6 +74,12 @@ public class PatrolAssignment {
 	public void setTimePatroled(String timePatroled) {
 		this.timePatroled = timePatroled;
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+	@Override 
+	public String toString(){
+		String toString = this.name;
+		return name;
+	}
+//-----------------------------------------------------------------------------
 	
 }

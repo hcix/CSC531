@@ -226,8 +226,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		}
 
 		int listSize = bluebook.size();
-//DEBUG
-System.out.println("bluebook size = " + bluebook.size());
+//DEBUG System.out.println("bluebook size = " + bluebook.size());
 		
 		JPanel[] items = new JPanel[listSize];
 		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");

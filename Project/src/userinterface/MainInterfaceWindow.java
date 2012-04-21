@@ -14,7 +14,7 @@ import progAdmin.AdminTab;
 import progAdmin.PersonnelManager;
 import program.CurrentUser;
 import program.ResourceManager;
-import shiftCdrTab.ShiftCdrTab;
+import shiftCdrTab.gui.ShiftCdrTab;
 import blueBookTab.BlueBookTab;
 import boloTab.BOLOtab;
 

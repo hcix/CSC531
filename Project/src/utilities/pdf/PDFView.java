@@ -171,7 +171,7 @@ public class PDFView {
       }
 //-----------------------------------------------------------------------------
 	@SuppressWarnings("unchecked")
-	public void createFormFieldsList(){
+	public void createSCRFormFieldsList(){
 
 		allFormFields = new ArrayList<FieldAndVal>();
 		
@@ -189,22 +189,22 @@ public class PDFView {
 		
     	for(String name : compNames){
     		Object[] components = formRenderer.getComponentsByName(name);
-			System.out.println(name);
-			if(name.equals("ucr_crime_grp")){
+//DEBUG System.out.println("field name: " + name);
+			if(name.equals("ucr_crimegrp")){
 				if ( ((JRadioButton)components[0]).isSelected()) { 
-//DEBUG
-System.out.println("selected one is : components[0].toString()"); 
+//DEBUG System.out.println("Selected* is : " + components[0].toString()); 
 				}
-					if(((JRadioButton)components[0]).isSelected()){ text = "true"; }
-					else { text = "false"; }
-					//(((JRadioButton)components[0]).
-					allFormFields.add(new FieldAndVal(name, text));
+				if(((JRadioButton)components[0]).isSelected()){ text = "true"; }
+				else { text = "false"; }
+				//(((JRadioButton)components[0]).
+				allFormFields.add(new FieldAndVal(name, text));
 			} else if(name.equals("remarks_box")){
 				text = ((JTextArea)components[0]).getText();
-				System.out.println("text in remarks = " + text);
 				allFormFields.add(new FieldAndVal(name, text));
 			} else {
+				
 			text = ((JTextField)components[0]).getText();
+//DEBUG System.out.println("**name has off_assign; text = "+text);
 			if(text==null){ System.out.println("text is null"); text = ""; }
 				FieldAndVal curr = new FieldAndVal(name, text);
 				allFormFields.add(curr);

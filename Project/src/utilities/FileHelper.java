@@ -70,7 +70,7 @@ public class FileHelper {
 	 * access instead
 	 */
 	public static String getDocumentPathName(String doc){
-		File progDir = new File("..");
+		File progDir = new File(getProgramDirPathName());
 		Path docPath=null;
 		String docName=null;
 			
@@ -109,7 +109,7 @@ public class FileHelper {
 		docName = docPath.toString();
 		
 //DEBUG	
-System.out.println("getBBEntryPdfPathName = " + docName);	
+//System.out.println("getBBEntryPdfPathName = " + docName);	
 		return docName;
 		
 	}
@@ -162,7 +162,7 @@ System.out.println("getBBEntryPdfPathName = " + docName);
 		dirName = dirPath.toString();
 		
 //DEBUG 
-System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);	
+//System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);	
 
 		return dirName;	
 	}
@@ -181,7 +181,7 @@ System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);
 			
 		try{
 		docPath = Paths.get(progDir.getCanonicalPath(), 
-				DOC_DIR, BB_SUBDIR, reportName);
+				DOC_DIR, SFT_RPTS_SUBDIR, reportName);
 		} catch (IOException e){
 			e.printStackTrace();
 		}
@@ -280,7 +280,6 @@ System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);
 		String programDir = null;
 		//File progDir = new File("."); //this one to run in a jar
 		File progDir = new File(".."); //this one to run in Eclipse
-		
 		try {
 			programDir = progDir.getCanonicalPath();
 		} catch (IOException e) {
@@ -396,8 +395,9 @@ System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);
 		
 	    File outputfile = new File(destinationFile.toString());
 	    String extension = getFileExtension(outputfile);
-	    System.out.printf("\nFileHelper: savePhoto(): destinationFile.toString() = %s\n",
-	    		destinationFile.toString());
+	    
+//DEBUG System.out.printf("\nFileHelper: savePhoto(): destinationFile.toString() = %s\n",
+//destinationFile.toString());
 	    
 	    
 	    int i=0;
@@ -408,9 +408,11 @@ System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);
 	    	destinationFile = Paths.get(progDir, PHOTO_DIR, name+"."+extension);
 	    	outputfile = new File(destinationFile.toString());
 		    
-	    	System.out.printf("\nFileHelper: savePhoto(): (while loop) " +
-		    		"destinationFile.toString() = %s\n", destinationFile.toString());
-	    //saftey condition to protect against infinite loop
+//DEBUG
+//System.out.printf("\nFileHelper: savePhoto(): (while loop) " +
+//		"destinationFile.toString() = %s\n", destinationFile.toString());
+	    
+	    	//safety condition to protect against infinite loop
 	    	if(i>100){ 
 	    		//TODO make the println below into a error/warning message for user
 	    		System.out.println("ERROR 100 files with this name exist already!"); }
@@ -422,7 +424,7 @@ System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);
 	    	ImageIO.write(imageToSave, extension, outputfile);
 	    } catch (IOException e) {
 	    	//TODO make the println below into a error/warning message for user
-	    	System.out.println("FileHelper: savePhoto(): Problem saving photo. rut row");
+	    	System.out.println("FileHelper: savePhoto(): Problem saving photo.");
 	    	return null;
 	    }
 	
@@ -451,6 +453,7 @@ System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);
 	 */
 	public static Path copyVideoAnnoun(File original){
 		String progDir = getProgramDirPathName();
+		
 		//Specifies a system independent path
 		Path destination = Paths.get(progDir, VIDEO_DIR, ANNOUN_SUB_DIR);
 		

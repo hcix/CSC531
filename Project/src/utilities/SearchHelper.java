@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import shiftCdrTab.RollCall;
+import shiftCdrTab.rollCall.RollCall;
 import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
 //-----------------------------------------------------------------------------
@@ -129,18 +129,18 @@ public class SearchHelper {
 				if(photoPath!=null){ 
 					Path pp = Paths.get(photoPath);
 					bolo.setPhotoFilePath(pp);
-	//DEBUG:
-				} else { 
-					System.out.printf("\n photo path is null\n");
+
+				} else {
+//DEBUG System.out.printf("\n photo path is null\n");
 				}
 				
 				videoPath=allEntries.getString("videoPath");
 				if(videoPath!=null){ 
 					Path vp = Paths.get(videoPath);
 					bolo.setVideoFilePath(vp);
-	//DEBUG:			
+				
 				} else { 
-					//System.out.printf("\n video path is null\n");
+//DEBUG System.out.printf("\n video path is null\n");
 				}
 
 				boloList.add(bolo);

@@ -76,8 +76,6 @@ public class ReportListRenderer implements ListCellRenderer, ListDataListener {
 		
 		return panel;
 	}
-//-----------------------------------------------------------------------------
-/*	public void itemStateChanged(ItemEvent e) { }	*/
 //=============================================================================
 	public void intervalAdded(ListDataEvent e) {
 		

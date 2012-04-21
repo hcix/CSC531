@@ -18,10 +18,6 @@ import net.miginfocom.swing.MigLayout;
  * This is a panel that allows the user to toggle between different views to
  * see items within the program and select/"click" items. This panel will 
  * notify the given action listener when a <code>JPanel</code> is "clicked".
- * 
- * TODO: Test if this shit works
- * TODO: Adds a border around the entire thing somewhere, but where? 
- * Here? In BOLOtab? In BlueBookTab? Does it happen in the scroll dialogs too?
  */
 public class DisplayPanel extends JScrollPane implements MouseListener {
 private static final long serialVersionUID = 1L;

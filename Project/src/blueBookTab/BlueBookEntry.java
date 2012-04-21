@@ -364,7 +364,7 @@ public ArrayList<String> getPhotoFilePaths() {
 	 */
 	public ImageIcon getPhoto(){
 		ImageIcon photo = ImageHandler.getThumbnailImageIcon(photoFilePath);
-		if(photo==null){ System.out.printf("null photo\n"); }
+//DEBUG if(photo==null){ System.out.printf("null photo\n"); }
 		return photo;
 	}
 //-----------------------------------------------------------------------------

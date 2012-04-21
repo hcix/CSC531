@@ -17,16 +17,16 @@ public class ReportFile {
 	Date dateCreated = new Date();
 	boolean currentlyDisplayed=false;
 //-----------------------------------------------------------------------------
-		public ReportFile(String filename){
-			this.filename = filename;
+	public ReportFile(String filename){
+		this.filename = filename;
 //DEBUG System.out.println("filename = " + filename);
-			
-			this.file = new File(filename);
-			this.dateCreated = getDateFromFile(file);			
-		}
+		
+		this.file = new File(filename);
+		this.dateCreated = getDateFromFile(file);			
+	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return filename - 
+	 * @return filename in system of this <code>ReportFile</code>
 	 */
 	public String getFilename() {
 		return filename;
