@@ -4,6 +4,7 @@
 package shiftCdrTab.gui;
 
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import blueBookTab.BlueBookPreview;
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import shiftCdrTab.reports.ReportFile;
@@ -38,7 +40,7 @@ import utilities.pdf.PDFView;
 import utilities.ui.SwingHelper;
 
 
-public class ReportsPanel extends JPanel implements MouseListener {
+public class ReportsPanel extends JPanel implements MouseListener, ActionListener{
 private static final long serialVersionUID = 1L;
 	final ResourceManager rm;
 	PDFView pdfv;
@@ -92,46 +94,8 @@ private static final long serialVersionUID = 1L;
 			//Create New Report Button
 			JButton newButton = SwingHelper.createImageButton("Create new Report", 
 					"icons/plusSign_48.png"); 
-			newButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e){
-					String mostRecentShift = System.getProperty("UMPD.latestShiftTime");
-					ArrayList<RollCall> rollCall;
-					
-					//create new ShiftCdrReport object
-					ShiftCdrReport shiftReport = new ShiftCdrReport();
-					
-					//check that a rollcall has been submitted
-			        if (mostRecentShift.equals("none")){
-			        	JOptionPane.showMessageDialog(rm.getGuiParent(), 
-			        			"No shift has been submitted yet.");
-			        } else {
-					    Format format = new SimpleDateFormat("ddMMMyyyy:" + 
-					    		mostRecentShift + ":00");
-					    Date date = new Date();
-					    try {
-						    rollCall = dbHelper.getRollCallFromDatabase(format.format(date));
-					    } catch (Exception e1) {
-						    System.out.println("Couldn't get rollCall from db in reportsPanel");
-					    	//e1.printStackTrace();
-					    }
-					    ShiftReportForm formDialog = new ShiftReportForm(rm, null);
-					    formDialog.setVisible(true);
-					    formDialog.setModal(true);
-					    
-					    //if new report was created, recreate reports list & display
-					    if(formDialog.isNewReportWasCreated()){
-					    	//recreate list
-					    	reportsFileArrayList.clear();
-					    	createListOfReports();
-					    	//recreate list display
-					    	itemsPanel.removeAll();
-					    	addReportsList(itemsPanel);
-					    	//load this new report into report display area
-					    	loadInLastReport(reportsScroller);
-					    }
-				    }
-			    }
-			});
+			newButton.addActionListener(this);
+	
 			
 			//Search Button
 			JButton searchButton = SwingHelper.createImageButton("Search Records", 
@@ -275,16 +239,66 @@ private static final long serialVersionUID = 1L;
 	    return buttonsPanel;
 	}
 //-----------------------------------------------------------------------------	
+	/**
+	 * Called when the 'Create' button is clicked. Creates and shows a new
+	 * <code>ShiftReportForm</code> pre-filled with the relevant information
+	 * from the corresponding RollCall.
+	 */
+	public void actionPerformed(ActionEvent e){
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		String mostRecentShift = System.getProperty("UMPD.latestShiftTime");
+		ArrayList<RollCall> rollCall;
+		
+		//create new ShiftCdrReport object
+		ShiftCdrReport shiftReport = new ShiftCdrReport();
+		
+		//check that a rollcall has been submitted
+        if (mostRecentShift.equals("none")){
+        	JOptionPane.showMessageDialog(rm.getGuiParent(), 
+        			"No shift has been submitted yet.");
+        } else {
+		    Format format = new SimpleDateFormat("ddMMMyyyy:" + 
+		    		mostRecentShift + ":00");
+		    Date date = new Date();
+		    try {
+			    rollCall = dbHelper.getRollCallFromDatabase(format.format(date));
+		    } catch (Exception e1) {
+			    System.out.println("Couldn't get rollCall from db in reportsPanel");
+		    	//e1.printStackTrace();
+		    }
+		    ShiftReportForm formDialog = new ShiftReportForm(rm, null);
+	
+		    formDialog.setVisible(true);
+		    this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		    formDialog.setModal(true);
+		    
+		    //if new report was created, recreate reports list & display
+		    if(formDialog.isNewReportWasCreated()){
+		    	//recreate list
+		    	reportsFileArrayList.clear();
+		    	createListOfReports();
+		    	//recreate list display
+		    	itemsPanel.removeAll();
+		    	addReportsList(itemsPanel);
+		    	//load this new report into report display area
+		    	loadInLastReport(reportsScroller);
+		    }
+	    }
+    }
+//-----------------------------------------------------------------------------
 	public void mouseClicked(MouseEvent e) {
 		
 		if(e.getClickCount() == 2){ //double click
 			     int index = reportsJList.locationToIndex(e.getPoint());
-			     
+			     this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			     Object item = reportsModel.getElementAt(index);
 			     reportsJList.ensureIndexIsVisible(index);
 			     
 			     ReportFile rf = (ReportFile)item;
+			     
+			     
 			     pdfv.openPdfFile(rf.getFilename());
+			     this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			     
 			     currDisplayed.setCurrentlyDisplayed(false);
 			     

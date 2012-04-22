@@ -832,7 +832,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 
 		private Object[][] data = new Object[0][0];
 
-		// -----------------------------------------------------------------------------
+		//-----------------------------------------------------------------------------
 		public RollCallTableModel() {
 
 			/*
@@ -840,7 +840,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 			 */
 		}
 
-		// -----------------------------------------------------------------------------
+		//-----------------------------------------------------------------------------
 		public RollCallTableModel(ArrayList<String> names) {
 
 			/*

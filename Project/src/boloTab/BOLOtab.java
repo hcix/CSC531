@@ -2,6 +2,7 @@ package boloTab;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -98,13 +99,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 					mainInterface.refreshItemsList();
 					mainInterface.refreshItemsTable();
 				Otherwise, it is not necessary to call these methods
-				 */
-
-				//unneeded/repetative, waiting to make sure no errors b4 deleting
-				/*refresh to display any changes
-				recentBolosTab.removeAll();
-				recentBolosTab.add(createRecentBOLOsTab());
-				tabbedPane.revalidate();
 				 */
 
 			}
@@ -381,14 +375,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 		entriesScroller.refreshContents(newItems);
 		tabbedPane.revalidate();
 
-		//this.revalidate();
-		//entriesScroller.refreshContents(regenerateBOLOsList());
-		//this.revalidate();
-		//		recentBolosTab.removeAll();
-		//		recentBolosTab.add(createRecentBOLOsTab());
-		//		this.revalidate();
-		//		this.repaint();
-
 	}
 	//-----------------------------------------------------------------------------	
 	/**
@@ -400,10 +386,10 @@ public class BOLOtab extends JPanel implements ActionListener {
 		int id = Integer.valueOf(listId);
 
 		Bolo selectedBOLO = boloList.get(id);
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		BOLOpreview preview = new BOLOpreview(rm, this, selectedBOLO);
-
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		preview.setVisible(true);
-		//		preview.setModal(true);
 
 	}
 	//-----------------------------------------------------------------------------	

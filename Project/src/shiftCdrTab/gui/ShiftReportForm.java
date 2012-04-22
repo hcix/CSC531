@@ -1,6 +1,7 @@
 package shiftCdrTab.gui;
 
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -103,7 +104,8 @@ private static final long serialVersionUID = 1L;
 	 * Close and save info into new ShiftCdrReport.
 	 */
 	private void closeAndSave() {
-		
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	    
 		//get a list of all the filled in fields and their values
 		pdfv.createSCRFormFieldsList();
 		ArrayList<FieldAndVal> formFields = 
@@ -117,6 +119,7 @@ private static final long serialVersionUID = 1L;
 		if (reportFileName!=null){ rm.setLatestReportName(reportFileName); }
 		
 		setNewReportWasCreated(true);
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		setVisible(false);
 	}
 //-----------------------------------------------------------------------------	

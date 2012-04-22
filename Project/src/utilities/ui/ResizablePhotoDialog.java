@@ -14,24 +14,27 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import utilities.FileHelper;
 //-----------------------------------------------------------------------------
 /**
- * JDOC
+ * <code>ResizablePhotoDialog</code> is a class used for resizing photos.
  */
 public class ResizablePhotoDialog extends JDialog {
 private static final long serialVersionUID = 1L;
 	JLabel photoFrame = new JLabel();
+	String photofilename;
 	ImageIcon originalImgIcon;
 	ImageIcon resizedImgIcon;
 	Path newPhotoFilePath;
 //-----------------------------------------------------------------------------
 	/**
-	 * 
+	 * Creates a new <code>ResizablePhotoDialog</code>.
 	 * @param imgIcon
 	 */
 	public ResizablePhotoDialog(ImageIcon imgIcon, Window parent, final String photofilename){
 		super(parent, "Resize Photo", Dialog.ModalityType.DOCUMENT_MODAL);
+		this.photofilename = photofilename;
 		originalImgIcon = imgIcon;
 		resizedImgIcon = imgIcon;
 		
@@ -43,24 +46,24 @@ private static final long serialVersionUID = 1L;
 		
 		//if the img is bigger than the default dialog size, make the dialog bigger 
 		if(originalImgIcon.getIconWidth()>500){
-			w=originalImgIcon.getIconWidth();
+			w=originalImgIcon.getIconWidth()+200;
 			if(w>screenSize.width){
 				//if the img is bigger than the screen, make the dialog just a little 
 				//smaller than the screen and the img just a little smaller the dialog
-				w=screenSize.width-20;
+				w=screenSize.width-100;
 				originalImgIcon=ImageHandler.getScaledImageIcon(
-						originalImgIcon, (w-20), originalImgIcon.getIconHeight());
+						originalImgIcon, (w-100), originalImgIcon.getIconHeight());
 				resizedImgIcon=originalImgIcon;
 			}
 		}
 		if(originalImgIcon.getIconHeight()>500){
-			h=originalImgIcon.getIconHeight();
+			h=originalImgIcon.getIconHeight()+200;
 			if(h>screenSize.height){
 				//if the img is bigger than the screen, make the dialog just a little 
 				//smaller than the screen and the img just a little smaller the dialog
-				h=screenSize.height-20;
+				h=screenSize.height-100;
 				originalImgIcon=ImageHandler.getScaledImageIcon(
-						originalImgIcon, originalImgIcon.getIconWidth(), (h-20));
+						originalImgIcon, originalImgIcon.getIconWidth(), (h-100));
 				resizedImgIcon=originalImgIcon;
 			}
 		}
@@ -75,25 +78,32 @@ private static final long serialVersionUID = 1L;
 		PhotoResizer pr = new PhotoResizer(this);
 		pr.registerComponent(photoFrame);
 		
-		
 		JPanel p = new JPanel();
 		p.setPreferredSize(new Dimension(w, h));
 		p.setSize(new Dimension(w, h));
 		this.setLocationRelativeTo(parent);
 		
 		p.add(photoFrame);
-		JButton saveImgButton = new JButton("Set Image");
-		p.add(saveImgButton);
-		saveImgButton.addActionListener(new ActionListener( ) {
-			public void actionPerformed(ActionEvent e) {
-	    		saveAndClose(photofilename);
-				//bolo.setPhotoFilePath(photoPath);	
-	    	}
-		}); 
+		
 		
 		Container cp = this.getContentPane();
 		cp.add(p);
 		this.setVisible(true);
+	}
+//-----------------------------------------------------------------------------
+	private JToolBar createButtonsToolbar(){
+		JToolBar toolbar = new JToolBar();
+		
+		//Save Button
+		JButton setImgButton = new JButton("Set Image");
+		setImgButton.addActionListener(new ActionListener( ) {
+			public void actionPerformed(ActionEvent e) {
+	    		saveAndClose(photofilename);
+	    	}
+		}); 
+		
+		toolbar.add(setImgButton);
+		return toolbar;
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -157,7 +167,7 @@ private static final long serialVersionUID = 1L;
 	/**
 	* Save the resized photo and close the dialog.
 	*/
-	public void saveAndClose(String photofilename){
+	private void saveAndClose(String photofilename){
 		Path photoPath = FileHelper.savePhoto(getResizedImgIcon(), photofilename);
 //DEBUG
 //System.out.printf("\nResizablePhotoDialog: ResizablePhotoDialog(): photoPath.toString() = %s\n",photoPath.toString());
@@ -169,15 +179,13 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * JDOC
+	 * Dispose of all resources used and close this dialog.
 	 */
-	 public void closeAndCancel( ) {
-//dispose of all resources used
+	 private void closeAndCancel() {
+		 this.setNewPhotoFilePath(null);
 		 
-		this.setNewPhotoFilePath(null);
-		 
-		//close the dialog
-		this.dispose();	
+		 //close the dialog
+		 this.dispose();	
 	 }
 //-----------------------------------------------------------------------------
 }

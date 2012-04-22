@@ -2,6 +2,7 @@ package blueBookTab;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -22,6 +23,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import boloTab.BOLOpreview;
 
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
@@ -196,7 +198,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	public void refreshBBtab(){
 		JPanel[] newItems = createItemsPanels();
 		entriesScroller.refreshContents(newItems);
-		(entriesScroller.getParent()).revalidate();
+		entriesScroller.revalidate();
 	}
 //-----------------------------------------------------------------------------
 	public void actionPerformed(ActionEvent ev) {	
@@ -208,10 +210,12 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		System.out.println("BlueBookTab: actionPerformed: id = " + id);
 		
 		BlueBookEntry selectedEntry = bluebook.get(id);
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		BlueBookPreview bbPreview = new BlueBookPreview(rm, this, selectedEntry);
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		bbPreview.setVisible(true);
-		//BlueBookForm form = new BlueBookForm(parent, this, selectedEntry);
-		//form.setVisible(true);
+
+
 	}
 //-------Items related to search-----------------------------------------------
 	/**
