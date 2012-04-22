@@ -404,7 +404,7 @@ public class BOLOform extends JDialog {
 	    		BOLOpreview preview = new BOLOpreview(rm, bolotab, bolo);
 	    		preview.setVisible(true);
 	    		preview.setModal(true);
-	    		if(preview.isNewBOLOWascreated()){
+	    		if(preview.isNewBoloWasCreated()){
 	    			setVisible(false);
 	    			newBOLOWascreated=true;
 	    			eraseForm();
@@ -447,6 +447,8 @@ public class BOLOform extends JDialog {
 		}
 		//TODO: Create a pdf from the input data
 
+		
+		
 		//reset the form
 		eraseForm();
 
@@ -500,7 +502,11 @@ public class BOLOform extends JDialog {
 		 narrative=narrativeText.getText();
 		 if(!narrative.isEmpty()){ bolo.setNarrative(narrative); }
 
-
+		 if(bolo.getPhotoFilePath()==null){
+				 bolo.setPhotoFilePath(Paths.get(
+						 FileHelper.getImageResourcePathName("unknownPerson.jpeg")));
+		 }
+		 
 		 //set the times
 //HAD TO COMMENT OUT TO WMAKE WORK
 		// bolo.setincidentDate(getIncidentDateEpoch());

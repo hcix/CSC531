@@ -88,6 +88,29 @@ public class FileHelper {
 	}
 //-----------------------------------------------------------------------------
 	/**
+	 * Gets the absolute path name of the image file located in the 
+	 * userinterface/images package.
+	 */
+	public static String getImageResourcePathName(String imageName){
+		File progDir = new File(getProgramDirPathName());
+		Path imgPath=null;
+		String imgName=null;
+			
+		try{
+			imgPath = Paths.get(progDir.getCanonicalPath(), "Project", "src",
+					"userinterface", "images", imageName);
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		
+		imgName = imgPath.toString();
+		
+//DEBUG	System.out.println("getDocumentPathName = " + docName);	
+		return imgName;
+		
+	}
+//-----------------------------------------------------------------------------
+	/**
 	 * Gets the name of the absolute path to the file where the pdf of the
 	 * <code>BlueBookEntry</code> is stored
 	 * 

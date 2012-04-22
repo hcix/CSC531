@@ -85,7 +85,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 				//wait for the dialog to be dismissed before continuing
 				newFormDialog.setModal(true);
 
-
 				refreshRecentBOLOsTab();
 				mainInterface.refreshItemsList();
 				mainInterface.refreshItemsTable();
@@ -311,65 +310,13 @@ public class BOLOtab extends JPanel implements ActionListener {
 	 * @return recentBOLOsPanel
 	 */
 	private DisplayPanel createRecentBOLOsTab(){
-		JPanel boloPanel;
-		Date prepDate;
-
-		try {
-			boloList = DatabaseHelper.getBOLOsFromDB();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		int listSize = boloList.size();
-//DEBUG System.out.println("boloList.size() = " + listSize);
-		JPanel[] items = new JPanel[listSize];
-		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
-
-		int i=0;
-		for(Bolo bolo: boloList){
-			String listId = "" + boloList.indexOf(bolo);
-
-			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
-
-
-
-			String date = formatter.format(prepDate);
-			String caseNum = "";
-			if(bolo.getCaseNum()!=null){ caseNum=bolo.getCaseNum(); }
-			String status = "";
-			if(bolo.getStatus()!=null){ status=bolo.getStatus(); }
-
-			boloPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
-			if(bolo.getPhoto()!=null){
-				JLabel photoLabel = new JLabel(
-						ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
-				boloPanel.add(photoLabel);
-			}
-			String armedText = "";
-			if(bolo.getWeapon()!=null){ 
-				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
-			}
-
-			boloPanel.add(new JLabel(armedText, SwingConstants.CENTER), "alignx center,wrap");
-
-			boloPanel.add(new JLabel(date), "split 3, aligny top");
-			boloPanel.add(new JLabel("Case#: "+caseNum));
-			boloPanel.add(new JLabel(status));
-			boloPanel.setSize(new Dimension(130, 150));
-			boloPanel.setPreferredSize(new Dimension(130, 150));
-
-			boloPanel.setName(listId);
-			items[i]=boloPanel;
-			i++;
-		}
-
+		JPanel[] items = createItemsPanels();
+		
 		DisplayPanel entriesPanel = new DisplayPanel(items, this, 4);
-
-		//recentBOLOsPanel.add(entriesPanel);
 
 		return entriesPanel;
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	public JPanel createSearchBOLOsTab(ArrayList<Bolo> boloList){
 		JPanel recentBOLOsPanel = new JPanel(new MigLayout());
 		JPanel boloPanel;

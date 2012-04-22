@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfGState;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 
@@ -114,6 +116,22 @@ public class PDFHelper {
         return stamper;   
 	}
 //-----------------------------------------------------------------------------
-	
+	/**
+	 * Draws a rectangle
+	 * @param content the direct content layer
+	 * @param width the width of the rectangle
+	 * @param height the height of the rectangle
+	 */
+	public static void drawRectangle(PdfContentByte content, float width, float height) {
+	    content.saveState();
+	    PdfGState state = new PdfGState();
+	    state.setFillOpacity(0.6f);
+	    content.setGState(state);
+	    content.setRGBColorFill(0xFF, 0xFF, 0xFF);
+	    content.setLineWidth(3);
+	    content.rectangle(0, 0, width, height);
+	    content.fillStroke();
+	    content.restoreState();
+	}
 //-----------------------------------------------------------------------------
 }

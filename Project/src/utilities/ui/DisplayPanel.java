@@ -38,14 +38,16 @@ private static final long serialVersionUID = 1L;
 	Color pressedColor;
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l){
-		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.l=l;
 		mainPanel = createMainPanel(items);
 		this.setViewportView(mainPanel);
 	}
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l, int wrap){
-		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.wrap=wrap;
 		this.l=l;
 		mainPanel = createMainPanel(items);
@@ -54,7 +56,8 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l, int wrap, int gap){
-		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.wrap=wrap;
 		this.l=l;
 		this.gap=gap;
@@ -89,7 +92,7 @@ private static final long serialVersionUID = 1L;
 		for(int i=0; i<items.length; i++){
 			items[i].setBorder(BorderFactory.createRaisedBevelBorder());
 			items[i].addMouseListener(this);
-			panel.add(items[i]);
+			panel.add(items[i], "sg");
 		}
 	}
 //-----------------------------------------------------------------------------

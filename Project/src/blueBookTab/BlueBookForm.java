@@ -21,6 +21,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import boloTab.BOLOpreview;
+import program.ResourceManager;
 import net.miginfocom.swing.MigLayout;
 import utilities.FileHelper;
 import utilities.ui.ImageHandler;
@@ -66,6 +68,7 @@ public class BlueBookForm extends JDialog {
 	ArrayList<String> photoFilePaths = new ArrayList<String>();
 	JPanel photoOuterPanel;
 	JLabel noPhotoLabel;
+	ResourceManager rm;
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates a pop-up window, sets the window and creates a new 
@@ -74,9 +77,10 @@ public class BlueBookForm extends JDialog {
 	 * 
 	 * @param parent
 	 */
-	public BlueBookForm(JFrame parent, BlueBookTab bbTab) {
-		super(parent, "New Blue Book Entry", true);
+	public BlueBookForm(ResourceManager rm, BlueBookTab bbTab) {
+		super(rm.getGuiParent(), "New Blue Book Entry", true);
 		this.bbTab=bbTab;
+		this.rm=rm;
 		
 		//Set the size of the form
 		this.setPreferredSize(new Dimension(800,900));
@@ -108,8 +112,8 @@ public class BlueBookForm extends JDialog {
 		});
 		
 		/*Add buttons panel to top of scroll panel as the row header
-		 *(the buttons panel stays at the top of the screen even if the top of the form isn't
-		 *currently visible) */
+		 * (the buttons panel stays at the top of the screen even if the top of the form isn't
+		 *  currently visible) */
 		JPanel buttonsPanel = createButtonsPanel();
 		inputScrollPane.setColumnHeaderView(buttonsPanel);
 	    
@@ -125,8 +129,8 @@ public class BlueBookForm extends JDialog {
 	 * @param bbTab -
 	 * @param entry -
 	 */
-	public BlueBookForm(JFrame parent, BlueBookTab bbTab, BlueBookEntry entry){
-		this(parent, bbTab);
+	public BlueBookForm(ResourceManager rm, BlueBookTab bbTab, BlueBookEntry entry){
+		this(rm, bbTab);
 		this.bbEntry = entry;
 		loadFromExistingEntry();
 	}
@@ -262,7 +266,23 @@ public class BlueBookForm extends JDialog {
 	    // Add preview button
 	    JButton previewButton = new JButton("<html>Preview<br>  Entry</html>");
 	    previewButton.setToolTipText("Preview and print final Blue Book entry");
-//TODO: Implement Preview button functionality	    	    
+	    previewButton.addActionListener(new ActionListener( ) {
+	    	public void actionPerformed(ActionEvent e) {
+	    		
+	    		//setVisible(false);
+	  
+	    		putInfoIntoBlueBookEntry();
+	    		BlueBookPreview preview = new BlueBookPreview(rm, bbTab, bbEntry);
+	    		preview.setVisible(true);
+	    		preview.setModal(true);
+	    		if(preview.isNewEntryWasCreated()){
+	    			setVisible(false);
+	    			eraseForm();
+	    		} else{
+	    			setVisible(true);
+	    		}
+	    	}
+	    });   	    
 	    
 	    JPanel saveAndCancelButtonsPanel = new JPanel();
 	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
@@ -339,7 +359,10 @@ public class BlueBookForm extends JDialog {
 	 private void saveAndClose( ) {
 		//place the info from the fields into a bbEntry object
 		 putInfoIntoBlueBookEntry();
+		 
+		 //add all current photos to entry
 		 bbEntry.setPhotoFilePaths(photoFilePaths);
+		 
 		 //add the bbEntry object's info to the database
 		 try {
 			bbEntry.addToDB();
@@ -347,8 +370,8 @@ public class BlueBookForm extends JDialog {
 			System.out.println("error: unable to add bbEntry to DB");
 			e.printStackTrace();
 		 }
-	
-//TODO: Create a pdf from the input data
+		 
+		 this.setVisible(false);
 		 
 		 //reset the form
 		 eraseForm();
@@ -383,6 +406,11 @@ public class BlueBookForm extends JDialog {
 		 reasonText=reasonField.getText();
 		 if(!reasonText.isEmpty()){ bbEntry.setNarrative(reasonText); }
 		 
+		 if(bbEntry.getPhotoFilePath()==null){
+			 bbEntry.setPhotoFilePath(Paths.get(
+					 FileHelper.getImageResourcePathName("unknownPerson.jpeg")));
+	 }
+		 
 	 }
 //-----------------------------------------------------------------------------
 	 /**
@@ -401,10 +429,13 @@ public class BlueBookForm extends JDialog {
 		 reasonField.setText(bbEntry.getNarrative());
 
 		 //set picture
-		 //ImageIcon photo = 
-			//	 ImageHandler.getResizableImageIcon(bbEntry.getPhotoFilePath(), 200, 299);
-
-//TODO: place the photo into the form
+		//remove placeholder
+			photoArea.remove(noPhotoLabel);
+			JPanel newPanel = new JPanel();
+			newPanel.add(new JLabel(bbEntry.getPhoto()), "span");
+			newPanel.setVisible(true);
+			photoArea.add(newPanel);
+		    (photoArea.getParent()).validate();
 		 
 	 }
 //-----------------------------------------------------------------------------

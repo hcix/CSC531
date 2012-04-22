@@ -203,9 +203,6 @@ private static final long serialVersionUID = 1L;
 				int index = Integer.valueOf(split[2]);
 				report.addOfficerAssignmentFieldAndVal((new FieldAndVal(split[1], val)), index);
 			} else if(split[0].equals("attend")){
-//DEBUG
-//System.out.println("split[0] = " + split[0] + "; split[1] = " + split[1] +
-//"; split[2] = " + split[2]);
 				int index = Integer.valueOf(split[2]);
 				report.addAttendanceRecord((new FieldAndVal(split[1], val)), index);
 			} else if(split[0].equals("patrol")){

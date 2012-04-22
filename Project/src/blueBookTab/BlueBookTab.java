@@ -70,6 +70,20 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		//Create entries display area
 		entriesScroller = createEntriesPanel();
 		
+		//create Create Entry & Search Buttons
+		JPanel buttonsPanel = createButtonsPanel();
+		
+		// add the components to this tab
+		this.add(entriesScroller, BorderLayout.CENTER);
+		this.add(buttonsPanel, BorderLayout.PAGE_END);
+		
+		//TODO: Change below to be happening on bg thread so usr doesn't have to wait
+		newFormDialog = new BlueBookForm(rm, this);
+	}
+//-----------------------------------------------------------------------------
+	private JPanel createButtonsPanel(){
+		JPanel buttonsPanel = new JPanel();
+		
 		//Create New Entry button
 		JButton newEntryButton = SwingHelper.createImageButton("Create Entry",
 				"icons/plusSign_48.png");
@@ -96,19 +110,110 @@ public class BlueBookTab extends JPanel implements ActionListener {
 				searchDialog.setVisible(true);
 			}
 		});
-
 		
-		// add the components to this tab
-		this.add(entriesScroller, BorderLayout.CENTER);
-		JPanel buttonsPanel = new JPanel();
+		//add buttons to panel
 		buttonsPanel.add(newEntryButton);
 		buttonsPanel.add(searchButton);
-		this.add(buttonsPanel, BorderLayout.PAGE_END);
 		
-		//TODO: Change below to be happening on bg thread so usr doesn't have to wait
-		newFormDialog = new BlueBookForm(rm.getGuiParent(), this);
+		return buttonsPanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Create the <code>DisplayPanel</code> and populate it with data from the
+	 * database.
+	 * 
+	 * @return 
+	 */
+	public DisplayPanel createEntriesPanel() {
+		JPanel[] items = createItemsPanels();
+
+		DisplayPanel entriesPanel = new DisplayPanel(items, this, 4);
+		
+		return entriesPanel;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * 
+	 */
+	public JPanel[] createItemsPanels() {
+		JPanel entryPanel;
+		// Date prepDate;
+
+		try {
+			bluebook = DatabaseHelper.getBluebookFromDB();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		int listSize = bluebook.size();
+//DEBUG System.out.println("bluebook size = " + bluebook.size());	
+		JPanel[] items = new JPanel[listSize];
+		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
+
+		int i = 0;
+		for (BlueBookEntry entry : bluebook) {
+			String listId = "" + bluebook.indexOf(entry);
+			
+			entryPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
+			
+			if (entry.getPhotoFilePath() != null) {
+				JLabel photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
+						entry.getPhoto(), 100, 100));
+				entryPanel.add(photoLabel);
+			}
+			String caseNum = "";
+			if (entry.getCaseNum() != null) {
+				caseNum = entry.getCaseNum();
+			}
+			String status = "";
+			if (entry.getStatus() != null) {
+				status = entry.getStatus();
+			}
+			String armedText = "";
+			if (entry.getWeapon() != null) {
+				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
+			}
+
+			entryPanel.add(new JLabel(armedText, SwingConstants.CENTER),
+					"alignx center,wrap");
+
+			entryPanel.add(new JLabel(" "), "split 3, aligny top");
+			entryPanel.add(new JLabel("Case#: " + caseNum));
+			entryPanel.add(new JLabel(status));
+			entryPanel.setSize(new Dimension(130, 150));
+			entryPanel.setPreferredSize(new Dimension(130, 150));
+			
+			entryPanel.setName(listId);
+			items[i] = entryPanel;
+			i++;
+		}
+		return items;
+	}
+//-----------------------------------------------------------------------------		
+	/**
+	 * Refreshes the tab's content. 
+	 */
+	public void refreshBBtab(){
+		JPanel[] newItems = createItemsPanels();
+		entriesScroller.refreshContents(newItems);
+		(entriesScroller.getParent()).revalidate();
+	}
+//-----------------------------------------------------------------------------
+	public void actionPerformed(ActionEvent ev) {	
+	    
+		//get which entry was click
+		String listId = ev.getActionCommand();
+		int id = Integer.valueOf(listId);
+//DEBUG
+		System.out.println("BlueBookTab: actionPerformed: id = " + id);
+		
+		BlueBookEntry selectedEntry = bluebook.get(id);
+		BlueBookPreview bbPreview = new BlueBookPreview(rm, this, selectedEntry);
+		bbPreview.setVisible(true);
+		//BlueBookForm form = new BlueBookForm(parent, this, selectedEntry);
+		//form.setVisible(true);
+	}
+//-------Items related to search-----------------------------------------------
 	/**
 	 * Creates a search dialog for the <code>BlueBookTab</code> when the 
 	 * <code>searchButton</code> is clicked.
@@ -192,9 +297,9 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		try {
 			searchResults = (ArrayList<BlueBookEntry>) SearchHelper.search("bluebook", fields, parameters);
 			//DEBUG
-//			for (BlueBookEntry entry : searchResults) {
-//					System.out.println("case number :" + entry.getCaseNum());	
-//			}
+//				for (BlueBookEntry entry : searchResults) {
+//						System.out.println("case number :" + entry.getCaseNum());	
+//				}
 		} catch (Exception e) {
 			System.out.println("Couldn't run search in bluebook"); 
 			e.printStackTrace();
@@ -207,131 +312,6 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		Dimension dialogDim = new Dimension(toolkit.getScreenSize().width/2, toolkit.getScreenSize().height/2);
 		searchDialog.setSize(dialogDim); 
 		searchDialog.setVisible(true);
-	}
-//-----------------------------------------------------------------------------
-	/**
-	 * Create the <code>DisplayPanel</code> and populate it with data from the
-	 * database.
-	 * 
-	 * @return   ... JDOC
-	 */
-	public DisplayPanel createEntriesPanel() {
-		JPanel entryPanel;
-		// Date prepDate;
-
-		try {
-			bluebook = DatabaseHelper.getBluebookFromDB();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		int listSize = bluebook.size();
-//DEBUG System.out.println("bluebook size = " + bluebook.size());
-		
-		JPanel[] items = new JPanel[listSize];
-		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
-
-		int i = 0;
-		for (BlueBookEntry entry : bluebook) {
-			String listId = "" + bluebook.indexOf(entry);
-			
-			entryPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
-			
-			if (entry.getPhotoFilePath() != null) {
-				JLabel photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
-						entry.getPhoto(), 100, 100));
-				entryPanel.add(photoLabel);
-			}
-			String caseNum = "";
-			if (entry.getCaseNum() != null) {
-				caseNum = entry.getCaseNum();
-			}
-			String status = "";
-			if (entry.getStatus() != null) {
-				status = entry.getStatus();
-			}
-			String armedText = "";
-			if (entry.getWeapon() != null) {
-				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
-			}
-
-			entryPanel.add(new JLabel(armedText, SwingConstants.CENTER),
-					"alignx center,wrap");
-
-			entryPanel.add(new JLabel(" "), "split 3, aligny top");
-			entryPanel.add(new JLabel("Case#: " + caseNum));
-			entryPanel.add(new JLabel(status));
-			entryPanel.setSize(new Dimension(130, 150));
-			entryPanel.setPreferredSize(new Dimension(130, 150));
-
-			entryPanel.setName(listId);
-			items[i] = entryPanel;
-			i++;
-		}
-
-		DisplayPanel entriesPanel = new DisplayPanel(items, this, 4);
-		
-		return entriesPanel;
-	}
-//-----------------------------------------------------------------------------
-	/**
-	 * 
-	 */
-	public JPanel[] createItemsPanels() {
-		JPanel entryPanel;
-		// Date prepDate;
-
-		try {
-			bluebook = DatabaseHelper.getBluebookFromDB();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		int listSize = bluebook.size();
-//DEBUG
-System.out.println("bluebook size = " + bluebook.size());
-		
-		JPanel[] items = new JPanel[listSize];
-		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
-
-		int i = 0;
-		for (BlueBookEntry entry : bluebook) {
-			String listId = "" + bluebook.indexOf(entry);
-			
-			entryPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
-			
-			if (entry.getPhotoFilePath() != null) {
-				JLabel photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
-						entry.getPhoto(), 100, 100));
-				entryPanel.add(photoLabel);
-			}
-			String caseNum = "";
-			if (entry.getCaseNum() != null) {
-				caseNum = entry.getCaseNum();
-			}
-			String status = "";
-			if (entry.getStatus() != null) {
-				status = entry.getStatus();
-			}
-			String armedText = "";
-			if (entry.getWeapon() != null) {
-				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
-			}
-
-			entryPanel.add(new JLabel(armedText, SwingConstants.CENTER),
-					"alignx center,wrap");
-
-			entryPanel.add(new JLabel(" "), "split 3, aligny top");
-			entryPanel.add(new JLabel("Case#: " + caseNum));
-			entryPanel.add(new JLabel(status));
-			entryPanel.setSize(new Dimension(130, 150));
-			entryPanel.setPreferredSize(new Dimension(130, 150));
-			
-			entryPanel.setName(listId);
-			items[i] = entryPanel;
-			i++;
-		}
-		return items;
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -397,30 +377,6 @@ System.out.println("bluebook size = " + bluebook.size());
 		entriesPanel.add(itemsPanel, BorderLayout.CENTER);
 
 		return entriesPanel;
-	}
-//-----------------------------------------------------------------------------		
-	/**
-	 * Refreshs the tab's content. 
-	 */
-	public void refreshBBtab(){
-		JPanel[] newItems = createItemsPanels();
-		entriesScroller.refreshContents(newItems);
-		entriesScroller.revalidate();
-	}
-//-----------------------------------------------------------------------------
-	public void actionPerformed(ActionEvent ev) {	
-	    
-		//get which entry was click
-		String listId = ev.getActionCommand();
-		int id = Integer.valueOf(listId);
-//DEBUG
-		System.out.println("BlueBookTab: actionPerformed: id = " + id);
-		
-		BlueBookEntry selectedEntry = bluebook.get(id);
-		BlueBookPreview bbPreview = new BlueBookPreview(rm, this, selectedEntry);
-		bbPreview.setVisible(true);
-		//BlueBookForm form = new BlueBookForm(parent, this, selectedEntry);
-		//form.setVisible(true);
 	}
 //-----------------------------------------------------------------------------
 }
