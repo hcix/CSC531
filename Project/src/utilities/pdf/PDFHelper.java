@@ -77,7 +77,7 @@ public class PDFHelper {
 	 * 
 	 * @return a PdfStamper for the newly created PDF form 
 	 */
-	public static PdfStamper getPdfStampler(String form){
+	public static PdfStamper getPdfStamper(String form){
 		PdfReader reader = null;
 		PdfStamper stamper = null;
 		

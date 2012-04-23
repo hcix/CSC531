@@ -181,11 +181,6 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 		middle.add(submitButton);
 		middle.add(launchButton);
 		middle.add(searchButton);
-//		buttonPanel.add(addButton);
-//		buttonPanel.add(deleteButton);
-//		buttonPanel.add(submitButton);
-//		buttonPanel.add(launchButton);
-//      buttonPanel.add(searchButton);
 		buttonPanel.add(middle);
 		buttonPanel.add(nextShiftButton);
 

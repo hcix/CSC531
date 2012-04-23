@@ -19,10 +19,15 @@ import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import progAdmin.itemsToReview.ItemToReview;
+import utilities.EmailHandler;
 import utilities.FileHelper;
 import utilities.PdfHandler;
 import utilities.RosterParser;
 import utilities.xml.XmlParser;
+import java.util.*;
+import javax.mail.*;
+import javax.activation.*;
+import javax.mail.internet.*;
 //-----------------------------------------------------------------------------
 /**
  * The <code>ResourceManager</code> class manages the programs resources.
@@ -39,7 +44,6 @@ import utilities.xml.XmlParser;
 public class ResourceManager {
 	private Desktop desktop;
     private Desktop.Action action = Desktop.Action.OPEN;
-    //JDOC
     JFrame parent;
     PdfHandler pdfHandler;
     Properties progProps;
@@ -89,21 +93,10 @@ public class ResourceManager {
      * protocol and the text supplied by the user.
      *
      */
-    public void onLaunchMail(ActionEvent ev) {
-        String mailTo = " ";//txtMailTo.getText();
-        URI uriMailTo = null;
-        try {
-            if (mailTo.length() > 0) {
-                uriMailTo = new URI("mailto", mailTo, null);
-                desktop.mail(uriMailTo);
-            } else {
-                desktop.mail();
-            }
-        } catch(IOException ioe) {
-            ioe.printStackTrace();
-        } catch(URISyntaxException use) {
-            use.printStackTrace();
-        }
+    public void onLaunchMail(String attachmentName) {
+    	String message = EmailHandler.createMessage(attachmentName);
+    	launchDefaultApplication(message);
+    	
     }
 //-----------------------------------------------------------------------------
     /**
@@ -140,6 +133,23 @@ public class ResourceManager {
 			case OPEN:
 				desktop.open(file);
 			}
+		} catch (IOException e){
+			e.printStackTrace();
+			
+		}
+		
+    }
+//-----------------------------------------------------------------------------
+    /**
+	* Launch the default application associated with a specific
+	* filename using the preset Desktop.Action.
+	*
+	*/
+	public void launchDefaultApplication(String fileName) {
+		File file = new File(fileName);
+		
+		try{
+				desktop.open(file);
 		} catch (IOException e){
 			e.printStackTrace();
 			

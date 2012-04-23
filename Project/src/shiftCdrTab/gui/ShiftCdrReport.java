@@ -431,7 +431,7 @@ System.out.println("ShiftCdrReport: addCrime: field = "
 		PdfStamper stamper;
 
 		if(saveAsFile.exists()){
-			stamper = PDFHelper.getPdfStampler(saveAs);
+			stamper = PDFHelper.getPdfStamper(saveAs);
 		} else{
 			stamper = PDFHelper.getPdfStampler(formPathName, saveAs);
 		}

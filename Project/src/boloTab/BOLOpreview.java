@@ -2,11 +2,13 @@ package boloTab;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,13 +18,12 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import utilities.FileHelper;
 import utilities.pdf.PDFView;
+import utilities.ui.ButtonHelper;
 import utilities.ui.SwingHelper;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -31,7 +32,6 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -107,22 +107,20 @@ private static final long serialVersionUID = 1L;
 			
 			//Display the newly created pdf
 			JScrollPane scroller = new JScrollPane();
-			pdfv = new PDFView(filename, scroller, createButtonsPanel());
+			pdfv = new PDFView(filename, scroller, createButtons());
 			Container contentPane = this.getContentPane();
 			contentPane.add(scroller);
 		}
 //-----------------------------------------------------------------------------	
 	/**
-	 * Create the toolbar buttons.
+	 * Create the buttons that will go on the toolbar.
 	 */
-	private JPanel createButtonsPanel(){
-		JToolBar toolbar = new JToolBar(SwingConstants.HORIZONTAL);
-		toolbar.setFloatable(false);
-		
-		JPanel panel = new JPanel();
+	private JPanel createButtons(){
+		JPanel panel = new JPanel(new MigLayout());
 		
 		//Cancel button
-		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_32.png");
+		JButton cancelButton = ButtonHelper.createCancelButton(ButtonHelper.MEDIUM);
+				//SwingHelper.createImageButton("Cancel", "icons/cancel_32.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae) {
@@ -131,7 +129,8 @@ private static final long serialVersionUID = 1L;
 		});
 		
 		//Save button
-		JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_32.png");
+		JButton saveButton = ButtonHelper.createSaveButton(ButtonHelper.MEDIUM, "");
+				//SwingHelper.createImageButton("Save", "icons/save_32.png");
 		saveButton.setToolTipText("Save BlueBookEntry");
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -140,15 +139,15 @@ private static final long serialVersionUID = 1L;
 		});
 		
 		//Delete button
-		JButton deleteButton = SwingHelper.createImageButton("Delete", 
-				"icons/delete_32.png");
+		JButton deleteButton = ButtonHelper.createDeleteButton(ButtonHelper.MEDIUM, "");
+				//SwingHelper.createImageButton("Delete", 
+				//"icons/delete_32.png");
 		deleteButton.setToolTipText("Delete BlueBookEntry");
 		deleteButton.setActionCommand(DELETE_ACTION);
 		deleteButton.addActionListener(this);
 		
 		//Edit button
-		JButton editButton = SwingHelper.createImageButton("Edit",
-				"icons/edit_32.png");
+		JButton editButton = ButtonHelper.createEditButton(ButtonHelper.MEDIUM, "");
 		editButton.setToolTipText("Edit this BlueBookEntry");
 		editButton.addActionListener(new ActionListener( ) {
 			public void actionPerformed(ActionEvent e) {
@@ -167,21 +166,19 @@ private static final long serialVersionUID = 1L;
 		printButton.addActionListener(this);
 		
 		//Email button
-		JButton emailButton = SwingHelper.createImageButton("Email", "icons/email_32.png");
+		JButton emailButton = 
+				SwingHelper.createImageButton("Email", "icons/email_32.png");
 		emailButton.setToolTipText("Email this BlueBookEntry document");
 		emailButton.setActionCommand(EMAIL_ACTION);
 		emailButton.addActionListener(this);
-		
-		JPanel saveAndCancelButtonsPanel = new JPanel();
-		saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
-		saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
-		JPanel printAndEmailButtonPanel = new JPanel(new MigLayout("rtl"));
-		printAndEmailButtonPanel.add(printButton);
-		printAndEmailButtonPanel.add(emailButton);
-		printAndEmailButtonPanel.add(editButton);
-		panel.add(saveAndCancelButtonsPanel, "shrinky");
-		panel.add(printAndEmailButtonPanel, "growx, shrinky");
-		panel.add(deleteButton);
+
+		//add buttons to toolbar
+		panel.add(saveButton, "tag ok, split 2, sg");
+		panel.add(cancelButton, "tag cancel, sg");
+		panel.add(deleteButton, "sg");
+		panel.add(editButton, "sg");
+		panel.add(printButton, "sg");
+		panel.add(emailButton, "sg");
 		
 		//return toolbar;
 		return panel;
@@ -191,6 +188,13 @@ private static final long serialVersionUID = 1L;
 	  * Close and cancel.
 	  */
 	private void closeAndCancel() {
+		//delete this file from the file system
+		File file = new File(filename);
+		if(file.exists()){
+			file.delete();
+		}
+		
+		//close this dialog
 		setNewBoloWasCreated(false);
 		setVisible(false);
 	}
@@ -198,7 +202,8 @@ private static final long serialVersionUID = 1L;
 	/**
 	* Save the information input into this form and close the dialog.
 	*/
-	private void saveAndClose(){	 
+	private void saveAndClose(){
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		 //add the BlueBookEntry object's info to the database
 		 try {
 			bolo.addToDB();
@@ -209,6 +214,7 @@ private static final long serialVersionUID = 1L;
 		 }
 		 
 		 setNewBoloWasCreated(true);
+		 this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		 //close the window
 		 this.dispose();	
 	}
@@ -220,8 +226,9 @@ private static final long serialVersionUID = 1L;
 		} else if(ev.getActionCommand().equals(bolo.getFilename())){
 			rm.onPrintFile(ev);
 		} else if(ev.getActionCommand().equals(EMAIL_ACTION)){
-			rm.onLaunchMail(ev);
-			
+			this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			rm.onLaunchMail(bolo.getFilename());
+			this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}
 	}
 //-----------------------------------------------------------------------------
@@ -286,6 +293,7 @@ private static final long serialVersionUID = 1L;
 	    	document.add(img);
 	    }
 	
+	    document.add(new Paragraph("  "));
 	    document.add(createPhysDescripTable());
 	    document.add(createIncidentInfoTable());
 	    document.add(new Paragraph(bolo.getNarrative()));

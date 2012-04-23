@@ -51,7 +51,7 @@ private static final long serialVersionUID = 1L;
 		this.wrap=wrap;
 		this.l=l;
 		mainPanel = createMainPanel(items);
-		//createMainPanel(items);
+
 		this.setViewportView(mainPanel);
 	}
 //-----------------------------------------------------------------------------
@@ -62,18 +62,17 @@ private static final long serialVersionUID = 1L;
 		this.l=l;
 		this.gap=gap;
 		mainPanel = createMainPanel(items);
-		//createMainPanel(items);
+
 		this.setViewportView(mainPanel);
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * JDOC
+	 * Create the main panel that will display the given items.
 	 */
 	private JPanel createMainPanel(JPanel items[]){
 		String gapString = "gap " + gap;
 		String wrapString = "wrap " + wrap;
-		//create the main panel to display in scroller
-		//mainPanel = new JPanel(new MigLayout(gapString + ", " + wrapString));		
+	
 		JPanel panel = new JPanel(new MigLayout(gapString + ", " + wrapString));	
 		addItemsToPanel(items, panel);
 		
@@ -88,11 +87,14 @@ private static final long serialVersionUID = 1L;
 		return panel;
 	}
 //-----------------------------------------------------------------------------
-	public void addItemsToPanel(JPanel items[], JPanel panel){
+	/**
+	 * Add the given items to the given panel.
+	 */
+	private void addItemsToPanel(JPanel items[], JPanel panel){
 		for(int i=0; i<items.length; i++){
 			items[i].setBorder(BorderFactory.createRaisedBevelBorder());
 			items[i].addMouseListener(this);
-			panel.add(items[i], "sg");
+			panel.add(items[i], "sg");//sg ensures all items will be same size
 		}
 	}
 //-----------------------------------------------------------------------------

@@ -2,12 +2,13 @@ package blueBookTab;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Desktop;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.nio.file.Path;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -15,9 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import utilities.pdf.PDFView;
@@ -96,19 +95,16 @@ public class BlueBookPreview extends JDialog implements ActionListener {
 			
 			//Display the newly created pdf
 			JScrollPane scroller = new JScrollPane();
-			pdfv = new PDFView(filename, scroller, createButtonsPanel());
+			pdfv = new PDFView(filename, scroller, createButtons());
 			Container contentPane = this.getContentPane();
 			contentPane.add(scroller);
 		}
 //-----------------------------------------------------------------------------	
 	/**
-	 * Create the toolbar buttons.
+	 * Create the buttons that will go on the toolbar.
 	 */
-	private JPanel createButtonsPanel(){
-		JToolBar toolbar = new JToolBar(SwingConstants.HORIZONTAL);
-		toolbar.setFloatable(false);
-		
-		JPanel panel = new JPanel();
+	private JPanel createButtons(){
+		JPanel panel = new JPanel(new MigLayout());
 		
 		//Cancel button
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_32.png");
@@ -160,26 +156,28 @@ public class BlueBookPreview extends JDialog implements ActionListener {
 		emailButton.setToolTipText("Email this BlueBookEntry document");
 		emailButton.setActionCommand(EMAIL_ACTION);
 		emailButton.addActionListener(this);
-		
-		JPanel saveAndCancelButtonsPanel = new JPanel();
-		saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
-		saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
-		JPanel printAndEmailButtonPanel = new JPanel(new MigLayout("rtl"));
-		printAndEmailButtonPanel.add(printButton);
-		printAndEmailButtonPanel.add(emailButton);
-		printAndEmailButtonPanel.add(editButton);
-		panel.add(saveAndCancelButtonsPanel, "shrinky");
-		panel.add(printAndEmailButtonPanel, "growx, shrinky");
-		panel.add(deleteButton);
+
+		//add buttons to toolbar
+		panel.add(saveButton, "tag ok, split 2, sg");
+		panel.add(cancelButton, "tag cancel, sg");
+		panel.add(editButton, "sg");
+		panel.add(printButton, "sg");
+		panel.add(emailButton, "sg");
 		
 		//return toolbar;
 		return panel;
 	}
 //-----------------------------------------------------------------------------
 	 /**
-	  * Close and cancel.
+	  * Close and cancel; input info is wiped without saving.
 	  */
 	private void closeAndCancel() {
+		//delete this file from the file system
+		File file = new File(filename);
+		if(file.exists()){
+			file.delete();
+		}
+				
 		setNewEntryWasCreated(false);
 		setVisible(false);
 	}
@@ -188,6 +186,7 @@ public class BlueBookPreview extends JDialog implements ActionListener {
 	* Save the information input into this form and close the dialog.
 	*/
 	private void saveAndClose(){	 
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		 //add the BlueBookEntry object's info to the database
 		 try {
 			bbEntry.addToDB();
@@ -198,6 +197,8 @@ public class BlueBookPreview extends JDialog implements ActionListener {
 		 }
 		 
 		 setNewEntryWasCreated(true);
+		 
+		 this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		 //close the window
 		 this.dispose();	
 	}
@@ -209,9 +210,9 @@ public class BlueBookPreview extends JDialog implements ActionListener {
 		} else if(ev.getActionCommand().equals(bbEntry.getFilename())){
 			rm.onPrintFile(ev);
 		} else if(ev.getActionCommand().equals(EMAIL_ACTION)){
-			//Desktop.Action action = Desktop.Action.OPEN;
-			rm.onLaunchMail(ev);
-			
+			this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			rm.onLaunchMail(bbEntry.getFilename());
+			this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}
 	}
 //-----------------------------------------------------------------------------
@@ -232,10 +233,8 @@ public class BlueBookPreview extends JDialog implements ActionListener {
 			this.setVisible(false);
 			return;
 		}
-		
-		//TODO: Delete BlueBookEntry from BlueBookEntry directory w/in program 
-		// ( delete file: CSC531/Documents/BlueBookEntrys/thisBlueBookEntry.pdf )
-		//close and show message confirming delete was successful
+
+		//refesh so delete is shown
 		bbTab.refreshBBtab();
 		
 		this.setVisible(false);

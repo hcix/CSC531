@@ -9,6 +9,7 @@
 package progAdmin;
 
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileReader;
@@ -140,7 +141,9 @@ public class LoginDialog extends JDialog implements ActionListener {
 		
 		if(ev.getActionCommand()==LOGIN){
 			//check user name and password
+			this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			int authenticationResult = authenticateUser();
+			this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			if(authenticationResult==0){
 				//set the login result value to be true
 				loginSuccessful = true;

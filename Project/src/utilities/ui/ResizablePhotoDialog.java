@@ -1,6 +1,7 @@
 package utilities.ui;
 
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Dimension;
@@ -8,6 +9,8 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.nio.file.Path;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -41,6 +44,13 @@ private static final long serialVersionUID = 1L;
 		//default width and height values for the dialog
 		int w=700, h=700;
 		
+		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				closeAndCancel();
+			}
+		});
 		//get the screen size
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
@@ -56,14 +66,14 @@ private static final long serialVersionUID = 1L;
 				resizedImgIcon=originalImgIcon;
 			}
 		}
-		if(originalImgIcon.getIconHeight()>500){
-			h=originalImgIcon.getIconHeight()+200;
+		if(originalImgIcon.getIconHeight()>450){
+			h=originalImgIcon.getIconHeight()+300;
 			if(h>screenSize.height){
 				//if the img is bigger than the screen, make the dialog just a little 
 				//smaller than the screen and the img just a little smaller the dialog
 				h=screenSize.height-100;
 				originalImgIcon=ImageHandler.getScaledImageIcon(
-						originalImgIcon, originalImgIcon.getIconWidth(), (h-100));
+						originalImgIcon, originalImgIcon.getIconWidth(), (h-180));
 				resizedImgIcon=originalImgIcon;
 			}
 		}
@@ -78,31 +88,42 @@ private static final long serialVersionUID = 1L;
 		PhotoResizer pr = new PhotoResizer(this);
 		pr.registerComponent(photoFrame);
 		
-		JPanel p = new JPanel();
+		JPanel p = new JPanel();//new BorderLayout());
 		p.setPreferredSize(new Dimension(w, h));
 		p.setSize(new Dimension(w, h));
 		this.setLocationRelativeTo(parent);
 		
-		p.add(photoFrame);
-		
-		
+		p.add(photoFrame);//, BorderLayout.CENTER);
+		p.add(createToolbar(), BorderLayout.PAGE_END);
+
 		Container cp = this.getContentPane();
 		cp.add(p);
 		this.setVisible(true);
 	}
 //-----------------------------------------------------------------------------
-	private JToolBar createButtonsToolbar(){
+	private JToolBar createToolbar(){
 		JToolBar toolbar = new JToolBar();
+		toolbar.setFloatable(false);
 		
 		//Save Button
-		JButton setImgButton = new JButton("Set Image");
+		JButton setImgButton = ButtonHelper.createConfirmButton(
+				ButtonHelper.LARGE, "Set Image");
 		setImgButton.addActionListener(new ActionListener( ) {
 			public void actionPerformed(ActionEvent e) {
 	    		saveAndClose(photofilename);
 	    	}
 		}); 
 		
+		//Cancel Button
+		JButton cancelButton = ButtonHelper.createCancelButton(ButtonHelper.LARGE);
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+	    		closeAndCancel();
+	    	}
+		}); 
+		
 		toolbar.add(setImgButton);
+		toolbar.add(cancelButton);
 		return toolbar;
 	}
 //-----------------------------------------------------------------------------

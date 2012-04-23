@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.file.Paths;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import userinterface.MainInterfaceWindow;
 import utilities.DatabaseHelper;
+import utilities.FileHelper;
 import utilities.SearchHelper;
 import utilities.ui.DisplayPanel;
 import utilities.ui.ImageHandler;
@@ -56,6 +58,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 	BlueBookForm newFormDialog;
 	ArrayList<BlueBookEntry> bluebook;
 	DisplayPanel entriesScroller;
+	final BlueBookTab thisTab = this;
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates and sets the <code>BlueBookTab</code> to view all the
@@ -78,9 +81,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		// add the components to this tab
 		this.add(entriesScroller, BorderLayout.CENTER);
 		this.add(buttonsPanel, BorderLayout.PAGE_END);
-		
-		//TODO: Change below to be happening on bg thread so usr doesn't have to wait
-		newFormDialog = new BlueBookForm(rm, this);
+
 	}
 //-----------------------------------------------------------------------------
 	private JPanel createButtonsPanel(){
@@ -92,6 +93,9 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		newEntryButton.addActionListener(new ActionListener() {
 			// Create new Blue Book entry form dialog
 			public void actionPerformed(ActionEvent e) {
+				thisTab.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				newFormDialog = new BlueBookForm(rm, thisTab);
+				thisTab.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				//Display the new BlueBookEntry form dialog
 				newFormDialog.setVisible(true);
 				//wait for the dialog to be dismissed before continuing
@@ -158,11 +162,17 @@ public class BlueBookTab extends JPanel implements ActionListener {
 			
 			entryPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
 			
+			JLabel photoLabel;
 			if (entry.getPhotoFilePath() != null) {
-				JLabel photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
+				photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
 						entry.getPhoto(), 100, 100));
-				entryPanel.add(photoLabel);
+			} else {
+				photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
+						(Paths.get(FileHelper.getImageResourcePathName(
+								"unknownPerson.jpeg"))), 100, 100));
 			}
+			entryPanel.add(photoLabel);
+			
 			String caseNum = "";
 			if (entry.getCaseNum() != null) {
 				caseNum = entry.getCaseNum();

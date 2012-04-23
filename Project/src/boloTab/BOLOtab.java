@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.nio.file.Paths;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import userinterface.MainInterfaceWindow;
 import utilities.DatabaseHelper;
+import utilities.FileHelper;
 import utilities.SearchHelper;
 import utilities.ui.DisplayPanel;
 import utilities.ui.ImageHandler;
@@ -48,7 +50,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 	BOLOform newFormDialog;
 	ArrayList<Bolo> boloList;
 	JTabbedPane tabbedPane;
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * Create the <code>BOLOtab</code> to hold Recent <code>Bolo</code>s and 
 	 * Archived <code>Bolo</code>s.  
@@ -261,7 +263,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 		for(Bolo bolo: boloList){
 			String listId = "" + boloList.indexOf(bolo);
 
-			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
+			prepDate = DatabaseHelper.convertEpochToDate(bolo.getincidentDate());
 
 			String date = formatter.format(prepDate);
 			String caseNum = "";
@@ -271,11 +273,21 @@ public class BOLOtab extends JPanel implements ActionListener {
 
 			boloPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
 			
-			if(bolo.getPhoto()!=null){
-				JLabel photoLabel = new JLabel(
-						ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
-				boloPanel.add(photoLabel);
+//			if(bolo.getPhoto()!=null){
+//				JLabel photoLabel = new JLabel(
+//						ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
+//				boloPanel.add(photoLabel);
+//			}
+			JLabel photoLabel;
+			if (bolo.getPhotoFilePath() != null) {
+				photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
+						bolo.getPhoto(), 100, 100));
+			} else {
+				photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
+						(Paths.get(FileHelper.getImageResourcePathName(
+								"unknownPerson.jpeg"))), 100, 100));
 			}
+			boloPanel.add(photoLabel);
 			
 			String armedText = "";
 			if(bolo.getWeapon()!=null){ 
@@ -330,7 +342,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 			String listId = "" + boloList.indexOf(bolo);
 			//DEBUG	prints list ID of the Bolo bolo: bololist
 			//System.out.printf("listId = %s\n", listId);
-			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
+			prepDate = DatabaseHelper.convertEpochToDate(bolo.getincidentDate());
 
 			JLabel photoLabel = new JLabel(
 					ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
@@ -369,14 +381,14 @@ public class BOLOtab extends JPanel implements ActionListener {
 		return recentBOLOsPanel;
 	}
 
-	//-----------------------------------------------------------------------------		
+//-----------------------------------------------------------------------------		
 	public void refreshRecentBOLOsTab(){
 		JPanel[] newItems = createItemsPanels();
 		entriesScroller.refreshContents(newItems);
 		tabbedPane.revalidate();
 
 	}
-	//-----------------------------------------------------------------------------	
+//-----------------------------------------------------------------------------	
 	/**
 	 * Invoked by the <code>DisplayPanel</code> when a BOLO is 'clicked'
 	 * on.
@@ -392,5 +404,5 @@ public class BOLOtab extends JPanel implements ActionListener {
 		preview.setVisible(true);
 
 	}
-	//-----------------------------------------------------------------------------	
+//-----------------------------------------------------------------------------	
 }

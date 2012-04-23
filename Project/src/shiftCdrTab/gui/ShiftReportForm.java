@@ -11,9 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import utilities.FileHelper;
@@ -58,21 +57,20 @@ private static final long serialVersionUID = 1L;
 		} else { //load existing report info into form fields
 			loadInfoIntoForm();
 		}
-			
-		
-		JPanel buttonsPanel = createButtonsPanel();
 		 
 		String shiftCdrForm = FileHelper.getFormTemplatePathName("ShiftCDRSumReport.pdf");
 		JScrollPane scroller = new JScrollPane();
 		    
-		pdfv = new PDFView(shiftCdrForm, scroller, buttonsPanel);
+		pdfv = new PDFView(shiftCdrForm, scroller, createToolbar());
 		Container contentPane = this.getContentPane();
 		contentPane.add(scroller);
 	}
 //-----------------------------------------------------------------------------		
-	public JPanel createButtonsPanel(){
-	
-		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
+	public JToolBar createToolbar(){
+		JToolBar toolbar = new JToolBar();
+		toolbar.setFloatable(false);
+		toolbar.setLayout(new MigLayout("rtl"));
+		//JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
 		
 		//Cancel button
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
@@ -92,12 +90,17 @@ private static final long serialVersionUID = 1L;
 	    	}
 	    });
 	      
-
-	    JPanel saveAndCancelButtonsPanel = new JPanel();
-	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
-	    saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
-	    buttonsPanel.add(saveAndCancelButtonsPanel, "shrinky");
-	    return buttonsPanel;
+//
+//	    JPanel saveAndCancelButtonsPanel = new JPanel();
+//	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
+//	    saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
+//	    buttonsPanel.add(saveAndCancelButtonsPanel, "shrinky");
+//	    return buttonsPanel;
+	    
+	    toolbar.add(cancelButton);
+	    toolbar.add(saveButton);
+	    
+	    return toolbar;
 	}
 //-----------------------------------------------------------------------------	
 	/**

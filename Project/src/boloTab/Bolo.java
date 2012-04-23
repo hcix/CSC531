@@ -41,7 +41,8 @@ public class Bolo {
 	private String preparedBy, approvedBy;
 	private String otherDescrip = null, narrative = null;
 	private Path photoFilePath = null, videoFilePath = null;
-	private long incidentDate=0, incidentTime=0, prepDate=0, prepTime=0;
+	private long incidentDate=0, incidentTime=0;
+	private long prepDate=System.currentTimeMillis(), prepTime=System.currentTimeMillis();
 	private String[] fieldArray;
 	private Integer boloID=null;
 	/** the name of the pdf file associated with this <code>Bolo</code> object */

@@ -66,8 +66,6 @@ public class FileHelper {
 	 * 
 	 * @param doc - the local path of the document
 	 * @return docName - the absolute path of the document
-	 * @deprecated use the method corresponding to name of subdir to 
-	 * access instead
 	 */
 	public static String getDocumentPathName(String doc){
 		File progDir = new File(getProgramDirPathName());
@@ -84,6 +82,34 @@ public class FileHelper {
 		
 //DEBUG	System.out.println("getDocumentPathName = " + docName);	
 		return docName;
+		
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Gets the name of the absolute path to a newly created file in the 
+	 * directory where temp email messages are stored.
+	 * 
+	 */
+	public static String getTempMessageName(){
+		File progDir = new File(getProgramDirPathName());
+		Path tempMsgPath=null;
+		String tempMsgName=null;
+			
+		try{
+			tempMsgPath = Paths.get(progDir.getCanonicalPath(), DOC_DIR, "message.eml");
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		
+		tempMsgName = tempMsgPath.toString();
+		
+		//if this file already exists, delete it, there should only be one
+		File msgFile = new File(tempMsgName);
+		if(msgFile.exists()){
+			msgFile.delete();
+		}
+		
+		return tempMsgName;
 		
 	}
 //-----------------------------------------------------------------------------
@@ -542,7 +568,7 @@ public class FileHelper {
 				i++;
 				String newFileName = FileHelper.getNameWithoutExtension(saveAs.toString()) 
 						+"_v" + i + "." + FileHelper.getFileExtension(saveAsFile);
-				saveAsFile = new File(saveAs);
+				saveAsFile = new File(newFileName);
 			}
 			//return the saveAsFile name 
 			return saveAsFile.toString();
@@ -554,7 +580,7 @@ public class FileHelper {
 				i++;
 				String newFileName = FileHelper.getNameWithoutExtension(saveAs.toString()) 
 						+"_v" + i + "." + FileHelper.getFileExtension(saveAsFile);
-				saveAsFile = new File(saveAs);
+				saveAsFile = new File(newFileName);
 			}
 			//return the saveAsFile name 
 			return saveAsFile.toString();

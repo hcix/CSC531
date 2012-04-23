@@ -413,7 +413,7 @@ public class DatabaseHelper {
 	 * @return <code>long</code> value representing time in seconds since epoch
 	 */
 	public static long convertDateToEpoch(Date date){
-		long epoch = (date.getTime() / 1000);
+		long epoch = (date.getTime()/1000);
 		return epoch;
 	}
 //-----------------------------------------------------------------------------

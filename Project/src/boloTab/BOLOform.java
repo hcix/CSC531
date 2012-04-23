@@ -1,20 +1,18 @@
 package boloTab;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.sql.Time;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -23,19 +21,20 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
-
 import net.miginfocom.swing.MigLayout;
 import progAdmin.itemsToReview.ItemToReview;
 import program.ResourceManager;
 import utilities.FileHelper;
+import utilities.calendar.JCalendarPanel;
+import utilities.calendar.TimePanel;
 import utilities.ui.ImageHandler;
 import utilities.ui.ImagePreview;
 import utilities.ui.ResizablePhotoDialog;
@@ -54,12 +53,15 @@ public class BOLOform extends JDialog {
 	JTextArea otherDescriptField,narrativeText; 
 	JCheckBox toReview;
 	JComboBox<String> statusField;
+	JCheckBox[] boxes;
 	JSpinner incidentDate, incidentTime, preparedDate, preparedTime;
 	Bolo bolo;
 	ResourceManager rm;
 	JFrame parent;
 	JPanel photoArea;
 	JPanel dialogPanel;
+	JCalendarPanel jcal;
+	TimePanel time;
 	/** a reference to the main <code>BOLOtab</code> used to tell 
 	 * <code>BOLOtab</code> to refresh its contents after a delete operation */
 	BOLOtab bolotab;
@@ -73,9 +75,8 @@ public class BOLOform extends JDialog {
 	 * @param parent
 	 */
 	public BOLOform(ResourceManager rm, BOLOtab bolotab){
-		super(rm.getGuiParent(), "New BOLO", true);
+		super(rm.getGuiParent(), "BOLO", true);
 		this.rm=rm;
-		this.parent = parent;
 		this.bolotab=bolotab;
 
 		//Create the BOLO object to add info to
@@ -83,9 +84,9 @@ public class BOLOform extends JDialog {
 
 		//Set the size of the form
 		this.setPreferredSize(new Dimension(1050,900));
-		this.setSize(new Dimension(950,900));
+		this.setSize(new Dimension(1050,900));
 
-		dialogPanel = new JPanel(new MigLayout("ins 20", "[]5%[]", ""));
+		dialogPanel = new JPanel(new MigLayout("ins 20", "[]5%[]", "[][][][]"));
 
 		//Make the form scrollable
 		JScrollPane dialogPanelScroller = new JScrollPane(dialogPanel);
@@ -96,49 +97,43 @@ public class BOLOform extends JDialog {
 		this.setLocationRelativeTo(null);
 
 		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
-		this.addWindowListener(new WindowAdapter( ) {
+		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				closeAndCancel();
 			}
 		});
 
-		//Set up the new BOLO form
+		/*Set up the BOLO form*/
 
 		//Add the BOLO "letter head" image to the top
 		ImageIcon boloHeaderIcon = 
 				ImageHandler.createImageIcon("images/boloHeader2.png");
 		JPanel boloHeaderPanel = new JPanel();
 		boloHeaderPanel.add(new JLabel(boloHeaderIcon));
-		dialogPanel.add(boloHeaderPanel, "dock north");
+		dialogPanel.add(boloHeaderPanel, "dock north, wrap");
 
-		//Add photo/video panel
+		//Photo/video panel
 		JPanel photoVideoPanel = createPhotoVideoPanel();
-		dialogPanel.add(photoVideoPanel, "align left");
+		dialogPanel.add(photoVideoPanel, "align left, wrap");
 
-		//Add physical description panel
+		//Physical description panel
 		JPanel physicalDescriptPanel = createPhysicalDescriptionPanel();
-		dialogPanel.add(physicalDescriptPanel, "align left, wrap");
+		dialogPanel.add(physicalDescriptPanel, "align left");//, wrap");
 
-		//Add incident info panel
+		//Incident info panel
 		JPanel incidentInfoPanel = createIncidentInfoPanel();
-		dialogPanel.add(incidentInfoPanel, "align left, growx");
+		dialogPanel.add(incidentInfoPanel ,"align left, wrap");//,"align left, growx");
 
-		//Add narrative area
+		//Narrative area
 		JPanel narrativePanel = createNarrativePanel();
 		dialogPanel.add(narrativePanel, "align left, wrap, growx");
 
-		//Add administrative panel
+		//Administrative panel
 		JPanel adminPanel = createAdministrativePanel();
-		dialogPanel.add(adminPanel, "align left");
-
-		//TODO: Add standard footer
-
-		//Add buttons panel to top of scroll panel as the row header
-		//	(the buttons panel stays at the top of the screen even if the top of the form isn't
-		//	currently visible) 
-		JPanel buttonsPanel = createButtonsPanel();
-		dialogPanelScroller.setColumnHeaderView(buttonsPanel);	    
+		dialogPanel.add(adminPanel, "align left, growx");
+	
+		dialogPanelScroller.setColumnHeaderView(createToolbar());	    
 
 		//Add the BOLO form scrolling pane dialog to the screen
 		Container contentPane = getContentPane();
@@ -147,7 +142,8 @@ public class BOLOform extends JDialog {
 	}
 //-----------------------------------------------------------------------------	
 	/**
-	 * JDOC
+	 * Creates a new <code>BOLOform</code> with the info from the given 
+	 * <code>Bolo</code> object loaded in.
 	 * 
 	 * @param parent
 	 * @param bolo
@@ -160,7 +156,7 @@ public class BOLOform extends JDialog {
 	}
 //-----------------------------------------------------------------------------	
 	/**
-	 * 
+	 * Creates the panel to input the physical description information.
 	 */
 	private JPanel createPhysicalDescriptionPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout("","","[][][][][][nogrid]"));
@@ -207,7 +203,7 @@ public class BOLOform extends JDialog {
 		infoPanel.add(weightField, "align left");
 		infoPanel.add(buildLabel, "align left");
 		infoPanel.add(buildField, "align left, wrap");
-		//add row 3 fiels
+		//add row 3 fields
 		infoPanel.add(eyesLabel, "align left");
 		infoPanel.add(eyesField, "align left");
 		infoPanel.add(hairLabel, "align left");
@@ -216,35 +212,39 @@ public class BOLOform extends JDialog {
 		infoPanel.add(otherDescriptionLabel, "spanx");
 		infoPanel.add(otherDescriptScrollPane, "spanx, wrap");
 		//add "armed?" area
-		SwingHelper.addArmedQuestionCheckboxes(infoPanel, ifYesField);
+		boxes = SwingHelper.addArmedQuestionCheckboxes(infoPanel, ifYesField);
 
 		return infoPanel;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * 
+	 * Creates the panel to input the incident information.
 	 */
 	private JPanel createIncidentInfoPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout());
 
 		SwingHelper.addTitledBorder(infoPanel, "Incident Info");
 
-		// create labels
+		//create labels
 		JLabel referenceLabel = new JLabel("Reference");
 		JLabel caseNumLabel = new JLabel("Case #");
 		JLabel statusLabel = new JLabel("Status");
 
 
-		// create fields
+		//create fields
 		String[] statusStrings = { "", "Need to Identify", "Identified", "Apprehended", "Cleared" };
 		referenceField = new JTextField(15);
 		caseNumField = new JTextField(15);
 		statusField = new JComboBox<String>(statusStrings);
 
 		//row 1
-		incidentDate = SwingHelper.addDateSpinner(infoPanel, "Date of Incident");
+		//incidentDate = SwingHelper.addDateSpinner(infoPanel, "Date of Incident");
 		//DEBUG incidentTime = SwingHelper.addTimeSpinner(infoPanel, "Time of Incident");
+		//infoPanel.add(new JCalendarPanel(rm.getGuiParent()), "spanx, wrap");
 		
+		jcal = new JCalendarPanel(rm.getGuiParent(), infoPanel);
+		time = new TimePanel(infoPanel, "Time of Incident");
+
 		infoPanel.add(referenceLabel, "align");
 		infoPanel.add(referenceField, "align, wrap");
 		infoPanel.add(caseNumLabel, "align");
@@ -256,7 +256,7 @@ public class BOLOform extends JDialog {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * 
+	 * Creates the panel to input the narrative information.
 	 */
 	private JPanel createNarrativePanel(){
 		JPanel narrativePanel = new JPanel(new MigLayout());
@@ -277,7 +277,7 @@ public class BOLOform extends JDialog {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * 
+	 * Creates the panel to input the administrative information.
 	 */
 	private JPanel createAdministrativePanel(){
 		JPanel adminPanel = new JPanel(new MigLayout());
@@ -311,11 +311,14 @@ public class BOLOform extends JDialog {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * 
+	 * Creates the panel to allow user to add a photo or video.
 	 */
 	private JPanel createPhotoVideoPanel(){
-		JPanel photoVideoPanel = new JPanel(new MigLayout("fill"));
-
+		JPanel photoVideoPanel = new JPanel(new MigLayout("fillx"));
+		
+//		this.setPreferredSize(new Dimension(1050,900));
+//		this.setSize(new Dimension(1050,900));
+		
 		//Create initial no-photo place holder photo
 		final JPanel photoPanel = new JPanel();
 		photoArea = photoPanel;
@@ -340,10 +343,8 @@ public class BOLOform extends JDialog {
 
 			public void actionPerformed(ActionEvent arg0) {
 				loadVideo();
-				
 			}
 		});
-
 
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(addPhotoButton);
@@ -354,6 +355,9 @@ public class BOLOform extends JDialog {
 		return photoVideoPanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Loads a video.
+	 */
 	private void loadVideo() {
 		// show choose photo dialog
 			final JFileChooser fc = new JFileChooser();
@@ -368,12 +372,15 @@ public class BOLOform extends JDialog {
 	}	
 //-----------------------------------------------------------------------------
 	/**
-	 * 
+	 * Creates the toolbar.
 	 */
-	private JPanel createButtonsPanel(){
-
-		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
-
+	private JToolBar createToolbar(){
+		//JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
+		JToolBar toolbar = new JToolBar();
+		toolbar.setFloatable(false);
+		toolbar.setBorder(BorderFactory.createLineBorder(Color.black));
+		toolbar.setLayout(new MigLayout("fillx", "[][]push[]", null));
+		
 		//Cancel button
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", 
 				"icons/cancel_48.png");
@@ -415,25 +422,22 @@ public class BOLOform extends JDialog {
 	    	}
 	    });
 
-	    JPanel saveAndCancelButtonsPanel = new JPanel();
-	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
-	    saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
-	    JPanel previewButtonPanel = new JPanel(new MigLayout("rtl"));
-	    previewButtonPanel.add(previewButton, "tag right");
-	    buttonsPanel.add(saveAndCancelButtonsPanel, "shrinky");
-	    buttonsPanel.add(previewButtonPanel, "growx, shrinky");
-	    return buttonsPanel;
-
+	    toolbar.add(saveButton);
+	    toolbar.add(cancelButton);
+	    toolbar.add(previewButton);
+	    
+	    return toolbar;
 
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Save the information input into this form and close the dialog.
+	 * Saves the information input into this form and close the dialog.
 	 */
 	private void saveAndClose(){
 
 		//place the info from the fields into a BOLO object
 		putInfoIntoBoloObject();
+		
 		if (this.toReview.isSelected()) {
 			createItemToReview(bolo);
 		}
@@ -445,16 +449,12 @@ public class BOLOform extends JDialog {
 			System.out.println("error: unable to add BOLO to DB");
 			e.printStackTrace();
 		}
-		//TODO: Create a pdf from the input data
-
-		
 		
 		//reset the form
 		eraseForm();
 
 		newBOLOWascreated=true;
 
-		this.setVisible(false);
 		//close the window
 		this.dispose();	
 	}
@@ -502,12 +502,15 @@ public class BOLOform extends JDialog {
 		 narrative=narrativeText.getText();
 		 if(!narrative.isEmpty()){ bolo.setNarrative(narrative); }
 
-		 if(bolo.getPhotoFilePath()==null){
-				 bolo.setPhotoFilePath(Paths.get(
-						 FileHelper.getImageResourcePathName("unknownPerson.jpeg")));
-		 }
 		 
 		 //set the times
+		 Date incidentDate = jcal.getDateSet();
+		 long dateVal = incidentDate.getTime();
+		 bolo.setincidentDate(dateVal);
+		 long timeVal = time.getTimeEpoch();
+		 bolo.setincidentTime(timeVal);
+		 
+		 
 //HAD TO COMMENT OUT TO WMAKE WORK
 		// bolo.setincidentDate(getIncidentDateEpoch());
 		// bolo.setincidentTime(getIncidentTimeEpoch());
@@ -538,9 +541,12 @@ public class BOLOform extends JDialog {
 		 narrativeText.setText(bolo.getNarrative());
 
 		 //TODO: set the times
-		 incidentDate.setValue(new Date (bolo.getincidentDate()));
+		 //incidentDate.setValue(new Date (bolo.getincidentDate()));
 //DEBUG incidentTime.setValue(new Date (bolo.getincidentTime()));
 		 		 
+		 jcal.setDate(bolo.getincidentDate());
+		 time.setTime(bolo.getincidentTime());
+		 
 		 //set picture
 		 if(bolo.getPhotoFilePath()!=null){
 			 ImageIcon photo = ImageHandler.getScaledImageIcon(
@@ -554,7 +560,7 @@ public class BOLOform extends JDialog {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * 
+	 * Brings up a file chooser and allows user to choose and add a photo.
 	 */
 	private void chooseAndAddPhoto(final JPanel photoPanel){
 		//show choose photo dialog
@@ -599,7 +605,7 @@ public class BOLOform extends JDialog {
 		eraseForm();
 
 		//delete the photo(if any)
-		if(bolo.getPhotoFilePath()!=null){
+		/*if(bolo.getPhotoFilePath()!=null){
 
 			//DEBUG
 			System.out.printf("\nBOLOform: closeAndCancel(): deleting " +
@@ -610,7 +616,7 @@ public class BOLOform extends JDialog {
 			if(f.exists() && f.isFile()){
 				f.delete();
 			}
-		}
+		}*/
 
 
 		newBOLOWascreated=false;
@@ -635,11 +641,14 @@ public class BOLOform extends JDialog {
 		caseNumField.setText(null);
 		statusField.setSelectedItem("");
 		ifYesField.setText(null);
+		//ifYesField.setVisible(false);
 		preparedByField.setText(null);
 		approvedByField.setText(null);
 		otherDescriptField.setText(null);
 		narrativeText.setText(null);
-
+		boxes[0].setSelected(false);
+		boxes[1].setSelected(false);
+		
 		//recreate the photo/video section
 		photoArea.removeAll();
 		ImageIcon noPhotoImage = ImageHandler.createImageIcon("images/unknownPerson.jpeg");
@@ -728,6 +737,5 @@ public class BOLOform extends JDialog {
 		ItemToReview newItem = new ItemToReview(stringTitle,"");
 		rm.addItem(newItem);
 	}
-
-	//-----------------------------------------------------------------------------	
+//-----------------------------------------------------------------------------	
 }

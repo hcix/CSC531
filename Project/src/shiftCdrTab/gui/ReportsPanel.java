@@ -55,8 +55,7 @@ private static final long serialVersionUID = 1L;
 		public ReportsPanel(final ResourceManager rm){
 			this.setLayout(new MigLayout("fill"));
 			this.rm = rm;
-			//final JFrame parent = rm.getGuiParent();
-
+			
 			//Create the list of Reports
 			createListOfReports();
 			
@@ -118,11 +117,9 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	/**
 	 * Load the most recent report into the PDF view
-	 * JDOC
+	 * 
 	 */
 	public void loadInLastReport(JComponent comp){
-		//String shiftCdrForm = System.getProperty("UMPD.latestReport");
-	
 		//check that there is a report to load
 		if(reportsFileArrayList.size()<=0){
 			return;
@@ -144,13 +141,15 @@ private static final long serialVersionUID = 1L;
 }
 //-----------------------------------------------------------------------------
 	/**
-	 * JDOC
+	 * Add all reports in the ShiftReports subdirectory to the list.
 	 */
-	public void addReportsList(JPanel itemPanel){
+	private void addReportsList(JPanel itemPanel){
 		reportsModel = new ReportsListModel(reportsFileArrayList);
 		reportsJList = new JList<ReportFile>(reportsModel);
 		
-		ReportListRenderer reportRenderer = new ReportListRenderer(rm.getGuiParent(), reportsJList);
+		ReportListRenderer reportRenderer = 
+				new ReportListRenderer(rm.getGuiParent(), reportsJList);
+		
 		reportsJList.setCellRenderer(reportRenderer);
 		reportsJList.addMouseListener(this);
 		reportsModel.addListDataListener(reportRenderer);
@@ -207,37 +206,6 @@ private static final long serialVersionUID = 1L;
 		contentPane.add(searchPanel);
 		return searchDialog;
 	}
-//-----------------------------------------------------------------------------		
-	private JPanel createButtonsPanel(){
-	
-		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
-		
-		//Cancel button
-		JButton cancelButton = SwingHelper.createImageButton("Cancel", "icons/cancel_48.png");
-		cancelButton.setToolTipText("Cancel and do not save");
-		cancelButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae) {
-				//closeAndCancel( );
-			}
-		});
-	
-	    //Save button
-	    JButton saveButton = SwingHelper.createImageButton("Save", "icons/save_48.png");
-	    saveButton.setToolTipText("Save Report");
-	    saveButton.addActionListener(new ActionListener( ) {
-			public void actionPerformed(ActionEvent e) {
-	    		//closeAndSave();
-	    	}
-	    });
-	      
-	    
-	    //add save & cancel buttons to panel
-	    JPanel saveAndCancelButtonsPanel = new JPanel();
-	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
-	    saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
-	    buttonsPanel.add(saveAndCancelButtonsPanel, "shrinky");
-	    return buttonsPanel;
-	}
 //-----------------------------------------------------------------------------	
 	/**
 	 * Called when the 'Create' button is clicked. Creates and shows a new
@@ -286,6 +254,11 @@ private static final long serialVersionUID = 1L;
 	    }
     }
 //-----------------------------------------------------------------------------
+	/**
+	 * Called when one of the reports on the list is clicked. If the report
+	 * was double clicked, it's loaded into the viewing panel and highlighted
+	 * in the list.
+	 */
 	public void mouseClicked(MouseEvent e) {
 		
 		if(e.getClickCount() == 2){ //double click
@@ -294,8 +267,7 @@ private static final long serialVersionUID = 1L;
 			     Object item = reportsModel.getElementAt(index);
 			     reportsJList.ensureIndexIsVisible(index);
 			     
-			     ReportFile rf = (ReportFile)item;
-			     
+			     ReportFile rf = (ReportFile)item;   
 			     
 			     pdfv.openPdfFile(rf.getFilename());
 			     this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
