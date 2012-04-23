@@ -1,4 +1,4 @@
-package utilities.calendar;
+package utilities.dateAndTime;
 
 import java.util.Calendar;
 

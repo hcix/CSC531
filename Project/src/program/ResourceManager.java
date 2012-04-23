@@ -261,7 +261,7 @@ public class ResourceManager {
 	        
 	        //set the system properties
 	        System.setProperties(p);
-	        // display new properties
+	        //display new properties
 
 		}	
 //-----------------------------------------------------------------------------
@@ -301,7 +301,6 @@ public class ResourceManager {
 		saveProperties();
 	}
 //-----------------------------------------------------------------------------	
-
 	/**
 	 * Save the current application properties to the progProperties.xml file.
 	 */
@@ -460,6 +459,3 @@ public class ResourceManager {
    }	
 //-----------------------------------------------------------------------------	
 }
-
-
-

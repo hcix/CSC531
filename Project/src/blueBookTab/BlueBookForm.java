@@ -10,9 +10,11 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -25,6 +27,9 @@ import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import utilities.FileHelper;
+import utilities.dateAndTime.JCalendarPanel;
+import utilities.dateAndTime.TimePanel;
+import utilities.ui.ButtonHelper;
 import utilities.ui.ImageHandler;
 import utilities.ui.ImagePreview;
 import utilities.ui.ResizablePhotoDialog;
@@ -57,6 +62,7 @@ public class BlueBookForm extends JDialog {
 	JTextField ifYesField;
 	/** Field containing the location of the crime */
 	JTextArea locationField;
+	JTextField dobField;
 	/** Field describing the crime */
 	JTextArea descriptionField;
 	JTextArea reasonField;
@@ -69,6 +75,9 @@ public class BlueBookForm extends JDialog {
 	JPanel photoOuterPanel;
 	JLabel noPhotoLabel;
 	ResourceManager rm;
+	JCheckBox[] boxes;
+	JCalendarPanel jcal;
+	TimePanel time;
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates a pop-up window, sets the window and creates a new 
@@ -183,13 +192,16 @@ public class BlueBookForm extends JDialog {
 		JLabel Location = new JLabel("Location of incident: ");
 		JLabel Description = new JLabel("Crime description: ");
 		JLabel Reason = new JLabel("Narrative/Reason: ");
+		JLabel dob = new JLabel("DOB/Age");
 		
 		// create fields
-		caseNumField = new JTextField(20);
-		nameField = new JTextField(20);
-		affiliField = new JTextField(20);
-		addressField = new JTextField(20);
-
+		caseNumField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
+		nameField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
+		affiliField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
+		addressField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
+		dobField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
+		ifYesField = new JTextField(20);
+		
 		/*
 		 * create text areas, embed them in a scroll
 		 * pane and set the line wrap and scroll 
@@ -210,15 +222,19 @@ public class BlueBookForm extends JDialog {
 		JScrollPane reasonScrollPane = new JScrollPane(reasonField);
 		descriptionScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		
-		ifYesField = new JTextField(20);
 				
 		// add to panel
-		SwingHelper.addDateSpinner(inputPanel, "Date of Incident: ");
+		//SwingHelper.addDateSpinner(inputPanel, "Date of Incident: ");
+		//create time and date panels
+		jcal = new JCalendarPanel(rm.getGuiParent(), inputPanel, "Date of Incident");
+		time = new TimePanel(inputPanel, "Time of Incident");
 		inputPanel.add(caseNumber, "alignx left");
 		inputPanel.add(caseNumField, "align left,wrap");
 		inputPanel.add(name, "alignx left");
 		inputPanel.add(nameField, "align left, wrap");
-		SwingHelper.addDateSpinner(inputPanel, "DOB: ");
+		//SwingHelper.addDateSpinner(inputPanel, "DOB: ");
+		inputPanel.add(dob, "alignx left");
+		inputPanel.add(dobField, "align left, wrap");
 		inputPanel.add(Affili, "alignx left");
 		inputPanel.add(affiliField, "align left,wrap");
 		inputPanel.add(Address, "alignx left");
@@ -232,7 +248,7 @@ public class BlueBookForm extends JDialog {
 		inputPanel.add(reasonScrollPane, "align left, growx, wrap");
 		
 		//add the armed question check boxes
-		SwingHelper.addArmedQuestionCheckboxes(inputPanel, ifYesField);
+		boxes = SwingHelper.addArmedQuestionCheckboxes(inputPanel, ifYesField);
 		
 		return inputPanel;
 	 }
@@ -267,7 +283,8 @@ public class BlueBookForm extends JDialog {
 	    });
 	    
 	    // Add preview button
-	    JButton previewButton = new JButton("<html>Preview<br>  Entry</html>");
+	    JButton previewButton = ButtonHelper.createPreviewButton(ButtonHelper.MEDIUM, "");
+	    		//new JButton("<html>Preview<br>  Entry</html>");
 	    previewButton.setToolTipText("Preview and print final Blue Book entry");
 	    previewButton.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -286,17 +303,7 @@ public class BlueBookForm extends JDialog {
 	    		}
 	    	}
 	    });   	    
-	    
-//	    JPanel saveAndCancelButtonsPanel = new JPanel();
-//	    saveAndCancelButtonsPanel.add(saveButton, "tag ok, dock west");
-//	    saveAndCancelButtonsPanel.add(cancelButton, "tag cancel, dock west");
-//	    JPanel previewButtonPanel = new JPanel(new MigLayout("rtl"));
-//	    previewButtonPanel.add(previewButton, "tag right");
-//	    buttonsPanel.add(saveAndCancelButtonsPanel, "shrinky");
-//	    buttonsPanel.add(previewButtonPanel, "growx, shrinky");
-//	    SwingHelper.addLineBorder(buttonsPanel);
-//	    return buttonsPanel;
-	    
+
 	    toolbar.add(saveButton);
 	    toolbar.add(cancelButton);
 	    toolbar.add(previewButton);
@@ -394,7 +401,7 @@ public class BlueBookForm extends JDialog {
 	  */
 	 private void putInfoIntoBlueBookEntry(){
 		 String caseNumText, nameText, affiliText, addressText, weapon;
-		 String locationText, descritionText, reasonText;
+		 String locationText, descritionText, reasonText, dobText;
 		 String preparedBy;
 		 
 		 //get the filled in fields in the global bbEntry object
@@ -414,9 +421,16 @@ public class BlueBookForm extends JDialog {
 		 if(!descritionText.isEmpty()){ bbEntry.setCrimeDescrip(descritionText); }
 		 reasonText=reasonField.getText();
 		 if(!reasonText.isEmpty()){ bbEntry.setNarrative(reasonText); }
+		 dobText=dobField.getText();
+		 if(!dobText.isEmpty()){ bbEntry.setDob(dobText); }
 		 
-		 if(bbEntry.getPhotoFilePath()==null){
-		 }
+		 //set the date & time
+		 Date incidentDate = jcal.getDateSet();
+		 long dateVal = incidentDate.getTime();
+		 bbEntry.setIncidentDate(dateVal);
+		 long timeVal = time.getTimeEpoch();
+		 bbEntry.setIncidentTime(timeVal);
+	
 		 
 	 }
 //-----------------------------------------------------------------------------
@@ -434,16 +448,19 @@ public class BlueBookForm extends JDialog {
 		 locationField.setText(bbEntry.getLocation());
 		 descriptionField.setText(bbEntry.getCrimeDescrip());
 		 reasonField.setText(bbEntry.getNarrative());
-
-		 //set picture
-		//remove placeholder
-			photoArea.remove(noPhotoLabel);
-			JPanel newPanel = new JPanel();
-			newPanel.add(new JLabel(bbEntry.getPhoto()), "span");
-			newPanel.setVisible(true);
-			photoArea.add(newPanel);
-		    (photoArea.getParent()).validate();
+		 dobField.setText(bbEntry.getDob());
 		 
+		 jcal.setDate(bbEntry.getIncidentDate());
+		 time.setTime(bbEntry.getIncidentTime());
+		 
+		 //set picture; remove placeholder pic
+		photoArea.remove(noPhotoLabel);
+		JPanel newPanel = new JPanel();
+		newPanel.add(new JLabel(bbEntry.getPhoto()), "span");
+		newPanel.setVisible(true);
+		photoArea.add(newPanel);
+		(photoArea.getParent()).validate();
+ 
 	 }
 //-----------------------------------------------------------------------------
 	 /**
@@ -516,6 +533,13 @@ public class BlueBookForm extends JDialog {
 		locationField.setText(null);
 		descriptionField.setText(null);
 		reasonField.setText(null);
+		dobField.setText(null);
+		boxes[0].setSelected(false);
+		boxes[1].setSelected(false);
+		
+		//reset time and date
+		jcal.clearDate();
+		time.resetTime();
 		
 		//recreate the photo/video section
 		photoArea.removeAll();
@@ -525,8 +549,5 @@ public class BlueBookForm extends JDialog {
 		(photoArea.getParent()).validate();
 		
 	 }
-//-----------------------------------------------------------------------------
-	 
-	 
 //-----------------------------------------------------------------------------
 }

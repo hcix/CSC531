@@ -152,9 +152,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		}
 
 		int listSize = bluebook.size();
-//DEBUG System.out.println("bluebook size = " + bluebook.size());	
 		JPanel[] items = new JPanel[listSize];
-		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
 
 		int i = 0;
 		for (BlueBookEntry entry : bluebook) {
@@ -166,11 +164,12 @@ public class BlueBookTab extends JPanel implements ActionListener {
 			if (entry.getPhotoFilePath() != null) {
 				photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
 						entry.getPhoto(), 100, 100));
-			} else {
+			} else {//if entry doesn't have photo, load the default
 				photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
 						(Paths.get(FileHelper.getImageResourcePathName(
 								"unknownPerson.jpeg"))), 100, 100));
 			}
+			
 			entryPanel.add(photoLabel);
 			
 			String caseNum = "";
