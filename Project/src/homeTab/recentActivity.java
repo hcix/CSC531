@@ -5,24 +5,26 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
-public class recentActivity 
+public class RecentActivity extends JPanel
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel panel;
 	private JLabel dayLabel;
 	private ArrayList<Change> changeList = new ArrayList<Change>();
-	
-	public recentActivity(Dimension d)
+		
+	public RecentActivity()
 	{
-		panel = new JPanel(new MigLayout());
-		panel.setPreferredSize(d);
+		panel = new JPanel(new MigLayout());		
 		panel.setBorder(BorderFactory.createLineBorder(Color.black));
-		panel.setVisible(true);
+		this.add(panel);
 	}
 	public void addToList(Change c)
 	{

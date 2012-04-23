@@ -513,7 +513,7 @@ public class SwingHelper {
 	 * this <code>JTextField</code> must be set up and initialized by the calling class
 	 * in order for entered text to be retrieved 
 	 */
-	public static void addArmedQuestionCheckboxes(final JPanel armedPanel, final JTextField ifYesField){
+	public static JCheckBox[] addArmedQuestionCheckboxes(final JPanel armedPanel, final JTextField ifYesField){
 		ifYesField.setColumns(SwingHelper.MEDIUM_TEXT_FIELD_LENGTH);
 		
         JLabel armedLabel = new JLabel("Armed?");
@@ -543,6 +543,9 @@ public class SwingHelper {
         
         armedPanel.add(ifYesField);
         ifYesField.setVisible(false);
+        
+        JCheckBox[] boxes = { armedFieldNo, armedFieldYes };
+        return boxes;
 	}
 //-----------------------------------------------------------------------------	
 }

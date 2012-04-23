@@ -33,8 +33,8 @@ private static String  ADD_ITEM_ERROR = "Item Error";
 		super(rm.getGuiParent(), "New Item", true);
 		
 		this.rm=rm;
-		this.setPreferredSize(new Dimension(700,500));
-		this.setSize(new Dimension(700,500));
+		this.setPreferredSize(new Dimension(500,500));
+		this.setSize(new Dimension(500,500));
 
 		//Put the form in the middle of the screen
 		this.setLocationRelativeTo(null);

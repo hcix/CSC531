@@ -9,9 +9,8 @@ public class CurrentUser extends Employee{
 	private static Employee user;
 //-----------------------------------------------------------------------------
 	/**
-	 * Setter method for the user variable
-	 * <p>
-	 * Indicates which employee is currently using the program
+	 * Setter method for the user variable.
+	 * Indicates which employee is currently using the program.
 	 *  
 	 * @param employee
 	 */
@@ -20,7 +19,7 @@ public class CurrentUser extends Employee{
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Getter method for the user variable
+	 * Getter method for the user variable.
 	 * 
 	 * @return
 	 */

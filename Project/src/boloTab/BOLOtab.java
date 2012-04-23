@@ -2,11 +2,13 @@ package boloTab;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.nio.file.Paths;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import userinterface.MainInterfaceWindow;
 import utilities.DatabaseHelper;
+import utilities.FileHelper;
 import utilities.SearchHelper;
 import utilities.ui.DisplayPanel;
 import utilities.ui.ImageHandler;
@@ -47,7 +50,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 	BOLOform newFormDialog;
 	ArrayList<Bolo> boloList;
 	JTabbedPane tabbedPane;
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * Create the <code>BOLOtab</code> to hold Recent <code>Bolo</code>s and 
 	 * Archived <code>Bolo</code>s.  
@@ -63,7 +66,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 		tabbedPane = new JTabbedPane();
 
 		//Add recent BOLOs tab
-		//recentBolosTab = createRecentBOLOsTab();
 		entriesScroller = createRecentBOLOsTab();
 		tabbedPane.addTab("Recent BOLOs", entriesScroller);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
@@ -74,7 +76,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_3);
 
 
-		//Create BOLO button
+		//Create BOLO Button
 		JButton newBOLOButton = SwingHelper.createImageButton("Create BOLO", 
 				"icons/plusSign_48.png");
 		newBOLOButton.addActionListener(new ActionListener() {
@@ -86,12 +88,9 @@ public class BOLOtab extends JPanel implements ActionListener {
 				//wait for the dialog to be dismissed before continuing
 				newFormDialog.setModal(true);
 
-
 				refreshRecentBOLOsTab();
 				mainInterface.refreshItemsList();
 				mainInterface.refreshItemsTable();
-
-
 				
 				//refresh to display any changes
 				//refreshRecentBOLOsTab();
@@ -102,13 +101,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 					mainInterface.refreshItemsList();
 					mainInterface.refreshItemsTable();
 				Otherwise, it is not necessary to call these methods
-				 */
-
-				//unneeded/repetative, waiting to make sure no errors b4 deleting
-				/*refresh to display any changes
-				recentBolosTab.removeAll();
-				recentBolosTab.add(createRecentBOLOsTab());
-				tabbedPane.revalidate();
 				 */
 
 			}
@@ -247,7 +239,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 		searchDialog.setVisible(true);
 
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	/**
 	 * 
 	 */
@@ -262,8 +254,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 		}
 
 		int listSize = boloList.size();
-//DEBUG		
-System.out.println("boloList.size() = " + listSize);
+//DEBUG		System.out.println("boloList.size() = " + listSize);
 		
 		JPanel[] items = new JPanel[listSize];
 		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
@@ -272,7 +263,7 @@ System.out.println("boloList.size() = " + listSize);
 		for(Bolo bolo: boloList){
 			String listId = "" + boloList.indexOf(bolo);
 
-			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
+			prepDate = DatabaseHelper.convertEpochToDate(bolo.getincidentDate());
 
 			String date = formatter.format(prepDate);
 			String caseNum = "";
@@ -282,11 +273,21 @@ System.out.println("boloList.size() = " + listSize);
 
 			boloPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
 			
-			if(bolo.getPhoto()!=null){
-				JLabel photoLabel = new JLabel(
-						ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
-				boloPanel.add(photoLabel);
+//			if(bolo.getPhoto()!=null){
+//				JLabel photoLabel = new JLabel(
+//						ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
+//				boloPanel.add(photoLabel);
+//			}
+			JLabel photoLabel;
+			if (bolo.getPhotoFilePath() != null) {
+				photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
+						bolo.getPhoto(), 100, 100));
+			} else {
+				photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
+						(Paths.get(FileHelper.getImageResourcePathName(
+								"unknownPerson.jpeg"))), 100, 100));
 			}
+			boloPanel.add(photoLabel);
 			
 			String armedText = "";
 			if(bolo.getWeapon()!=null){ 
@@ -315,65 +316,13 @@ System.out.println("boloList.size() = " + listSize);
 	 * @return recentBOLOsPanel
 	 */
 	private DisplayPanel createRecentBOLOsTab(){
-		JPanel boloPanel;
-		Date prepDate;
-
-		try {
-			boloList = DatabaseHelper.getBOLOsFromDB();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		int listSize = boloList.size();
-		System.out.println("boloList.size() = " + listSize);
-		JPanel[] items = new JPanel[listSize];
-		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
-
-		int i=0;
-		for(Bolo bolo: boloList){
-			String listId = "" + boloList.indexOf(bolo);
-
-			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
-
-
-
-			String date = formatter.format(prepDate);
-			String caseNum = "";
-			if(bolo.getCaseNum()!=null){ caseNum=bolo.getCaseNum(); }
-			String status = "";
-			if(bolo.getStatus()!=null){ status=bolo.getStatus(); }
-
-			boloPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
-			if(bolo.getPhoto()!=null){
-				JLabel photoLabel = new JLabel(
-						ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
-				boloPanel.add(photoLabel);
-			}
-			String armedText = "";
-			if(bolo.getWeapon()!=null){ 
-				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
-			}
-
-			boloPanel.add(new JLabel(armedText, SwingConstants.CENTER), "alignx center,wrap");
-
-			boloPanel.add(new JLabel(date), "split 3, aligny top");
-			boloPanel.add(new JLabel("Case#: "+caseNum));
-			boloPanel.add(new JLabel(status));
-			boloPanel.setSize(new Dimension(130, 150));
-			boloPanel.setPreferredSize(new Dimension(130, 150));
-
-			boloPanel.setName(listId);
-			items[i]=boloPanel;
-			i++;
-		}
-
+		JPanel[] items = createItemsPanels();
+		
 		DisplayPanel entriesPanel = new DisplayPanel(items, this, 4);
-
-		//recentBOLOsPanel.add(entriesPanel);
 
 		return entriesPanel;
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	public JPanel createSearchBOLOsTab(ArrayList<Bolo> boloList){
 		JPanel recentBOLOsPanel = new JPanel(new MigLayout());
 		JPanel boloPanel;
@@ -393,7 +342,7 @@ System.out.println("boloList.size() = " + listSize);
 			String listId = "" + boloList.indexOf(bolo);
 			//DEBUG	prints list ID of the Bolo bolo: bololist
 			//System.out.printf("listId = %s\n", listId);
-			prepDate = DatabaseHelper.convertEpochToDate(bolo.getprepDate());
+			prepDate = DatabaseHelper.convertEpochToDate(bolo.getincidentDate());
 
 			JLabel photoLabel = new JLabel(
 					ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
@@ -432,22 +381,14 @@ System.out.println("boloList.size() = " + listSize);
 		return recentBOLOsPanel;
 	}
 
-	//-----------------------------------------------------------------------------		
+//-----------------------------------------------------------------------------		
 	public void refreshRecentBOLOsTab(){
 		JPanel[] newItems = createItemsPanels();
 		entriesScroller.refreshContents(newItems);
 		tabbedPane.revalidate();
 
-		//this.revalidate();
-		//entriesScroller.refreshContents(regenerateBOLOsList());
-		//this.revalidate();
-		//		recentBolosTab.removeAll();
-		//		recentBolosTab.add(createRecentBOLOsTab());
-		//		this.revalidate();
-		//		this.repaint();
-
 	}
-	//-----------------------------------------------------------------------------	
+//-----------------------------------------------------------------------------	
 	/**
 	 * Invoked by the <code>DisplayPanel</code> when a BOLO is 'clicked'
 	 * on.
@@ -457,11 +398,11 @@ System.out.println("boloList.size() = " + listSize);
 		int id = Integer.valueOf(listId);
 
 		Bolo selectedBOLO = boloList.get(id);
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		BOLOpreview preview = new BOLOpreview(rm, this, selectedBOLO);
-
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		preview.setVisible(true);
-		//		preview.setModal(true);
 
 	}
-	//-----------------------------------------------------------------------------	
+//-----------------------------------------------------------------------------	
 }

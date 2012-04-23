@@ -24,4 +24,12 @@
 		<email>h.ciechowski@umiami.edu</email>
 		<permissions>supervisor</permissions>
 	</employee>
+	<employee>
+		<cnumber>xxx</cnumber>
+		<firstname>demo</firstname>
+		<lastname>demo</lastname>
+		<caneid>demo</caneid>
+		<email>h.ciechowski@umiami.edu</email>
+		<permissions>supervisor</permissions>
+	</employee>
 </roster>
