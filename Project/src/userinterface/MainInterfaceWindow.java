@@ -2,14 +2,19 @@ package userinterface;
 
 import homeTab.HomeTab;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
+
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
+import net.miginfocom.swing.MigLayout;
 import progAdmin.AdminTab;
 import progAdmin.PersonnelManager;
 import program.CurrentUser;
@@ -37,7 +42,6 @@ private static final long serialVersionUID = 1L;
 		 * depending on the current user's permissions.
 		 */
 		JTabbedPane tabbedPane = new JTabbedPane();
-		
 		//Set up the 5 tabs everyone sees
 		homeTab = new HomeTab(parent, false);
 		tabbedPane.addTab("Home", homeTab);
