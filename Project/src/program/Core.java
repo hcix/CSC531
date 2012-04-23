@@ -36,7 +36,7 @@ public class Core extends JFrame {
 	        	//Set up and show the login GUI
 	        	//COMMENT NEXT LINE OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
 	        	//MUST ALSO COMMENT OUT 6 LINES IN MAININTERFACEWINDOW AS INDICATED THERE
-	        	//createAndShowLoginGUI();
+	        	createAndShowLoginGUI();
 	        
 	        	rm = new ResourceManager(frame);
 	        	

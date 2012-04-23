@@ -2,14 +2,19 @@ package userinterface;
 
 import homeTab.HomeTab;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
+
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
+import net.miginfocom.swing.MigLayout;
 import progAdmin.AdminTab;
 import progAdmin.PersonnelManager;
 import program.CurrentUser;
@@ -37,7 +42,6 @@ private static final long serialVersionUID = 1L;
 		 * depending on the current user's permissions.
 		 */
 		JTabbedPane tabbedPane = new JTabbedPane();
-		
 		//Set up the 5 tabs everyone sees
 		homeTab = new HomeTab(parent, false);
 		tabbedPane.addTab("Home", homeTab);
@@ -55,22 +59,22 @@ private static final long serialVersionUID = 1L;
         
       //if user is at least a shift cdr, set up shift cdr tab
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
-//        	if(CurrentUser.getCurrentUser().getLevel()>=
- //       		PersonnelManager.PERMIS_LEVEL_COMMAND){  	
+        	if(CurrentUser.getCurrentUser().getLevel()>=
+        		PersonnelManager.PERMIS_LEVEL_COMMAND){  	
         	shiftCdrTab = new ShiftCdrTab(rm, this);
 	        tabbedPane.addTab("Shift Commander", shiftCdrTab);
 	        tabbedPane.setMnemonicAt(3, KeyEvent.VK_4); //change to 4 from 5?
 	        
 	      //if user is at a supervisor, set up supervisor tab
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
-//	        if(CurrentUser.getCurrentUser().getLevel()>=
-//	        		PersonnelManager.PERMIS_LEVEL_SUPERVISR){
+	        if(CurrentUser.getCurrentUser().getLevel()>=
+	        		PersonnelManager.PERMIS_LEVEL_SUPERVISR){
 		        adminTab = new AdminTab(rm, this);
 		        tabbedPane.addTab("Administration", adminTab);
 		        tabbedPane.setMnemonicAt(4, KeyEvent.VK_5); // change from 6 to 5?
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
-//	        }
-//        }
+	        }
+        }
 	        
         //The following line enables the use of scrolling tabs
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);	

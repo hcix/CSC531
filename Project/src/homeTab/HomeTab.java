@@ -51,11 +51,12 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 	
 	ArrayList<Change> changeList;
 	
-	public HomeTab(JFrame parent, boolean load) {
+	public HomeTab(JFrame parent, boolean load) 
+	{
 		this.parent = parent;
 		JPanel homePanel = new JPanel();
 
-		//homePanel.add(makeGUI());
+		homePanel.add(makeGUI());
 		
 		this.add(homePanel);
 	}
@@ -68,9 +69,10 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 		homeTabs.addFocusListener(this);
 		
 		rasp = new JPanel(new MigLayout()); // panel to go in JScrollPane
-		rasp.setPreferredSize(this.parent.getSize());
 		
 		rAP = new JScrollPane(rasp);
+		rAP.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		rAP.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		rAP.setPreferredSize(this.parent.getSize());
 		
 		videoPanel = new JPanel(new MigLayout());
@@ -118,7 +120,8 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 		for(int i = 0; i < SEVEN; i++)
 		{
 			// instantiate new rA
-			recArray[i] = new RecentActivity(tabSize);
+			recArray[i] = new RecentActivity();
+			recArray[i].setMinimumSize(new Dimension(this.getWidth(), this.getHeight()/7));
 			// fill in array with start of days of recent week in seconds
 			day_Starts[i] = (startOfCurrentDay - (i*MILI_IN_DAY));
 			// make labels based on day_Starts to show recent week
@@ -147,7 +150,7 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 	{
 		for(int i = 0; i < recArray.length; i++)
 		{
-			rasp.add(recArray[i].getPanel(), "align left, wrap");
+			rasp.add(recArray[i], "align left, wrap");
 		}
 	}
 	public void populateVideoPanel()
@@ -223,7 +226,7 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 	public void databaseAction() throws Exception
 	{
 		// get the list of changes from the DB
-	//	changeList = DatabaseHelper.HomeTabPullFromDB();
+		changeList = DatabaseHelper.HomeTabPullFromDB();
 	}
 
 	public void focusGained(FocusEvent e) 

@@ -431,7 +431,7 @@ public class DatabaseHelper {
 	/**
 	 * JDOC
 	 */
-	public static ArrayList<Change> homeTabPullFromDB() throws Exception
+	public static ArrayList<Change> HomeTabPullFromDB() throws Exception
 	{ // this method gets the 
 		
 		final long MILI_IN_WEEK = 604800000;
