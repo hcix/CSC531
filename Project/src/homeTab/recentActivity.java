@@ -1,10 +1,7 @@
 package homeTab;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -22,8 +19,7 @@ public class RecentActivity extends JPanel
 		
 	public RecentActivity()
 	{
-		panel = new JPanel(new MigLayout());		
-		panel.setBorder(BorderFactory.createLineBorder(Color.black));
+		panel = new JPanel(new MigLayout());
 		this.add(panel);
 	}
 	public void addToList(Change c)

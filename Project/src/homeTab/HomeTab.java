@@ -1,7 +1,7 @@
 package homeTab;
 
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Scrollbar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -13,19 +13,19 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
-
-import program.CurrentUser;
 
 import net.miginfocom.swing.MigLayout;
+import program.CurrentUser;
 import utilities.DatabaseHelper;
 import utilities.FileHelper;
+import utilities.InterfaceSizer;
 import utilities.ui.SwingHelper;
 
 //import uk.co.caprica.vlcj.binding.LibVlc;
@@ -61,7 +61,7 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 
 	public JTabbedPane makeGUI() 
 	{	
-		tabSize = new Dimension(1200, 1000);
+		tabSize = InterfaceSizer.getTabSize();
 		homeTabs = new JTabbedPane();
 		homeTabs.setPreferredSize(tabSize);
 		homeTabs.addFocusListener(this);
@@ -71,10 +71,17 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 		rAP = new JScrollPane(rasp);
 		rAP.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		rAP.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		//rAP.setPreferredSize(this.parent.getSize());
+//<<<<<<< HEAD
+//		//rAP.setPreferredSize(this.parent.getSize());
+//		
+//		videoPanel = new JPanel(new MigLayout());
+//		//videoPanel.setPreferredSize(parent.getSize());
+//=======
+		rAP.setPreferredSize(tabSize);
 		
 		videoPanel = new JPanel(new MigLayout());
-		//videoPanel.setPreferredSize(parent.getSize());
+		videoPanel.setPreferredSize(tabSize);
+
 		
 		populateVideoPanel();
 		populateActivityPanel();
@@ -101,9 +108,6 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 		
 		long MILI_IN_DAY = 86400000;
 		
-//		Date now = new Date();
-//		now.getTime();
-		
 		long currTime = System.currentTimeMillis();		
 		
 		// get the start of the current day by subtracting the remainder off the current time
@@ -119,7 +123,8 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 		{
 			// instantiate new rA
 			recArray[i] = new RecentActivity();
-			recArray[i].setMinimumSize(new Dimension(this.getWidth(), this.getHeight()/7));
+			recArray[i].setPreferredSize(InterfaceSizer.getRecentActivitySize());
+			recArray[i].setBorder(BorderFactory.createLineBorder(Color.black));
 			// fill in array with start of days of recent week in seconds
 			day_Starts[i] = (startOfCurrentDay - (i*MILI_IN_DAY));
 			// make labels based on day_Starts to show recent week
@@ -128,7 +133,6 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 			// set the label in the recentActivity object
 			recArray[i].setdayLabel(labels[i]);
 		}
-		
 		for(Change c : changeList)
 		{
 			long l = c.getDate();
@@ -227,9 +231,19 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 		changeList = DatabaseHelper.homeTabPullFromDB();
 	}
 
-	public void focusGained(FocusEvent e) 
+	public void focusGained(FocusEvent e)
 	{
-		
+		System.out.println("homeTab updated");
+		if(e.getComponent().getClass().getName() == this.getClass().getName())
+		{
+			try {
+				changeList = DatabaseHelper.homeTabPullFromDB();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			System.out.println("homeTab updated");
+		}
 	}
 
 	public void focusLost(FocusEvent e) 

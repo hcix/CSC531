@@ -7,6 +7,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import utilities.DatabaseHelper;
 import utilities.ui.ImageHandler;
 import utilities.ui.SwingHelper;
 
@@ -37,11 +39,17 @@ public class DashboardPanel extends JPanel implements ActionListener {
 		String command = e.getActionCommand();
 		if(command.equals("logout"))
 		{
-			System.out.println("Logout Fired");
-			System.gc();
+			try {
+				DatabaseHelper.removeOldEntries();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			String args[] = new String[1];
 			// calls public method in Core that disposes main frame
 			program.Core.invalidateFrames();
+			// garbage collect
+			System.gc();
 			// runs main in Core again
 			program.Core.main(args);
 		}

@@ -59,12 +59,12 @@ public class Core extends JFrame {
 	private static void createAndShowMainGUI() {
 		Toolkit toolkit =  Toolkit.getDefaultToolkit ();
 		Dimension screenDim = toolkit.getScreenSize();
-		  
+		 
 	    //Create and set up the main window	
 		frame = new JFrame("UMPD");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		frame.setPreferredSize(screenDim);
+		//frame.setPreferredSize(screenDim);
 		frame.setResizable(true);
 		
 		//Uses platform specific method for opening frame

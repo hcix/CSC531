@@ -48,8 +48,8 @@ private static final long serialVersionUID = 1L;
 	public ManageItemsDialog(ResourceManager rm){
 		super(rm.getGuiParent(), "Manage Review Items", true);
 		this.rm=rm;
-		this.setPreferredSize(new Dimension(700,700));
-		this.setSize(new Dimension(700,700));
+		this.setPreferredSize(new Dimension(700,500));
+		this.setSize(new Dimension(700,500));
 
 		//Put the form in the middle of the screen
 		this.setLocationRelativeTo(null);
@@ -92,16 +92,9 @@ private static final long serialVersionUID = 1L;
 		//Create the table of items
 		itemsPanel.add(createItemsPanel());
 		
-		//Create a split pane with the two scroll panes in it
-		//JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-		//		mainPanel, itemsPanel);
-		//splitPane.setOneTouchExpandable(true);
-		//splitPane.setDividerLocation(400);
-		
 	    Container contentPane = getContentPane();
 	    contentPane.setLayout(new MigLayout("ins 20"));
 	    contentPane.add(toolbar, BorderLayout.NORTH);
-	    //contentPane.add(splitPane, BorderLayout.CENTER);
 	    contentPane.add(itemsPanel, BorderLayout.CENTER);
 	}
 //-----------------------------------------------------------------------------
@@ -119,8 +112,6 @@ private static final long serialVersionUID = 1L;
 	    table.setShowGrid(true);
 	    table.setGridColor(Color.black);
 	    table.setPreferredScrollableViewportSize(new Dimension(620, 400));
-	    //table.setFillsViewportHeight(true);
-	    //table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	    table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
 	    
 	    //Put the table in a scroll pane
@@ -134,7 +125,6 @@ private static final long serialVersionUID = 1L;
 	     * Set the table model to be the one custom created for this table
 	     * and passing in the list of names for the shift
 	     */
-	  //  ItemsTableModel tableModel = new ItemsTableModel(items);
 	    ItemsTableModel tableModel = new ItemsTableModel();
 	    tableModel.addTableModelListener(tableModel);
 	    table.setModel(tableModel);
@@ -149,26 +139,6 @@ private static final long serialVersionUID = 1L;
 		    col.setWidth(sizes[i]);
 	    }
 	    
-	    //SwingHelper.adjustColumnPreferredWidths(table);
-	    
-	    //Resize the columns
-//	    TableColumn col;
-//	    col = table.getColumnModel().getColumn(0);
-//	    col.setPreferredWidth(100);
-//	    col.setWidth(100);
-	    //col = table.getColumnModel().getColumn(1);
-	    //col.setPreferredWidth(330);
-	    //col.setWidth(330);
-	    
-//	    int[] sizes = {100, 330, 240};
-//	    for(int i=0; i<sizes.length; i++){
-//		    col = table.getColumnModel().getColumn(i);
-//		    col.setPreferredWidth(sizes[i]);
-//		    col.setWidth(sizes[i]);
-//	    }
-	    
-	    
-	    
 		return itemsPanel;
 	}
 //-----------------------------------------------------------------------------
@@ -182,7 +152,7 @@ private static final long serialVersionUID = 1L;
 			AddItemDialog itemDialog = new AddItemDialog(rm);
 			itemDialog.setVisible(true);
 			itemDialog.setModal(true);
-			//refresh items list from ResourceManager
+			//refresh while dialog is in view
 			refreshItemsTable();
 			itemsPanel.removeAll();
 			itemsPanel.add(createItemsPanel());
@@ -202,8 +172,11 @@ private static final long serialVersionUID = 1L;
 	            //wait on the ReadItemDialog to be closed
 	            readItem.setModal(true);
 	            rm.loadItemsList();
-	            refreshItemsTable();
-	            table.doLayout();
+	            //refresh while dialog is in view
+				refreshItemsTable();
+				itemsPanel.removeAll();
+				itemsPanel.add(createItemsPanel());
+				itemsPanel.revalidate();
 			}
 		}
 		
