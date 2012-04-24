@@ -1,28 +1,40 @@
 package userinterface;
 
 import homeTab.HomeTab;
+<<<<<<< HEAD
 
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.Dimension;
 
+=======
+>>>>>>> home tab comprete
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
+import java.awt.Dimension;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> home tab comprete
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+<<<<<<< HEAD
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 
+=======
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+>>>>>>> home tab comprete
 import progAdmin.AdminTab;
 import progAdmin.PersonnelManager;
 import program.CurrentUser;
@@ -39,6 +51,11 @@ private static final long serialVersionUID = 1L;
 	HomeTab homeTab;
 	JFrame parent;
 	JTabbedPane tabbedPane;
+<<<<<<< HEAD
+=======
+	JPanel boloTab, rollCallTab, blueBookTab;
+	HomeTab homeTab;
+>>>>>>> home tab comprete
 	ShiftCdrTab shiftCdrTab;
 	AdminTab adminTab;
 	JButton logoutButton;
@@ -46,11 +63,18 @@ private static final long serialVersionUID = 1L;
 	public MainInterfaceWindow(JFrame parent, ResourceManager rm){
 		super(new GridLayout(1, 1));
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+<<<<<<< HEAD
 
 		Dimension dim = InterfaceSizer.getTabSize();
 
 		this.parent = parent;
 		//Dimension dim = InterfaceSizer.getTabSize();
+=======
+		//Dimension dim = InterfaceSizer.getTabSize();
+
+		this.parent = parent;
+
+>>>>>>> home tab comprete
 		/*
 		 * Set up the tabbedPane panel and add the appropriate tabs
 		 * depending on the current user's permissions.
@@ -58,6 +82,7 @@ private static final long serialVersionUID = 1L;
 		tabbedPane = new JTabbedPane();
 		//Set up the 5 tabs everyone sees
 		homeTab = new HomeTab(parent, false);
+		rm.setHomeTabReference(homeTab);
 		tabbedPane.addChangeListener(this);
 		tabbedPane.addTab("Home", homeTab);
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
@@ -113,8 +138,12 @@ private static final long serialVersionUID = 1L;
 		int index = source.getSelectedIndex();
 		if(source.getTitleAt(index).equals("Home"))
 		{
-			System.out.println("called");
-			
+			try {
+				homeTab.databaseAction();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 }

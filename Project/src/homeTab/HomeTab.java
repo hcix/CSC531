@@ -85,57 +85,13 @@ public class HomeTab extends JPanel implements ActionListener {
 	}
 	
 	public void populateActivityPanel()
-	{
-		JLabel [] labels = new JLabel[SEVEN];
-		long [] day_Starts = new long[SEVEN];
-		RecentActivity [] recArray = new RecentActivity[SEVEN];
-		
+	{	
 		try {
 			databaseAction();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		long MILI_IN_DAY = 86400000;
-		
-		long currTime = System.currentTimeMillis();		
-		
-		// get the start of the current day by subtracting the remainder off the current time
-		// have to deal with UDT to EDT timechange
-		long startOfCurrentDay = (currTime - (currTime%MILI_IN_DAY) + (MILI_IN_DAY)/6);
-
-		// day_Starts marks the long where the day starts in seconds
-		// day_Starts[0] is current day; day_Starts[6] is 7 days ago
-		// initialize recentActivity objects
-		// loop to calculate day starts and make a JLabel
-		
-		for(int i = 0; i < SEVEN; i++)
-		{
-			// instantiate new rA
-			recArray[i] = new RecentActivity();
-			recArray[i].setPreferredSize(InterfaceSizer.getRecentActivitySize());
-			recArray[i].setBorder(BorderFactory.createLineBorder(Color.black));
-			// fill in array with start of days of recent week in seconds
-			day_Starts[i] = (startOfCurrentDay - (i*MILI_IN_DAY));
-			// make labels based on day_Starts to show recent week
-			Date d = new Date(day_Starts[i]);
-			labels[i] = new JLabel(d.toString());
-			// set the label in the recentActivity object
-			recArray[i].setdayLabel(labels[i]);
-		}
-		for(Change c : changeList)
-		{
-			long l = c.getDate();
-			if(l > day_Starts[0]) {recArray[0].addToList(c);}
-			else if (l < day_Starts[0] && l > day_Starts[1]) {recArray[1].addToList(c);}
-			else if (l < day_Starts[1] && l > day_Starts[2]) {recArray[2].addToList(c);}
-			else if (l < day_Starts[2] && l > day_Starts[3]) {recArray[3].addToList(c);}
-			else if (l < day_Starts[3] && l > day_Starts[4]) {recArray[4].addToList(c);}
-			else if (l < day_Starts[4] && l > day_Starts[5]) {recArray[5].addToList(c);}
-			else if (l < day_Starts[5] && l > day_Starts[6]) {recArray[6].addToList(c);}
-		}
-		assembleActivities(recArray);
 	}
 
 	// this method should take the array of ready to go recentActivities and add them
@@ -161,9 +117,10 @@ public class HomeTab extends JPanel implements ActionListener {
 
 		//System.getenv("UMPD.latestVideo").equals(null)) ||
 		// if no video, set button and label to be invisible
-		if ((System.getenv("UMPD.latestVideo")) == null
-				||(System.getenv("UMPD.latestVideo")).equals("none")) 
+		if ((System.getProperty("UMPD.latestVideo")) == null
+				||(System.getProperty("UMPD.latestVideo")).equals("none")) 
 		{
+			
 			videoButton.setVisible(false);
 			videoLabel.setVisible(false);
 			
@@ -221,27 +178,61 @@ public class HomeTab extends JPanel implements ActionListener {
 	public void databaseAction() throws Exception
 	{
 		// get the list of changes from the DB
+		System.out.println("database action called");
 		changeList = DatabaseHelper.homeTabPullFromDB();
+		rasp.removeAll();
+		repopulateActivityPanel();
 	}
+<<<<<<< HEAD
 
 
 	public void focusGained(FocusEvent e)
+=======
+	public void repopulateActivityPanel() throws Exception
+>>>>>>> home tab comprete
 	{
-		System.out.println("homeTab updated");
-		if(e.getComponent().getClass().getName() == this.getClass().getName())
-		{
-			try {
-				changeList = DatabaseHelper.homeTabPullFromDB();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			System.out.println("homeTab updated");
-		}
-	}
-
-	public void focusLost(FocusEvent e) 
-	{
+		JLabel [] labels = new JLabel[SEVEN];
+		long [] day_Starts = new long[SEVEN];
+		RecentActivity [] recArray = new RecentActivity[SEVEN];
 		
+		long MILI_IN_DAY = 86400000;
+		
+		long currTime = System.currentTimeMillis();		
+		
+		// get the start of the current day by subtracting the remainder off the current time
+		// have to deal with UDT to EDT timechange
+		long startOfCurrentDay = (currTime - (currTime%MILI_IN_DAY) + (MILI_IN_DAY)/6);
+
+		// day_Starts marks the long where the day starts in seconds
+		// day_Starts[0] is current day; day_Starts[6] is 7 days ago
+		// initialize recentActivity objects
+		// loop to calculate day starts and make a JLabel
+		
+		for(int i = 0; i < SEVEN; i++)
+		{
+			// instantiate new rA
+			recArray[i] = new RecentActivity();
+			recArray[i].setPreferredSize(InterfaceSizer.getRecentActivitySize());
+			recArray[i].setBorder(BorderFactory.createLineBorder(Color.black));
+			// fill in array with start of days of recent week in seconds
+			day_Starts[i] = (startOfCurrentDay - (i*MILI_IN_DAY));
+			// make labels based on day_Starts to show recent week
+			Date d = new Date(day_Starts[i]);
+			labels[i] = new JLabel(d.toString());
+			// set the label in the recentActivity object
+			recArray[i].setdayLabel(labels[i]);
+		}
+		for(Change c : changeList)
+		{
+			long l = c.getDate();
+			if(l > day_Starts[0]) {recArray[0].addToList(c);}
+			else if (l < day_Starts[0] && l > day_Starts[1]) {recArray[1].addToList(c);}
+			else if (l < day_Starts[1] && l > day_Starts[2]) {recArray[2].addToList(c);}
+			else if (l < day_Starts[2] && l > day_Starts[3]) {recArray[3].addToList(c);}
+			else if (l < day_Starts[3] && l > day_Starts[4]) {recArray[4].addToList(c);}
+			else if (l < day_Starts[4] && l > day_Starts[5]) {recArray[5].addToList(c);}
+			else if (l < day_Starts[5] && l > day_Starts[6]) {recArray[6].addToList(c);}
+		}
+		assembleActivities(recArray);
 	}
 }
