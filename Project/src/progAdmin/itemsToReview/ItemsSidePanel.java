@@ -94,7 +94,7 @@ private static final long serialVersionUID = 1L;
 		
 		itemsJList = new JList<ItemToReview>(itemsModel);
 		
-		ItemRenderer itemRenderer = new ItemRenderer(rm.getGuiParent(), itemsJList);
+		ItemRenderer itemRenderer = new ItemRenderer(rm, itemsJList);
 		
 		itemsJList.setCellRenderer(itemRenderer);
 		itemsJList.addMouseListener(this);
@@ -117,7 +117,8 @@ private static final long serialVersionUID = 1L;
 			     
 			     Object item = itemsModel.getElementAt(index);
 			     itemsJList.ensureIndexIsVisible(index);
-			     ReadItemDialog itemDialog = new ReadItemDialog(rm.getGuiParent(), ((ItemToReview)item));
+			     ReadItemDialog itemDialog = new ReadItemDialog(rm,
+			    		 ((ItemToReview)item));
 			     itemDialog.setVisible(true);
 			     itemDialog.setModal(true);
 			     //repaint the JList in case data changed
@@ -132,7 +133,7 @@ private static final long serialVersionUID = 1L;
 		AddItemDialog itemDialog = new AddItemDialog(rm);
 		itemDialog.setVisible(true);
 		itemDialog.setModal(true);
-		itemDialog.setModal(true);
+		//itemDialog.setModal(true);
 		//repaint the JList to display the new item
 	    //itemsJList.repaint();
 	    updateItemsList();

@@ -35,7 +35,7 @@ private static final long serialVersionUID = 1L;
 		super(new GridLayout(1, 1));
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
-		Dimension dim = new Dimension(970,1000);
+		//Dimension dim = new Dimension(970,1000);
 		
 		/*
 		 * Set up the tabbedPane panel and add the appropriate tabs
@@ -45,11 +45,11 @@ private static final long serialVersionUID = 1L;
 		//Set up the 5 tabs everyone sees
 		homeTab = new HomeTab(parent, false);
 		tabbedPane.addTab("Home", homeTab);
-		homeTab.setPreferredSize(dim);
+		//homeTab.setPreferredSize(dim);
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         
         boloTab = new BOLOtab(rm, this);
-        boloTab.setPreferredSize(dim);
+        //boloTab.setPreferredSize(dim);
         tabbedPane.addTab("BOLOs", boloTab);
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
         

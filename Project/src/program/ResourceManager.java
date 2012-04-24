@@ -19,6 +19,7 @@ import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import progAdmin.itemsToReview.ItemToReview;
+import utilities.DatabaseHelper;
 import utilities.EmailHandler;
 import utilities.FileHelper;
 import utilities.PdfHandler;
@@ -199,54 +200,51 @@ public class ResourceManager {
 	/**
 	 * Used to remove an item from the shared resource 'items to review'. The 
 	 * 'items to review resource should be accessed through the 
-	 * <code>ResourceManager</code> class exclusivly to ensure the list is kept
+	 * <code>ResourceManager</code> class exclusively to ensure the list is kept
 	 * consistent throughout the UMPD Management System's application user interface
-	 * as well as the xml file storing the information.
+	 * as well as in the database where the list is stored.
 	 * 
 	 * @param index - the index of the item to remove
 	 */
 	public void removeItem(int index) {
-		items.remove(index);	
-		saveItemsList();
+		try{
+			(items.get(index)).deleteFromDB();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		loadItemsList();
 	}
 //-----------------------------------------------------------------------------
 	/**
 	 * Used to add an item to the shared resource 'items to review'. The 
 	 * 'items to review resource should be accessed through the 
-	 * <code>ResourceManager</code> class exclusivly to ensure the list is kept
+	 * <code>ResourceManager</code> class exclusively to ensure the list is kept
 	 * consistent throughout the UMPD Management System's application user interface
-	 * as well as the xml file storing the information.
+	 * as well as in the database where the list is stored.
 	 * @param newItem - the item to add to the global list
 	 */
 	public void addItem(ItemToReview newItem) {
-		items.add(newItem);
-		saveItemsList();
+//		items.add(newItem);
+		try {
+			newItem.addToDB();
+		 } catch (Exception e) {
+			System.out.println("error: unable to add ItemToReview to DB");
+			e.printStackTrace();
+		 }
+		loadItemsList();
+		//saveItemsList();
 	}
 //-----------------------------------------------------------------------------	 
 	/**
-	 * Load the items to review list form the xml file where it is stored.
+	 * Load the items to review list form the items table in the database.
 	 */
-	private void loadItemsList(){
-		//populate the items list from the itemsToReview.xml file
+	public void loadItemsList() {
+		//populate the items list from the items table in the database
 		try{
-			this.items = XmlParser.loadItemsToReviewList();
+			this.items = DatabaseHelper.loadItemsToReviewList();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-	}
-//-----------------------------------------------------------------------------	
-	/**
-	 * Save the items to review list form the xml file where it is stored.
-	 */
-	private void saveItemsList(){
-		//save the items list to the xml file
-		try{
-			XmlParser.saveItemsToReviewList(items);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		items = XmlParser.loadItemsToReviewList();
 	}
 //-----------------------------------------------------------------------------	 
 		/**

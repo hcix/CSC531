@@ -77,6 +77,7 @@ public class Core extends JFrame {
 		frame.add(new MainInterfaceWindow(frame, rm), BorderLayout.CENTER);
 		
 		//Display the window
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	    frame.pack();
 	    frame.setVisible(true);
 	

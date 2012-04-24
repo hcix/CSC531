@@ -17,6 +17,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+import program.ResourceManager;
 import net.miginfocom.swing.MigLayout;
 //-----------------------------------------------------------------------------
 /**
@@ -25,12 +26,12 @@ import net.miginfocom.swing.MigLayout;
  */
 public class ItemRenderer implements ListCellRenderer, ListDataListener {
 	private Color selectedColor;
-	private JFrame parent;
 	private JList<ItemToReview> itemsList;
 	ListModel listModel;
+	ResourceManager rm;
 //-----------------------------------------------------------------------------
-	public ItemRenderer(JFrame parent, JList<ItemToReview> itemsList){	
-		this.parent=parent;
+	public ItemRenderer(ResourceManager rm, JList<ItemToReview> itemsList){	
+		this.rm=rm;
 		this.itemsList=itemsList;
 		
 		listModel = itemsList.getModel();
@@ -107,11 +108,11 @@ System.out.println("ItemRenderer: itemStateChanged: called");
 			     
 			     Object item = listModel.getElementAt(index);
 			     itemsList.ensureIndexIsVisible(index);
-			     ReadItemDialog itemDialog = new ReadItemDialog(parent, ((ItemToReview)item));
+			     ReadItemDialog itemDialog = new ReadItemDialog(rm, ((ItemToReview)item));
 			     itemDialog.setVisible(true);
 			     itemDialog.setModal(true);
 			     //int selected = itemsList.getSelectedIndex();
-			    itemsList.repaint();
+			     itemsList.repaint();
 			    // (itemsList.getModel()).a
 			     try{
 			
