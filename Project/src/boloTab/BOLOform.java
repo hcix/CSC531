@@ -500,7 +500,7 @@ public class BOLOform extends JDialog {
 
 		 
 		 //set the date & time
-		 Date incidentDate = jcal.getDateSet();
+		 Date incidentDate = jcal.getDate();
 		 long dateVal = incidentDate.getTime();
 		 bolo.setincidentDate(dateVal);
 		 long timeVal = time.getTimeEpoch();

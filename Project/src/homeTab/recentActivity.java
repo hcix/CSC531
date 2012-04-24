@@ -6,13 +6,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
-
-public class RecentActivity extends JPanel
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+/**
+ * 
+ */
+public class RecentActivity extends JPanel{
+private static final long serialVersionUID = 1L;
 	private JPanel panel;
 	private JLabel dayLabel;
 	private ArrayList<Change> changeList = new ArrayList<Change>();

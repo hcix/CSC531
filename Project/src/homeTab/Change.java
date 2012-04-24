@@ -34,8 +34,10 @@ public class Change
 //-----------------------------------------------------------------------------
 	public String getInfo()
 	{
+		long edt = new Date(time).getTime() - 14400000;
+		Date d = new Date(edt);
 		info = this.user + " made change [" + (this.type).toUpperCase() + "] at " 
-				+ (new Date(time)).toString();
+				+ d;
 		
 		return info;	
 	}

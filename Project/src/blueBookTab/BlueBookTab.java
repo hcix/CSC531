@@ -212,7 +212,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 //-----------------------------------------------------------------------------
 	public void actionPerformed(ActionEvent ev) {	
 	    
-		//get which entry was click
+		//get which entry was clicked
 		String listId = ev.getActionCommand();
 		int id = Integer.valueOf(listId);
 //DEBUG

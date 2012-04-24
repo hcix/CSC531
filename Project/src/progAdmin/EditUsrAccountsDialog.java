@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -25,6 +24,13 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> home tabs
+>>>>>>> 983387358e10d2e1753de84caad156a3ee9455df
 import net.miginfocom.swing.MigLayout;
 import progAdmin.itemsToReview.ItemToReview;
 import utilities.ChangeHelper;
@@ -177,6 +183,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 				employeeList.add(empLoc, aud.getEmployee());
 				try {
 					XmlParser.saveRoster(employeeList);
+					ChangeHelper.makeChange(ChangeHelper.EDIT_USER);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -197,6 +204,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 				employeeList.remove(emp);
 				try {
 					XmlParser.saveRoster(employeeList);
+					ChangeHelper.makeChange(ChangeHelper.DELETE_USER);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}

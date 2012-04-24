@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import progAdmin.itemsToReview.ManageItemsDialog;
 import program.ResourceManager;
 import userinterface.MainInterfaceWindow;
+import utilities.ChangeHelper;
 import utilities.FileHelper;
 import utilities.ui.ButtonHelper;
 import utilities.ui.SwingHelper;
@@ -130,7 +131,7 @@ public class AdminTab extends JPanel implements ActionListener {
 			// put this after chooser has been closed
 			JOptionPane.showMessageDialog(parent, "Video has been loaded "
 					+ "to the home page!");
-
+			ChangeHelper.makeChange(ChangeHelper.ADD_VIDEO);
 		}
 
 	}
