@@ -173,12 +173,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 		} else if(ev.getActionCommand()==HELP){
 			JOptionPane.showMessageDialog(frame, HELP_MESSAGE, 
 					"Help", JOptionPane.INFORMATION_MESSAGE);
-/* *****************************************************************************
-* TODO: Display help info telling user to enter their caneID and password
-* and displaying the UM site they can go to to reset it if they forgot it.
-*******************************************************************************/
 		}
-		
 	}
 //-----------------------------------------------------------------------------
 	/**

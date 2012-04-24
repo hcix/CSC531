@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -22,13 +20,7 @@ import progAdmin.itemsToReview.ItemToReview;
 import utilities.DatabaseHelper;
 import utilities.EmailHandler;
 import utilities.FileHelper;
-import utilities.PdfHandler;
 import utilities.RosterParser;
-import utilities.xml.XmlParser;
-import java.util.*;
-import javax.mail.*;
-import javax.activation.*;
-import javax.mail.internet.*;
 //-----------------------------------------------------------------------------
 /**
  * The <code>ResourceManager</code> class manages the programs resources.
@@ -46,7 +38,6 @@ public class ResourceManager {
 	private Desktop desktop;
     private Desktop.Action action = Desktop.Action.OPEN;
     JFrame parent;
-    PdfHandler pdfHandler;
     Properties progProps;
     ArrayList<ItemToReview> items;
     boolean mailIsSupported = false;
