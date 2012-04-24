@@ -107,7 +107,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 		});
 
 		//Import existing BOLO button
-		JButton importBOLOButton = SwingHelper.createImageButton("Import Existing BOLO", 
+		/*JButton importBOLOButton = SwingHelper.createImageButton("Import Existing BOLO", 
 				"icons/Import.png");
 		importBOLOButton.addActionListener(new ActionListener() {
 			//file chooser dialog
@@ -121,6 +121,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 				fc.showOpenDialog(rm.getGuiParent());
 			}
 		});
+		*/
 
 		//Search button
 		JButton searchButton = SwingHelper.createImageButton("Search Records", 
@@ -138,7 +139,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(newBOLOButton);
-		buttonsPanel.add(importBOLOButton);
+		//buttonsPanel.add(importBOLOButton);
 		buttonsPanel.add(searchButton);
 		this.add(buttonsPanel, BorderLayout.PAGE_END);
 
