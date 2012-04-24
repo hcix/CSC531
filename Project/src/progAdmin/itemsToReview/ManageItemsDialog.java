@@ -175,7 +175,6 @@ private static final long serialVersionUID = 1L;
 		table.repaint();
 	}
 //-----------------------------------------------------------------------------
-	
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if(command.equals(ADD_ITEM)){
@@ -183,25 +182,26 @@ private static final long serialVersionUID = 1L;
 			itemDialog.setVisible(true);
 			itemDialog.setModal(true);
 			//refresh items list from ResourceManager
-			table.repaint();
+			refreshItemsTable();
+			itemsPanel.revalidate();
+			table.doLayout();
 		} else if(command.equals(DELETE_ITEM)){
 			int rowIndex = table.getSelectedRow();
 			rm.removeItem(rowIndex);
-			table.repaint();
+			refreshItemsTable();
 		} else if (command.equals(EDIT_ITEM)){
 			int rowIndex = table.getSelectedRow();
 			if(rowIndex>=0){
 				//show the ReadItemDialog to display the item
-	           // ReadItemDialog readItem = new ReadItemDialog(
-	            	//	rm.getGuiParent(), items.get(rowIndex));
 				ReadItemDialog readItem = new ReadItemDialog(
-	            		rm.getGuiParent(), rm.getItems().get(rowIndex));
+	            		rm, rm.getItems().get(rowIndex));
 	            readItem.makeEditable();
 	            readItem.setVisible(true);
 	            //wait on the ReadItemDialog to be closed
 	            readItem.setModal(true);
-	            //items=rm.getItems();
-	            table.repaint();
+	            rm.loadItemsList();
+	            refreshItemsTable();
+	            table.doLayout();
 			}
 		}
 		
@@ -218,7 +218,7 @@ private static final long serialVersionUID = 1L;
             
             //show the ReadItemDialog to display the item
             ReadItemDialog readItem = new ReadItemDialog(
-            		rm.getGuiParent(), rm.getItems().get(row));
+            		rm, rm.getItems().get(row));
             readItem.setVisible(true);
             
             //wait on the ReadItemDialog to be closed

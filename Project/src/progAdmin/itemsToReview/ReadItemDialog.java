@@ -13,10 +13,13 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import net.miginfocom.swing.MigLayout;
+import program.CurrentUser;
+import program.ResourceManager;
 import utilities.ui.SwingHelper;
 
 /**
@@ -31,10 +34,14 @@ private static final long serialVersionUID = 1L;
 	String detailsText, titleText;
 	JToolBar toolbar;
 	JButton saveButton, editButton;
+	JFrame parent;
+	ResourceManager rm;
 //-----------------------------------------------------------------------------
-	public ReadItemDialog(JFrame parent, ItemToReview item){
-		super(parent, item.getTitle(), true);
+	public ReadItemDialog(ResourceManager rm, ItemToReview item){
+		super(rm.getGuiParent(), item.getTitle(), true);
 		this.item=item;
+		this.parent=parent;
+		this.rm = rm;
 		
 		this.setPreferredSize(new Dimension(500,500));
 		this.setSize(new Dimension(500,500));
@@ -97,6 +104,7 @@ private static final long serialVersionUID = 1L;
 		markAsReadButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				item.setReviewed(true);
+				item.setDateReviewed(System.currentTimeMillis());
 				saveAndClose();
 			 }
 		});
@@ -107,6 +115,7 @@ private static final long serialVersionUID = 1L;
 			public void actionPerformed(ActionEvent e){
 				System.out.println("before set false");
 				item.setReviewed(false);
+				item.setDateReviewed(0);
 				System.out.println("after set false");
 				saveAndClose();
 				System.out.println("after save and close");
@@ -149,6 +158,15 @@ private static final long serialVersionUID = 1L;
 	}
 //-----------------------------------------------------------------------------
 	public void makeEditable(){
+		if(!CurrentUser.getCurrentUser().getCaneID().equals(item.getCreator())){
+			JOptionPane.showMessageDialog(parent, "Only an item's creator may" +
+					" edit an item's contents.", "Operation not Permited", 
+					JOptionPane.INFORMATION_MESSAGE);
+			this.setVisible(false);
+			return;
+		
+		}
+		
 		detailsTextPane.setEditable(true);
 		titleTextField.setEditable(true);
 		titleTextField.setBackground(Color.white);
@@ -178,9 +196,12 @@ private static final long serialVersionUID = 1L;
 			item.setDetails(detailsText);
 		}
 		
-		try{ 
+		try { 
 			item.setTitle(titleText);
 			item.setDetails(detailsText);
+			//item.addToDB();
+			//item.addToDB();
+			
 		}catch (Exception ex){ ex.printStackTrace(); }
 		
 		this.dispose();
