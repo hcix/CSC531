@@ -55,9 +55,7 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 	{
 		this.parent = parent;
 		JPanel homePanel = new JPanel();
-
 		homePanel.add(makeGUI());
-		
 		this.add(homePanel);
 	}
 

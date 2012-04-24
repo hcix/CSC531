@@ -3,6 +3,7 @@
 
 *.class
 *.classpath
+umpd.db
 Project/.settings*
 Project/.project
 TestStuff*
