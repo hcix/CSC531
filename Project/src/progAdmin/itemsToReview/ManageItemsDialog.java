@@ -31,6 +31,7 @@ import javax.swing.table.TableModel;
 import net.miginfocom.swing.MigLayout;
 import program.CurrentUser;
 import program.ResourceManager;
+import utilities.ChangeHelper;
 import utilities.ui.SwingHelper;
 
 /**
@@ -161,6 +162,7 @@ private static final long serialVersionUID = 1L;
 			itemsPanel.removeAll();
 			itemsPanel.add(createItemsPanel());
 			itemsPanel.revalidate();
+
 		//Delete item
 		} else if(command.equals(DELETE_ITEM)){
 			int rowIndex = table.getSelectedRow();
@@ -175,6 +177,14 @@ private static final long serialVersionUID = 1L;
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		//Edit item
+
+			ChangeHelper.makeChange(ChangeHelper.ADD_ITEM_TO_REVIEW);
+		} else if(command.equals(DELETE_ITEM)){
+			int rowIndex = table.getSelectedRow();
+			rm.removeItem(rowIndex);
+			refreshItemsTable();
+			ChangeHelper.makeChange(ChangeHelper.DELETE_ITEM_TO_REVIEW);
+
 		} else if (command.equals(EDIT_ITEM)){
 			int rowIndex = table.getSelectedRow();
 			ItemToReview item = (rm.getItems()).get(rowIndex);
@@ -188,6 +198,7 @@ private static final long serialVersionUID = 1L;
 	            //wait on the ReadItemDialog to be closed
 	            readItem.setModal(true);
 	            rm.loadItemsList();
+
 	            //refresh while dialog is in view
 				refreshItemsTable();
 				itemsPanel.removeAll();
@@ -198,7 +209,11 @@ private static final long serialVersionUID = 1L;
 							"Only an item's creator may edit an item's " +
 							"contents.", "Operation not Permited", 
 							JOptionPane.INFORMATION_MESSAGE);
-				
+
+	            refreshItemsTable();
+	            table.doLayout();
+	            ChangeHelper.makeChange(ChangeHelper.EDIT_ITEM_TO_REVIEW);
+
 			}
 		}
 		

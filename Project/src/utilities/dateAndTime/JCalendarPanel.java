@@ -103,7 +103,6 @@ private static final long serialVersionUID = 1L;
 		    cDate = Calendar.getInstance();
 		
 		jCalendar.setCalendar(cDate);
-		//jCalendar.setLocationRelativeTo(null);
 		jCalendar.setLocationByPlatform(true);
 		jCalendar.setVisible(true);
 		

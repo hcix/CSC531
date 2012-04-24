@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import program.CurrentUser;
 import program.ResourceManager;
+import utilities.ChangeHelper;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**

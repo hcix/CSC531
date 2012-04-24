@@ -176,6 +176,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 				employeeList.add(empLoc, aud.getEmployee());
 				try {
 					XmlParser.saveRoster(employeeList);
+					ChangeHelper.makeChange(ChangeHelper.EDIT_USER);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -196,6 +197,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 				employeeList.remove(emp);
 				try {
 					XmlParser.saveRoster(employeeList);
+					ChangeHelper.makeChange(ChangeHelper.DELETE_USER);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
