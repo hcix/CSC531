@@ -1,5 +1,6 @@
 package program;
 
+import homeTab.HomeTab;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -40,6 +41,7 @@ public class ResourceManager {
     JFrame parent;
     Properties progProps;
     ArrayList<ItemToReview> items;
+    HomeTab homeTab;
     boolean mailIsSupported = false;
     boolean printIsSupported = false;
 //-----------------------------------------------------------------------------
@@ -173,7 +175,10 @@ public class ResourceManager {
 	public JFrame getGuiParent(){
 		return parent;
 	}
-
+//-----------------------------------------------------------------------------
+	public void setHomeTabReference(HomeTab ht){
+		this.homeTab=ht;
+	}
 //-----------------------------------------------------------------------------
 	/**
 	 * Used to access the shared resource 'items to review'. The 'items to
@@ -246,12 +251,14 @@ public class ResourceManager {
 			//set up new properties object 
 	        FileInputStream propFile = new FileInputStream(FileHelper.getPropertiesFile());
 	        progProps.loadFromXML(propFile);
+	        
 	        Properties p = new Properties(System.getProperties());
 	        p.putAll(progProps);
 	        
 	        //set the system properties
 	        System.setProperties(p);
 	        //display new properties
+	        printEnv();
 
 		}	
 //-----------------------------------------------------------------------------
@@ -393,14 +400,21 @@ public class ResourceManager {
 	 */
 	public void printEnv(){
 		//get the syst env
-		Map<String, String> env = System.getenv();
-		//go thru the properties and print each key/value pair
-	    for (String envName : env.keySet()) {
-	        System.out.format("%s=%s%n",
-	                          envName,
-	                          env.get(envName));
-	    }
-	
+		//Map<String, String> 
+		Properties pp = System.getProperties();
+//		Map<String, String> env = System.getenv();
+//		//go thru the properties and print each key/value pair
+//	    for (String envName : env.keySet()) {
+//	        System.out.format("%s=%s%n",
+//	                          envName,
+//	                          env.get(envName));
+//	    }
+//	
+		for(String p : pp.stringPropertyNames()){
+			System.out.format("%s=%s%n",
+                    p,
+                    pp.get(p));
+		}
 	}
 //-----------------------------------------------------------------------------
 	/**
