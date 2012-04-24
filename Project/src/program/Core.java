@@ -33,10 +33,13 @@ public class Core extends JFrame {
 	        		e.printStackTrace();
 	        	}
 	        	
+	        	BSplash splash = new BSplash("icons/gear_256.png", frame);
+	        	
 	        	//Set up and show the login GUI
 	        	//COMMENT NEXT LINE OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
 	        	//MUST ALSO COMMENT OUT 6 LINES IN MAININTERFACEWINDOW AS INDICATED THERE
 	        	createAndShowLoginGUI();
+	        	
 	        
 	        	rm = new ResourceManager(frame);
 	        	
