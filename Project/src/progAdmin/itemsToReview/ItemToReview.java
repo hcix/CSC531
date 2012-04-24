@@ -178,10 +178,6 @@ public class ItemToReview {
 				"createdBy, reviewedBy)" +
 				"VALUES (?, ?, ?, ?, ?, ?, ?);");
 
-//		System.out.printf("REPLACE into items(item_id, title, details, dateCreated, dateReviewed," +
-//				"createdBy, reviewedBy, editedBy)" +
-//				"VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
-		
 		//Add the data to the prepared statement
 		if(this.item_id!=null){ prep.setInt(1, this.item_id); }
 		prep.setString(2, this.title);
