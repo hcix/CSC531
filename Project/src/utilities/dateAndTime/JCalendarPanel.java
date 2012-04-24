@@ -1,6 +1,7 @@
 package utilities.dateAndTime;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
@@ -22,9 +23,11 @@ private static final long serialVersionUID = 1L;
 	private JButton btnDate = SwingHelper.createImageButton("icons/date.gif");
     private JButton btnClearDate = SwingHelper.createImageButton("icons/delete.gif");
     JCalendar jCalendar = null;
+    JPanel panel;
 //-----------------------------------------------------------------------------
-    public JCalendarPanel(JFrame parent){
-    	
+ /*   public JCalendarPanel(JFrame parent){
+   
+    	System.out.println("CALLED!!!!");
     	lblDate = new JLabel("Date: ");//default label text
     	
     	lblDate.setSize(new Dimension(50, 20));
@@ -43,11 +46,11 @@ private static final long serialVersionUID = 1L;
         btnDate.addActionListener(this);
         btnClearDate.addActionListener(this);
 
-    }
+    }*/
 //-----------------------------------------------------------------------------
-	public JCalendarPanel(JFrame parent, JPanel panel){
+/*	public JCalendarPanel(JFrame parent, JPanel panel){
 		lblDate = new JLabel("Date: ");//default label text
-		
+		this.panel=panel;
 		lblDate.setSize(new Dimension(50, 20));
 		txtDate.setSize(new Dimension(200, 20));
 	    txtDate.setEditable(false);
@@ -64,7 +67,7 @@ private static final long serialVersionUID = 1L;
 	    btnDate.addActionListener(this);
 	    btnClearDate.addActionListener(this);
 	
-	}
+	}*/
 //-----------------------------------------------------------------------------
 	public JCalendarPanel(JFrame parent, JPanel panel, String labelTxt){
 		lblDate = new JLabel(labelTxt);
@@ -81,7 +84,8 @@ private static final long serialVersionUID = 1L;
 	    panel.add(btnClearDate, "wrap, sg");
 	     
 	    jCalendar = new JCalendar(parent, "JCalendar", true);
-	
+	    jCalendar.setLocationRelativeTo(null);
+	    
 	    btnDate.addActionListener(this);
 	    btnClearDate.addActionListener(this);
 	}
@@ -103,7 +107,11 @@ private static final long serialVersionUID = 1L;
 		    cDate = Calendar.getInstance();
 		
 		jCalendar.setCalendar(cDate);
-		jCalendar.setLocationByPlatform(true);
+		//Point p = panel.getLocation();
+		//int x = 700;
+		//int y = 500;
+		
+		//jCalendar.setLocation(x, y);
 		jCalendar.setVisible(true);
 		
 		if(jCalendar.isOkPressed())

@@ -258,7 +258,7 @@ public class ResourceManager {
 	        //set the system properties
 	        System.setProperties(p);
 	        //display new properties
-	        printEnv();
+	        //printEnv();
 
 		}	
 //-----------------------------------------------------------------------------
