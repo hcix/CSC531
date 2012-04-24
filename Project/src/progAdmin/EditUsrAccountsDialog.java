@@ -24,6 +24,10 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+<<<<<<< HEAD
+=======
+
+>>>>>>> home tabs
 import net.miginfocom.swing.MigLayout;
 import progAdmin.itemsToReview.ItemToReview;
 import utilities.ChangeHelper;
@@ -176,6 +180,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 				employeeList.add(empLoc, aud.getEmployee());
 				try {
 					XmlParser.saveRoster(employeeList);
+					ChangeHelper.makeChange(ChangeHelper.EDIT_USER);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -196,6 +201,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 				employeeList.remove(emp);
 				try {
 					XmlParser.saveRoster(employeeList);
+					ChangeHelper.makeChange(ChangeHelper.DELETE_USER);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}

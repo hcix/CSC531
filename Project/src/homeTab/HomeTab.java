@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -33,7 +31,7 @@ import utilities.ui.SwingHelper;
 
 //import com.sun.jna.NativeLibrary;
 
-public class HomeTab extends JPanel implements ActionListener, FocusListener {
+public class HomeTab extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private static final String LAUNCH = "launch";
 	private static JButton videoButton;
@@ -64,7 +62,6 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 		tabSize = InterfaceSizer.getTabSize();
 		homeTabs = new JTabbedPane();
 		homeTabs.setPreferredSize(tabSize);
-		homeTabs.addFocusListener(this);
 		
 		rasp = new JPanel(new MigLayout()); // panel to go in JScrollPane
 		
@@ -225,6 +222,7 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 		// get the list of changes from the DB
 		changeList = DatabaseHelper.homeTabPullFromDB();
 	}
+<<<<<<< HEAD
 
 	public void focusGained(FocusEvent e)
 	{
@@ -245,4 +243,6 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 	{
 		
 	}
+=======
+>>>>>>> home tabs
 }
