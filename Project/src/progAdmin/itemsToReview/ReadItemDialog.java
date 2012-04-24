@@ -34,13 +34,11 @@ private static final long serialVersionUID = 1L;
 	String detailsText, titleText;
 	JToolBar toolbar;
 	JButton saveButton, editButton;
-	JFrame parent;
 	ResourceManager rm;
 //-----------------------------------------------------------------------------
 	public ReadItemDialog(ResourceManager rm, ItemToReview item){
 		super(rm.getGuiParent(), item.getTitle(), true);
 		this.item=item;
-		this.parent=parent;
 		this.rm = rm;
 		
 		this.setPreferredSize(new Dimension(500,500));
@@ -85,7 +83,6 @@ private static final long serialVersionUID = 1L;
 		mainPanel.add(toolbar, "dock north");
 		mainPanel.add(titleLabel,"alignx left");
 		mainPanel.add(titleTextField, "align left, wrap");
-		//mainPanel.add(blank,"alignx left, wrap");
 		mainPanel.add(descLabel, "alignx left");
 		mainPanel.add(detailsTextPane, "align left, wrap");
 		
@@ -152,20 +149,15 @@ private static final long serialVersionUID = 1L;
 		}
 		
 		toolbar.add(editButton, "sg");
-		//buttonPanel.add(saveItemButton);
 		
 		return toolbar;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Change the dialog's fields from read only <code>JTextArea</code>s to
+	 * editable <code>JTextArea</code>s.
+	 */
 	public void makeEditable(){
-		if(!CurrentUser.getCurrentUser().getCaneID().equals(item.getCreator())){
-			JOptionPane.showMessageDialog(parent, "Only an item's creator may" +
-					" edit an item's contents.", "Operation not Permited", 
-					JOptionPane.INFORMATION_MESSAGE);
-			this.setVisible(false);
-			return;
-		
-		}
 		
 		detailsTextPane.setEditable(true);
 		titleTextField.setEditable(true);

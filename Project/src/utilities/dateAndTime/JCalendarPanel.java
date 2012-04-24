@@ -24,6 +24,7 @@ private static final long serialVersionUID = 1L;
     JCalendar jCalendar = null;
 //-----------------------------------------------------------------------------
     public JCalendarPanel(JFrame parent){
+    	
     	lblDate = new JLabel("Date: ");//default label text
     	
     	lblDate.setSize(new Dimension(50, 20));
@@ -83,14 +84,13 @@ private static final long serialVersionUID = 1L;
 	
 	    btnDate.addActionListener(this);
 	    btnClearDate.addActionListener(this);
-	
 	}
 //-----------------------------------------------------------------------------
     public void actionPerformed(ActionEvent e){
         Object source = e.getSource();
-        if(source == btnDate)
+        if(source == btnDate){
             doActionForDate();
-        else if(source == btnClearDate){
+        } else if(source == btnClearDate){
             txtDate.setDate((Date) null);
             jCalendar.setDate(null);
         }
@@ -103,7 +103,8 @@ private static final long serialVersionUID = 1L;
 		    cDate = Calendar.getInstance();
 		
 		jCalendar.setCalendar(cDate);
-		jCalendar.setLocationRelativeTo(txtDate);
+		//jCalendar.setLocationRelativeTo(null);
+		jCalendar.setLocationByPlatform(true);
 		jCalendar.setVisible(true);
 		
 		if(jCalendar.isOkPressed())
@@ -112,7 +113,7 @@ private static final long serialVersionUID = 1L;
 		jCalendar.setVisible(false);        
     }
 //-----------------------------------------------------------------------------
-    public Date getDateSet(){
+    public Date getDate(){
     	return jCalendar.getDate();
     }
 //-----------------------------------------------------------------------------

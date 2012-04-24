@@ -150,7 +150,8 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 	}
 	public void populateVideoPanel()
 	{	
-		JLabel wLabel = new JLabel("Welcome " + CurrentUser.getCurrentUser().getFirstname() + " " + CurrentUser.getCurrentUser().getLastname() + "!");
+		JLabel wLabel = new JLabel("Welcome " + CurrentUser.getCurrentUser().getFirstname() + 
+				" " + CurrentUser.getCurrentUser().getLastname() + "!");
 		videoPanel.add(wLabel, "align left, wrap");
 		
 		videoLabel = new JLabel("Click here to launch a video announcement.");
@@ -172,7 +173,8 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 			videoPanel.add(noVidL, "align left, wrap");
 		}
 		
-		JLabel checkRecent = new JLabel("Check the Recent Activity tab for information on changes made this week.");
+		JLabel checkRecent = new JLabel("Check the Recent Activity tab for " +
+				"information on changes made this week.");
 		videoPanel.add(checkRecent, "align left, wrap");
 		
 		videoPanel.add(videoButton, "align right, wrap");
@@ -230,7 +232,7 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 		if(e.getComponent().getClass().getName() == this.getClass().getName())
 		{
 			try {
-				changeList = DatabaseHelper.HomeTabPullFromDB();
+				changeList = DatabaseHelper.homeTabPullFromDB();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

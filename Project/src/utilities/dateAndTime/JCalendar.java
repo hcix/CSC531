@@ -38,6 +38,7 @@ public class JCalendar extends JDialog implements PropertyChangeListener{
     public JCalendar(Frame parent, String title, boolean modal)
     {
         this(parent, title, modal, 0);
+        this.setLocationRelativeTo(null);
     }
   //-----------------------------------------------------------------------------
     // monthSpinner can have following values
@@ -46,12 +47,14 @@ public class JCalendar extends JDialog implements PropertyChangeListener{
     public JCalendar(Frame parent, String title, boolean modal, int monthSpinner)
     {
         super(parent, title, modal);
+        this.setLocationRelativeTo(null);
         init(monthSpinner);
     }
   //-----------------------------------------------------------------------------
     public JCalendar(Dialog parent, String title, boolean modal)
     {
         super(parent, title, modal);
+        this.setLocationRelativeTo(null);
         init(0);
     }
   //-----------------------------------------------------------------------------

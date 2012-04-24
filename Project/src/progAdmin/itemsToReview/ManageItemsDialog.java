@@ -13,6 +13,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -28,6 +29,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import net.miginfocom.swing.MigLayout;
+import program.CurrentUser;
 import program.ResourceManager;
 import utilities.ui.SwingHelper;
 
@@ -148,6 +150,8 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
+		
+		//Add item
 		if(command.equals(ADD_ITEM)){
 			AddItemDialog itemDialog = new AddItemDialog(rm);
 			itemDialog.setVisible(true);
@@ -157,13 +161,25 @@ private static final long serialVersionUID = 1L;
 			itemsPanel.removeAll();
 			itemsPanel.add(createItemsPanel());
 			itemsPanel.revalidate();
+		//Delete item
 		} else if(command.equals(DELETE_ITEM)){
 			int rowIndex = table.getSelectedRow();
-			rm.removeItem(rowIndex);
-			refreshItemsTable();
+			ItemToReview item = (rm.getItems()).get(rowIndex);
+			//only allow the item's creator to delete an item
+			if(CurrentUser.getCurrentUser().getCaneID().equals(item.getCreator())){
+				rm.removeItem(rowIndex);
+				refreshItemsTable();
+			} else {
+				JOptionPane.showMessageDialog(rm.getGuiParent(), "Only an item's creator may" +
+						" delete an item once it's been created.", "Operation not Permited", 
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+		//Edit item
 		} else if (command.equals(EDIT_ITEM)){
 			int rowIndex = table.getSelectedRow();
-			if(rowIndex>=0){
+			ItemToReview item = (rm.getItems()).get(rowIndex);
+			//only allow the item's creator to edit an item
+			if(CurrentUser.getCurrentUser().getCaneID().equals(item.getCreator())){
 				//show the ReadItemDialog to display the item
 				ReadItemDialog readItem = new ReadItemDialog(
 	            		rm, rm.getItems().get(rowIndex));
@@ -177,12 +193,21 @@ private static final long serialVersionUID = 1L;
 				itemsPanel.removeAll();
 				itemsPanel.add(createItemsPanel());
 				itemsPanel.revalidate();
+			} else {
+					JOptionPane.showMessageDialog(rm.getGuiParent(), 
+							"Only an item's creator may edit an item's " +
+							"contents.", "Operation not Permited", 
+							JOptionPane.INFORMATION_MESSAGE);
+				
 			}
 		}
 		
 	}
 //-----------------------------------------------------------------------------
-
+	/**
+	 * Called when an item is 'clicked' on. This method only performs a 
+	 * function if the mouse 'click' happens to be a double click.
+	 */
 	public void mouseClicked(MouseEvent e){
 		//checks if it was a double click
         if (e.getComponent().isEnabled() && e.getButton() == 
@@ -201,23 +226,14 @@ private static final long serialVersionUID = 1L;
         }
     }
 //-----------------------------------------------------------------------------
-	public void mousePressed(MouseEvent e) {
-		
-	}
-//-----------------------------------------------------------------------------
-	public void mouseReleased(MouseEvent e) {
-		
-	}
-//-----------------------------------------------------------------------------
-	public void mouseEntered(MouseEvent e) {		
-		
-	}
-//-----------------------------------------------------------------------------
-	public void mouseExited(MouseEvent e) {
-		
-	}
+	public void mousePressed(MouseEvent e) { }
+	public void mouseReleased(MouseEvent e) { }
+	public void mouseEntered(MouseEvent e) { }
+	public void mouseExited(MouseEvent e) { }
 //=============================================================================
-	private class ItemsTableModel extends AbstractTableModel implements TableModelListener {
+	/* Inner Class */
+	private class ItemsTableModel extends AbstractTableModel 
+								implements TableModelListener {
 		private static final long serialVersionUID = 1L;
 		private String[] columnNames = {"Reviewed","Title","Details"};
 //-----------------------------------------------------------------------------

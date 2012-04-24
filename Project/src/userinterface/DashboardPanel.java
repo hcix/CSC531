@@ -1,17 +1,19 @@
 package userinterface;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
+import net.miginfocom.swing.MigLayout;
 import utilities.DatabaseHelper;
 import utilities.ui.ImageHandler;
 import utilities.ui.SwingHelper;
-
+//-----------------------------------------------------------------------------
+/**
+ * Panel that displays at the top of the main frame.
+ */
 public class DashboardPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	JButton logoutButton;
@@ -19,19 +21,17 @@ public class DashboardPanel extends JPanel implements ActionListener {
 	public DashboardPanel(){
 		super();
 		
-		JLabel blankLabel = new JLabel("                   ");
-		
-		add(blankLabel,BorderLayout.WEST);
-		
-		ImageIcon logoIcon = ImageHandler.createImageIcon("images/ProgramLogo.png");
+		this.setLayout(new MigLayout("ins 20"));
+
+		ImageIcon logoIcon = ImageHandler.getProgramImgIcon("images/ProgramLogo.png");
 		JLabel logo = new JLabel(logoIcon);
 		
-		add(logo,BorderLayout.CENTER);
+		add(logo, "dock center");
 		
 		logoutButton = SwingHelper.createImageButton("Logout", "icons/logout64.png");
 		logoutButton.addActionListener(this);
 		logoutButton.setActionCommand("logout");
-		add(logoutButton, BorderLayout.EAST);
+		add(logoutButton);
 	}
 //-----------------------------------------------------------------------------	
 	public void actionPerformed(ActionEvent e) 

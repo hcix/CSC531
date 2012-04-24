@@ -497,7 +497,6 @@ public class DatabaseHelper {
         conn.close();
 	}
 //-----------------------------------------------------------------------------
-<<<<<<< HEAD
 	/**
 	 * Retrieves all the <code>ItemToReview</code>s from the database and places them into an 
 	 * <code>Arraylist</code> of <code>ItemToReview</code> objects, which is returned to the 
@@ -558,7 +557,6 @@ public class DatabaseHelper {
 	    return itemsList;
 	}
 //-----------------------------------------------------------------------------
-=======
 	public static void removeOldEntries() throws Exception
 	{
 		//Create the connection to the database
@@ -586,5 +584,4 @@ public class DatabaseHelper {
         
         conn.close();
 	}
->>>>>>> intermediate home tab work
 }

@@ -28,8 +28,7 @@ public class UseJCalendar extends JFrame implements ActionListener{
 
     JCalendar jCalendar = null;
 
-    public UseJCalendar()
-    {
+    public UseJCalendar(){
         super("Use of JCalendar");
 
         getContentPane().setLayout(null);

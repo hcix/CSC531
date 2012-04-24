@@ -224,7 +224,6 @@ public class BlueBookForm extends JDialog {
 		
 				
 		// add to panel
-		//SwingHelper.addDateSpinner(inputPanel, "Date of Incident: ");
 		//create time and date panels
 		jcal = new JCalendarPanel(rm.getGuiParent(), inputPanel, "Date of Incident");
 		time = new TimePanel(inputPanel, "Time of Incident");
@@ -232,7 +231,6 @@ public class BlueBookForm extends JDialog {
 		inputPanel.add(caseNumField, "align left,wrap");
 		inputPanel.add(name, "alignx left");
 		inputPanel.add(nameField, "align left, wrap");
-		//SwingHelper.addDateSpinner(inputPanel, "DOB: ");
 		inputPanel.add(dob, "alignx left");
 		inputPanel.add(dobField, "align left, wrap");
 		inputPanel.add(Affili, "alignx left");
@@ -317,7 +315,6 @@ public class BlueBookForm extends JDialog {
 	 */ 
 	 private JPanel createPhotoPanel(){
 		photoOuterPanel = new JPanel(new MigLayout("fill"));
-		//photoOuterPanel.setSize(500, 250);
 		
 		final JPanel photoPanel = new JPanel(new MigLayout());
 		photoArea = photoPanel;
@@ -360,9 +357,9 @@ public class BlueBookForm extends JDialog {
 		final JFileChooser fc = new JFileChooser();
 		int returnVal = fc.showOpenDialog(this);
 
-		// if a photo was selected, add it to BOLO and load into photo area
+		//if a photo was selected, add it to Entry and load into photo area
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			// copy the chosen photo into the program's 'Photos' directory
+			//copy the chosen photo into the program's 'Photos' directory
 			File file = fc.getSelectedFile();
 			bbEntry.setVideoFilePath(Paths.get(file.getAbsolutePath()));
 		}		
@@ -424,7 +421,7 @@ public class BlueBookForm extends JDialog {
 		 if(!dobText.isEmpty()){ bbEntry.setDob(dobText); }
 		 
 		 //set the date & time
-		 Date incidentDate = jcal.getDateSet();
+		 Date incidentDate = jcal.getDate();
 		 long dateVal = incidentDate.getTime();
 		 bbEntry.setIncidentDate(dateVal);
 		 long timeVal = time.getTimeEpoch();
@@ -542,7 +539,7 @@ public class BlueBookForm extends JDialog {
 		
 		//recreate the photo/video section
 		photoArea.removeAll();
-		ImageIcon noPhotoImage = ImageHandler.createImageIcon("images/unknownPerson.jpeg");
+		ImageIcon noPhotoImage = ImageHandler.getProgramImgIcon("images/unknownPerson.jpeg");
 		JLabel noPhotoLabel = new JLabel(noPhotoImage);
 		photoArea.add(noPhotoLabel);
 		(photoArea.getParent()).validate();
