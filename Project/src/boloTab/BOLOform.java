@@ -316,19 +316,15 @@ public class BOLOform extends JDialog {
 	private JPanel createPhotoVideoPanel(){
 		JPanel photoVideoPanel = new JPanel(new MigLayout("fillx"));
 		
-//		this.setPreferredSize(new Dimension(1050,900));
-//		this.setSize(new Dimension(1050,900));
-		
 		//Create initial no-photo place holder photo
 		final JPanel photoPanel = new JPanel();
 		photoArea = photoPanel;
-		ImageIcon noPhotoImage = ImageHandler.createImageIcon("images/unknownPerson.jpeg");
+		ImageIcon noPhotoImage = ImageHandler.getProgramImgIcon("images/unknownPerson.jpeg");
 		JLabel noPhotoLabel = new JLabel(noPhotoImage);
 		photoPanel.add(noPhotoLabel);
 		photoVideoPanel.add(photoPanel, "spanx,grow,wrap");
 
-		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", 
-				"icons/camera.png");
+		JButton addPhotoButton = ButtonHelper.createPhotoButton(ButtonHelper.LARGE, "Add a Photo");
 		addPhotoButton.setToolTipText("Attach a photo to this BOLO");
 		addPhotoButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae) {
@@ -336,8 +332,7 @@ public class BOLOform extends JDialog {
 			}
 		});
 
-		JButton addVideoButton = SwingHelper.createImageButton("Add a Video", 
-				"icons/videoCamera.png");
+		JButton addVideoButton = ButtonHelper.createVideoButton(ButtonHelper.LARGE,	"Add a Video");
 		addVideoButton.setToolTipText("Attach a video to this BOLO");
 		addVideoButton.addActionListener(new ActionListener() {
 

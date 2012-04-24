@@ -15,13 +15,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import utilities.ui.SwingHelper;
-
+//-----------------------------------------------------------------------------
 /**
- * 
+ * <code>AddUserDialog</code> is used to add a new user to the system.
  */
-public class AddUserDialog extends JDialog implements ActionListener
-{
-	private static final long serialVersionUID = 1L;
+public class AddUserDialog extends JDialog implements ActionListener{
+private static final long serialVersionUID = 1L;
 	JTextField cnumberF, firstNameF, lastNameF, caneidF, emailF;
 	JComboBox<String> permissionsB;
 	String [] authLevels = {"Supervisor", "Command", "Officer", "None"};
@@ -33,7 +32,7 @@ public class AddUserDialog extends JDialog implements ActionListener
 	JButton ok, cancel;
 	
 	private boolean wasCanceled = false;
-	
+//-----------------------------------------------------------------------------
 	public AddUserDialog(JFrame parent, Employee editEmployee)
 	{
 		super(parent, "", true);
@@ -74,6 +73,7 @@ public class AddUserDialog extends JDialog implements ActionListener
 		
 		this.add(mainPanel);
 	}
+//-----------------------------------------------------------------------------
 	private void createFieldsandLabels()
 	{
 		cnumberF = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
@@ -104,6 +104,7 @@ public class AddUserDialog extends JDialog implements ActionListener
 		cancel.setActionCommand("cancel");
 		
 	}
+//-----------------------------------------------------------------------------
 	private void doPanelLayout()
 	{
 		mainPanel.add(firstNameL, "align left");
@@ -127,6 +128,7 @@ public class AddUserDialog extends JDialog implements ActionListener
 		mainPanel.add(ok, "align left");
 		mainPanel.add(cancel, "align left");
 	}
+//-----------------------------------------------------------------------------
 	private void saveAndCloseAdd()
 	{
 		employee = new Employee();
@@ -139,19 +141,23 @@ public class AddUserDialog extends JDialog implements ActionListener
 
 		this.dispose();
 	}
+//-----------------------------------------------------------------------------
 	public Employee getEmployee()
 	{
 		return employee;
 	}
+//-----------------------------------------------------------------------------
 	public boolean checkCanceled()
 	{
 		return wasCanceled;
 	}
+//-----------------------------------------------------------------------------
 	private void closeAndCancel()
 	{
 		wasCanceled = true;
 		this.dispose();
 	}
+//-----------------------------------------------------------------------------
 	private void populate(Employee e)
 	{
 		firstNameF.setText(e.getFirstname());
@@ -161,6 +167,7 @@ public class AddUserDialog extends JDialog implements ActionListener
 		cnumberF.setText(e.getCnumber());
 		permissionsB.setSelectedItem(e.getPermissions());
 	}
+//-----------------------------------------------------------------------------
 	public void actionPerformed(ActionEvent e) 
 	{
 		String command = e.getActionCommand();
@@ -174,4 +181,5 @@ public class AddUserDialog extends JDialog implements ActionListener
 			closeAndCancel();
 		}
 	}
+//-----------------------------------------------------------------------------
 }

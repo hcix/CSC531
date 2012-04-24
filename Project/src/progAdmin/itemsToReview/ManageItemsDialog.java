@@ -92,34 +92,36 @@ private static final long serialVersionUID = 1L;
 		itemsPanel.add(createItemsPanel());
 		
 		//Create a split pane with the two scroll panes in it
-		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-				mainPanel, itemsPanel);
-		splitPane.setOneTouchExpandable(true);
-		splitPane.setDividerLocation(400);
+		//JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+		//		mainPanel, itemsPanel);
+		//splitPane.setOneTouchExpandable(true);
+		//splitPane.setDividerLocation(400);
 		
 	    Container contentPane = getContentPane();
+	    contentPane.setLayout(new MigLayout("ins 20"));
 	    contentPane.add(toolbar, BorderLayout.NORTH);
-	    contentPane.add(splitPane, BorderLayout.CENTER);
+	    //contentPane.add(splitPane, BorderLayout.CENTER);
+	    contentPane.add(itemsPanel, BorderLayout.CENTER);
 	}
 //-----------------------------------------------------------------------------
-	private void saveAndClose(){
-		this.dispose();
-	}
-//-----------------------------------------------------------------------------
+	/**
+	 * Close without saving.
+	 */
 	private void closeAndCancel(){
 		this.dispose();
 	}	
 //-----------------------------------------------------------------------------
 	private JPanel createItemsPanel(){
-		JPanel itemsPanel = new JPanel();		
+		JPanel itemsPanel = new JPanel(new MigLayout("ins 20"));		
 		
 		//Create initially empty table
 	    table.setShowGrid(true);
 	    table.setGridColor(Color.black);
-	    table.setPreferredScrollableViewportSize(new Dimension(700, 400));
-	    table.setFillsViewportHeight(true);
-	    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
+	    table.setPreferredScrollableViewportSize(new Dimension(620, 400));
+	    //table.setFillsViewportHeight(true);
+	    //table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	    table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+	    
 	    //Put the table in a scroll pane
 	    JScrollPane tableScrollPane = new JScrollPane();
 	    tableScrollPane.setViewportView(table);
@@ -139,13 +141,32 @@ private static final long serialVersionUID = 1L;
 
 	    //Resize the columns
 	    TableColumn col;
-	    int[] sizes = {100, 330, 240};
-	    
+	    int[] sizes = {100, 240, 260};
 	    for(int i=0; i<sizes.length; i++){
 		    col = table.getColumnModel().getColumn(i);
 		    col.setPreferredWidth(sizes[i]);
 		    col.setWidth(sizes[i]);
 	    }
+	    
+	    //SwingHelper.adjustColumnPreferredWidths(table);
+	    
+	    //Resize the columns
+//	    TableColumn col;
+//	    col = table.getColumnModel().getColumn(0);
+//	    col.setPreferredWidth(100);
+//	    col.setWidth(100);
+	    //col = table.getColumnModel().getColumn(1);
+	    //col.setPreferredWidth(330);
+	    //col.setWidth(330);
+	    
+//	    int[] sizes = {100, 330, 240};
+//	    for(int i=0; i<sizes.length; i++){
+//		    col = table.getColumnModel().getColumn(i);
+//		    col.setPreferredWidth(sizes[i]);
+//		    col.setWidth(sizes[i]);
+//	    }
+	    
+	    
 	    
 		return itemsPanel;
 	}

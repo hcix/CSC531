@@ -16,7 +16,6 @@ public class ButtonHelper {
 	public static final int LARGE = 48;
 	public static final int MEDIUM = 32;
 	public static final int SMALL = 16;
-	//public static final int XTRA_SMALL = 8;
 	
 	/*Filenames of buttons relative to userinterface package*/
 	private static final String SAVE = "icons/save_";
@@ -27,7 +26,13 @@ public class ButtonHelper {
 	private static final String PRINT = "icons/print_";
 	private static final String CONFIRM = "icons/check_";
 	private static final String PREVIEW = "icons/preview_";
-		
+	private static final String CREATE = "icons/plusSign";
+	private static final String LOGOUT = "icons/logout_";
+	private static final String USR_ACCOUNTS = "icons/group_";
+	private static final String ADD_USR = "icons/addUser_";
+	private static final String VIDEO = "icons/videoCamera_";
+	private static final String PHOTO = "icons/camera_";
+	
 	//all icons are .png's
 	private static final String PNG = ".png";
 	
@@ -37,6 +42,12 @@ public class ButtonHelper {
 	private static final String EDIT_TXT = "Edit ";
 	private static final String DELETE_TXT = "Delete ";
 	private static final String PREVIEW_TXT = "Preview ";
+	private static final String CREATE_TXT = "Create ";
+	private static final String EMAIL_TXT = "Email ";
+	private static final String PRINT_TXT = "Print ";
+	private static final String LOGOUT_TXT= "Logout";
+	private static final String ADD_USR_TXT = "Add ";
+	
 //-----------------------------------------------------------------------------	
 	public static JButton createSaveButton(int size, String txt){
 		size=checkSize(size);
@@ -93,6 +104,17 @@ public class ButtonHelper {
 		return imageButton;
 	}
 //-----------------------------------------------------------------------------	
+	public static JButton createPrintButton(int size, String txt){
+		size=checkSize(size);
+		
+		ImageIcon buttonIcon = ImageHandler.getProgramImgIcon((PRINT+size+PNG));
+		JButton imageButton= new JButton((PRINT_TXT+txt), buttonIcon);
+		imageButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		imageButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		
+		return imageButton;
+	}
+//-----------------------------------------------------------------------------	
 	public static JButton createPreviewButton(int size, String txt){
 		size=checkSize(size);
 		
@@ -103,6 +125,83 @@ public class ButtonHelper {
 		
 		return imageButton;
 	}
+//-----------------------------------------------------------------------------
+	public static JButton createLogoutButton(int size, String txt){
+		size=checkSize(size);
+		
+		ImageIcon buttonIcon = ImageHandler.getProgramImgIcon((LOGOUT+size+PNG));
+		JButton imageButton= new JButton((LOGOUT_TXT+txt), buttonIcon);
+		imageButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		imageButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		
+		return imageButton;
+	}
+//-----------------------------------------------------------------------------	
+	public static JButton createEmailButton(int size, String txt){
+		size=checkSize(size);
+		
+		ImageIcon buttonIcon = ImageHandler.getProgramImgIcon((EMAIL+size+PNG));
+		JButton imageButton= new JButton((EMAIL_TXT+txt), buttonIcon);
+		imageButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		imageButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		
+		return imageButton;
+	}
+//-----------------------------------------------------------------------------	
+	public static JButton createCreateButton(int size, String txt){
+		size=checkSize(size);
+		
+		ImageIcon buttonIcon = ImageHandler.getProgramImgIcon((CREATE+size+PNG));
+		JButton imageButton= new JButton((CREATE_TXT+txt), buttonIcon);
+		imageButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		imageButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		
+		return imageButton;
+	}
+//-----------------------------------------------------------------------------
+	public static JButton createVideoButton(int size, String txt){
+		size=checkSize(size);
+		
+		ImageIcon buttonIcon = ImageHandler.getProgramImgIcon((VIDEO+size+PNG));
+		JButton imageButton= new JButton(txt, buttonIcon);
+		imageButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		imageButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		
+		return imageButton;
+	}
+//-----------------------------------------------------------------------------
+	public static JButton createPhotoButton(int size, String txt){
+		size=checkSize(size);
+		
+		ImageIcon buttonIcon = ImageHandler.getProgramImgIcon((PHOTO+size+PNG));
+		JButton imageButton= new JButton(txt, buttonIcon);
+		imageButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		imageButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		
+		return imageButton;
+	}
+//-----------------------------------------------------------------------------	
+	public static JButton createAddUsrButton(int size, String txt){
+		size=checkSize(size);
+		
+		ImageIcon buttonIcon = ImageHandler.getProgramImgIcon((ADD_USR+size+PNG));
+		JButton imageButton= new JButton((ADD_USR_TXT+txt), buttonIcon);
+		imageButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		imageButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		
+		return imageButton;
+	}
+//-----------------------------------------------------------------------------	
+	public static JButton createUsrAccountsButton(int size, String txt){
+		size=checkSize(size);
+		
+		ImageIcon buttonIcon = ImageHandler.getProgramImgIcon((USR_ACCOUNTS+size+PNG));
+		JButton imageButton= new JButton((txt), buttonIcon);
+		imageButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		imageButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		
+		return imageButton;
+	}	
 //-----------------------------------------------------------------------------
 	/**
 	 * Used internally to ensure only existing size images are used.

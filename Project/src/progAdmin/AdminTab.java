@@ -4,7 +4,6 @@
 package progAdmin;
 
 import homeTab.HomeTab;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -18,6 +17,7 @@ import progAdmin.itemsToReview.ManageItemsDialog;
 import program.ResourceManager;
 import userinterface.MainInterfaceWindow;
 import utilities.FileHelper;
+import utilities.ui.ButtonHelper;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
@@ -58,7 +58,7 @@ public class AdminTab extends JPanel implements ActionListener {
 	private JPanel createActionButtons() {
 		JPanel buttonsPanel = new JPanel();
 
-		JButton editUsrAcctsButton = SwingHelper.createImageButton("icons/group_48.png");
+		JButton editUsrAcctsButton = ButtonHelper.createUsrAccountsButton(ButtonHelper.LARGE, "");
 		editUsrAcctsButton.addActionListener(new ActionListener() {
 			//Create dialog to edit user accounts
 			EditUsrAccountsDialog usrAcctsDialog = new EditUsrAccountsDialog(parent);
@@ -67,7 +67,8 @@ public class AdminTab extends JPanel implements ActionListener {
 			}
 		});
 		
-		JButton manageItemsButton = SwingHelper.createImageButton("icons/notepad_48.png");
+		JButton manageItemsButton = 
+				SwingHelper.createImageButton("icons/notepad_48.png");
 		manageItemsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 				manageItemsDialog.setVisible(true);	
@@ -76,7 +77,7 @@ public class AdminTab extends JPanel implements ActionListener {
 			}
 		});
 
-		JButton uploadVideoButton = SwingHelper.createImageButton("icons/videoCamera.png");
+		JButton uploadVideoButton = ButtonHelper.createVideoButton(ButtonHelper.LARGE,	"");
 		uploadVideoButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 				chooseAndAddVideo();

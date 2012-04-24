@@ -1,6 +1,7 @@
 package utilities.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -18,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
@@ -25,6 +27,9 @@ import javax.swing.SpinnerModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import net.miginfocom.swing.MigLayout;
 import userinterface.MainInterfaceWindow;
 
@@ -548,4 +553,29 @@ public class SwingHelper {
         return boxes;
 	}
 //-----------------------------------------------------------------------------	
+		public static void adjustColumnPreferredWidths(JTable table) {
+			// strategy - get max width for cells in column and
+			// make that the preferred width
+			TableColumnModel columnModel = table.getColumnModel();
+			for (int col=0; col<table.getColumnCount(); col++) {
+
+		int maxwidth = 0;            
+		for (int row=0; row<table.getRowCount(); row++) {
+		TableCellRenderer rend =
+				table.getCellRenderer(row, col); 
+			Object value = table.getValueAt (row, col); 
+			Component comp =
+				rend.getTableCellRendererComponent (table, 
+										value, 
+										false, 
+										false, 
+										row, 
+										col);
+			maxwidth = Math.max (comp.getPreferredSize().width, maxwidth); 
+		} // for row
+		TableColumn column = columnModel.getColumn (col); 
+		column.setPreferredWidth (maxwidth);
+			} // for col 
+		}
+//-----------------------------------------------------------------------------
 }

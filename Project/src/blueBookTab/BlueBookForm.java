@@ -322,14 +322,14 @@ public class BlueBookForm extends JDialog {
 		final JPanel photoPanel = new JPanel(new MigLayout());
 		photoArea = photoPanel;
 		//Create initial no-photo place holder photo
-		ImageIcon noPhotoImage = ImageHandler.createImageIcon("images/unknownPerson.jpeg");
+		ImageIcon noPhotoImage = ImageHandler.getProgramImgIcon("images/unknownPerson.jpeg");
 		noPhotoLabel = new JLabel(noPhotoImage);
 		photoPanel.add(noPhotoLabel, "span, wrap");
 		photoPanel.setSize(800, 300);
 		photoOuterPanel.add(photoPanel, "spanx,grow,wrap");
 		photoOuterPanel.setSize(800, 300); //testing
 		
-		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", "icons/camera.png");
+		JButton addPhotoButton = ButtonHelper.createPhotoButton(ButtonHelper.LARGE, "Add a Photo");
 		addPhotoButton.setToolTipText("Attach a photo to this bbEntry");
 		addPhotoButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae) {
@@ -337,8 +337,7 @@ public class BlueBookForm extends JDialog {
 			}
 		});
 		
-		JButton addVideoButton = SwingHelper.createImageButton("Add a Video", 
-				"icons/videoCamera.png");
+		JButton addVideoButton = ButtonHelper.createVideoButton(ButtonHelper.LARGE,	"Add a Video");
 		addVideoButton.setToolTipText("Attach a video to this BOLO");
 		addVideoButton.addActionListener(new ActionListener() {
 

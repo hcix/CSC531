@@ -1,7 +1,5 @@
 package progAdmin;
 
-import homeTab.Change;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -26,13 +24,10 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import progAdmin.itemsToReview.ItemToReview;
 import net.miginfocom.swing.MigLayout;
 import progAdmin.itemsToReview.ItemToReview;
-import program.CurrentUser;
 import utilities.ChangeHelper;
-import utilities.DatabaseHelper;
-import utilities.ChangeHelper;
+import utilities.ui.ButtonHelper;
 import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
@@ -84,8 +79,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		JPanel mainPanel = new JPanel(new MigLayout());
 
 		//Add User button
-		JButton addNewUserButton = SwingHelper
-		.createImageButton("Add", "icons/addUser_48.png");
+		JButton addNewUserButton = ButtonHelper.createAddUsrButton(ButtonHelper.LARGE, "");
 		addNewUserButton.addActionListener(this);
 		addNewUserButton.setActionCommand(ADD_USER);
 
