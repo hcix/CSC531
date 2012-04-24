@@ -1,6 +1,7 @@
 package program;
 
 import homeTab.HomeTab;
+
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -175,8 +176,10 @@ public class ResourceManager {
 	public JFrame getGuiParent(){
 		return parent;
 	}
+
 //-----------------------------------------------------------------------------
-	public void setHomeTabReference(HomeTab ht){
+	public void setHomeTabReference(HomeTab ht)
+	{
 		this.homeTab=ht;
 	}
 //-----------------------------------------------------------------------------

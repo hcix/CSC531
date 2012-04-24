@@ -281,7 +281,7 @@ public class BlueBookForm extends JDialog {
 	    });
 	    
 	    // Add preview button
-	    JButton previewButton = ButtonHelper.createPreviewButton(ButtonHelper.MEDIUM, "");
+	    JButton previewButton = ButtonHelper.createPreviewButton(ButtonHelper.LARGE, "");
 	    		//new JButton("<html>Preview<br>  Entry</html>");
 	    previewButton.setToolTipText("Preview and print final Blue Book entry");
 	    previewButton.addActionListener(new ActionListener() {

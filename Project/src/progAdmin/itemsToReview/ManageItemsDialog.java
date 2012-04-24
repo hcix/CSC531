@@ -163,6 +163,8 @@ private static final long serialVersionUID = 1L;
 			itemsPanel.add(createItemsPanel());
 			itemsPanel.revalidate();
 
+			ChangeHelper.makeChange(ChangeHelper.ADD_ITEM_TO_REVIEW);
+
 		//Delete item
 		} else if(command.equals(DELETE_ITEM)){
 			int rowIndex = table.getSelectedRow();
@@ -176,6 +178,7 @@ private static final long serialVersionUID = 1L;
 						" delete an item once it's been created.", "Operation not Permited", 
 						JOptionPane.INFORMATION_MESSAGE);
 			}
+
 		//Edit item
 
 			ChangeHelper.makeChange(ChangeHelper.ADD_ITEM_TO_REVIEW);
@@ -184,6 +187,10 @@ private static final long serialVersionUID = 1L;
 			rm.removeItem(rowIndex);
 			refreshItemsTable();
 			ChangeHelper.makeChange(ChangeHelper.DELETE_ITEM_TO_REVIEW);
+
+
+			ChangeHelper.makeChange(ChangeHelper.DELETE_ITEM_TO_REVIEW);
+		//Edit item
 
 		} else if (command.equals(EDIT_ITEM)){
 			int rowIndex = table.getSelectedRow();
@@ -199,6 +206,8 @@ private static final long serialVersionUID = 1L;
 	            readItem.setModal(true);
 	            rm.loadItemsList();
 
+
+
 	            //refresh while dialog is in view
 				refreshItemsTable();
 				itemsPanel.removeAll();
@@ -209,6 +218,12 @@ private static final long serialVersionUID = 1L;
 							"Only an item's creator may edit an item's " +
 							"contents.", "Operation not Permited", 
 							JOptionPane.INFORMATION_MESSAGE);
+
+
+	            refreshItemsTable();
+	            table.doLayout();
+	            ChangeHelper.makeChange(ChangeHelper.EDIT_ITEM_TO_REVIEW);
+
 
 	            refreshItemsTable();
 	            table.doLayout();

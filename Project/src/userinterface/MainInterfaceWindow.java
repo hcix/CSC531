@@ -2,27 +2,23 @@ package userinterface;
 
 import homeTab.HomeTab;
 
+
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.Dimension;
-
-
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
-
-
+import java.awt.Dimension;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import progAdmin.AdminTab;
 import progAdmin.PersonnelManager;
 import program.CurrentUser;
@@ -47,10 +43,15 @@ private static final long serialVersionUID = 1L;
 		super(new GridLayout(1, 1));
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
+
 		Dimension dim = InterfaceSizer.getTabSize();
 
 		this.parent = parent;
 		//Dimension dim = InterfaceSizer.getTabSize();
+		//Dimension dim = InterfaceSizer.getTabSize();
+
+		this.parent = parent;
+
 		/*
 		 * Set up the tabbedPane panel and add the appropriate tabs
 		 * depending on the current user's permissions.
@@ -58,6 +59,7 @@ private static final long serialVersionUID = 1L;
 		tabbedPane = new JTabbedPane();
 		//Set up the 5 tabs everyone sees
 		homeTab = new HomeTab(parent, false);
+		rm.setHomeTabReference(homeTab);
 		tabbedPane.addChangeListener(this);
 		tabbedPane.addTab("Home", homeTab);
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
@@ -113,8 +115,12 @@ private static final long serialVersionUID = 1L;
 		int index = source.getSelectedIndex();
 		if(source.getTitleAt(index).equals("Home"))
 		{
-			System.out.println("called");
-			
+			try {
+				homeTab.databaseAction();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 }
