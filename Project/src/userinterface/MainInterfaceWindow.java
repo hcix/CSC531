@@ -1,20 +1,13 @@
 package userinterface;
 
 import homeTab.HomeTab;
-
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
-
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-
-import net.miginfocom.swing.MigLayout;
 import progAdmin.AdminTab;
 import progAdmin.PersonnelManager;
 import program.CurrentUser;
@@ -35,8 +28,6 @@ private static final long serialVersionUID = 1L;
 		super(new GridLayout(1, 1));
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
-		Dimension dim = new Dimension(970,1000);
-		
 		/*
 		 * Set up the tabbedPane panel and add the appropriate tabs
 		 * depending on the current user's permissions.
@@ -45,11 +36,9 @@ private static final long serialVersionUID = 1L;
 		//Set up the 5 tabs everyone sees
 		homeTab = new HomeTab(parent, false);
 		tabbedPane.addTab("Home", homeTab);
-		homeTab.setPreferredSize(dim);
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         
         boloTab = new BOLOtab(rm, this);
-        boloTab.setPreferredSize(dim);
         tabbedPane.addTab("BOLOs", boloTab);
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
         

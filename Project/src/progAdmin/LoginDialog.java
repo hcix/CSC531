@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -50,9 +51,11 @@ public class LoginDialog extends JDialog implements ActionListener {
 			" to the system.</font></b></html>";
 	private static final String BAD_PASSWORD_MESSAGE = "<html><b><font color=#ff0000>" +
 			"You entered incorrect credentials.<br> Please try again.</font></b></html>";
+	private static final String HELP_MESSAGE = "You need help!";
 	private JLabel retryLabel;
 	private JTextField caneIdField;
 	private JPasswordField passwordField;
+	JFrame frame;
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates Login JFrame
@@ -61,6 +64,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 	 */
 	public LoginDialog(final JFrame frame){
 		super(frame, "UMPD Login", true);
+		this.frame = frame;
 		
 		//Set the size of the form
 		this.setPreferredSize(SwingHelper.LOGIN_DIALOG_DIMENSION);
@@ -167,7 +171,8 @@ public class LoginDialog extends JDialog implements ActionListener {
 			loginSuccessful=false;
 			setVisible(false);
 		} else if(ev.getActionCommand()==HELP){
-	
+			JOptionPane.showMessageDialog(frame, HELP_MESSAGE, 
+					"Help", JOptionPane.INFORMATION_MESSAGE);
 /* *****************************************************************************
 * TODO: Display help info telling user to enter their caneID and password
 * and displaying the UM site they can go to to reset it if they forgot it.
