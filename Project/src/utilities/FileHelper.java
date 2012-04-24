@@ -144,7 +144,7 @@ public class FileHelper {
 	 * @return the absolute path of the report
 	 */
 	public static String getBBEntryPdfPathName(String bbPdfName){
-		File progDir = new File("..");
+		File progDir = new File(getProgramDirPathName());
 		Path docPath=null;
 		String docName=null;
 			

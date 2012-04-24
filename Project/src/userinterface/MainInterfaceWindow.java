@@ -3,12 +3,12 @@ package userinterface;
 import homeTab.HomeTab;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
-
-
+import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
+import java.awt.Dimension;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -17,7 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import progAdmin.AdminTab;
 import progAdmin.PersonnelManager;
 import program.CurrentUser;
@@ -30,9 +31,10 @@ import boloTab.BOLOtab;
 
 public class MainInterfaceWindow extends JPanel implements ChangeListener{
 private static final long serialVersionUID = 1L;
+	JPanel boloTab, rollCallTab, blueBookTab;
+	HomeTab homeTab;
 	JFrame parent;
 	JTabbedPane tabbedPane;
-	JPanel homeTab, boloTab, rollCallTab, blueBookTab;
 	ShiftCdrTab shiftCdrTab;
 	AdminTab adminTab;
 	JButton logoutButton;
@@ -40,13 +42,9 @@ private static final long serialVersionUID = 1L;
 	public MainInterfaceWindow(JFrame parent, ResourceManager rm){
 		super(new GridLayout(1, 1));
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-	
-		//Dimension dim = new Dimension(970,1000);
-		Dimension dim = InterfaceSizer.getTabSize();
 
 		this.parent = parent;
 		//Dimension dim = InterfaceSizer.getTabSize();
-
 		/*
 		 * Set up the tabbedPane panel and add the appropriate tabs
 		 * depending on the current user's permissions.
@@ -65,6 +63,8 @@ private static final long serialVersionUID = 1L;
 //=======
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         
+        rm.setHomeTabReference(homeTab);
+        
         boloTab = new BOLOtab(rm, this);
         tabbedPane.addTab("BOLOs", boloTab);
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
@@ -75,12 +75,12 @@ private static final long serialVersionUID = 1L;
         
       //if user is at least a shift cdr, set up shift cdr tab
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
-        	if(CurrentUser.getCurrentUser().getLevel()>=
-        		PersonnelManager.PERMIS_LEVEL_COMMAND){  	
-        	shiftCdrTab = new ShiftCdrTab(rm, this);
-	        tabbedPane.addTab("Shift Commander", shiftCdrTab);
-	        tabbedPane.setMnemonicAt(3, KeyEvent.VK_4); //change to 4 from 5?
-	        
+    	if(CurrentUser.getCurrentUser().getLevel()>=
+    		PersonnelManager.PERMIS_LEVEL_COMMAND){  	
+    	shiftCdrTab = new ShiftCdrTab(rm, this);
+        tabbedPane.addTab("Shift Commander", shiftCdrTab);
+        tabbedPane.setMnemonicAt(3, KeyEvent.VK_4); //change to 4 from 5?
+        
 	      //if user is at a supervisor, set up supervisor tab
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
 	        if(CurrentUser.getCurrentUser().getLevel()>=

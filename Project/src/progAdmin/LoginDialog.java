@@ -80,7 +80,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 		//Set up the GUI
 		retryLabel = new JLabel();
 		dialogPanel.add(retryLabel, "wrap");
-		JLabel badgeLabel = SwingHelper.createImageLabel("images/badge.png");
+		JLabel badgeLabel = SwingHelper.createImageLabel("images/Logon128.png");
 		dialogPanel.add(badgeLabel);
 		JPanel inputPanel = createInputPanel();
 		dialogPanel.add(inputPanel, "wrap");
