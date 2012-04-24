@@ -280,7 +280,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		searchPanel.add(nameField, "alignx left, wrap");
 		searchPanel.add(locationLabel, "alignx left");
 		searchPanel.add(locationField, "alignx left, wrap");
-		SwingHelper.addDateRangePanel(searchPanel);
+		//SwingHelper.addDateRangePanel(searchPanel);
 		searchPanel.add(searchButton, "alignx center, wrap");
 
 		Container contentPane = searchDialog.getContentPane();

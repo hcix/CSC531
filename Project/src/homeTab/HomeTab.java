@@ -71,10 +71,10 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 		rAP = new JScrollPane(rasp);
 		rAP.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		rAP.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		rAP.setPreferredSize(this.parent.getSize());
+		//rAP.setPreferredSize(this.parent.getSize());
 		
 		videoPanel = new JPanel(new MigLayout());
-		videoPanel.setPreferredSize(parent.getSize());
+		//videoPanel.setPreferredSize(parent.getSize());
 		
 		populateVideoPanel();
 		populateActivityPanel();

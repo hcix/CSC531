@@ -65,7 +65,8 @@ public class SearchHelper {
 	        return (fillRollCall(allEntries));
 	    return null;
 	}
-//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------	
+	
 	/**
 	 * Populates <code>Bolo</code>s with respective age, race, sex, height, weight, build, eyes, 
 	 * hair, reference, case number, weapon, prepared by, ... data

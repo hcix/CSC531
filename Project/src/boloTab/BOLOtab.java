@@ -29,6 +29,7 @@ import userinterface.MainInterfaceWindow;
 import utilities.DatabaseHelper;
 import utilities.FileHelper;
 import utilities.SearchHelper;
+import utilities.dateAndTime.JCalendarPanel;
 import utilities.ui.DisplayPanel;
 import utilities.ui.ImageHandler;
 import utilities.ui.SwingHelper;
@@ -193,8 +194,8 @@ public class BOLOtab extends JPanel implements ActionListener {
 		searchPanel.add(caseNumLabel, "alignx left");
 		searchPanel.add(caseNumField, "alignx left, wrap");
 
-		SwingHelper.addDateRangePanel(searchPanel);
-
+		//SwingHelper.addDateRangePanel(searchPanel);
+        //JCalendarPanel date = new JCalendarPanel(rm.getGuiParent(), searchPanel, "Date");
 		searchPanel.add(statusLabel, "alignx left");
 		searchPanel.add(statusList, "alignx left, wrap");
 		searchPanel.add(searchButton, "alignx center, wrap");
