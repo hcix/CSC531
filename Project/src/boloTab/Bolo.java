@@ -537,7 +537,7 @@ public ImageIcon getPhoto(){
 
 		//close the connection
 		conn.close();
-
+		
 	}
 //-----------------------------------------------------------------------------
 	public void createItemToReview() {
