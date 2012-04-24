@@ -497,6 +497,7 @@ public class DatabaseHelper {
         conn.close();
 	}
 //-----------------------------------------------------------------------------
+<<<<<<< HEAD
 	/**
 	 * Retrieves all the <code>ItemToReview</code>s from the database and places them into an 
 	 * <code>Arraylist</code> of <code>ItemToReview</code> objects, which is returned to the 
@@ -557,4 +558,33 @@ public class DatabaseHelper {
 	    return itemsList;
 	}
 //-----------------------------------------------------------------------------
+=======
+	public static void removeOldEntries() throws Exception
+	{
+		//Create the connection to the database
+    	Class.forName("org.sqlite.JDBC");
+    			
+    	//test to make database file access syst indep, changed added Project
+    	//Path dbFilePath = Paths.get("Project", "Database", "umpd.db");
+    	Path dbFilePath = Paths.get("Database", "umpd.db");
+
+    	String dbFileName = dbFilePath.toString();
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
+        
+        Statement stat = conn.createStatement();
+		final long MILI_IN_WEEK = 604800000;
+		Date now = new Date();
+        long time = (now.getTime() - 7*MILI_IN_WEEK);
+        String query = "DELETE FROM Change WHERE Change.time < (?);"; //+ "'" + time + "';";
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setLong(1, time);
+        ps.addBatch();
+        
+        conn.setAutoCommit(false);
+	    ps.executeBatch();
+	    conn.setAutoCommit(true);
+        
+        conn.close();
+	}
+>>>>>>> intermediate home tab work
 }

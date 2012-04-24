@@ -207,7 +207,6 @@ public class LoginDialog extends JDialog implements ActionListener {
 		  
 			//Set the current user to be the employee that just logged in 
 			CurrentUser.setCurrentUser(user);
-				//BEN: Is it ok to use the CurrentUser class this way?
 			
 			//Check if attempting to run in demo mode & perform appropriate actions
 			if(caneID.equals("demo")){
@@ -261,7 +260,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 	   * @param errorID
 	   */
 	  public void displayRetryLabel(int errorID) {
-		  //Display the error corresponding to the gven error code
+		  //Display the error corresponding to the given error code
 		  switch(errorID){
 		  case ERROR_BAD_PASSWORD:
 			  retryLabel.setText(BAD_PASSWORD_MESSAGE);
