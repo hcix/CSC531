@@ -422,7 +422,7 @@ public class DatabaseHelper {
 	 * @return <code>Date</code> object representing the given time
 	 */
 	public static Date convertEpochToDate(long epoch){
-		Date date = new Date(epoch*1000);
+		Date date = new Date(epoch);
 		return date;
 	}
 //-----------------------------------------------------------------------------

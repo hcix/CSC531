@@ -167,8 +167,8 @@ public class HomeTab extends JPanel implements ActionListener {
 
 		//System.getenv("UMPD.latestVideo").equals(null)) ||
 		// if no video, set button and label to be invisible
-		if ((System.getenv("UMPD.latestVideo")) == null
-				||(System.getenv("UMPD.latestVideo")).equals("none")) 
+		if ((System.getProperty("UMPD.latestVideo")) == null
+				||(System.getProperty("UMPD.latestVideo")).equals("none")) 
 		{
 			videoButton.setVisible(false);
 			videoLabel.setVisible(false);
@@ -229,27 +229,5 @@ public class HomeTab extends JPanel implements ActionListener {
 		// get the list of changes from the DB
 		changeList = DatabaseHelper.homeTabPullFromDB();
 	}
-<<<<<<< HEAD
 
-	public void focusGained(FocusEvent e)
-	{
-		System.out.println("homeTab updated");
-		if(e.getComponent().getClass().getName() == this.getClass().getName())
-		{
-			try {
-				changeList = DatabaseHelper.homeTabPullFromDB();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			System.out.println("homeTab updated");
-		}
-	}
-
-	public void focusLost(FocusEvent e) 
-	{
-		
-	}
-=======
->>>>>>> home tabs
 }
