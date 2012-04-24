@@ -33,59 +33,11 @@
 		<permissions>supervisor</permissions>
 	</employee>
 	<employee>
-		<cnumber>bro</cnumber>
-		<firstname>dude</firstname>
-		<lastname>bro</lastname>
-		<caneid>bro</caneid>
-		<email>bro</email>
-		<permissions>Supervisor</permissions>
-	</employee>
-	<employee>
 		<cnumber>5</cnumber>
 		<firstname>1</firstname>
 		<lastname>2</lastname>
 		<caneid>3</caneid>
 		<email>4</email>
-		<permissions>Supervisor</permissions>
-	</employee>
-	<employee>
-		<cnumber>derp</cnumber>
-		<firstname>derp</firstname>
-		<lastname>derp</lastname>
-		<caneid>derp</caneid>
-		<email>derp</email>
-		<permissions>Supervisor</permissions>
-	</employee>
-	<employee>
-		<cnumber>6</cnumber>
-		<firstname>2</firstname>
-		<lastname>3</lastname>
-		<caneid>4</caneid>
-		<email>5</email>
-		<permissions>Supervisor</permissions>
-	</employee>
-	<employee>
-		<cnumber>t</cnumber>
-		<firstname>q</firstname>
-		<lastname>w</lastname>
-		<caneid>e</caneid>
-		<email>r</email>
-		<permissions>Supervisor</permissions>
-	</employee>
-	<employee>
-		<cnumber>cv</cnumber>
-		<firstname>m</firstname>
-		<lastname>n</lastname>
-		<caneid>b</caneid>
-		<email>v</email>
-		<permissions>Supervisor</permissions>
-	</employee>
-	<employee>
-		<cnumber>j</cnumber>
-		<firstname>j</firstname>
-		<lastname>j</lastname>
-		<caneid>j</caneid>
-		<email>j</email>
 		<permissions>Supervisor</permissions>
 	</employee>
 </roster>

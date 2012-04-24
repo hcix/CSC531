@@ -24,10 +24,6 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-<<<<<<< HEAD
-=======
-
->>>>>>> home tabs
 import net.miginfocom.swing.MigLayout;
 import progAdmin.itemsToReview.ItemToReview;
 import utilities.ChangeHelper;

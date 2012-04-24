@@ -1,29 +1,28 @@
 package userinterface;
 
 import homeTab.HomeTab;
-<<<<<<< HEAD
+
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.Dimension;
-=======
+
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 
->>>>>>> home tabs
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-<<<<<<< HEAD
-=======
+
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
->>>>>>> home tabs
+
 import progAdmin.AdminTab;
 import progAdmin.PersonnelManager;
 import program.CurrentUser;
@@ -46,14 +45,11 @@ private static final long serialVersionUID = 1L;
 	public MainInterfaceWindow(JFrame parent, ResourceManager rm){
 		super(new GridLayout(1, 1));
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-<<<<<<< HEAD
 
 		Dimension dim = InterfaceSizer.getTabSize();
 
-=======
 		this.parent = parent;
 		//Dimension dim = InterfaceSizer.getTabSize();
->>>>>>> home tabs
 		/*
 		 * Set up the tabbedPane panel and add the appropriate tabs
 		 * depending on the current user's permissions.
