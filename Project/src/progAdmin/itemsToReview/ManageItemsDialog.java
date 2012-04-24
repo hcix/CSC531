@@ -26,6 +26,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import utilities.ui.SwingHelper;
@@ -183,8 +184,9 @@ private static final long serialVersionUID = 1L;
 			itemDialog.setModal(true);
 			//refresh items list from ResourceManager
 			refreshItemsTable();
+			itemsPanel.removeAll();
+			itemsPanel.add(createItemsPanel());
 			itemsPanel.revalidate();
-			table.doLayout();
 		} else if(command.equals(DELETE_ITEM)){
 			int rowIndex = table.getSelectedRow();
 			rm.removeItem(rowIndex);

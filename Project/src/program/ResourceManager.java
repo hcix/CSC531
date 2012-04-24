@@ -226,6 +226,7 @@ public class ResourceManager {
 	public void addItem(ItemToReview newItem) {
 //		items.add(newItem);
 		try {
+			items.add(newItem);
 			newItem.addToDB();
 		 } catch (Exception e) {
 			System.out.println("error: unable to add ItemToReview to DB");
