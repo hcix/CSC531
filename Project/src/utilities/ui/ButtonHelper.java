@@ -202,6 +202,17 @@ public class ButtonHelper {
 		
 		return imageButton;
 	}	
+//-----------------------------------------------------------------------------	
+	public static JButton createMarkUnreadButton(int size, String txt){
+		size=checkSize(size);
+		
+		ImageIcon buttonIcon = ImageHandler.getProgramImgIcon((USR_ACCOUNTS+size+PNG));
+		JButton imageButton= new JButton((txt), buttonIcon);
+		imageButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		imageButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		
+		return imageButton;
+	}	
 //-----------------------------------------------------------------------------
 	/**
 	 * Used internally to ensure only existing size images are used.

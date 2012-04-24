@@ -35,9 +35,10 @@ import boloTab.BOLOtab;
 
 public class MainInterfaceWindow extends JPanel implements ChangeListener{
 private static final long serialVersionUID = 1L;
+	JPanel boloTab, rollCallTab, blueBookTab;
+	HomeTab homeTab;
 	JFrame parent;
 	JTabbedPane tabbedPane;
-	JPanel homeTab, boloTab, rollCallTab, blueBookTab;
 	ShiftCdrTab shiftCdrTab;
 	AdminTab adminTab;
 	JButton logoutButton;
@@ -61,6 +62,8 @@ private static final long serialVersionUID = 1L;
 		tabbedPane.addTab("Home", homeTab);
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         
+        rm.setHomeTabReference(homeTab);
+        
         boloTab = new BOLOtab(rm, this);
         tabbedPane.addTab("BOLOs", boloTab);
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
@@ -71,12 +74,12 @@ private static final long serialVersionUID = 1L;
         
       //if user is at least a shift cdr, set up shift cdr tab
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
-        	if(CurrentUser.getCurrentUser().getLevel()>=
-        		PersonnelManager.PERMIS_LEVEL_COMMAND){  	
-        	shiftCdrTab = new ShiftCdrTab(rm, this);
-	        tabbedPane.addTab("Shift Commander", shiftCdrTab);
-	        tabbedPane.setMnemonicAt(3, KeyEvent.VK_4); //change to 4 from 5?
-	        
+    	if(CurrentUser.getCurrentUser().getLevel()>=
+    		PersonnelManager.PERMIS_LEVEL_COMMAND){  	
+    	shiftCdrTab = new ShiftCdrTab(rm, this);
+        tabbedPane.addTab("Shift Commander", shiftCdrTab);
+        tabbedPane.setMnemonicAt(3, KeyEvent.VK_4); //change to 4 from 5?
+        
 	      //if user is at a supervisor, set up supervisor tab
 //COMMENT NEXT 2 LINES OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
 	        if(CurrentUser.getCurrentUser().getLevel()>=
