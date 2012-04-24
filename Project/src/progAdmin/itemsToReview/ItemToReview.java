@@ -30,8 +30,6 @@ public class ItemToReview {
 	String createdBy;
 	/** the caneID of the person who reviewed this <code>ItemToReview</code> **/
 	String reviewedBy=null;
-	/** the caneID of the person who last edited this <code>ItemToReview</code> **/
-	String editedBy=null;
 //-----------------------------------------------------------------------------
 	public ItemToReview(){
 	}
@@ -102,17 +100,17 @@ public class ItemToReview {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return the last user to edit this <code>ItemToReview</code>, if any
+	 * @return the user who reviewed this <code>ItemToReview</code>, if any
 	 */
-	public String getEditedBy() {
-		return editedBy;
+	public String getReviewedBy() {
+		return reviewedBy;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param editedBy - the editedBy value to set
+	 * @param reviewedBy - the reviewedBy value to set
 	 */
-	public void setEditedBy(String editedBy) {
-		this.editedBy = editedBy;
+	public void setReviewedBy(String reviewedBy) {
+		this.reviewedBy = reviewedBy;
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -177,8 +175,8 @@ public class ItemToReview {
 		//Create a prepared statement to add this bolo
 		PreparedStatement prep = conn.prepareStatement(
 				"REPLACE into items(item_id, title, details, dateCreated, dateReviewed," +
-				"createdBy, reviewedBy, editedBy)" +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+				"createdBy, reviewedBy)" +
+				"VALUES (?, ?, ?, ?, ?, ?, ?);");
 
 //		System.out.printf("REPLACE into items(item_id, title, details, dateCreated, dateReviewed," +
 //				"createdBy, reviewedBy, editedBy)" +
@@ -192,7 +190,6 @@ public class ItemToReview {
 		prep.setLong(5, this.dateReviewed);
 		prep.setString(6, this.createdBy);
 		prep.setString(7, this.reviewedBy);
-		//prep.setString(8, this.editedBy);
 
 		prep.addBatch();
 

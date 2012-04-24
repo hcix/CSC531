@@ -528,18 +528,22 @@ public class DatabaseHelper {
 	    	item = new ItemToReview();
 	        
 	    	item.setItem_id(allItems.getInt("item_id"));
+	    	
 	    	title = allItems.getString("title");
 	    	if(title!=null){ item.setTitle(title); }
+	    	
 	    	details = allItems.getString("details");
 	    	if(details!=null){ item.setDetails(details); }
+	    	
 	    	creator = allItems.getString("createdBy");
-	    	if(creator!=null){ item.setDetails(creator); }
+	    	if(creator!=null){ item.setCreator(creator); }
+	    	
 	    	reviewed = allItems.getString("reviewedBy");
-	    	if(reviewed!=null){ item.setDetails(reviewed); }
-	    	reviewed = allItems.getString("reviewedBy");
-	    	if(reviewed!=null){ item.setDetails(reviewed); }
+	    	if(reviewed!=null){ item.setReviewedBy(reviewed); }
+
 	    	dateCreated = allItems.getLong("dateCreated");
 	    	if(dateCreated!=0){ item.setDateCreated(dateCreated); }
+	    	
 	    	dateReviewed = allItems.getLong("dateReviewed"); 
 			if(dateReviewed!=0){ item.setDateReviewed(dateReviewed); }
 	    		
