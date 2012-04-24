@@ -162,6 +162,9 @@ private static final long serialVersionUID = 1L;
 			itemsPanel.removeAll();
 			itemsPanel.add(createItemsPanel());
 			itemsPanel.revalidate();
+
+			ChangeHelper.makeChange(ChangeHelper.ADD_ITEM_TO_REVIEW);
+
 		//Delete item
 		} else if(command.equals(DELETE_ITEM)){
 			int rowIndex = table.getSelectedRow();
@@ -176,9 +179,8 @@ private static final long serialVersionUID = 1L;
 						" delete an item once it's been created.", "Operation not Permited", 
 						JOptionPane.INFORMATION_MESSAGE);
 			}
+			ChangeHelper.makeChange(ChangeHelper.DELETE_ITEM_TO_REVIEW);
 		//Edit item
-
-	
 		} else if (command.equals(EDIT_ITEM)){
 			int rowIndex = table.getSelectedRow();
 			ItemToReview item = (rm.getItems()).get(rowIndex);
@@ -207,9 +209,6 @@ private static final long serialVersionUID = 1L;
 
 	            refreshItemsTable();
 	            table.doLayout();
-	            ChangeHelper.makeChange(ChangeHelper.EDIT_ITEM_TO_REVIEW);
-
-
 			}
 		}
 		

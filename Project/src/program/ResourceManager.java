@@ -175,8 +175,9 @@ public class ResourceManager {
 	public JFrame getGuiParent(){
 		return parent;
 	}
-//-----------------------------------------------------------------------------
-	public void setHomeTabReference(HomeTab ht){
+
+	public void setHomeTabReference(HomeTab ht)
+	{
 		this.homeTab=ht;
 	}
 //-----------------------------------------------------------------------------

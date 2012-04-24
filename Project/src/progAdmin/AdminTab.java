@@ -69,7 +69,7 @@ public class AdminTab extends JPanel implements ActionListener {
 		});
 		
 		JButton manageItemsButton = 
-				SwingHelper.createImageButton("icons/notepad_48.png");
+				SwingHelper.createImageButton("icons/newManageItems.png");
 		manageItemsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 				manageItemsDialog.setVisible(true);	
@@ -85,16 +85,16 @@ public class AdminTab extends JPanel implements ActionListener {
 			}
 		});
 
-		JButton editSystemButton = SwingHelper
+		/*JButton editSystemButton = SwingHelper
 				.createImageButton("icons/gear_48.png");
 		editSystemButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 				//TODO edit syst setting dialog	
-			}
-		});
+			}*/
+		//});
 
 		JButton[] buttonArray = {editUsrAcctsButton, manageItemsButton, uploadVideoButton,
-				editSystemButton };
+				/*editSystemButton*/ };
 		
 		String[] buttonLabels = {"<html><h2>Edit User Accounts</html></h2>", 
 				"<html><h2>Manage Items to Review</html></h2>",
