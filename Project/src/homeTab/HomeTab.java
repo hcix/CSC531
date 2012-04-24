@@ -183,13 +183,12 @@ public class HomeTab extends JPanel implements ActionListener {
 		rasp.removeAll();
 		repopulateActivityPanel();
 	}
-<<<<<<< HEAD
 
 
-	public void focusGained(FocusEvent e)
-=======
+
+	public void focusGained(FocusEvent e){
+	}
 	public void repopulateActivityPanel() throws Exception
->>>>>>> home tab comprete
 	{
 		JLabel [] labels = new JLabel[SEVEN];
 		long [] day_Starts = new long[SEVEN];
