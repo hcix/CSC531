@@ -108,6 +108,7 @@ public class JCalendar extends JDialog implements PropertyChangeListener{
         btnOk.addActionListener(lSymAction);
         btnCancel.addActionListener(lSymAction);
         
+        setLocationByPlatform(true);
         pack();
       //  this.setVisible(true);
     }

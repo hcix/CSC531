@@ -3,8 +3,10 @@ package program;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import progAdmin.LoginDialog;
 import userinterface.DashboardPanel;
@@ -16,6 +18,22 @@ public class Core extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private static JFrame frame;
 	private static ResourceManager rm;
+	private static MySplash splash;
+	//Background task for loading images.
+    static SwingWorker worker = new SwingWorker<Boolean, Void>() {
+        @Override
+        public Boolean doInBackground() {
+        	createAndShowMainGUI();
+        	return true;
+        }
+        
+        @Override
+        public void done() {
+        	//System.out.println("CALLLED!!!");
+        	splash.setVisible(false);
+        }
+ 
+    };
 //-----------------------------------------------------------------------------	 
 	/**
 	 * Main method to start the thread that will run the main program
@@ -40,11 +58,12 @@ public class Core extends JFrame {
 	        
 	        	rm = new ResourceManager(frame);
 	        	
-	        	//Splash splashScreen = new Splash();
-	        	//splashScreen.setVisible(true);
-
-	        	//Set up the UI
-	        	createAndShowMainGUI();
+	        	//create splash screen
+	        	splash = new MySplash(frame);
+	        	splash.setVisible(true);
+	        	splash.setLocationRelativeTo(frame);
+	        	
+	        	worker.execute();
 	        }
 	    });
 	}
@@ -76,10 +95,8 @@ public class Core extends JFrame {
 		//Display the window
 	    frame.pack();
 	    frame.setVisible(true);
-	
 	}
 //-----------------------------------------------------------------------------	
-
 	/**
 	 * Create the GUI and show it.  For thread safety, this method should be
 	 * invoked from the event dispatch thread.
@@ -100,12 +117,11 @@ public class Core extends JFrame {
 			System.exit(0);
 		}
 	}
-	
 //-----------------------------------------------------------------------------	
 	public static void invalidateFrames()
 	{
 		frame.dispose();
 	}
-//-----------------------------------------------------------------------------	
+//-----------------------------------------------------------------------------
 
 }
