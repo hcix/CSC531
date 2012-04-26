@@ -1,10 +1,11 @@
-/**
- * Class to hold information about the current user of the system.
- */
+
 package program;
 
 import progAdmin.Employee;
-
+/**
+ * the <code>CurrentUser<code/> class to hold information about the current 
+ * user of the system.
+ */
 public class CurrentUser extends Employee{
 	private static Employee user;
 //-----------------------------------------------------------------------------

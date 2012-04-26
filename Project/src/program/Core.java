@@ -12,8 +12,10 @@ import progAdmin.LoginDialog;
 import userinterface.DashboardPanel;
 import userinterface.MainInterfaceWindow;
 import utilities.ui.SwingHelper;
-
-
+/**
+ * The main class that runs and starts the UMPD Management System
+ *
+ */
 public class Core extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private static JFrame frame;

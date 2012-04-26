@@ -1,6 +1,3 @@
-/**
- * Tab available only to Shift Commanders.
- */
 package shiftCdrTab.gui;
 
 import java.awt.Container;
@@ -38,8 +35,10 @@ import utilities.DatabaseHelper;
 import utilities.FileHelper;
 import utilities.pdf.PDFView;
 import utilities.ui.SwingHelper;
-
-
+/**
+ * the <code>ReportsPanel<code/> Tab is available only to Shift Commanders. 
+ * it allows one to view a report
+ */
 public class ReportsPanel extends JPanel implements MouseListener, ActionListener{
 private static final long serialVersionUID = 1L;
 	final ResourceManager rm;
