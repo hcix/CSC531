@@ -6,7 +6,7 @@
 		<lastname>Reback</lastname>
 		<caneid>m.reback</caneid>
 		<email>m.reback@umiami.edu</email>
-		<permissions>command</permissions>
+		<permissions>supervisor</permissions>
 	</employee>
 	<employee>
 		<cnumber>C11111111</cnumber>
@@ -25,11 +25,8 @@
 		<permissions>officer</permissions>
 	</employee>
 	<employee>
-<<<<<<< HEAD
 		<cnumber>C33333333</cnumber>
-=======
 		<cnumber>C06064666</cnumber>
->>>>>>> e8e62a66ae854e9a1b4fe39724960c3ddafc5f9c
 		<firstname>Heather</firstname>
 		<lastname>Ciechowski</lastname>
 		<caneid>hciechowski</caneid>
@@ -53,20 +50,17 @@
 		<permissions>supervisor</permissions>
 	</employee>
 	<employee>
-<<<<<<< HEAD
 		<cnumber>Cxxx</cnumber>
 		<firstname>demo</firstname>
 		<lastname>!</lastname>
 		<caneid>demo</caneid>
 		<email>k.kravitch@umiami.edu</email>
 		<permissions>supervisor</permissions>
-=======
 		<cnumber>xxx</cnumber>
 		<firstname>demo2</firstname>
 		<lastname>demo</lastname>
 		<caneid>demo2</caneid>
 		<email>h.ciechowski@umiami.edu</email>
 		<permissions>officer</permissions>
->>>>>>> e8e62a66ae854e9a1b4fe39724960c3ddafc5f9c
 	</employee>
 </roster>
