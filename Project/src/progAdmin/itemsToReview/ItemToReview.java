@@ -9,7 +9,8 @@ import java.sql.Statement;
 import program.CurrentUser;
 //-----------------------------------------------------------------------------
 /**
- * 
+ * <code>ItemToReview<code/> class represents a single item to review object in
+ * the system
  */
 public class ItemToReview {
 	/** the title of this ItemToReview object **/
