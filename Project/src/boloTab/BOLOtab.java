@@ -72,7 +72,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 		tabbedPane.addTab("Recent BOLOs", entriesScroller);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
 
-//		//Add archived BOLOs tab 
 //		JPanel archievedBolosTab = new JPanel();
 //		tabbedPane.addTab("Archived", archievedBolosTab);
 //		tabbedPane.setMnemonicAt(1, KeyEvent.VK_3);

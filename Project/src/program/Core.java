@@ -23,18 +23,12 @@ public class Core extends JFrame {
     static SwingWorker worker = new SwingWorker<Boolean, Void>() {
         @Override
         public Boolean doInBackground() {
-//            //final ImageIcon[] innerImgs = new ImageIcon[nimgs];
-//            for (int i = 0; i < nimgs; i++) {
-//                innerImgs[i] = loadImage(i + 1);
-//            }
-//            return innerImgs;
         	createAndShowMainGUI();
         	return true;
         }
         
         @Override
         public void done() {
-        	System.out.println("CALLLED!!!");
         	splash.setVisible(false);
         }
  
@@ -67,10 +61,7 @@ public class Core extends JFrame {
 	        	splash = new MySplash(frame);
 	        	splash.setVisible(true);
 	        	splash.setLocationRelativeTo(frame);
-	        	
-	         	doStuff();
-	        	//createAndShowMainGUI();
-
+	        	worker.execute();
 	        }
 	    });
 	}
@@ -103,10 +94,8 @@ public class Core extends JFrame {
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	    frame.pack();
 	    frame.setVisible(true);
-	
 	}
 //-----------------------------------------------------------------------------	
-
 	/**
 	 * Create the GUI and show it.  For thread safety, this method should be
 	 * invoked from the event dispatch thread.
@@ -127,16 +116,10 @@ public class Core extends JFrame {
 			System.exit(0);
 		}
 	}
-	
 //-----------------------------------------------------------------------------	
 	public static void invalidateFrames()
 	{
 		frame.dispose();
 	}
-//-----------------------------------------------------------------------------	
-	private static void doStuff(){
-		worker.execute();
-	}
 //-----------------------------------------------------------------------------
-
 }

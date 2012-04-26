@@ -7,7 +7,6 @@ import javax.swing.JLabel;
 import utilities.ui.ImageHandler;
 
 //-----------------------------------------------------------------------------
-
 /**
  *
  */
@@ -18,13 +17,10 @@ public class MySplash extends JDialog {
 	    this.setUndecorated(true);
 	    JLabel label = new JLabel(ImageHandler.getProgramImgIcon("images/newSplash.png"));
 	    this.setLocationByPlatform(true);
-	    //this.setLocationRelativeTo(null);
 	    Container contentPane = getContentPane();
 	    contentPane.add(label);
 	    pack();
-	}
 	
+	}
+//-----------------------------------------------------------------------------	
 }
-
-
-//-----------------------------------------------------------------------------
