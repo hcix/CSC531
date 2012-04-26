@@ -51,7 +51,15 @@ public class LoginDialog extends JDialog implements ActionListener {
 			" to the system.</font></b></html>";
 	private static final String BAD_PASSWORD_MESSAGE = "<html><b><font color=#ff0000>" +
 			"You entered incorrect credentials.<br> Please try again.</font></b></html>";
-	private static final String HELP_MESSAGE = "You need help!";
+	private static final String HELP_MESSAGE = "<html><h1>Login - Help</h1><br></html>\n" +
+			"This system works with the Cane ID Authentication Service (CAS) login\n" +
+			"service. Your username and password are the same as those used to login\n" +
+			"to other CAS services. If you have forgotten your Cane ID or password,\n" +
+			"please visit https://caneid.miami.edu for assistance with\n" +
+			"retrival.\n\n" +
+			"Each user of the UMPD Management System must first be added to the\n" +
+			"system by a supervisor. If you feel you should have access to the\n" +
+			"system, please see your supervisor to be added.\n\n";
 	private JLabel retryLabel;
 	private JTextField caneIdField;
 	private JPasswordField passwordField;
@@ -69,6 +77,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 		//Set the size of the form
 		this.setPreferredSize(SwingHelper.LOGIN_DIALOG_DIMENSION);
 		this.setSize(SwingHelper.LOGIN_DIALOG_DIMENSION);
+		this.setPreferredSize(SwingHelper.LOGIN_DIALOG_DIMENSION);
 				
 		JPanel dialogPanel = new JPanel(new MigLayout("nogrid, fillx"));
 		
