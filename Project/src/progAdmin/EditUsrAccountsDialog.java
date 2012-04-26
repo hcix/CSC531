@@ -1,7 +1,5 @@
 package progAdmin;
 
-import homeTab.Change;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -26,17 +24,19 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import progAdmin.itemsToReview.ItemToReview;
 import net.miginfocom.swing.MigLayout;
+<<<<<<< HEAD
+=======
+import progAdmin.itemsToReview.ItemToReview;
+>>>>>>> 5a7091ab02c9825266544a171cbc9a6fbc31f234
 import utilities.ChangeHelper;
+import utilities.ui.ButtonHelper;
 import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
 /**
- * JDOC
- * 
- * 
- * 
+ * The <code>EditUsrAccountsDialog<code/> class allows an administrator
+ * to edit a user, add a user, and delete a user
  * 
  * TODO: Lots of debugging in this class here. 
  */
@@ -80,8 +80,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		JPanel mainPanel = new JPanel(new MigLayout());
 
 		//Add User button
-		JButton addNewUserButton = SwingHelper
-		.createImageButton("Add", "icons/addUser_48.png");
+		JButton addNewUserButton = ButtonHelper.createAddUsrButton(ButtonHelper.LARGE, "");
 		addNewUserButton.addActionListener(this);
 		addNewUserButton.setActionCommand(ADD_USER);
 
@@ -180,6 +179,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 				employeeList.add(empLoc, aud.getEmployee());
 				try {
 					XmlParser.saveRoster(employeeList);
+					ChangeHelper.makeChange(ChangeHelper.EDIT_USER);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -200,6 +200,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 				employeeList.remove(emp);
 				try {
 					XmlParser.saveRoster(employeeList);
+					ChangeHelper.makeChange(ChangeHelper.DELETE_USER);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}

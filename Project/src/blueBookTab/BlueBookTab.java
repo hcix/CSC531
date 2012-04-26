@@ -11,21 +11,14 @@ import java.nio.file.Paths;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import boloTab.BOLOpreview;
-
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import userinterface.MainInterfaceWindow;
@@ -152,9 +145,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		}
 
 		int listSize = bluebook.size();
-//DEBUG System.out.println("bluebook size = " + bluebook.size());	
 		JPanel[] items = new JPanel[listSize];
-		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
 
 		int i = 0;
 		for (BlueBookEntry entry : bluebook) {
@@ -166,11 +157,12 @@ public class BlueBookTab extends JPanel implements ActionListener {
 			if (entry.getPhotoFilePath() != null) {
 				photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
 						entry.getPhoto(), 100, 100));
-			} else {
+			} else {//if entry doesn't have photo, load the default
 				photoLabel = new JLabel(ImageHandler.getScaledImageIcon(
 						(Paths.get(FileHelper.getImageResourcePathName(
 								"unknownPerson.jpeg"))), 100, 100));
 			}
+			
 			entryPanel.add(photoLabel);
 			
 			String caseNum = "";
@@ -213,7 +205,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 //-----------------------------------------------------------------------------
 	public void actionPerformed(ActionEvent ev) {	
 	    
-		//get which entry was click
+		//get which entry was clicked
 		String listId = ev.getActionCommand();
 		int id = Integer.valueOf(listId);
 //DEBUG
@@ -281,7 +273,7 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		searchPanel.add(nameField, "alignx left, wrap");
 		searchPanel.add(locationLabel, "alignx left");
 		searchPanel.add(locationField, "alignx left, wrap");
-		SwingHelper.addDateRangePanel(searchPanel);
+		//SwingHelper.addDateRangePanel(searchPanel);
 		searchPanel.add(searchButton, "alignx center, wrap");
 
 		Container contentPane = searchDialog.getContentPane();

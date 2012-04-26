@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -29,7 +30,9 @@ import utilities.FileHelper;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
- * The <code>LoginDialog</code> class
+ * The <code>LoginDialog</code> class creates the login screen for a user to 
+ * enter their username and password to authenticate their access into the
+ * system
  *
  */
 public class LoginDialog extends JDialog implements ActionListener {
@@ -50,9 +53,19 @@ public class LoginDialog extends JDialog implements ActionListener {
 			" to the system.</font></b></html>";
 	private static final String BAD_PASSWORD_MESSAGE = "<html><b><font color=#ff0000>" +
 			"You entered incorrect credentials.<br> Please try again.</font></b></html>";
+	private static final String HELP_MESSAGE = "<html><h1>Login - Help</h1><br></html>\n" +
+			"This system works with the Cane ID Authentication Service (CAS) login\n" +
+			"service. Your username and password are the same as those used to login\n" +
+			"to other CAS services. If you have forgotten your Cane ID or password,\n" +
+			"please visit https://caneid.miami.edu for assistance with\n" +
+			"retrival.\n\n" +
+			"Each user of the UMPD Management System must first be added to the\n" +
+			"system by a supervisor. If you feel you should have access to the\n" +
+			"system, please see your supervisor to be added.\n\n";
 	private JLabel retryLabel;
 	private JTextField caneIdField;
 	private JPasswordField passwordField;
+	JFrame frame;
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates Login JFrame
@@ -61,10 +74,12 @@ public class LoginDialog extends JDialog implements ActionListener {
 	 */
 	public LoginDialog(final JFrame frame){
 		super(frame, "UMPD Login", true);
+		this.frame = frame;
 		
 		//Set the size of the form
 		this.setPreferredSize(SwingHelper.LOGIN_DIALOG_DIMENSION);
 		this.setSize(SwingHelper.LOGIN_DIALOG_DIMENSION);
+		this.setPreferredSize(SwingHelper.LOGIN_DIALOG_DIMENSION);
 				
 		JPanel dialogPanel = new JPanel(new MigLayout("nogrid, fillx"));
 		
@@ -76,7 +91,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 		//Set up the GUI
 		retryLabel = new JLabel();
 		dialogPanel.add(retryLabel, "wrap");
-		JLabel badgeLabel = SwingHelper.createImageLabel("images/badge.png");
+		JLabel badgeLabel = SwingHelper.createImageLabel("images/Logon128.png");
 		dialogPanel.add(badgeLabel);
 		JPanel inputPanel = createInputPanel();
 		dialogPanel.add(inputPanel, "wrap");
@@ -167,13 +182,9 @@ public class LoginDialog extends JDialog implements ActionListener {
 			loginSuccessful=false;
 			setVisible(false);
 		} else if(ev.getActionCommand()==HELP){
-	
-/* *****************************************************************************
-* TODO: Display help info telling user to enter their caneID and password
-* and displaying the UM site they can go to to reset it if they forgot it.
-*******************************************************************************/
+			JOptionPane.showMessageDialog(frame, HELP_MESSAGE, 
+					"Help", JOptionPane.INFORMATION_MESSAGE);
 		}
-		
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -202,7 +213,6 @@ public class LoginDialog extends JDialog implements ActionListener {
 		  
 			//Set the current user to be the employee that just logged in 
 			CurrentUser.setCurrentUser(user);
-				//BEN: Is it ok to use the CurrentUser class this way?
 			
 			//Check if attempting to run in demo mode & perform appropriate actions
 			if(caneID.equals("demo")){
@@ -256,7 +266,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 	   * @param errorID
 	   */
 	  public void displayRetryLabel(int errorID) {
-		  //Display the error corresponding to the gven error code
+		  //Display the error corresponding to the given error code
 		  switch(errorID){
 		  case ERROR_BAD_PASSWORD:
 			  retryLabel.setText(BAD_PASSWORD_MESSAGE);

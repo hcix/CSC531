@@ -1,7 +1,6 @@
 package utilities;
 
 import homeTab.Change;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -12,8 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-
-import program.CurrentUser;
+import progAdmin.itemsToReview.ItemToReview;
 import shiftCdrTab.rollCall.RollCall;
 import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
@@ -424,7 +422,7 @@ public class DatabaseHelper {
 	 * @return <code>Date</code> object representing the given time
 	 */
 	public static Date convertEpochToDate(long epoch){
-		Date date = new Date(epoch*1000);
+		Date date = new Date(epoch);
 		return date;
 	}
 //-----------------------------------------------------------------------------
@@ -499,4 +497,91 @@ public class DatabaseHelper {
         conn.close();
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Retrieves all the <code>ItemToReview</code>s from the database and places them into an 
+	 * <code>Arraylist</code> of <code>ItemToReview</code> objects, which is returned to the 
+	 * caller.
+	 * @return boloList - an <code>Arraylist</code> of <code>Bolo</code> objects
+	 * @throws Exception
+	 */
+	
+	
+	public static ArrayList<ItemToReview> loadItemsToReviewList() throws Exception{
+		ArrayList<ItemToReview> itemsList = new ArrayList<ItemToReview>();
+		 String title, details, creator, reviewed;
+		 long dateCreated, dateReviewed;
+		//Create the connection to the database
+		Class.forName("org.sqlite.JDBC");
+		
+		//test to make database file access syst indep, changed added Project
+		//Path dbFilePath = Paths.get("Project", "Database", "umpd.db");
+		Path dbFilePath = Paths.get("Database", "umpd.db");
+
+		String dbFileName = dbFilePath.toString();
+	    Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
+	    
+	    Statement stat = conn.createStatement();
+	    ResultSet allItems = stat.executeQuery("SELECT * FROM items;");
+
+	    ItemToReview item;
+	    while (allItems.next()) {
+	    	item = new ItemToReview();
+	        
+	    	item.setItem_id(allItems.getInt("item_id"));
+	    	
+	    	title = allItems.getString("title");
+	    	if(title!=null){ item.setTitle(title); }
+	    	
+	    	details = allItems.getString("details");
+	    	if(details!=null){ item.setDetails(details); }
+	    	
+	    	creator = allItems.getString("createdBy");
+	    	if(creator!=null){ item.setCreator(creator); }
+	    	
+	    	reviewed = allItems.getString("reviewedBy");
+	    	if(reviewed!=null){ item.setReviewedBy(reviewed); }
+
+	    	dateCreated = allItems.getLong("dateCreated");
+	    	if(dateCreated!=0){ item.setDateCreated(dateCreated); }
+	    	
+	    	dateReviewed = allItems.getLong("dateReviewed"); 
+			if(dateReviewed!=0){ item.setDateReviewed(dateReviewed); }
+	    		
+	    	itemsList.add(item);
+	    }
+	    	
+	    //Close the connections
+	    allItems.close();
+	    conn.close();
+	    
+	    return itemsList;
+	}
+//-----------------------------------------------------------------------------
+	public static void removeOldEntries() throws Exception
+	{
+		//Create the connection to the database
+    	Class.forName("org.sqlite.JDBC");
+    			
+    	//test to make database file access syst indep, changed added Project
+    	//Path dbFilePath = Paths.get("Project", "Database", "umpd.db");
+    	Path dbFilePath = Paths.get("Database", "umpd.db");
+
+    	String dbFileName = dbFilePath.toString();
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
+        
+        Statement stat = conn.createStatement();
+		final long MILI_IN_WEEK = 604800000;
+		Date now = new Date();
+        long time = (now.getTime() - 7*MILI_IN_WEEK);
+        String query = "DELETE FROM Change WHERE Change.time < (?);"; //+ "'" + time + "';";
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setLong(1, time);
+        ps.addBatch();
+        
+        conn.setAutoCommit(false);
+	    ps.executeBatch();
+	    conn.setAutoCommit(true);
+        
+        conn.close();
+	}
 }

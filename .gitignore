@@ -3,6 +3,7 @@
 
 *.class
 *.classpath
+umpd.db
 Project/.settings*
 Project/.project
 TestStuff*
@@ -12,3 +13,7 @@ XExampleTest
 XPDF*
 XMLattempts*
 QMyJPedal*
+
+Project/Database/umpd.db
+*umpd.db
+*.db

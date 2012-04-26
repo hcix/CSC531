@@ -22,6 +22,14 @@ import program.CurrentUser;
 public class EmailHandler {
 	private static final String HOST = "smtp.umail.miami.edu";
 //-----------------------------------------------------------------------------
+	/**
+	 * Creates a new email message with the given file attachment attached. 
+	 * The message is then written to the file system as a .eml file. This
+	 * .eml file can later be opened using the default program for this
+	 * file type, which should be the system's default email client.
+	 * @param attachment - the absolute filename of the document
+	 *  to be attached to the generated email message
+	 */
 	public static String createMessage(String attachment) { 
 		File emlFile;
 		Employee currentUsr = CurrentUser.getCurrentUser();
@@ -47,7 +55,7 @@ public class EmailHandler {
 			mp.addBodyPart(mbp);
 			msg.setContent(mp);
 		      
-			//set the Date: header
+			//set the 'Date:' header
 			msg.setSentDate(new Date());
 
 			//write the message to a file

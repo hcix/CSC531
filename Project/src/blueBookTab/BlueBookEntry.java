@@ -15,14 +15,19 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.swing.ImageIcon;
+
+import utilities.ChangeHelper;
+import utilities.DatabaseHelper;
 import utilities.FileHelper;
 import utilities.pdf.PDFHelper;
 import utilities.ui.ImageHandler;
+import boloTab.Bolo;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -64,8 +69,10 @@ public class BlueBookEntry {
 	private String narrative;
 	/** Date BlueBook Entry was reported */
 	private String date;
+	private long incidentDate=0;
 	/** Time BlueBook Entry was reported */
 	private String time;
+	private long incidentTime=0;
 	/** Location BlueBook Entry was reported at*/
 	private String location;
 	/** BlueBook Entry's case number */
@@ -195,31 +202,31 @@ public class BlueBookEntry {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return date 
+	 * @return incidentDate 
 	 */
-	public String getDate() {
-		return date;
+	public long getIncidentDate() {
+		return this.incidentDate;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param date
+	 * 
 	 */
-	public void setDate(String date) {
-		this.date = date;
+	public void setIncidentDate(long incidentDate) {
+		this.incidentDate = incidentDate;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return time 
+	 * 
 	 */
-	public String getTime() {
-		return time;
+	public long getIncidentTime() {
+		return this.incidentTime;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param time
+	 * 
 	 */
-	public void setTime(String time) {
-		this.time = time;
+	public void setIncidentTime(long time) {
+		this.incidentTime = time;
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -478,6 +485,7 @@ public ArrayList<String> getPhotoFilePaths() {
 
 	    //Close the connection
 	    conn.close();
+	    ChangeHelper.makeChange(ChangeHelper.ADD_BB_ENTRY);
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -501,7 +509,7 @@ public ArrayList<String> getPhotoFilePaths() {
 
 	    //close the connection
 	    conn.close();
-
+	    ChangeHelper.makeChange(ChangeHelper.DELETE_BB_ENTRY);
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -533,11 +541,12 @@ public ArrayList<String> getPhotoFilePaths() {
     	
     	//TODO play with size of form field on BlueBookForm to fix apperance
     	
+    	Format formatter = new SimpleDateFormat("MMMMM dd, yyyy");
     	try{
     		if(this.caseNum!=null)
     			form.setField("caseNum", this.getCaseNum()); 
 	    	if(this.date!=null)
-	    		form.setField("date", this.getDate());
+	    		form.setField("date", formatter.format(new Date(this.getIncidentDate())));
 	        if(this.name!=null){
 	        	form.setField("lastName", this.getName());
 	        	form.setField("firstName", this.getName());

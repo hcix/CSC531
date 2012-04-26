@@ -8,14 +8,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JToolBar;
 import net.miginfocom.swing.MigLayout;
+import program.CurrentUser;
+import program.ResourceManager;
 import utilities.ui.SwingHelper;
 
 /**
@@ -23,22 +27,22 @@ import utilities.ui.SwingHelper;
  */
 public class ReadItemDialog extends JDialog {
 private static final long serialVersionUID = 1L;
-	private JFrame parent;
 	private ItemToReview item;
 	private JTextArea titleTextField;
 	private JTextArea detailsTextPane;
 	private JPanel mainPanel;
 	String detailsText, titleText;
-	JPanel buttonPanel;
+	JToolBar toolbar;
 	JButton saveButton, editButton;
+	ResourceManager rm;
 //-----------------------------------------------------------------------------
-	public ReadItemDialog(JFrame parent, ItemToReview item){
-		super(parent, item.getTitle(), true);
-		this.parent=parent;
+	public ReadItemDialog(ResourceManager rm, ItemToReview item){
+		super(rm.getGuiParent(), item.getTitle(), true);
 		this.item=item;
+		this.rm = rm;
 		
-		this.setPreferredSize(new Dimension(700,500));
-		this.setSize(new Dimension(700,500));
+		this.setPreferredSize(new Dimension(500,500));
+		this.setSize(new Dimension(500,500));
 
 		//Put the form in the middle of the screen
 		this.setLocationRelativeTo(null);
@@ -51,43 +55,45 @@ private static final long serialVersionUID = 1L;
 			}
 		});
 	    
-		mainPanel = new JPanel(new MigLayout());
+		mainPanel = new JPanel(new MigLayout("ins 20", "[]5%[]", ""));
 		
 		JLabel titleLabel = new JLabel("Title:");
 		JLabel descLabel = new JLabel("Description:");
 		
 		titleText = item.getTitle();
-		titleTextField = new JTextArea();
-		//Font titleFont = new Font("Serif", Font.PLAIN, 20);
-		//titleTextField.setFont(titleFont);
+		titleTextField = new JTextArea(2, 20);
+		Font titleFont = titleTextField.getFont();
+		titleFont = titleFont.deriveFont(20f);
+		
+		titleTextField.setFont(titleFont);
 		titleTextField.setEditable(false);
 		titleTextField.setText(titleText);
 		titleTextField.setBackground(mainPanel.getBackground());
 		titleTextField.setEditable(false);
 		
 		detailsText = item.getDetails();
-		detailsTextPane = new JTextArea();
+		detailsTextPane = new JTextArea(7, 20);
 		detailsTextPane.setText(detailsText);
 		detailsTextPane.setEditable(false);
 		detailsTextPane.setLineWrap(true);
 		detailsTextPane.setWrapStyleWord(true);
 		detailsTextPane.setBackground(mainPanel.getBackground());
-			
-		JTextArea blank = new JTextArea("");
 		
-		buttonPanel = createButtonsPanel();
-		mainPanel.add(buttonPanel, "dock north");
+		toolbar = createToolbar();
+		mainPanel.add(toolbar, "dock north");
 		mainPanel.add(titleLabel,"alignx left");
-		mainPanel.add(titleTextField, "alignx center, wrap");
-		mainPanel.add(blank,"alignx left, wrap");
+		mainPanel.add(titleTextField, "align left, wrap");
 		mainPanel.add(descLabel, "alignx left");
-		mainPanel.add(detailsTextPane, "alignx center");
+		mainPanel.add(detailsTextPane, "align left, wrap");
 		
 	    Container contentPane = getContentPane();
 	    contentPane.add(mainPanel);	
 	}
 //-----------------------------------------------------------------------------
-	public JPanel createButtonsPanel(){
+	public JToolBar createToolbar(){
+		
+		toolbar = new JToolBar();
+		toolbar.setLayout(new MigLayout());
 		
 		JButton markAsReadButton = 
 				SwingHelper.createImageButton("Mark Item as Read", 
@@ -95,16 +101,18 @@ private static final long serialVersionUID = 1L;
 		markAsReadButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				item.setReviewed(true);
+				item.setDateReviewed(System.currentTimeMillis());
 				saveAndClose();
 			 }
 		});
 		
 		JButton markAsUnreadButton = 
-				SwingHelper.createImageButton("Mark Item as Unread", "icons/markUnread32.png");
+				SwingHelper.createImageButton("Mark Item as Unread", "icons/markUnread_32.png");
 		markAsUnreadButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				System.out.println("before set false");
 				item.setReviewed(false);
+				item.setDateReviewed(0);
 				System.out.println("after set false");
 				saveAndClose();
 				System.out.println("after save and close");
@@ -120,7 +128,7 @@ private static final long serialVersionUID = 1L;
 				makeEditable();
 				saveButton.setVisible(true);
 				saveButton.setEnabled(true);
-				buttonPanel.validate();
+				toolbar.validate();
 				//buttonPanel.repaint();
 			 }
 		});
@@ -133,29 +141,35 @@ private static final long serialVersionUID = 1L;
 			 }
 		});
 		
-		
-		JPanel buttonPanel = new JPanel();
+	
 		if(!item.isReviewed()){
-			buttonPanel.add(markAsReadButton);
+			toolbar.add(markAsReadButton, "sg");
 		}else{
-			buttonPanel.add(markAsUnreadButton);
+			toolbar.add(markAsUnreadButton, "sg");
 		}
 		
-		buttonPanel.add(editButton);
-		//buttonPanel.add(saveItemButton);
+		toolbar.add(editButton, "sg");
 		
-		return buttonPanel;
+		return toolbar;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Change the dialog's fields from read only <code>JTextArea</code>s to
+	 * editable <code>JTextArea</code>s.
+	 */
 	public void makeEditable(){
+		
 		detailsTextPane.setEditable(true);
 		titleTextField.setEditable(true);
 		titleTextField.setBackground(Color.white);
+		titleTextField.setBorder(BorderFactory.createLoweredBevelBorder());
 		detailsTextPane.setBackground(Color.white);
+		detailsTextPane.setBorder(BorderFactory.createLoweredBevelBorder());
+
 		//System.out.println("detailsTextPane editable: " + detailsTextPane.isEditable()
 		//		+"titleTextPane editable: " + titleTextField.isEditable());
-		buttonPanel.remove(editButton);
-		buttonPanel.add(saveButton);
+		toolbar.remove(editButton);
+		toolbar.add(saveButton, "sg");
 		(mainPanel.getParent()).validate();
 		mainPanel.validate();
 	}
@@ -174,17 +188,20 @@ private static final long serialVersionUID = 1L;
 			item.setDetails(detailsText);
 		}
 		
-		try{ 
+		try { 
 			item.setTitle(titleText);
 			item.setDetails(detailsText);
+			//item.addToDB();
+			//item.addToDB();
+			
 		}catch (Exception ex){ ex.printStackTrace(); }
 		
 		this.dispose();
 	}
 //-----------------------------------------------------------------------------
 	private void closeAndCancel(){
-		detailsTextPane.setText("");
-		titleTextField.setText("");
+		detailsTextPane.setText(" ");
+		titleTextField.setText(" ");
 		this.dispose();
 	}
 //-----------------------------------------------------------------------------

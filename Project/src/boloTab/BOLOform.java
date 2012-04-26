@@ -33,8 +33,9 @@ import net.miginfocom.swing.MigLayout;
 import progAdmin.itemsToReview.ItemToReview;
 import program.ResourceManager;
 import utilities.FileHelper;
-import utilities.calendar.JCalendarPanel;
-import utilities.calendar.TimePanel;
+import utilities.dateAndTime.JCalendarPanel;
+import utilities.dateAndTime.TimePanel;
+import utilities.ui.ButtonHelper;
 import utilities.ui.ImageHandler;
 import utilities.ui.ImagePreview;
 import utilities.ui.ResizablePhotoDialog;
@@ -222,7 +223,7 @@ public class BOLOform extends JDialog {
 	 */
 	private JPanel createIncidentInfoPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout());
-
+		//add border w/ title
 		SwingHelper.addTitledBorder(infoPanel, "Incident Info");
 
 		//create labels
@@ -230,19 +231,18 @@ public class BOLOform extends JDialog {
 		JLabel caseNumLabel = new JLabel("Case #");
 		JLabel statusLabel = new JLabel("Status");
 
-
 		//create fields
 		String[] statusStrings = { "", "Need to Identify", "Identified", "Apprehended", "Cleared" };
 		referenceField = new JTextField(15);
 		caseNumField = new JTextField(15);
 		statusField = new JComboBox<String>(statusStrings);
 
-		//row 1
 		//incidentDate = SwingHelper.addDateSpinner(infoPanel, "Date of Incident");
 		//DEBUG incidentTime = SwingHelper.addTimeSpinner(infoPanel, "Time of Incident");
 		//infoPanel.add(new JCalendarPanel(rm.getGuiParent()), "spanx, wrap");
 		
-		jcal = new JCalendarPanel(rm.getGuiParent(), infoPanel);
+		//create time and date panels
+		jcal = new JCalendarPanel(rm.getGuiParent(), infoPanel, "Date of Incident");
 		time = new TimePanel(infoPanel, "Time of Incident");
 
 		infoPanel.add(referenceLabel, "align");
@@ -315,19 +315,15 @@ public class BOLOform extends JDialog {
 	private JPanel createPhotoVideoPanel(){
 		JPanel photoVideoPanel = new JPanel(new MigLayout("fillx"));
 		
-//		this.setPreferredSize(new Dimension(1050,900));
-//		this.setSize(new Dimension(1050,900));
-		
 		//Create initial no-photo place holder photo
 		final JPanel photoPanel = new JPanel();
 		photoArea = photoPanel;
-		ImageIcon noPhotoImage = ImageHandler.createImageIcon("images/unknownPerson.jpeg");
+		ImageIcon noPhotoImage = ImageHandler.getProgramImgIcon("images/unknownPerson.jpeg");
 		JLabel noPhotoLabel = new JLabel(noPhotoImage);
 		photoPanel.add(noPhotoLabel);
 		photoVideoPanel.add(photoPanel, "spanx,grow,wrap");
 
-		JButton addPhotoButton = SwingHelper.createImageButton("Add a Photo", 
-				"icons/camera.png");
+		JButton addPhotoButton = ButtonHelper.createPhotoButton(ButtonHelper.LARGE, "Add a Photo");
 		addPhotoButton.setToolTipText("Attach a photo to this BOLO");
 		addPhotoButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae) {
@@ -335,8 +331,7 @@ public class BOLOform extends JDialog {
 			}
 		});
 
-		JButton addVideoButton = SwingHelper.createImageButton("Add a Video", 
-				"icons/videoCamera.png");
+		JButton addVideoButton = ButtonHelper.createVideoButton(ButtonHelper.LARGE,	"Add a Video");
 		addVideoButton.setToolTipText("Attach a video to this BOLO");
 		addVideoButton.addActionListener(new ActionListener() {
 
@@ -380,7 +375,7 @@ public class BOLOform extends JDialog {
 		toolbar.setBorder(BorderFactory.createLineBorder(Color.black));
 		toolbar.setLayout(new MigLayout("fillx", "[][]push[]", null));
 		
-		//Cancel button
+		//Cancel Button
 		JButton cancelButton = SwingHelper.createImageButton("Cancel", 
 				"icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
@@ -390,7 +385,7 @@ public class BOLOform extends JDialog {
 			}
 		});
 
-	    //Save button
+	    //Save Button
 	    JButton saveButton = SwingHelper.createImageButton("Save", 
 	    		"icons/save_48.png");
 	    saveButton.setToolTipText("Save BOLO");
@@ -400,8 +395,9 @@ public class BOLOform extends JDialog {
 	    	}
 	    });
 
-	    //Preview button
-	    JButton previewButton = new JButton("Preview");
+	    //Preview Button
+	    JButton previewButton = 
+	    		ButtonHelper.createPreviewButton(ButtonHelper.LARGE, "");
 	    previewButton.setToolTipText("Preview and print final BOLO document");
 	    previewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -502,8 +498,8 @@ public class BOLOform extends JDialog {
 		 if(!narrative.isEmpty()){ bolo.setNarrative(narrative); }
 
 		 
-		 //set the times
-		 Date incidentDate = jcal.getDateSet();
+		 //set the date & time
+		 Date incidentDate = jcal.getDate();
 		 long dateVal = incidentDate.getTime();
 		 bolo.setincidentDate(dateVal);
 		 long timeVal = time.getTimeEpoch();
@@ -648,6 +644,10 @@ public class BOLOform extends JDialog {
 		narrativeText.setText(null);
 		boxes[0].setSelected(false);
 		boxes[1].setSelected(false);
+		
+		//reset time and date
+		jcal.clearDate();
+		time.resetTime();
 		
 		//recreate the photo/video section
 		photoArea.removeAll();

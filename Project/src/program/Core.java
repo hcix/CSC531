@@ -3,8 +3,10 @@ package program;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import progAdmin.LoginDialog;
 import userinterface.DashboardPanel;
@@ -16,6 +18,21 @@ public class Core extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private static JFrame frame;
 	private static ResourceManager rm;
+	private static MySplash splash;
+	//Background task for loading images.
+    static SwingWorker worker = new SwingWorker<Boolean, Void>() {
+        @Override
+        public Boolean doInBackground() {
+        	createAndShowMainGUI();
+        	return true;
+        }
+        
+        @Override
+        public void done() {
+        	splash.setVisible(false);
+        }
+ 
+    };
 //-----------------------------------------------------------------------------	 
 	/**
 	 * Main method to start the thread that will run the main program
@@ -36,15 +53,15 @@ public class Core extends JFrame {
 	        	//Set up and show the login GUI
 	        	//COMMENT NEXT LINE OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
 	        	//MUST ALSO COMMENT OUT 6 LINES IN MAININTERFACEWINDOW AS INDICATED THERE
-	        	//createAndShowLoginGUI();
+	        	createAndShowLoginGUI();
 	        
 	        	rm = new ResourceManager(frame);
 	        	
-	        	//Splash splashScreen = new Splash();
-	        	//splashScreen.setVisible(true);
-
-	        	//Set up the UI
-	        	createAndShowMainGUI();
+	        	//create splash screen
+	        	splash = new MySplash(frame);
+	        	splash.setVisible(true);
+	        	splash.setLocationRelativeTo(frame);
+	        	worker.execute();
 	        }
 	    });
 	}
@@ -56,12 +73,12 @@ public class Core extends JFrame {
 	private static void createAndShowMainGUI() {
 		Toolkit toolkit =  Toolkit.getDefaultToolkit ();
 		Dimension screenDim = toolkit.getScreenSize();
-		  
+		 
 	    //Create and set up the main window	
 		frame = new JFrame("UMPD");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		frame.setPreferredSize(screenDim);
+		//frame.setPreferredSize(screenDim);
 		frame.setResizable(true);
 		
 		//Uses platform specific method for opening frame
@@ -74,12 +91,11 @@ public class Core extends JFrame {
 		frame.add(new MainInterfaceWindow(frame, rm), BorderLayout.CENTER);
 		
 		//Display the window
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	    frame.pack();
 	    frame.setVisible(true);
-	
 	}
 //-----------------------------------------------------------------------------	
-
 	/**
 	 * Create the GUI and show it.  For thread safety, this method should be
 	 * invoked from the event dispatch thread.
@@ -100,12 +116,10 @@ public class Core extends JFrame {
 			System.exit(0);
 		}
 	}
-	
 //-----------------------------------------------------------------------------	
 	public static void invalidateFrames()
 	{
 		frame.dispose();
 	}
-//-----------------------------------------------------------------------------	
-
+//-----------------------------------------------------------------------------
 }

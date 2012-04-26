@@ -1,28 +1,26 @@
 package homeTab;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
-
-public class RecentActivity 
-{
+/**
+ * A Recent Activity panel is the collection of changes.  
+ * A panel will be constructed with changes based on the date range 
+ * specified in the Home Tab.
+ */
+public class RecentActivity extends JPanel{
+private static final long serialVersionUID = 1L;
 	private JPanel panel;
 	private JLabel dayLabel;
 	private ArrayList<Change> changeList = new ArrayList<Change>();
-	
-	public RecentActivity(Dimension d)
+		
+	public RecentActivity()
 	{
 		panel = new JPanel(new MigLayout());
-		panel.setPreferredSize(d);
-		panel.setBorder(BorderFactory.createLineBorder(Color.black));
-		panel.setVisible(true);
+		this.add(panel);
 	}
 	public void addToList(Change c)
 	{

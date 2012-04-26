@@ -13,22 +13,24 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
 import net.miginfocom.swing.MigLayout;
 import program.ResourceManager;
 import userinterface.MainInterfaceWindow;
 import utilities.DatabaseHelper;
 import utilities.FileHelper;
 import utilities.SearchHelper;
+import utilities.dateAndTime.JCalendarPanel;
 import utilities.ui.DisplayPanel;
 import utilities.ui.ImageHandler;
 import utilities.ui.SwingHelper;
@@ -70,10 +72,9 @@ public class BOLOtab extends JPanel implements ActionListener {
 		tabbedPane.addTab("Recent BOLOs", entriesScroller);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
 
-		//Add archived BOLOs tab 
-		JPanel archievedBolosTab = new JPanel();
-		tabbedPane.addTab("Archived", archievedBolosTab);
-		tabbedPane.setMnemonicAt(1, KeyEvent.VK_3);
+//		JPanel archievedBolosTab = new JPanel();
+//		tabbedPane.addTab("Archived", archievedBolosTab);
+//		tabbedPane.setMnemonicAt(1, KeyEvent.VK_3);
 
 
 		//Create BOLO Button
@@ -107,7 +108,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 		});
 
 		//Import existing BOLO button
-		JButton importBOLOButton = SwingHelper.createImageButton("Import Existing BOLO", 
+		/*JButton importBOLOButton = SwingHelper.createImageButton("Import Existing BOLO", 
 				"icons/Import.png");
 		importBOLOButton.addActionListener(new ActionListener() {
 			//file chooser dialog
@@ -121,6 +122,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 				fc.showOpenDialog(rm.getGuiParent());
 			}
 		});
+		*/
 
 		//Search button
 		JButton searchButton = SwingHelper.createImageButton("Search Records", 
@@ -138,7 +140,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(newBOLOButton);
-		buttonsPanel.add(importBOLOButton);
+		//buttonsPanel.add(importBOLOButton);
 		buttonsPanel.add(searchButton);
 		this.add(buttonsPanel, BorderLayout.PAGE_END);
 
@@ -193,8 +195,8 @@ public class BOLOtab extends JPanel implements ActionListener {
 		searchPanel.add(caseNumLabel, "alignx left");
 		searchPanel.add(caseNumField, "alignx left, wrap");
 
-		SwingHelper.addDateRangePanel(searchPanel);
-
+		//SwingHelper.addDateRangePanel(searchPanel);
+        //JCalendarPanel date = new JCalendarPanel(rm.getGuiParent(), searchPanel, "Date");
 		searchPanel.add(statusLabel, "alignx left");
 		searchPanel.add(statusList, "alignx left, wrap");
 		searchPanel.add(searchButton, "alignx center, wrap");

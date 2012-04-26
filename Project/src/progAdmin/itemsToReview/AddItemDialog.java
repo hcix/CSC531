@@ -14,7 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
+import program.CurrentUser;
 import program.ResourceManager;
+import utilities.ChangeHelper;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
@@ -33,8 +35,8 @@ private static String  ADD_ITEM_ERROR = "Item Error";
 		super(rm.getGuiParent(), "New Item", true);
 		
 		this.rm=rm;
-		this.setPreferredSize(new Dimension(700,500));
-		this.setSize(new Dimension(700,500));
+		this.setPreferredSize(new Dimension(500,500));
+		this.setSize(new Dimension(500,500));
 
 		//Put the form in the middle of the screen
 		this.setLocationRelativeTo(null);
@@ -47,9 +49,8 @@ private static String  ADD_ITEM_ERROR = "Item Error";
 			}
 		});
 	    
-		item=new ItemToReview();
+		item=new ItemToReview(CurrentUser.getCurrentUser().getCaneID());
 		
-		//JPanel mainPanel = new JPanel(new MigLayout("", "[][]", "[][][]"));
 		JPanel mainPanel = new JPanel(new MigLayout());
 		
 		JLabel titleLabel = new JLabel("Item Title: ");
@@ -96,13 +97,16 @@ private static String  ADD_ITEM_ERROR = "Item Error";
 			item.setDetails(details);
 		}
 		
+		item.setCreator(CurrentUser.getCurrentUser().getCaneID());
+	
 		//ensure item has a tile, then add to the program's item list
 		if(!title.isEmpty()){
-			try{ rm.addItem(item); } 
-			catch (Exception ex){ ex.printStackTrace(); }
+			try{ 
+				rm.addItem(item);
+				//rm.loadItemsList();
+			} catch (Exception ex){ ex.printStackTrace(); }
 			titleField.setText("");
 			detailsTextArea.setText("");
-			
 			this.dispose();
 		} else{
 			//display error telling user that items must have titles!

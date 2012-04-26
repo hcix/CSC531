@@ -13,9 +13,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -27,7 +27,9 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import net.miginfocom.swing.MigLayout;
+import program.CurrentUser;
 import program.ResourceManager;
+import utilities.ChangeHelper;
 import utilities.ui.SwingHelper;
 
 /**
@@ -47,8 +49,8 @@ private static final long serialVersionUID = 1L;
 	public ManageItemsDialog(ResourceManager rm){
 		super(rm.getGuiParent(), "Manage Review Items", true);
 		this.rm=rm;
-		this.setPreferredSize(new Dimension(700,700));
-		this.setSize(new Dimension(700,700));
+		this.setPreferredSize(new Dimension(700,500));
+		this.setSize(new Dimension(700,500));
 
 		//Put the form in the middle of the screen
 		this.setLocationRelativeTo(null);
@@ -91,35 +93,28 @@ private static final long serialVersionUID = 1L;
 		//Create the table of items
 		itemsPanel.add(createItemsPanel());
 		
-		//Create a split pane with the two scroll panes in it
-		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-				mainPanel, itemsPanel);
-		splitPane.setOneTouchExpandable(true);
-		splitPane.setDividerLocation(400);
-		
 	    Container contentPane = getContentPane();
+	    contentPane.setLayout(new MigLayout("ins 20"));
 	    contentPane.add(toolbar, BorderLayout.NORTH);
-	    contentPane.add(splitPane, BorderLayout.CENTER);
+	    contentPane.add(itemsPanel, BorderLayout.CENTER);
 	}
 //-----------------------------------------------------------------------------
-	private void saveAndClose(){
-		this.dispose();
-	}
-//-----------------------------------------------------------------------------
+	/**
+	 * Close without saving.
+	 */
 	private void closeAndCancel(){
 		this.dispose();
 	}	
 //-----------------------------------------------------------------------------
 	private JPanel createItemsPanel(){
-		JPanel itemsPanel = new JPanel();		
+		JPanel itemsPanel = new JPanel(new MigLayout("ins 20"));		
 		
 		//Create initially empty table
 	    table.setShowGrid(true);
 	    table.setGridColor(Color.black);
-	    table.setPreferredScrollableViewportSize(new Dimension(700, 400));
-	    table.setFillsViewportHeight(true);
-	    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
+	    table.setPreferredScrollableViewportSize(new Dimension(620, 400));
+	    table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+	    
 	    //Put the table in a scroll pane
 	    JScrollPane tableScrollPane = new JScrollPane();
 	    tableScrollPane.setViewportView(table);
@@ -131,7 +126,6 @@ private static final long serialVersionUID = 1L;
 	     * Set the table model to be the one custom created for this table
 	     * and passing in the list of names for the shift
 	     */
-	  //  ItemsTableModel tableModel = new ItemsTableModel(items);
 	    ItemsTableModel tableModel = new ItemsTableModel();
 	    tableModel.addTableModelListener(tableModel);
 	    table.setModel(tableModel);
@@ -139,8 +133,7 @@ private static final long serialVersionUID = 1L;
 
 	    //Resize the columns
 	    TableColumn col;
-	    int[] sizes = {100, 330, 240};
-	    
+	    int[] sizes = {100, 240, 260};
 	    for(int i=0; i<sizes.length; i++){
 		    col = table.getColumnModel().getColumn(i);
 		    col.setPreferredWidth(sizes[i]);
@@ -154,39 +147,81 @@ private static final long serialVersionUID = 1L;
 		table.repaint();
 	}
 //-----------------------------------------------------------------------------
-	
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
+		
+		//Add item
 		if(command.equals(ADD_ITEM)){
 			AddItemDialog itemDialog = new AddItemDialog(rm);
 			itemDialog.setVisible(true);
 			itemDialog.setModal(true);
-			//refresh items list from ResourceManager
-			table.repaint();
+			//refresh while dialog is in view
+			refreshItemsTable();
+			itemsPanel.removeAll();
+			itemsPanel.add(createItemsPanel());
+			itemsPanel.revalidate();
+
+			ChangeHelper.makeChange(ChangeHelper.ADD_ITEM_TO_REVIEW);
+
+		//Delete item
 		} else if(command.equals(DELETE_ITEM)){
 			int rowIndex = table.getSelectedRow();
-			rm.removeItem(rowIndex);
-			table.repaint();
+			ItemToReview item = (rm.getItems()).get(rowIndex);
+			//only allow the item's creator to delete an item
+			
+			if(CurrentUser.getCurrentUser().getCaneID().equals(item.getCreator())){
+				rm.removeItem(rowIndex);
+				refreshItemsTable();
+			} else {
+				JOptionPane.showMessageDialog(rm.getGuiParent(), "Only an item's creator may" +
+						" delete an item once it's been created.", "Operation not Permited", 
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+
+			ChangeHelper.makeChange(ChangeHelper.DELETE_ITEM_TO_REVIEW);
+		//Edit item
+
 		} else if (command.equals(EDIT_ITEM)){
 			int rowIndex = table.getSelectedRow();
-			if(rowIndex>=0){
+			ItemToReview item = (rm.getItems()).get(rowIndex);
+			//only allow the item's creator to edit an item
+			if(CurrentUser.getCurrentUser().getCaneID().equals(item.getCreator())){
 				//show the ReadItemDialog to display the item
-	           // ReadItemDialog readItem = new ReadItemDialog(
-	            	//	rm.getGuiParent(), items.get(rowIndex));
 				ReadItemDialog readItem = new ReadItemDialog(
-	            		rm.getGuiParent(), rm.getItems().get(rowIndex));
+	            		rm, rm.getItems().get(rowIndex));
 	            readItem.makeEditable();
 	            readItem.setVisible(true);
 	            //wait on the ReadItemDialog to be closed
 	            readItem.setModal(true);
-	            //items=rm.getItems();
-	            table.repaint();
+	            rm.loadItemsList();
+
+
+	            //refresh while dialog is in view
+				refreshItemsTable();
+				itemsPanel.removeAll();
+				itemsPanel.add(createItemsPanel());
+				itemsPanel.revalidate();
+				ChangeHelper.makeChange(ChangeHelper.EDIT_ITEM_TO_REVIEW);
+			} else {
+					JOptionPane.showMessageDialog(rm.getGuiParent(), 
+							"Only an item's creator may edit an item's " +
+							"contents.", "Operation not Permited", 
+							JOptionPane.INFORMATION_MESSAGE);
+
+
+	            refreshItemsTable();
+	            table.doLayout();
+	            ChangeHelper.makeChange(ChangeHelper.EDIT_ITEM_TO_REVIEW);
+
 			}
 		}
 		
 	}
 //-----------------------------------------------------------------------------
-
+	/**
+	 * Called when an item is 'clicked' on. This method only performs a 
+	 * function if the mouse 'click' happens to be a double click.
+	 */
 	public void mouseClicked(MouseEvent e){
 		//checks if it was a double click
         if (e.getComponent().isEnabled() && e.getButton() == 
@@ -197,7 +232,7 @@ private static final long serialVersionUID = 1L;
             
             //show the ReadItemDialog to display the item
             ReadItemDialog readItem = new ReadItemDialog(
-            		rm.getGuiParent(), rm.getItems().get(row));
+            		rm, rm.getItems().get(row));
             readItem.setVisible(true);
             
             //wait on the ReadItemDialog to be closed
@@ -205,23 +240,14 @@ private static final long serialVersionUID = 1L;
         }
     }
 //-----------------------------------------------------------------------------
-	public void mousePressed(MouseEvent e) {
-		
-	}
-//-----------------------------------------------------------------------------
-	public void mouseReleased(MouseEvent e) {
-		
-	}
-//-----------------------------------------------------------------------------
-	public void mouseEntered(MouseEvent e) {		
-		
-	}
-//-----------------------------------------------------------------------------
-	public void mouseExited(MouseEvent e) {
-		
-	}
+	public void mousePressed(MouseEvent e) { }
+	public void mouseReleased(MouseEvent e) { }
+	public void mouseEntered(MouseEvent e) { }
+	public void mouseExited(MouseEvent e) { }
 //=============================================================================
-	private class ItemsTableModel extends AbstractTableModel implements TableModelListener {
+	/* Inner Class */
+	private class ItemsTableModel extends AbstractTableModel 
+								implements TableModelListener {
 		private static final long serialVersionUID = 1L;
 		private String[] columnNames = {"Reviewed","Title","Details"};
 //-----------------------------------------------------------------------------

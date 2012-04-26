@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.text.DateFormat;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ImageIcon;
@@ -536,20 +537,27 @@ public ImageIcon getPhoto(){
 
 		//close the connection
 		conn.close();
-
+		
 	}
 //-----------------------------------------------------------------------------
 	public void createItemToReview() {
 
 		StringBuilder title = new StringBuilder();
+		StringBuilder details = new StringBuilder();
 		String stringTitle;
-		
+		String stringDetails;
+		Date date = new Date(System.currentTimeMillis());
+		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy @ HH:mm");
 
 		title.append("BOLO #");
 		title.append(this.caseNum);
+		details.append("New BOLO created ");
+		details.append(formatter.format(date));
+		
 
 		stringTitle = title.toString();
-		ItemToReview newItem = new ItemToReview(stringTitle,"");
+		stringDetails = details.toString();
+		ItemToReview newItem = new ItemToReview(stringTitle, stringDetails);
 		
 	}
 //-----------------------------------------------------------------------------

@@ -1,13 +1,12 @@
 package program;
 
+import homeTab.HomeTab;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -19,15 +18,10 @@ import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import progAdmin.itemsToReview.ItemToReview;
+import utilities.DatabaseHelper;
 import utilities.EmailHandler;
 import utilities.FileHelper;
-import utilities.PdfHandler;
 import utilities.RosterParser;
-import utilities.xml.XmlParser;
-import java.util.*;
-import javax.mail.*;
-import javax.activation.*;
-import javax.mail.internet.*;
 //-----------------------------------------------------------------------------
 /**
  * The <code>ResourceManager</code> class manages the programs resources.
@@ -45,9 +39,9 @@ public class ResourceManager {
 	private Desktop desktop;
     private Desktop.Action action = Desktop.Action.OPEN;
     JFrame parent;
-    PdfHandler pdfHandler;
     Properties progProps;
     ArrayList<ItemToReview> items;
+    HomeTab homeTab;
     boolean mailIsSupported = false;
     boolean printIsSupported = false;
 //-----------------------------------------------------------------------------
@@ -183,6 +177,11 @@ public class ResourceManager {
 	}
 
 //-----------------------------------------------------------------------------
+	public void setHomeTabReference(HomeTab ht)
+	{
+		this.homeTab=ht;
+	}
+//-----------------------------------------------------------------------------
 	/**
 	 * Used to access the shared resource 'items to review'. The 'items to
 	 * review resource should be accessed through the <code>ResourceManager</code>
@@ -199,54 +198,52 @@ public class ResourceManager {
 	/**
 	 * Used to remove an item from the shared resource 'items to review'. The 
 	 * 'items to review resource should be accessed through the 
-	 * <code>ResourceManager</code> class exclusivly to ensure the list is kept
+	 * <code>ResourceManager</code> class exclusively to ensure the list is kept
 	 * consistent throughout the UMPD Management System's application user interface
-	 * as well as the xml file storing the information.
+	 * as well as in the database where the list is stored.
 	 * 
 	 * @param index - the index of the item to remove
 	 */
 	public void removeItem(int index) {
-		items.remove(index);	
-		saveItemsList();
+		try{
+			(items.get(index)).deleteFromDB();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		loadItemsList();
 	}
 //-----------------------------------------------------------------------------
 	/**
 	 * Used to add an item to the shared resource 'items to review'. The 
 	 * 'items to review resource should be accessed through the 
-	 * <code>ResourceManager</code> class exclusivly to ensure the list is kept
+	 * <code>ResourceManager</code> class exclusively to ensure the list is kept
 	 * consistent throughout the UMPD Management System's application user interface
-	 * as well as the xml file storing the information.
+	 * as well as in the database where the list is stored.
 	 * @param newItem - the item to add to the global list
 	 */
 	public void addItem(ItemToReview newItem) {
-		items.add(newItem);
-		saveItemsList();
+//		items.add(newItem);
+		try {
+			items.add(newItem);
+			newItem.addToDB();
+		 } catch (Exception e) {
+			System.out.println("error: unable to add ItemToReview to DB");
+			e.printStackTrace();
+		 }
+		loadItemsList();
+		//saveItemsList();
 	}
 //-----------------------------------------------------------------------------	 
 	/**
-	 * Load the items to review list form the xml file where it is stored.
+	 * Load the items to review list form the items table in the database.
 	 */
-	private void loadItemsList(){
-		//populate the items list from the itemsToReview.xml file
+	public void loadItemsList() {
+		//populate the items list from the items table in the database
 		try{
-			this.items = XmlParser.loadItemsToReviewList();
+			this.items = DatabaseHelper.loadItemsToReviewList();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-	}
-//-----------------------------------------------------------------------------	
-	/**
-	 * Save the items to review list form the xml file where it is stored.
-	 */
-	private void saveItemsList(){
-		//save the items list to the xml file
-		try{
-			XmlParser.saveItemsToReviewList(items);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		items = XmlParser.loadItemsToReviewList();
 	}
 //-----------------------------------------------------------------------------	 
 		/**
@@ -256,12 +253,14 @@ public class ResourceManager {
 			//set up new properties object 
 	        FileInputStream propFile = new FileInputStream(FileHelper.getPropertiesFile());
 	        progProps.loadFromXML(propFile);
+	        
 	        Properties p = new Properties(System.getProperties());
 	        p.putAll(progProps);
 	        
 	        //set the system properties
 	        System.setProperties(p);
-	        // display new properties
+	        //display new properties
+	        //printEnv();
 
 		}	
 //-----------------------------------------------------------------------------
@@ -301,7 +300,6 @@ public class ResourceManager {
 		saveProperties();
 	}
 //-----------------------------------------------------------------------------	
-
 	/**
 	 * Save the current application properties to the progProperties.xml file.
 	 */
@@ -404,14 +402,21 @@ public class ResourceManager {
 	 */
 	public void printEnv(){
 		//get the syst env
-		Map<String, String> env = System.getenv();
-		//go thru the properties and print each key/value pair
-	    for (String envName : env.keySet()) {
-	        System.out.format("%s=%s%n",
-	                          envName,
-	                          env.get(envName));
-	    }
-	
+		//Map<String, String> 
+		Properties pp = System.getProperties();
+//		Map<String, String> env = System.getenv();
+//		//go thru the properties and print each key/value pair
+//	    for (String envName : env.keySet()) {
+//	        System.out.format("%s=%s%n",
+//	                          envName,
+//	                          env.get(envName));
+//	    }
+//	
+		for(String p : pp.stringPropertyNames()){
+			System.out.format("%s=%s%n",
+                    p,
+                    pp.get(p));
+		}
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -460,6 +465,3 @@ public class ResourceManager {
    }	
 //-----------------------------------------------------------------------------	
 }
-
-
-

@@ -6,6 +6,11 @@ import java.util.Date;
 
 import program.CurrentUser;
 
+/**
+ * This class is used to create new Changes.  This class makes a new Change based off the current user, the current date, and the type of change made, as specified by the appropriate string value.
+ * @author Brendan
+ *
+ */
 public class ChangeHelper 
 {
 	public static final String ADD_USER = "add user";
@@ -18,7 +23,10 @@ public class ChangeHelper
 	public static final String ADD_BB_ENTRY = "add blue book entry";
 	public static final String EDIT_BB_ENTRY = "edit blue book entry";
 	public static final String DELETE_BB_ENTRY = "delete blue book entry";
-	
+	public static final String ADD_VIDEO = "add video";
+	public static final String ADD_ITEM_TO_REVIEW = "add item to review";
+	public static final String EDIT_ITEM_TO_REVIEW = "edit item to review";
+	public static final String DELETE_ITEM_TO_REVIEW = "delete item to review";
 	
 	public static void makeChange(String type)
 	{
