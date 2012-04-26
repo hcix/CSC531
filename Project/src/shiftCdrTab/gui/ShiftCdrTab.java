@@ -51,6 +51,11 @@ import utilities.SearchHelper;
 import utilities.ui.SwingHelper;
 
 //-----------------------------------------------------------------------------
+/**
+ * The <code>ShiftCdrTab<code/> makes the graphical interface for the 
+ * shift commander tab
+ *
+ */
 public class ShiftCdrTab extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	static final String ADD = "add";

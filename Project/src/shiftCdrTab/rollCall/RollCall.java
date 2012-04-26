@@ -1,5 +1,9 @@
 package shiftCdrTab.rollCall;
-
+/**
+ * The <code>RollCall<code/> class represents and instance of a roll call object
+ * used to keep track of police check ins along with their date of checkin
+ *
+ */
 public class RollCall {
 	private  String name;
 	private  String present;

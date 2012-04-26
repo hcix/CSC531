@@ -20,6 +20,11 @@ import utilities.pdf.FieldAndVal;
 import utilities.pdf.PDFView;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------	
+/**
+ * the <code>ShiftReportForm<code/> class creates the graphical user interface
+ * for each shift report
+ *
+ */
 public class ShiftReportForm extends JDialog {
 private static final long serialVersionUID = 1L;
 	JButton[] buttons;
