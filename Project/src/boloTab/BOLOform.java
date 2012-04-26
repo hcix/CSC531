@@ -398,7 +398,7 @@ public class BOLOform extends JDialog {
 
 	    //Preview Button
 	    JButton previewButton = 
-	    		ButtonHelper.createPreviewButton(ButtonHelper.MEDIUM, "");
+	    		ButtonHelper.createPreviewButton(ButtonHelper.LARGE, "");
 	    previewButton.setToolTipText("Preview and print final BOLO document");
 	    previewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

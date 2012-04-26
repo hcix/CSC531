@@ -110,8 +110,6 @@ private static final long serialVersionUID = 1L;
 //-----------------------------------------------------------------------------
 	public void mouseClicked(MouseEvent e) {
 
-//DEBUG System.out.println("ItemRenderer: mouseClicked(): CALLED!!");
-		
 		if(e.getClickCount() == 2){ //double click
 			     int index = itemsJList.locationToIndex(e.getPoint());
 			     
@@ -133,9 +131,7 @@ private static final long serialVersionUID = 1L;
 		AddItemDialog itemDialog = new AddItemDialog(rm);
 		itemDialog.setVisible(true);
 		itemDialog.setModal(true);
-		//itemDialog.setModal(true);
 		//repaint the JList to display the new item
-	    //itemsJList.repaint();
 	    updateItemsList();
 	    //tell the items table it needs to update too
 	    mainInterface.refreshItemsTable();

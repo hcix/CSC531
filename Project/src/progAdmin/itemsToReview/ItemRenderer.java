@@ -59,16 +59,16 @@ public class ItemRenderer implements ListCellRenderer, ListDataListener {
 			details.setWrapStyleWord(true);
 			details.setEditable(false);
 			details.setMaximumSize(new Dimension(240, 100));
-			details.setText(item.getDetails());
+			//details.setText(item.getDetails());
 //FIXME
 			//displays only the first 150 chars in list; trails into a ...
-	/*		if(item.getDetails().length()>200){ 
-				String textToShow = item.getDetails().substring(0, 150); 
+			if(item.getDetails().length()>50){ 
+				String textToShow = item.getDetails().substring(0, 40); 
 				textToShow = textToShow.concat("...");
 				details.setText(textToShow);
 			} else {
 				details.setText(item.getDetails());
-			}*/
+			}
 //----end of fixme
 			
 			itemPanel.add(details, "align left");

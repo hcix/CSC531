@@ -3,6 +3,12 @@ package utilities;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+/**
+ * A class used for the purpose of making component sizes standard, and based off the size of the screen, rather than a numerical value.
+ * This is useful in case users run at different resolutions.
+ * @author Brendan
+ *
+ */
 public class InterfaceSizer 
 {
 	private static Toolkit toolkit = Toolkit.getDefaultToolkit();

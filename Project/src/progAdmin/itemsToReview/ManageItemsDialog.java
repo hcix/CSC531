@@ -16,7 +16,6 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -27,7 +26,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 import net.miginfocom.swing.MigLayout;
 import program.CurrentUser;
 import program.ResourceManager;
@@ -179,8 +177,10 @@ private static final long serialVersionUID = 1L;
 						" delete an item once it's been created.", "Operation not Permited", 
 						JOptionPane.INFORMATION_MESSAGE);
 			}
+
 			ChangeHelper.makeChange(ChangeHelper.DELETE_ITEM_TO_REVIEW);
 		//Edit item
+
 		} else if (command.equals(EDIT_ITEM)){
 			int rowIndex = table.getSelectedRow();
 			ItemToReview item = (rm.getItems()).get(rowIndex);
@@ -195,6 +195,7 @@ private static final long serialVersionUID = 1L;
 	            readItem.setModal(true);
 	            rm.loadItemsList();
 
+
 	            //refresh while dialog is in view
 				refreshItemsTable();
 				itemsPanel.removeAll();
@@ -207,8 +208,11 @@ private static final long serialVersionUID = 1L;
 							"contents.", "Operation not Permited", 
 							JOptionPane.INFORMATION_MESSAGE);
 
+
 	            refreshItemsTable();
 	            table.doLayout();
+	            ChangeHelper.makeChange(ChangeHelper.EDIT_ITEM_TO_REVIEW);
+
 			}
 		}
 		

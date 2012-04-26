@@ -35,34 +35,36 @@ public class JCalendar extends JDialog implements PropertyChangeListener{
 
     private Calendar calendar;
   //-----------------------------------------------------------------------------
-    public JCalendar(Frame parent, String title, boolean modal)
+    public JCalendar(JFrame parent, String title, boolean modal)
     {
-        this(parent, title, modal, 0);
-        this.setLocationRelativeTo(null);
+    	super(parent, title, modal);
+    	init(0);
+        //this(parent, title, modal, 0);
+       // this.setLocationRelativeTo(null);
     }
   //-----------------------------------------------------------------------------
     // monthSpinner can have following values
     // RIGHT_SPINNER, LEFT_SPINNER, NO_SPINNER
     // Default is RIGHT_SPINNER
-    public JCalendar(Frame parent, String title, boolean modal, int monthSpinner)
+  /*  public JCalendar(JFrame parent, String title, boolean modal, int monthSpinner)
     {
         super(parent, title, modal);
-        this.setLocationRelativeTo(null);
+      //  this.setLocationRelativeTo(null);
         init(monthSpinner);
     }
   //-----------------------------------------------------------------------------
-    public JCalendar(Dialog parent, String title, boolean modal)
+    public JCalendar(JDialog parent, String title, boolean modal)
     {
         super(parent, title, modal);
-        this.setLocationRelativeTo(null);
+      //  this.setLocationRelativeTo(null);
         init(0);
-    }
+    }*/
   //-----------------------------------------------------------------------------
     private void init(int monthSpinner)
     {
         okPressed = false;
 
-        getContentPane().setLayout(new BorderLayout());
+        
         calendar = Calendar.getInstance();
 
         dayChooser = new JDayChooser(calendar.get(Calendar.DAY_OF_MONTH));
@@ -84,13 +86,20 @@ public class JCalendar extends JDialog implements PropertyChangeListener{
         pnlBottom.add(btnOk);
         pnlBottom.add(btnCancel);
 
-        getContentPane().add(pnlTop, "North");
-        getContentPane().add(dayChooser, "Center");
-        getContentPane().add(pnlBottom, "South");
+        //getContentPane().add(pnlTop, "North");
+       // getContentPane().add(dayChooser, "Center");
+       // getContentPane().add(pnlBottom, "South");
 
-        pack();
-        setResizable(false);
-
+       
+       // setResizable(false);
+        
+       // getContentPane().setLayout(new BorderLayout());
+        Container contentPane = getContentPane();
+        contentPane.setLayout(new BorderLayout());
+        contentPane.add(pnlTop, BorderLayout.PAGE_START);
+        contentPane.add(dayChooser, BorderLayout.CENTER);
+        contentPane.add(pnlBottom, BorderLayout.PAGE_END);
+	    
         dayChooser.addPropertyChangeListener(this);
         monthChooser.addPropertyChangeListener(this);
         yearChooser.addPropertyChangeListener(this);
@@ -98,6 +107,11 @@ public class JCalendar extends JDialog implements PropertyChangeListener{
         SymAction lSymAction = new SymAction();
         btnOk.addActionListener(lSymAction);
         btnCancel.addActionListener(lSymAction);
+        
+        setLocationByPlatform(true);
+        pack();
+     
+      //  this.setVisible(true);
     }
 //-----------------------------------------------------------------------------
     class SymAction implements ActionListener
@@ -230,7 +244,7 @@ public class JCalendar extends JDialog implements PropertyChangeListener{
         }
     }
   //-----------------------------------------------------------------------------
-    public void setVisible(boolean b)
+ /*   public void setVisible(boolean b)
     {
         if(b)
         {
@@ -242,7 +256,7 @@ public class JCalendar extends JDialog implements PropertyChangeListener{
             okPressed = false;
         }
         super.setVisible(b);
-    }
+    }*/
   //-----------------------------------------------------------------------------
     public void setEnabled(boolean flag)
     {

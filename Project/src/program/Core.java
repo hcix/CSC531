@@ -3,8 +3,10 @@ package program;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import progAdmin.LoginDialog;
 import userinterface.DashboardPanel;
@@ -16,6 +18,27 @@ public class Core extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private static JFrame frame;
 	private static ResourceManager rm;
+	private static MySplash splash;
+	//Background task for loading images.
+    static SwingWorker worker = new SwingWorker<Boolean, Void>() {
+        @Override
+        public Boolean doInBackground() {
+//            //final ImageIcon[] innerImgs = new ImageIcon[nimgs];
+//            for (int i = 0; i < nimgs; i++) {
+//                innerImgs[i] = loadImage(i + 1);
+//            }
+//            return innerImgs;
+        	createAndShowMainGUI();
+        	return true;
+        }
+        
+        @Override
+        public void done() {
+        	System.out.println("CALLLED!!!");
+        	splash.setVisible(false);
+        }
+ 
+    };
 //-----------------------------------------------------------------------------	 
 	/**
 	 * Main method to start the thread that will run the main program
@@ -33,21 +56,21 @@ public class Core extends JFrame {
 	        		e.printStackTrace();
 	        	}
 	        	
-	        	BSplash splash = new BSplash("icons/gear_256.png", frame);
-	        	
 	        	//Set up and show the login GUI
 	        	//COMMENT NEXT LINE OUT TO GET RID OF THE LOGIN GUI FOR DEBUGGING PURPOSES
 	        	//MUST ALSO COMMENT OUT 6 LINES IN MAININTERFACEWINDOW AS INDICATED THERE
 	        	createAndShowLoginGUI();
-	        	
 	        
 	        	rm = new ResourceManager(frame);
 	        	
-	        	//Splash splashScreen = new Splash();
-	        	//splashScreen.setVisible(true);
+	        	//create splash screen
+	        	splash = new MySplash(frame);
+	        	splash.setVisible(true);
+	        	splash.setLocationRelativeTo(frame);
+	        	
+	         	doStuff();
+	        	//createAndShowMainGUI();
 
-	        	//Set up the UI
-	        	createAndShowMainGUI();
 	        }
 	    });
 	}
@@ -111,5 +134,9 @@ public class Core extends JFrame {
 		frame.dispose();
 	}
 //-----------------------------------------------------------------------------	
+	private static void doStuff(){
+		worker.execute();
+	}
+//-----------------------------------------------------------------------------
 
 }

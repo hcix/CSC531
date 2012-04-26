@@ -461,7 +461,7 @@ public class SwingHelper {
 		JLabel label;
 		
 		for(int i=0; i<buttonArray.length; i++){
-			panel.add(buttonArray[i], "align");
+			panel.add(buttonArray[i], "align, sg");
 			label = new JLabel(labels[i]);
 			panel.add(label, "aligny top, wrap");
 		}

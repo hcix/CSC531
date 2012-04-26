@@ -2,22 +2,30 @@
 <roster>
 	<employee>
 		<cnumber>C00000000</cnumber>
-		<firstname>Micah</firstname>
+		<firstname>Ben</firstname>
 		<lastname>Reback</lastname>
 		<caneid>m.reback</caneid>
 		<email>m.reback@umiami.edu</email>
-		<permissions>supervisor</permissions>
+		<permissions>command</permissions>
 	</employee>
 	<employee>
 		<cnumber>C11111111</cnumber>
+		<firstname>Enid</firstname>
+		<lastname>Magari</lastname>
+		<caneid>emagari</caneid>
+		<email>e.magari@umiami.edu</email>
+		<permissions>Command</permissions>
+	</employee>
+	<employee>
+		<cnumber>C22222222</cnumber>
 		<firstname>Brendan</firstname>
 		<lastname>Loyot</lastname>
 		<caneid>b.loyot</caneid>
 		<email>b.loyot@umiami.edu</email>
-		<permissions>supervisor</permissions>
+		<permissions>officer</permissions>
 	</employee>
 	<employee>
-		<cnumber>C22222222</cnumber>
+		<cnumber>C33333333</cnumber>
 		<firstname>Heather</firstname>
 		<lastname>Ciechowski</lastname>
 		<caneid>hciechowski</caneid>
@@ -25,19 +33,27 @@
 		<permissions>supervisor</permissions>
 	</employee>
 	<employee>
-		<cnumber>xxx</cnumber>
-		<firstname>demo</firstname>
-		<lastname>demo</lastname>
-		<caneid>demo</caneid>
-		<email>h.ciechowski@umiami.edu</email>
+		<cnumber>C44444444</cnumber>
+		<firstname>Olivia</firstname>
+		<lastname>Lam</lastname>
+		<caneid>olivia.lam</caneid>
+		<email>olivia.lam@umiami.edu</email>
+		<permissions>supervisor</permissions>
+	</employee> 
+	<employee>
+		<cnumber>C55555555</cnumber>
+		<firstname>Kyle</firstname>
+		<lastname>Kravitch</lastname>
+		<caneid>K.kravitch</caneid>
+		<email>k.kravitch@umiami.edu</email>
 		<permissions>supervisor</permissions>
 	</employee>
 	<employee>
-		<cnumber>5</cnumber>
-		<firstname>1</firstname>
-		<lastname>2</lastname>
-		<caneid>3</caneid>
-		<email>4</email>
-		<permissions>Supervisor</permissions>
+		<cnumber>Cxxx</cnumber>
+		<firstname>demo</firstname>
+		<lastname>!</lastname>
+		<caneid>demo</caneid>
+		<email>k.kravitch@umiami.edu</email>
+		<permissions>supervisor</permissions>
 	</employee>
 </roster>

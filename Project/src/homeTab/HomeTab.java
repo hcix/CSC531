@@ -31,7 +31,13 @@ import utilities.ui.SwingHelper;
 //import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 //import com.sun.jna.NativeLibrary;
-
+/**
+ * 
+ * @author Brendan
+ * The HomeTab represents the first tab in the dashboard which is viewable by everyone.
+ * Inside the Home Tab there are two subtabs, Video and Recent Activities.  The Video tab diplays the most recent video uploaded by a supervisor.
+ * The Recent Activities tab displays recent changes made by any user, up to a week in the past.
+ */
 public class HomeTab extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private static final String LAUNCH = "launch";
@@ -69,12 +75,7 @@ public class HomeTab extends JPanel implements ActionListener {
 		rAP = new JScrollPane(rasp);
 		rAP.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		rAP.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//<<<<<<< HEAD
-//		//rAP.setPreferredSize(this.parent.getSize());
-//		
-//		videoPanel = new JPanel(new MigLayout());
-//		//videoPanel.setPreferredSize(parent.getSize());
-//=======
+
 		rAP.setPreferredSize(tabSize);
 		
 		videoPanel = new JPanel(new MigLayout());
@@ -182,14 +183,21 @@ public class HomeTab extends JPanel implements ActionListener {
 		}
 
 	}
+	/**
+	 * This method calls the DatabaseHelper, which pulls information from the database to be displayed in the Recent activities tab.
+	 * @throws Exception
+	 */
 	public void databaseAction() throws Exception
 	{
 		// get the list of changes from the DB
-		System.out.println("database action called");
 		changeList = DatabaseHelper.homeTabPullFromDB();
 		rasp.removeAll();
 		repopulateActivityPanel();
 	}
+	/**
+	 * This method repopulates the Activity Panel after data is pulled from the Database.
+	 * @throws Exception
+	 */
 	public void repopulateActivityPanel() throws Exception
 	{
 		JLabel [] labels = new JLabel[SEVEN];

@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.swing.ImageIcon;
+
+import utilities.ChangeHelper;
 import utilities.DatabaseHelper;
 import utilities.FileHelper;
 import utilities.pdf.PDFHelper;
@@ -483,6 +485,7 @@ public ArrayList<String> getPhotoFilePaths() {
 
 	    //Close the connection
 	    conn.close();
+	    ChangeHelper.makeChange(ChangeHelper.ADD_BB_ENTRY);
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -506,7 +509,7 @@ public ArrayList<String> getPhotoFilePaths() {
 
 	    //close the connection
 	    conn.close();
-
+	    ChangeHelper.makeChange(ChangeHelper.DELETE_BB_ENTRY);
 	}
 //-----------------------------------------------------------------------------
 	/**

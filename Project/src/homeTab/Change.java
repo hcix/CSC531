@@ -2,6 +2,12 @@ package homeTab;
 
 import java.util.Date;
 //-----------------------------------------------------------------------------
+/**
+ * The Change class represents a change made by the current user.  Inside a Change instance, there is the name of
+ * the current user (the one who made the change), the current date, and the type of change that they made.
+ * @author Brendan
+ *
+ */
 public class Change 
 {
 //-----------------------------------------------------------------------------

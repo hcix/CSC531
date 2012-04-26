@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 /**
- * 
+ * A Recent Activity panel is the collection of changes.  A panel will be constructed with changes based on the date range specified in the Home Tab.
  */
 public class RecentActivity extends JPanel{
 private static final long serialVersionUID = 1L;

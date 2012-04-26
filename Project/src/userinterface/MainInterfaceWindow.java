@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -14,17 +13,20 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-
 import progAdmin.AdminTab;
 import progAdmin.PersonnelManager;
 import program.CurrentUser;
 import program.ResourceManager;
 import shiftCdrTab.gui.ShiftCdrTab;
-import utilities.InterfaceSizer;
 import blueBookTab.BlueBookTab;
 import boloTab.BOLOtab;
 
-
+/**
+ * The MainInterfaceWindow class represent the main window of the interface.  Here is where the tabs are created and added to the main panel.
+ * Also, some tabs are hidden based on the permissions level of the current user.
+ * @author Brendan
+ *
+ */
 public class MainInterfaceWindow extends JPanel implements ChangeListener{
 private static final long serialVersionUID = 1L;
 	JPanel boloTab, rollCallTab, blueBookTab;
@@ -38,6 +40,11 @@ private static final long serialVersionUID = 1L;
 	public MainInterfaceWindow(JFrame parent, ResourceManager rm){
 		super(new GridLayout(1, 1));
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+	
+		this.parent = parent;
+		//Dimension dim = InterfaceSizer.getTabSize();
+		//Dimension dim = InterfaceSizer.getTabSize();
+
 
 		this.parent = parent;
 
@@ -51,13 +58,7 @@ private static final long serialVersionUID = 1L;
 		rm.setHomeTabReference(homeTab);
 		tabbedPane.addChangeListener(this);
 		tabbedPane.addTab("Home", homeTab);
-//<<<<<<< HEAD
-//		//homeTab.setPreferredSize(dim);
-//        tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
-//        
-//        boloTab = new BOLOtab(rm, this);
-//        //boloTab.setPreferredSize(dim);
-//=======
+
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         
         rm.setHomeTabReference(homeTab);

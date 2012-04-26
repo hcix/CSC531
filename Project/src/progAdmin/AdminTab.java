@@ -4,15 +4,19 @@
 package progAdmin;
 
 import homeTab.HomeTab;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.nio.file.Path;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import net.miginfocom.swing.MigLayout;
 import progAdmin.itemsToReview.ManageItemsDialog;
 import program.ResourceManager;
 import userinterface.MainInterfaceWindow;
@@ -57,9 +61,11 @@ public class AdminTab extends JPanel implements ActionListener {
 	}
 //-----------------------------------------------------------------------------
 	private JPanel createActionButtons() {
-		JPanel buttonsPanel = new JPanel();
+		JPanel buttonsPanel = new JPanel(new MigLayout());
 
-		JButton editUsrAcctsButton = ButtonHelper.createUsrAccountsButton(ButtonHelper.LARGE, "");
+		JButton editUsrAcctsButton =ButtonHelper.createUsrAccountsButton(ButtonHelper.LARGE, "");
+				SwingHelper.createImageButton("icons/group_48.png");
+				
 		editUsrAcctsButton.addActionListener(new ActionListener() {
 			//Create dialog to edit user accounts
 			EditUsrAccountsDialog usrAcctsDialog = new EditUsrAccountsDialog(parent);

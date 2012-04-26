@@ -176,6 +176,7 @@ public class ResourceManager {
 		return parent;
 	}
 
+//-----------------------------------------------------------------------------
 	public void setHomeTabReference(HomeTab ht)
 	{
 		this.homeTab=ht;
@@ -259,7 +260,7 @@ public class ResourceManager {
 	        //set the system properties
 	        System.setProperties(p);
 	        //display new properties
-	        printEnv();
+	        //printEnv();
 
 		}	
 //-----------------------------------------------------------------------------
