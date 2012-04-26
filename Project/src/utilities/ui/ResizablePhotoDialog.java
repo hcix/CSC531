@@ -21,7 +21,7 @@ import javax.swing.JToolBar;
 import utilities.FileHelper;
 //-----------------------------------------------------------------------------
 /**
- * <code>ResizablePhotoDialog</code> is a class used for resizing photos.
+ * The <code>ResizablePhotoDialog</code> class is used for resizing photos.
  */
 public class ResizablePhotoDialog extends JDialog {
 private static final long serialVersionUID = 1L;

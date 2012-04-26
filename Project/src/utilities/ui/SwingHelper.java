@@ -32,7 +32,11 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import net.miginfocom.swing.MigLayout;
 import userinterface.MainInterfaceWindow;
-
+/**
+ * The <code>SwingHelper<code/> class provides many useful methods to create 
+ * java swing objects within various parts of the program
+ *
+ */
 public class SwingHelper {
 //-----------------------------------------------------------------------------
 	/** length in columns = 2 */

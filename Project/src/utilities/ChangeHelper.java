@@ -7,8 +7,9 @@ import java.util.Date;
 import program.CurrentUser;
 
 /**
- * This class is used to create new Changes.  This class makes a new Change based off the current user, the current date, and the type of change made, as specified by the appropriate string value.
- * @author Brendan
+ * The <code>ChangeHelper<code/> class is used to create new Changes.  This class makes a new Change based 
+ * off the current user, the current date, and the type of change made, as specified 
+ * by the appropriate string value.
  *
  */
 public class ChangeHelper 

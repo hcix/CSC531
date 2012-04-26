@@ -19,7 +19,11 @@ import javax.xml.stream.events.XMLEvent;
 import progAdmin.Employee;
 import progAdmin.itemsToReview.ItemToReview;
 import utilities.FileHelper;
-
+/**
+ * the <code>XmlParser<code/> class helps read internal xml files to be used within
+ * the project 
+ *
+ */
 public class XmlParser {
 //-----------------------------------------------------------------------------	
 	public static final String PERMIS_NONE="none";
