@@ -105,8 +105,8 @@ public class RosterParser {
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.out.println("No regular schedule file, line 100 Roster Parser");
+//DEBUG
+//System.out.println("No regular schedule file, line 109 Roster Parser");
 			//e.printStackTrace();
 		}
 		return false;

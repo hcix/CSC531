@@ -66,11 +66,9 @@ public class FileHelper {
 	 * 
 	 * @param doc - the local path of the document
 	 * @return docName - the absolute path of the document
-	 * @deprecated use the method corresponding to name of subdir to 
-	 * access instead
 	 */
 	public static String getDocumentPathName(String doc){
-		File progDir = new File("..");
+		File progDir = new File(getProgramDirPathName());
 		Path docPath=null;
 		String docName=null;
 			
@@ -84,6 +82,57 @@ public class FileHelper {
 		
 //DEBUG	System.out.println("getDocumentPathName = " + docName);	
 		return docName;
+		
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Gets the name of the absolute path to a newly created file in the 
+	 * directory where temp email messages are stored.
+	 * 
+	 */
+	public static String getTempMessageName(){
+		File progDir = new File(getProgramDirPathName());
+		Path tempMsgPath=null;
+		String tempMsgName=null;
+			
+		try{
+			tempMsgPath = Paths.get(progDir.getCanonicalPath(), DOC_DIR, "message.eml");
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		
+		tempMsgName = tempMsgPath.toString();
+		
+		//if this file already exists, delete it, there should only be one
+		File msgFile = new File(tempMsgName);
+		if(msgFile.exists()){
+			msgFile.delete();
+		}
+		
+		return tempMsgName;
+		
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Gets the absolute path name of the image file located in the 
+	 * userinterface/images package.
+	 */
+	public static String getImageResourcePathName(String imageName){
+		File progDir = new File(getProgramDirPathName());
+		Path imgPath=null;
+		String imgName=null;
+			
+		try{
+			imgPath = Paths.get(progDir.getCanonicalPath(), "Project", "src",
+					"userinterface", "images", imageName);
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		
+		imgName = imgPath.toString();
+		
+//DEBUG	System.out.println("getDocumentPathName = " + docName);	
+		return imgName;
 		
 	}
 //-----------------------------------------------------------------------------
@@ -109,7 +158,7 @@ public class FileHelper {
 		docName = docPath.toString();
 		
 //DEBUG	
-System.out.println("getBBEntryPdfPathName = " + docName);	
+//System.out.println("getBBEntryPdfPathName = " + docName);	
 		return docName;
 		
 	}
@@ -162,7 +211,7 @@ System.out.println("getBBEntryPdfPathName = " + docName);
 		dirName = dirPath.toString();
 		
 //DEBUG 
-System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);	
+//System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);	
 
 		return dirName;	
 	}
@@ -181,7 +230,7 @@ System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);
 			
 		try{
 		docPath = Paths.get(progDir.getCanonicalPath(), 
-				DOC_DIR, BB_SUBDIR, reportName);
+				DOC_DIR, SFT_RPTS_SUBDIR, reportName);
 		} catch (IOException e){
 			e.printStackTrace();
 		}
@@ -280,7 +329,6 @@ System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);
 		String programDir = null;
 		//File progDir = new File("."); //this one to run in a jar
 		File progDir = new File(".."); //this one to run in Eclipse
-		
 		try {
 			programDir = progDir.getCanonicalPath();
 		} catch (IOException e) {
@@ -396,8 +444,9 @@ System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);
 		
 	    File outputfile = new File(destinationFile.toString());
 	    String extension = getFileExtension(outputfile);
-	    System.out.printf("\nFileHelper: savePhoto(): destinationFile.toString() = %s\n",
-	    		destinationFile.toString());
+	    
+//DEBUG System.out.printf("\nFileHelper: savePhoto(): destinationFile.toString() = %s\n",
+//destinationFile.toString());
 	    
 	    
 	    int i=0;
@@ -408,9 +457,11 @@ System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);
 	    	destinationFile = Paths.get(progDir, PHOTO_DIR, name+"."+extension);
 	    	outputfile = new File(destinationFile.toString());
 		    
-	    	System.out.printf("\nFileHelper: savePhoto(): (while loop) " +
-		    		"destinationFile.toString() = %s\n", destinationFile.toString());
-	    //saftey condition to protect against infinite loop
+//DEBUG
+//System.out.printf("\nFileHelper: savePhoto(): (while loop) " +
+//		"destinationFile.toString() = %s\n", destinationFile.toString());
+	    
+	    	//safety condition to protect against infinite loop
 	    	if(i>100){ 
 	    		//TODO make the println below into a error/warning message for user
 	    		System.out.println("ERROR 100 files with this name exist already!"); }
@@ -422,7 +473,7 @@ System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);
 	    	ImageIO.write(imageToSave, extension, outputfile);
 	    } catch (IOException e) {
 	    	//TODO make the println below into a error/warning message for user
-	    	System.out.println("FileHelper: savePhoto(): Problem saving photo. rut row");
+	    	System.out.println("FileHelper: savePhoto(): Problem saving photo.");
 	    	return null;
 	    }
 	
@@ -451,6 +502,7 @@ System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);
 	 */
 	public static Path copyVideoAnnoun(File original){
 		String progDir = getProgramDirPathName();
+		
 		//Specifies a system independent path
 		Path destination = Paths.get(progDir, VIDEO_DIR, ANNOUN_SUB_DIR);
 		
@@ -516,7 +568,7 @@ System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);
 				i++;
 				String newFileName = FileHelper.getNameWithoutExtension(saveAs.toString()) 
 						+"_v" + i + "." + FileHelper.getFileExtension(saveAsFile);
-				saveAsFile = new File(saveAs);
+				saveAsFile = new File(newFileName);
 			}
 			//return the saveAsFile name 
 			return saveAsFile.toString();
@@ -528,7 +580,7 @@ System.out.println("FileHelper: getStoredBBentriesDir: dir = " + dirName);
 				i++;
 				String newFileName = FileHelper.getNameWithoutExtension(saveAs.toString()) 
 						+"_v" + i + "." + FileHelper.getFileExtension(saveAsFile);
-				saveAsFile = new File(saveAs);
+				saveAsFile = new File(newFileName);
 			}
 			//return the saveAsFile name 
 			return saveAsFile.toString();

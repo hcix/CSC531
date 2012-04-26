@@ -20,4 +20,11 @@ public class FieldAndVal {
 		return val;
 	}
 //-----------------------------------------------------------------------------
+	@Override
+	public String toString(){
+		String thisAsString = "FieldAndVal {\nfield = " + this.field+"\n"
+				+"val = " + this.val + "\n}";
+		return thisAsString;
+	}
+//-----------------------------------------------------------------------------
 }

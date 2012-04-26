@@ -2,7 +2,7 @@ package blueBookTab;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
@@ -24,15 +24,24 @@ import utilities.FileHelper;
 import utilities.pdf.PDFHelper;
 import utilities.ui.ImageHandler;
 import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.Utilities;
 import com.itextpdf.text.pdf.AcroFields;
-import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfGState;
+import com.itextpdf.text.pdf.PdfImportedPage;
+import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.PdfWriter;
 
 //-----------------------------------------------------------------------------
 /**
@@ -92,6 +101,7 @@ public class BlueBookEntry {
 		for(int i=0; i<fieldArray.length; i++){
 			fieldArray[i]=null;
 		}
+		photoFilePaths = new ArrayList<String>();
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -313,8 +323,9 @@ public class BlueBookEntry {
 	/**
 	 * @param photoFilePath - the path of the photo associated with this each entry
 	 */
-	public void setPhotoFilePath(Path p_photoFilePath) {
-		this.photoFilePath = p_photoFilePath;
+	public void setPhotoFilePath(Path photoFilePath) {
+		this.photoFilePath = photoFilePath;
+		photoFilePaths.add(photoFilePath.toString());
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -364,16 +375,16 @@ public ArrayList<String> getPhotoFilePaths() {
 	 */
 	public ImageIcon getPhoto(){
 		ImageIcon photo = ImageHandler.getThumbnailImageIcon(photoFilePath);
-		if(photo==null){ System.out.printf("null photo\n"); }
+//DEBUG if(photo==null){ System.out.printf("null photo\n"); }
 		return photo;
 	}
 //-----------------------------------------------------------------------------
-    private byte[] getBytes(ArrayList<String> p_photoFilePaths) throws IOException, SQLException {
+    private byte[] getBytes(ArrayList<String> photoFilePaths) throws IOException, SQLException {
     	    byte[] bytes = null;
     	
     		ByteArrayOutputStream bos = new ByteArrayOutputStream();
     		ObjectOutput out = new ObjectOutputStream(bos);   
-    		out.writeObject(p_photoFilePaths);
+    		out.writeObject(photoFilePaths);
     		bytes = bos.toByteArray();
     		//close
     		out.close();
@@ -384,12 +395,12 @@ public ArrayList<String> getPhotoFilePaths() {
 		return bytes;
 	}
  //-----------------------------------------------------------------------------
-    private SerialBlob getBlob(ArrayList<String> p_photoFilePaths) throws IOException, SQLException {
+    private SerialBlob getBlob(ArrayList<String> photoFilePaths) throws IOException, SQLException {
 	    SerialBlob blob = null;
 	
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ObjectOutput out = new ObjectOutputStream(bos);   
-		out.writeObject(p_photoFilePaths);
+		out.writeObject(photoFilePaths);
 		blob = new SerialBlob(bos.toByteArray());
 		//close
 		out.close();
@@ -413,7 +424,7 @@ public ArrayList<String> getPhotoFilePaths() {
     }
 //-----------------------------------------------------------------------------
 	/**
-	 * Adds this BlueBookEntry to the 'bluebook' table in the database.
+	 * Adds this <code>BlueBookEntry</code> to the 'bluebook' table in the database.
 	 * @throws Exception
 	 */
 	public void addToDB() throws Exception{
@@ -494,30 +505,6 @@ public ArrayList<String> getPhotoFilePaths() {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Save this BlueBookEntry to a pdf file based on a template.
-	 * 
-	 */
-	public String saveToFileSystem(String filename){
-		File saveAsFile = new File(filename);
-		
-		PdfStamper stamper;
-				
-		if(saveAsFile.exists()){
-			stamper = PDFHelper.getPdfStampler(filename);
-		} else{
-			stamper = PDFHelper.getPdfStampler(formPathName, filename);
-		}
-		
-		fill(stamper);
-		
-		//flattens the form so fields cannot be edited
-		stamper.setFormFlattening(true);
-		
-		try{ stamper.close(); return filename; } 
-		catch(Exception e){ e.printStackTrace(); return null; }
-	}
-//-----------------------------------------------------------------------------
-	/**
 	 * Create a unique filename to save an instance of the related form version
 	 * of this Entry entity.
 	 */
@@ -537,32 +524,6 @@ public ArrayList<String> getPhotoFilePaths() {
 		return filename;
 	}
 //-----------------------------------------------------------------------------
-	/**
-	 * Save this BlueBookEntry's information in a pdf on the file system.
-	 */
-	public void loadInfoIntoForm(String saveAs) throws IOException, DocumentException{
-		//used to put text into the form
-		PdfStamper stamper = PDFHelper.getPdfStampler(formPathName, saveAs);
-		
-		fill(stamper);
-		
-		Image img = Image.getInstance((this.getPhotoFilePath().toString()));
-    	img.setBorder(Image.BOX);
-
-              
-    	PdfContentByte content = stamper.getOverContent(1);
-
-    	img.setAbsolutePosition(10f, 100f);
-
-    	content.addImage(img);
-
-		//flattens the form so fields cannot be edited
-		stamper.setFormFlattening(false);
-		
-		try{ stamper.close(); } 
-		catch(Exception e){ e.printStackTrace(); }
-	}
-//-----------------------------------------------------------------------------
     /**
      * Fill out the fields using this Entry's info.
      * @param form - the form object
@@ -570,20 +531,35 @@ public ArrayList<String> getPhotoFilePaths() {
     public void fill(PdfStamper stamper) {
     	AcroFields form = stamper.getAcroFields();
     	
+    	//TODO play with size of form field on BlueBookForm to fix apperance
+    	
     	try{
     		if(this.caseNum!=null)
     			form.setField("caseNum", this.getCaseNum()); 
 	    	if(this.date!=null)
 	    		form.setField("date", this.getDate());
-	        if(this.name!=null)
-	        	form.setField("name", this.getName());
-	       //TODO: finish extracting the rest of these fields!
-	        //The png of the form with the fields names in in dropbox!!!
-	        //Do it!
-	        //You! Now!
-	     // ...
-
-	        //TODO: add photo(s)!
+	        if(this.name!=null){
+	        	form.setField("lastName", this.getName());
+	        	form.setField("firstName", this.getName());
+	        	form.setField("middleName", this.getName());
+	        }
+	        if(this.dob!=null)
+	        	form.setField("dob", this.getDob());
+	        if(this.affili!=null)
+	        	form.setField("affili", this.getAffili());
+	        if(this.address!=null){
+	        	form.setField("addr_street_1", this.getAddress());
+	        	form.setField("addr_street_2", this.getAddress());
+	        	form.setField("addr_city", this.getAddress());
+	        	form.setField("addr_state", this.getAddress());
+	        	form.setField("addr_zip", this.getAddress());
+	        }
+	        if(this.crimeDescrip!=null)
+	        	form.setField("descrip", this.getCrimeDescrip());
+	        if(this.location!=null)
+	        	form.setField("location", this.getLocation());
+	        if(this.narrative!=null)
+	        	form.setField("narrative", this.getNarrative());
 	        
     	} catch(Exception e){
     		e.printStackTrace();
@@ -591,71 +567,36 @@ public ArrayList<String> getPhotoFilePaths() {
         
     }
 //-----------------------------------------------------------------------------
+	/**
+	 * Save this BlueBookEntry's information in a pdf on the file system.
+	 */
     public String createPdf(String fn) throws IOException, DocumentException{
-    	loadInfoIntoForm(fn);
-    	
-    	//add pics
-    /*	PdfReader reader = new PdfReader(fn);
-    	PDFHelper.getPdfStampler(fn);
-    	PdfStamper stamper = new PdfStamper(reader, 
-    			(new FileOutputStream(fn)),'\0', true);
-
-    	//Image image = Image.getInstance("watermark.png");
-    	Image img = Image.getInstance((this.getPhotoFilePath().toString()));
-    	img.setBorder(Image.BOX);
-
+    	//used to put text into the form
+		PdfStamper stamper = PDFHelper.getPdfStampler(formPathName, fn);
+		
+		fill(stamper);
               
-    	PdfContentByte content = stamper.getUnderContent(1);
+    	PdfContentByte content = stamper.getOverContent(1);
 
-              img.setAbsolutePosition(10f, 700f);
-
-              content.addImage(img);
-
-    stamper.close();
-    */
-    return fn;
-    }
-//-----------------------------------------------------------------------------
-    /*
-    public String createPdf(String filename)
-            throws IOException, DocumentException {
-        	// step 1
-            Document document = new Document();
-            // step 2
-            PdfWriter.getInstance(document, new FileOutputStream(filename));
-            // step 3
-            document.open();PdfReader reader = new PdfReader(baos.toByteArray());
-            // step 4
-            document.add(createParagraph(
-                "My favorite movie featuring River Phoenix was ", "0092005"));
-            document.add(createParagraph(
-                "River Phoenix was nominated for an academy award for his role in ", "0096018"));
-            document.add(createParagraph(
-                "River Phoenix played the young Indiana Jones in ", "0097576"));
-            document.add(createParagraph(
-                "His best role was probably in ", "0102494"));
-            // step 5
-            document.close();
-            
-            return filename;
-        }*/
-//-----------------------------------------------------------------------------
-    /**
-     * Creates a paragraph with some text and an image.
-     * @throws DocumentException
-     * @throws IOException
-     */
-    public Paragraph createParagraph(String text, String imdb)
-        throws DocumentException, IOException {
-        Paragraph p = new Paragraph(text);
-        if(this.getPhotoFilePath()!=null){
-	        Image img = Image.getInstance((this.getPhotoFilePath().toString()));
-	        
-	        img.scaleToFit(1000, 72);
-	        img.setRotationDegrees(-30);
-	        p.add(new Chunk(img, 0, -15, true));
-        }
-        return p;
+    	//float startYInPts = Utilities.inchesToPoints(8);
+    	float startYInPts = Utilities.inchesToPoints(3.5f) - 100;
+    	float startXInPts = 30f;
+    	
+    	for(String photo:photoFilePaths){
+    		Image img = Image.getInstance(photo);
+    		img.setBorder(Image.BOX);
+    		img.setAbsolutePosition(startXInPts, startYInPts);
+    		content.addImage(img);
+    		startXInPts = img.getRight() + 10;
+    	}
+    	
+		//flattens the form so fields cannot be edited
+		stamper.setFormFlattening(false);
+		
+		try{ stamper.close(); } 
+		catch(Exception e){ e.printStackTrace(); }
+		
+    	return fn;
     }
 //-----------------------------------------------------------------------------
 }

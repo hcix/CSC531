@@ -25,6 +25,7 @@
 		<permissions>supervisor</permissions>
 	</employee>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	<employee>
 		<cnumber>hehe</cnumber>
@@ -115,4 +116,14 @@
 		<permissions>Supervisor</permissions>
 	</employee>
 >>>>>>> update
+=======
+	<employee>
+		<cnumber>xxx</cnumber>
+		<firstname>demo</firstname>
+		<lastname>demo</lastname>
+		<caneid>demo</caneid>
+		<email>h.ciechowski@umiami.edu</email>
+		<permissions>supervisor</permissions>
+	</employee>
+>>>>>>> 1731fdb6a9bd72929089ef4618ab0f425970b71d
 </roster>

@@ -90,7 +90,7 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 	{
 		JLabel [] labels = new JLabel[SEVEN];
 		long [] day_Starts = new long[SEVEN];
-		recentActivity [] recArray = new recentActivity[SEVEN];
+		RecentActivity [] recArray = new RecentActivity[SEVEN];
 		
 		try {
 			databaseAction();
@@ -118,7 +118,7 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 		for(int i = 0; i < SEVEN; i++)
 		{
 			// instantiate new rA
-			recArray[i] = new recentActivity(tabSize);
+			recArray[i] = new RecentActivity(tabSize);
 			// fill in array with start of days of recent week in seconds
 			day_Starts[i] = (startOfCurrentDay - (i*MILI_IN_DAY));
 			// make labels based on day_Starts to show recent week
@@ -143,7 +143,7 @@ public class HomeTab extends JPanel implements ActionListener, FocusListener {
 	}
 
 	// this method should take the array of ready to go recentActivities and add them
-	private void assembleActivities(recentActivity[] recArray)
+	private void assembleActivities(RecentActivity[] recArray)
 	{
 		for(int i = 0; i < recArray.length; i++)
 		{

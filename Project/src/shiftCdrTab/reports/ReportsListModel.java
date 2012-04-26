@@ -5,10 +5,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
 /**
- *
+ * JDOC
  */
 public class ReportsListModel extends DefaultListModel implements ListModel{
-	//private ArrayList<ShiftCdrReport> reportList;
 	private ArrayList<ReportFile> reportFileList;
 //-----------------------------------------------------------------------------
 	public ReportsListModel(ArrayList<ReportFile> reportFileList) {
@@ -25,19 +24,6 @@ public class ReportsListModel extends DefaultListModel implements ListModel{
 		return(reportFileList.size());
 	}
 //-----------------------------------------------------------------------------
-	//public void addListDataListener(ListDataListener l){
-		//TODO write addListDataListener to add items to the list and call XmlParser
-		//to add them to the xml file
-	//}
-//-----------------------------------------------------------------------------
-//	public void removeListDataListener(ListDataListener l){
-		//TODO write removeListDataListener to remove items to the list and call XmlParser
-		//to remove them from the xml file
-//	}
-//=============================================================================
-	//ReportFile
-
-//=============================================================================
 }
 
 

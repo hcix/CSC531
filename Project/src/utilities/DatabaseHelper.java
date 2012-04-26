@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import program.CurrentUser;
-import shiftCdrTab.RollCall;
+import shiftCdrTab.rollCall.RollCall;
 import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
 //-----------------------------------------------------------------------------
@@ -109,18 +109,17 @@ public class DatabaseHelper {
 			if(photoPath!=null){ 
 				Path pp = Paths.get(photoPath);
 				bolo.setPhotoFilePath(pp);
-//DEBUG:
+
 			} else { 
-				System.out.printf("\n photo path is null\n");
+//DEBUG System.out.printf("\n photo path is null\n");
 			}
 			
 			videoPath=allBOLOs.getString("videoPath");
 			if(videoPath!=null){ 
 				Path vp = Paths.get(videoPath);
-				bolo.setVideoFilePath(vp);
-//DEBUG:			
+				bolo.setVideoFilePath(vp);			
 			} else { 
-				//System.out.printf("\n video path is null\n");
+//DEBUG System.out.printf("\n video path is null\n");
 			}
 
 			boloList.add(bolo);
@@ -414,7 +413,7 @@ public class DatabaseHelper {
 	 * @return <code>long</code> value representing time in seconds since epoch
 	 */
 	public static long convertDateToEpoch(Date date){
-		long epoch = (date.getTime() / 1000);
+		long epoch = (date.getTime()/1000);
 		return epoch;
 	}
 //-----------------------------------------------------------------------------
@@ -429,7 +428,10 @@ public class DatabaseHelper {
 		return date;
 	}
 //-----------------------------------------------------------------------------
-	public static ArrayList<Change> HomeTabPullFromDB() throws Exception
+	/**
+	 * JDOC
+	 */
+	public static ArrayList<Change> homeTabPullFromDB() throws Exception
 	{ // this method gets the 
 		
 		final long MILI_IN_WEEK = 604800000;
@@ -463,6 +465,10 @@ public class DatabaseHelper {
         
 		return changeList;
 	}
+//-----------------------------------------------------------------------------
+	/**
+	 * JDOC
+	 */
 	public static void postChangeToDB(Change c) throws Exception // add Change to database table
 	{	
 		//Create the connection to the database
@@ -492,4 +498,5 @@ public class DatabaseHelper {
         
         conn.close();
 	}
+//-----------------------------------------------------------------------------
 }

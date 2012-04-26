@@ -1,5 +1,7 @@
 package boloTab;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -10,9 +12,22 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Utilities;
+import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import progAdmin.itemsToReview.ItemToReview;
 import utilities.FileHelper;
+import utilities.pdf.PDFHelper;
 import utilities.ui.ImageHandler;
 //-----------------------------------------------------------------------------
 /**
@@ -26,11 +41,12 @@ public class Bolo {
 	private String preparedBy, approvedBy;
 	private String otherDescrip = null, narrative = null;
 	private Path photoFilePath = null, videoFilePath = null;
-	private long incidentDate=0, incidentTime=0, prepDate=0, prepTime=0;
+	private long incidentDate=0, incidentTime=0;
+	private long prepDate=System.currentTimeMillis(), prepTime=System.currentTimeMillis();
 	private String[] fieldArray;
 	private Integer boloID=null;
 	/** the name of the pdf file associated with this <code>Bolo</code> object */
-	private String filename=null;
+	private String filename="";
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates a new <code>Bolo</code> object with all fields initially null
@@ -410,7 +426,7 @@ public String[] getStringFields(){
  */
 public ImageIcon getPhoto(){
 	ImageIcon photo = ImageHandler.getThumbnailImageIcon(photoFilePath);
-	if(photo==null){ System.out.printf("null photo\n"); }
+//DEBUG if(photo==null){ System.out.printf("null photo\n"); }
 	return photo;
 }
 //-----------------------------------------------------------------------------

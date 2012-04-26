@@ -18,10 +18,6 @@ import net.miginfocom.swing.MigLayout;
  * This is a panel that allows the user to toggle between different views to
  * see items within the program and select/"click" items. This panel will 
  * notify the given action listener when a <code>JPanel</code> is "clicked".
- * 
- * TODO: Test if this shit works
- * TODO: Adds a border around the entire thing somewhere, but where? 
- * Here? In BOLOtab? In BlueBookTab? Does it happen in the scroll dialogs too?
  */
 public class DisplayPanel extends JScrollPane implements MouseListener {
 private static final long serialVersionUID = 1L;
@@ -42,39 +38,41 @@ private static final long serialVersionUID = 1L;
 	Color pressedColor;
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l){
-		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.l=l;
 		mainPanel = createMainPanel(items);
 		this.setViewportView(mainPanel);
 	}
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l, int wrap){
-		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.wrap=wrap;
 		this.l=l;
 		mainPanel = createMainPanel(items);
-		//createMainPanel(items);
+
 		this.setViewportView(mainPanel);
 	}
 //-----------------------------------------------------------------------------
 	public DisplayPanel(JPanel[] items, ActionListener l, int wrap, int gap){
-		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		super(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.wrap=wrap;
 		this.l=l;
 		this.gap=gap;
 		mainPanel = createMainPanel(items);
-		//createMainPanel(items);
+
 		this.setViewportView(mainPanel);
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * JDOC
+	 * Create the main panel that will display the given items.
 	 */
 	private JPanel createMainPanel(JPanel items[]){
 		String gapString = "gap " + gap;
 		String wrapString = "wrap " + wrap;
-		//create the main panel to display in scroller
-		//mainPanel = new JPanel(new MigLayout(gapString + ", " + wrapString));		
+	
 		JPanel panel = new JPanel(new MigLayout(gapString + ", " + wrapString));	
 		addItemsToPanel(items, panel);
 		
@@ -89,11 +87,14 @@ private static final long serialVersionUID = 1L;
 		return panel;
 	}
 //-----------------------------------------------------------------------------
-	public void addItemsToPanel(JPanel items[], JPanel panel){
+	/**
+	 * Add the given items to the given panel.
+	 */
+	private void addItemsToPanel(JPanel items[], JPanel panel){
 		for(int i=0; i<items.length; i++){
 			items[i].setBorder(BorderFactory.createRaisedBevelBorder());
 			items[i].addMouseListener(this);
-			panel.add(items[i]);
+			panel.add(items[i], "sg");//sg ensures all items will be same size
 		}
 	}
 //-----------------------------------------------------------------------------

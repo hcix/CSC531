@@ -11,13 +11,13 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
-public class recentActivity 
+public class RecentActivity 
 {
 	private JPanel panel;
 	private JLabel dayLabel;
 	private ArrayList<Change> changeList = new ArrayList<Change>();
 	
-	public recentActivity(Dimension d)
+	public RecentActivity(Dimension d)
 	{
 		panel = new JPanel(new MigLayout());
 		panel.setPreferredSize(d);
