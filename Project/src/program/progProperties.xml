@@ -3,11 +3,6 @@
 <properties>
 <comment>&lt;!-- No comment--!&gt;</comment>
 <entry key="UMPD.latestShiftTime">22</entry>
-<<<<<<< HEAD
-<entry key="UMPD.latestReport">C:\Users\Brendan\workspace\CSC531\Documents\ShiftReports\ShiftCDRSumReport04_24_2012_16_49.pdf</entry>
-<entry key="UMPD.latestVideo">C:\Users\Brendan\workspace\CSC531\Videos\Announcements\ULTRA - Tiesto Vid2.mov</entry>
-=======
 <entry key="UMPD.latestReport">/Users/heatherciechowski/CSC531/Documents/ShiftReports/ShiftCDRSumReport04_24_2012_14_51.pdf</entry>
 <entry key="UMPD.latestVideo">/Users/heatherciechowski/CSC531/Videos/Announcements/Starcraft - Terran 1 (music)1.mp4</entry>
->>>>>>> e8e62a66ae854e9a1b4fe39724960c3ddafc5f9c
 </properties>

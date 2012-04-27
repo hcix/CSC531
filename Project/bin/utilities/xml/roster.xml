@@ -54,13 +54,7 @@
 		<firstname>demo</firstname>
 		<lastname>!</lastname>
 		<caneid>demo</caneid>
-		<email>k.kravitch@umiami.edu</email>
-		<permissions>supervisor</permissions>
-		<cnumber>xxx</cnumber>
-		<firstname>demo2</firstname>
-		<lastname>demo</lastname>
-		<caneid>demo2</caneid>
 		<email>h.ciechowski@umiami.edu</email>
-		<permissions>officer</permissions>
+		<permissions>supervisor</permissions>
 	</employee>
 </roster>
