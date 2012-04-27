@@ -25,17 +25,18 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import net.miginfocom.swing.MigLayout;
+<<<<<<< HEAD
+=======
 import progAdmin.itemsToReview.ItemToReview;
+>>>>>>> 5a7091ab02c9825266544a171cbc9a6fbc31f234
 import utilities.ChangeHelper;
 import utilities.ui.ButtonHelper;
 import utilities.ui.SwingHelper;
 import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
 /**
- * JDOC
- * 
- * 
- * 
+ * The <code>EditUsrAccountsDialog<code/> class allows an administrator
+ * to edit a user, add a user, and delete a user
  * 
  * TODO: Lots of debugging in this class here. 
  */
@@ -138,7 +139,9 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 	{
 		this.dispose();
 	}
+
 //-----------------------------------------------------------------------------
+
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if(command.equals(ADD_USER))
@@ -217,6 +220,7 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 		//-----------------------------------------------------------------------------
 		EmployeeTableModel(ArrayList<Employee> employeeList){
 		}
+
 		//-----------------------------------------------------------------------------
 		public void tableChanged(TableModelEvent e) {
 			//don't need to implement this bc table is only editable thru dialogs
@@ -251,7 +255,9 @@ public class EditUsrAccountsDialog extends JDialog implements ActionListener {
 			//if col is out of range, return null
 			return null;
 		}
+
 //-----------------------------------------------------------------------------
+
 		/*
 		 * JTable uses this method to determine the default renderer/
 		 * editor for each cell. In this case, all cells are strings so

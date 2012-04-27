@@ -37,7 +37,9 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 //-----------------------------------------------------------------------------
 /**
- *
+ * The <code>BOLOpreview<code/> class allows one to view a preview of the given 
+ * <code>Bolo<code/> to print, edit, email. Gets called from the <code>BOLOtab<code/>
+ * class
  */
 public class BOLOpreview extends JDialog implements ActionListener {
 private static final long serialVersionUID = 1L;

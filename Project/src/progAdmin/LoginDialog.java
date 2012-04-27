@@ -30,7 +30,9 @@ import utilities.FileHelper;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
- * The <code>LoginDialog</code> class
+ * The <code>LoginDialog</code> class creates the login screen for a user to 
+ * enter their username and password to authenticate their access into the
+ * system
  *
  */
 public class LoginDialog extends JDialog implements ActionListener {

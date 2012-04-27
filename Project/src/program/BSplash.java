@@ -11,7 +11,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
-
+/**
+ * 
+ *
+ */
 public class BSplash extends JWindow {
     public BSplash(String filename, Frame f)
     {

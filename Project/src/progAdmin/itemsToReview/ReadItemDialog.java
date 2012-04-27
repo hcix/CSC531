@@ -23,7 +23,8 @@ import program.ResourceManager;
 import utilities.ui.SwingHelper;
 
 /**
- * JDOC 
+ * The <code>ReadItemDialog<code/> class opens when an Item dialog is clicked.
+ * this class creates a toolbar then displays the item read
  */
 public class ReadItemDialog extends JDialog {
 private static final long serialVersionUID = 1L;

@@ -4,7 +4,7 @@ import javax.swing.DefaultListModel;
 import program.ResourceManager;
 //-----------------------------------------------------------------------------
 /**
- * 
+ * The 
  */
 public class ItemsListModel extends DefaultListModel  {
 	//private ArrayList<ItemToReview> itemsList;

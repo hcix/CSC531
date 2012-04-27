@@ -20,7 +20,8 @@ import utilities.ChangeHelper;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
- *
+ * The <code>AddItemDialog<code/> class adds an item to review to the side
+ * panel
  */
 public class AddItemDialog extends JDialog {
 private static final long serialVersionUID = 1L;

@@ -33,7 +33,8 @@ import utilities.ChangeHelper;
 import utilities.ui.SwingHelper;
 
 /**
- * JDOC
+ * the <code>ManageItemsDialog<code/> class brings up a dialog to manage the
+ * items to review
  */
 public class ManageItemsDialog  extends JDialog implements MouseListener, ActionListener{
 private static final long serialVersionUID = 1L;

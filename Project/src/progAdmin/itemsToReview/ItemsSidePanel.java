@@ -22,7 +22,8 @@ import userinterface.MainInterfaceWindow;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
- * JDOC
+ * the <code>ItemsSidePanel<code/> class creates a panel to display the 
+ * <code>ItemToReview<code/> in the <code>AdminTab<code/>
  */
 public class ItemsSidePanel extends JScrollPane implements MouseListener, ActionListener {
 private static final long serialVersionUID = 1L;

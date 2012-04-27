@@ -1,35 +1,34 @@
-/**
- * The <code>Crime</code> class holds information pertaining to a single crime
- * incident. These incidents are gathered from data that is input into the 
- * <code>ShiftCdrReport</code>s filled out by the Shift Commander at the 
- * end of each shift. A <code>Crime</code> object is used to hold the crime
- * data that is either being written to, or read from the program's database.
- * The <code>Crime</code> object is manipulated as needed, and the final product
- * of the manipulations is written to the database either to update an existing 
- * entry or create a new entry.
- * 
- * Once it has been created, a <code>Crime</code> is associated with the 
- * <code>ShiftCdrReport</code> that it was generated from. The case number 
- * associated with the <code>Crime</code> ties it to any other documents 
- * that share that case number, such as BOLOs and Blue Book Entries. All 
- * crime incidents are stored in the program's database. A <code>Crime</code>
- * object provides access to an entries contents. While only Shift
- * Commanders can add crime entries to the database and edit existing 
- * crimes, all officers may view the database's crime table contents. 
- * 
- * The permissions attached to a <code>Crime</code> are as follows:
- * Officers - can view all crime incidents
- * Shift Commanders - can view all crimes incidents, but can only 
- * edit those which they have created
- * Supervisor - can view and edit all crime incidents
- * 
- * @see ShiftCdrReport
- */
 package shiftCdrTab.reports;
 
 import java.util.Date;
 import shiftCdrTab.gui.ShiftCdrReport;
-
+/**
+* The <code>Crime</code> class holds information pertaining to a single crime
+* incident. These incidents are gathered from data that is input into the 
+* <code>ShiftCdrReport</code>s filled out by the Shift Commander at the 
+* end of each shift. A <code>Crime</code> object is used to hold the crime
+* data that is either being written to, or read from the program's database.
+* The <code>Crime</code> object is manipulated as needed, and the final product
+* of the manipulations is written to the database either to update an existing 
+* entry or create a new entry.
+* 
+* Once it has been created, a <code>Crime</code> is associated with the 
+* <code>ShiftCdrReport</code> that it was generated from. The case number 
+* associated with the <code>Crime</code> ties it to any other documents 
+* that share that case number, such as BOLOs and Blue Book Entries. All 
+* crime incidents are stored in the program's database. A <code>Crime</code>
+* object provides access to an entries contents. While only Shift
+* Commanders can add crime entries to the database and edit existing 
+* crimes, all officers may view the database's crime table contents. 
+* 
+* The permissions attached to a <code>Crime</code> are as follows:
+* Officers - can view all crime incidents
+* Shift Commanders - can view all crimes incidents, but can only 
+* edit those which they have created
+* Supervisor - can view and edit all crime incidents
+* 
+* @see ShiftCdrReport
+*/
 public class Crime {
 //-----------------------------------------------------------------------------
 	/** the case # associated with this <code>Crime</Code> incident */

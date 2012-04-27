@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package progAdmin;
 
 import homeTab.HomeTab;

@@ -14,7 +14,10 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import utilities.ui.ImageHandler;
-
+/**
+ * 
+ *
+ */
 public class Splash extends Frame implements ActionListener {
 
     BufferedImage splashImg = ImageHandler.getBufferedImage("images/splashScreen.png",500,250);

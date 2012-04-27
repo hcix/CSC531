@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
+ *	The <code>JCalendarPanel<code/> class creates a calendar graphical interface 
+ * to show a miniature calendar to choose a specific date
  *
  */
 public class JCalendarPanel extends JPanel implements ActionListener {

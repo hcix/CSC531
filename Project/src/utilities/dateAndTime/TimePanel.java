@@ -15,7 +15,9 @@ import utilities.ui.SwingHelper;
 
 //-----------------------------------------------------------------------------
 /**
- *
+ * The <code>TimePanel<code/> class creates a time panel to be used with java
+ * date spinners
+ * 
  */
 public class TimePanel extends JPanel implements ActionListener{
 private static final long serialVersionUID = 1L;

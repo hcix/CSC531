@@ -33,7 +33,6 @@ import utilities.ui.SwingHelper;
 //import com.sun.jna.NativeLibrary;
 /**
  * 
- * @author Brendan
  * The HomeTab represents the first tab in the dashboard which is viewable by everyone.
  * Inside the Home Tab there are two subtabs, Video and Recent Activities.  The Video tab diplays the most recent video uploaded by a supervisor.
  * The Recent Activities tab displays recent changes made by any user, up to a week in the past.
@@ -149,8 +148,10 @@ public class HomeTab extends JPanel implements ActionListener {
 		
 
 	}
-
 	// -----------------------------------------------------------------------------
+	/**
+	 * Launches the video that was just added
+	 */
 	private void launchMostRecentVideo() {
 
 		// check for null conditions

@@ -1,14 +1,11 @@
-/**
- * Manages the personnel information associated with the system.
- */
+
 package progAdmin;
 
 import java.util.List;
 import utilities.xml.XmlParser;
 //-----------------------------------------------------------------------------
 /**
- * 
- *
+ * Manages the personnel information associated with the system.
  */
 public class PersonnelManager {
 	public static final String PERMIS_NONE="none";
