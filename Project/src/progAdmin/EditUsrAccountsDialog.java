@@ -25,10 +25,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import net.miginfocom.swing.MigLayout;
-<<<<<<< HEAD
-=======
 import progAdmin.itemsToReview.ItemToReview;
->>>>>>> 5a7091ab02c9825266544a171cbc9a6fbc31f234
 import utilities.ChangeHelper;
 import utilities.ui.ButtonHelper;
 import utilities.ui.SwingHelper;

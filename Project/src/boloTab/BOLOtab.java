@@ -206,7 +206,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 		contentPane.add(searchPanel);
 		return searchDialog;
 	}
-	//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 	private void search() {
 		ArrayList<Bolo> searchResults = new ArrayList<Bolo>();
 		ArrayList<String >fields = new ArrayList<String>();
