@@ -504,11 +504,6 @@ public class BOLOform extends JDialog {
 		 bolo.setincidentDate(dateVal);
 		 long timeVal = time.getTimeEpoch();
 		 bolo.setincidentTime(timeVal);
-		 
-		 
-//HAD TO COMMENT OUT TO WMAKE WORK
-		// bolo.setincidentDate(getIncidentDateEpoch());
-		// bolo.setincidentTime(getIncidentTimeEpoch());
 
 
 	}
@@ -582,9 +577,7 @@ public class BOLOform extends JDialog {
 			if(resizeDialog.getNewPhotoFilePath()!=null){
 				bolo.setPhotoFilePath(resizeDialog.getNewPhotoFilePath());
 				photoPanel.removeAll();
-
 				photoPanel.add(new JLabel(resizeDialog.getResizedImgIcon()));
-
 				(photoPanel.getParent()).validate();
 			}
 

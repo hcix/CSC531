@@ -72,11 +72,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 		tabbedPane.addTab("Recent BOLOs", entriesScroller);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_2);
 
-//		JPanel archievedBolosTab = new JPanel();
-//		tabbedPane.addTab("Archived", archievedBolosTab);
-//		tabbedPane.setMnemonicAt(1, KeyEvent.VK_3);
-
-
 		//Create BOLO Button
 		JButton newBOLOButton = SwingHelper.createImageButton("Create BOLO", 
 				"icons/plusSign_48.png");
@@ -106,23 +101,6 @@ public class BOLOtab extends JPanel implements ActionListener {
 
 			}
 		});
-
-		//Import existing BOLO button
-		/*JButton importBOLOButton = SwingHelper.createImageButton("Import Existing BOLO", 
-				"icons/Import.png");
-		importBOLOButton.addActionListener(new ActionListener() {
-			//file chooser dialog
-			public void actionPerformed(ActionEvent e){
-				//file chooser dialog .setVisable(true);
-				//create a file chooser
-				final JFileChooser fc = new JFileChooser();
-
-				//In response to a button click:
-				//	int returnVal = 
-				fc.showOpenDialog(rm.getGuiParent());
-			}
-		});
-		*/
 
 		//Search button
 		JButton searchButton = SwingHelper.createImageButton("Search Records", 
@@ -194,13 +172,9 @@ public class BOLOtab extends JPanel implements ActionListener {
 
 		searchPanel.add(caseNumLabel, "alignx left");
 		searchPanel.add(caseNumField, "alignx left, wrap");
-
-		//SwingHelper.addDateRangePanel(searchPanel);
-        //JCalendarPanel date = new JCalendarPanel(rm.getGuiParent(), searchPanel, "Date");
 		searchPanel.add(statusLabel, "alignx left");
 		searchPanel.add(statusList, "alignx left, wrap");
 		searchPanel.add(searchButton, "alignx center, wrap");
-
 
 		Container contentPane = searchDialog.getContentPane();
 		contentPane.add(searchPanel);
@@ -256,8 +230,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 		}
 
 		int listSize = boloList.size();
-//DEBUG		System.out.println("boloList.size() = " + listSize);
-		
+
 		JPanel[] items = new JPanel[listSize];
 		Format formatter = new SimpleDateFormat("E, MMM dd, yyyy");
 
@@ -274,12 +247,7 @@ public class BOLOtab extends JPanel implements ActionListener {
 			if(bolo.getStatus()!=null){ status=bolo.getStatus(); }
 
 			boloPanel = new JPanel(new MigLayout("flowy", "[][]", "[][center]"));
-			
-//			if(bolo.getPhoto()!=null){
-//				JLabel photoLabel = new JLabel(
-//						ImageHandler.getScaledImageIcon(bolo.getPhoto(), 100, 100));
-//				boloPanel.add(photoLabel);
-//			}
+
 			JLabel photoLabel;
 			if (bolo.getPhotoFilePath() != null) {
 				photoLabel = new JLabel(ImageHandler.getScaledImageIcon(

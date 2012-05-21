@@ -51,8 +51,12 @@ public class BlueBookForm extends JDialog {
 	BlueBookEntry bbEntry;
 	/** Field where the case number is entered. */
 	JTextField caseNumField;
-	/** Field where the subject's name is entered. */
-	JTextField nameField;
+	/** Field where the subject's first name is entered. */
+	JTextField firstNameField;
+	/** Field where the subject's last name is entered. */
+	JTextField lastNameField;
+	/** Field where the subject's middle name is entered. */
+	JTextField middleNameField;
 	/** Field where the subject's affiliations are entered. */
 	JTextField affiliField;
 	/** Field where the subject's last known address is entered */
@@ -155,7 +159,9 @@ public class BlueBookForm extends JDialog {
 		 //set the filled in fields in the global BlueBookEntry object
 			
 		caseNumField.setText(bbEntry.getCaseNum()); 
-		nameField.setText(bbEntry.getName());
+		firstNameField.setText(bbEntry.getFirstName());
+		lastNameField.setText(bbEntry.getLastName());
+		middleNameField.setText(bbEntry.getMiddleName());
 		affiliField.setText(bbEntry.getAffili());
 		addressField.setText(bbEntry.getAddress());
 		locationField.setText(bbEntry.getLocation());
@@ -196,7 +202,9 @@ public class BlueBookForm extends JDialog {
 		
 		// create fields
 		caseNumField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
-		nameField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
+		firstNameField = new JTextField(SwingHelper.MEDIUM_TEXT_FIELD_LENGTH);
+		lastNameField = new JTextField(SwingHelper.MEDIUM_TEXT_FIELD_LENGTH);
+		middleNameField = new JTextField(SwingHelper.SMALL_TEXT_FIELD_LENGTH);
 		affiliField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
 		addressField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
 		dobField = new JTextField(SwingHelper.DEFAULT_TEXT_FIELD_LENGTH);
@@ -229,8 +237,12 @@ public class BlueBookForm extends JDialog {
 		time = new TimePanel(inputPanel, "Time of Incident");
 		inputPanel.add(caseNumber, "alignx left");
 		inputPanel.add(caseNumField, "align left,wrap");
+		
 		inputPanel.add(name, "alignx left");
-		inputPanel.add(nameField, "align left, wrap");
+		inputPanel.add(lastNameField, "align left, split 3");
+		inputPanel.add(firstNameField);
+		inputPanel.add(middleNameField, "wrap");
+		
 		inputPanel.add(dob, "alignx left");
 		inputPanel.add(dobField, "align left, wrap");
 		inputPanel.add(Affili, "alignx left");
@@ -396,15 +408,19 @@ public class BlueBookForm extends JDialog {
 	  * Places the info from the input fields into the global BlueBook object.
 	  */
 	 private void putInfoIntoBlueBookEntry(){
-		 String caseNumText, nameText, affiliText, addressText, weapon;
-		 String locationText, descritionText, reasonText, dobText;
+		 String caseNumText, lastNameText, firstNameText, middleNameText, affiliText;
+		 String locationText, descritionText, reasonText, dobText, addressText, weapon;
 		 String preparedBy;
 		 
 		 //get the filled in fields in the global bbEntry object
 		 caseNumText = caseNumField.getText();
 		 if(!caseNumText.isEmpty()){ bbEntry.setCaseNum(caseNumText); }
-		 nameText = nameField.getText();
-		 if(!nameText.isEmpty()){ bbEntry.setName(nameText); }
+		 lastNameText = lastNameField.getText();
+		 if(!lastNameText.isEmpty()){ bbEntry.setLastName(lastNameText); }
+		 firstNameText = firstNameField.getText();
+		 if(!firstNameText.isEmpty()){ bbEntry.setFirstName(firstNameText); }
+		 middleNameText = middleNameField.getText();
+		 if(!middleNameText.isEmpty()){ bbEntry.setMiddleName(middleNameText); }
 		 affiliText = affiliField.getText();
 		 if(!affiliText.isEmpty()){ bbEntry.setAffili(affiliText); }
 		 addressText = addressField.getText();
@@ -437,7 +453,9 @@ public class BlueBookForm extends JDialog {
 
 		 //set the form fields to contain info from the bbEntry
 		 caseNumField.setText(bbEntry.getCaseNum());
-		 nameField.setText(bbEntry.getName());
+		 lastNameField.setText(bbEntry.getLastName());
+		 firstNameField.setText(bbEntry.getFirstName());
+		 middleNameField.setText(bbEntry.getMiddleName());
 		 affiliField.setText(bbEntry.getAffili());
 		 addressField.setText(bbEntry.getAddress());
 		 ifYesField.setText(bbEntry.getWeapon());
@@ -522,7 +540,9 @@ public class BlueBookForm extends JDialog {
 	 public void eraseForm(){
 		//set the text of all the form's fields to null
 		caseNumField.setText(null);
-		nameField.setText(null);
+		lastNameField.setText(null);
+		firstNameField.setText(null);
+		middleNameField.setText(null);
 		affiliField.setText(null);
 		addressField.setText(null);
 		ifYesField.setText(null);

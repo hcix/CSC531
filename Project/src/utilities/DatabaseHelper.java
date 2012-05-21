@@ -105,21 +105,22 @@ public class DatabaseHelper {
 			
 			photoPath=allBOLOs.getString("photoPath");
 			if(photoPath!=null){ 
-				Path pp = Paths.get(photoPath);
+				//Path pp = Paths.get(photoPath);
+				Path pp = FileHelper.getAbsPhotoPathFromName(photoPath);
 				bolo.setPhotoFilePath(pp);
 
 			} else { 
 //DEBUG System.out.printf("\n photo path is null\n");
 			}
-			
+
 			videoPath=allBOLOs.getString("videoPath");
 			if(videoPath!=null){ 
-				Path vp = Paths.get(videoPath);
+				//Path vp = Paths.get(videoPath);
+				Path vp = FileHelper.getAbsVideoPathFromName(videoPath);
 				bolo.setVideoFilePath(vp);			
 			} else { 
 //DEBUG System.out.printf("\n video path is null\n");
 			}
-
 			boloList.add(bolo);
 	    }
 	    	
@@ -141,6 +142,7 @@ public class DatabaseHelper {
 	public static ArrayList<BlueBookEntry> getBluebookFromDB() throws Exception{
 		ArrayList<BlueBookEntry> bluebook = new ArrayList<BlueBookEntry>();
 		ArrayList<String> photoFileNames = new ArrayList<String>();
+		ArrayList<String> tempPhotoFileNames = new ArrayList<String>();
 		String name, caseNum, time, date;
 		String narrative, description, location, address, affili, dob;
 		String preparedBy, approvedBy, photoPath, videoPath;
@@ -163,7 +165,7 @@ public class DatabaseHelper {
 	    	entry.setBbID(allEntries.getInt("bbID"));
 	    	
 	    	name = allEntries.getString("name");
-	        if(name!=null){ entry.setName(name); }
+	        if(name!=null){ entry.setFullName(name); }
 	     //   narrative = allEntries.getString("narrative");
 	     //   if(narrative!=null){ entry.setNarrative(narrative); }
 	       
@@ -184,21 +186,27 @@ public class DatabaseHelper {
 	        
 	        photoPath = allEntries.getString("photoFileName");
 	        if(photoPath!=null){ 
-				Path pp = Paths.get(photoPath);
+				//Path pp = Paths.get(photoPath);
+				Path pp = FileHelper.getAbsPhotoPathFromName(photoPath);
+				//DEBUG System.out.printf("DBHelper: getBluebookFromDB() pp = '%s'\n", pp.toString());
 				entry.setPhotoFilePath(pp);
 	        } else { 
-	        	System.out.printf("\nphoto path is null\n");
+	        	//DEBUG System.out.printf("\nphoto path is null\n");
 	        }
 	        try {
 	        	byte[] bytes = allEntries.getBytes("photofilename");
 	        	if (bytes != null && bytes.length == 0) {
 	        		//get the list from the byte object
-				    photoFileNames = (ArrayList<String>)( BlueBookEntry.
+				    tempPhotoFileNames = (ArrayList<String>)( BlueBookEntry.
 					    	getObjectFromBytes(bytes));
 				    
 				    //DEBUG
 				    for (String string : photoFileNames) {
 					    System.out.println("String file name is : " + string);					    
+				    }
+				    
+				    for(String string : tempPhotoFileNames) {
+				    	photoFileNames.add(FileHelper.getAbsPhotoPathFromName(string).toString());
 				    }
 				    //add the photo file path to the entry
 				    entry.setPhotoFilePaths(photoFileNames);
@@ -349,60 +357,6 @@ public class DatabaseHelper {
     	
     	return rollCallList;
     }
-//-----------------------------------------------------------------------------
-	/*
-	 * Wrote this code when thinking I needed a many to many relational database
-	 * probably unnecessary now, keeping it just in case
-	 * -BL
-	 */
-	
-	/*
-	public static void addShift(int shiftNumber, String date) throws Exception {
-		//Create the connection to the database
-		Class.forName("org.sqlite.JDBC");
-	    Connection conn = DriverManager.getConnection("jdbc:sqlite:umpd.db");
-	    
-	    //insert into shift table
-	    PreparedStatement shiftStatement = conn.prepareStatement(
-	    		"INSERT into Person(ShiftNumber, Date) " +
-	    		"VALUES(?,?);"
-	        );
-	    shiftStatement.setInt(1,shiftNumber);
-	    shiftStatement.setString(2,date);
-	    shiftStatement.addBatch();
-	    
-	  //Create new row in the table for the data
-	    conn.setAutoCommit(false);
-	    shiftStatement.executeBatch();
-	    conn.setAutoCommit(true);
-	    
-	    //Close the connection
-	    conn.close();
-	}
-//-----------------------------------------------------------------------------
-	public static void addShiftPerson(int shiftNumber, int Cnumber) throws Exception {
-		//Create the connection to the database
-		Class.forName("org.sqlite.JDBC");
-	    Connection conn = DriverManager.getConnection("jdbc:sqlite:umpd.db");
-	    
-	    //insert into shift table
-	    PreparedStatement shiftPersonStatement = conn.prepareStatement(
-	    		"INSERT into Person(ShiftNumber, Cnumber) " +
-	    		"VALUES(?,?);"
-	        );
-	    shiftPersonStatement.setInt(1,shiftNumber);
-	    shiftPersonStatement.setInt(2,Cnumber);
-	    shiftPersonStatement.addBatch();
-	    
-	  //Create new row in the table for the data
-	    conn.setAutoCommit(false);
-	    shiftPersonStatement.executeBatch();
-	    conn.setAutoCommit(true);
-	    
-	    //Close the connection
-	    conn.close();
-	}
-	*/
 //-----------------------------------------------------------------------------
 	/**
 	 * Converts a <code>Date</code> object into a <code>long</code> representing

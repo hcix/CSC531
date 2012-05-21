@@ -494,13 +494,13 @@ public ImageIcon getPhoto(){
 
 		if(photoFilePath!=null){
 			Path absPhotoFilePath = photoFilePath.toAbsolutePath();
-			photoPathName = absPhotoFilePath.toString();
+			photoPathName = FileHelper.getFilenameFromAbsPath(absPhotoFilePath);
 		}
 		prep.setString(19, photoPathName);	    
 
 		if(videoFilePath!=null){
 			Path absVideoFilePath = videoFilePath.toAbsolutePath();
-			videoPathName = absVideoFilePath.toString();
+			videoPathName = FileHelper.getFilenameFromAbsPath(absVideoFilePath);
 		} 
 		prep.setString(20, videoPathName);
 
@@ -513,7 +513,6 @@ public ImageIcon getPhoto(){
 
 		//Close the connection
 		conn.close();
-
 	}
 //-----------------------------------------------------------------------------
 	/**

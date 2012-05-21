@@ -2,7 +2,6 @@ package blueBookTab;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
@@ -19,34 +18,19 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.StringTokenizer;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.swing.ImageIcon;
-
 import utilities.ChangeHelper;
-import utilities.DatabaseHelper;
 import utilities.FileHelper;
 import utilities.pdf.PDFHelper;
 import utilities.ui.ImageHandler;
-import boloTab.Bolo;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.Utilities;
 import com.itextpdf.text.pdf.AcroFields;
-import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfGState;
-import com.itextpdf.text.pdf.PdfImportedPage;
-import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
-import com.itextpdf.text.pdf.PdfWriter;
 
 //-----------------------------------------------------------------------------
 /**
@@ -55,8 +39,12 @@ import com.itextpdf.text.pdf.PdfWriter;
  * date, time, location, case number, weapon, and attached photos and videos
  */
 public class BlueBookEntry {
-	/** Name of individual associated with Entry */
-	private String name;
+	/** First name of individual associated with Entry */
+	private String firstName;
+	/** Last name of individual associated with Entry */
+	private String lastName;
+	/** Middle name of individual associated with Entry */
+	private String middleName;
 	/** Date of birth of individual associated with Entry*/
 	private String dob;
 	/** Affiliation of individual associated with Entry */
@@ -109,22 +97,74 @@ public class BlueBookEntry {
 			fieldArray[i]=null;
 		}
 		photoFilePaths = new ArrayList<String>();
+		firstName="";
+		middleName="";
+		lastName="";
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Break up the given string and set it into the appropriate boxes
+	 */
+	public void setFullName(String fullName) {
+		StringTokenizer st = new StringTokenizer(fullName, ",");
+	    if(st.hasMoreTokens()) {
+	    	lastName = st.nextToken();
+	    } 
+	    if(st.hasMoreTokens()) {
+	    	firstName = st.nextToken();
+	    }
+	    if(st.hasMoreTokens()) {
+	    	middleName = st.nextToken();
+	    }
+	    
 	}
 //-----------------------------------------------------------------------------
 	/**
 	 * 
-	 * @return name
+	 * @return firstName
 	 */
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * Sets the name of a BOLO individual
-	 * @param name - the name value to set
+	 * Sets the first name of a BOLO individual
+	 * @param first name - the first name to set
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @return lastName
+	 */
+	public String getLastName() {
+		return lastName;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Sets the last name of a BOLO individual
+	 * @param lastName - the name value to set
+	 */
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @return middleName
+	 */
+	public String getMiddleName() {
+		return middleName;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Sets the middle name of a BOLO individual
+	 * @param middleName - the name value to set
+	 */
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -435,6 +475,7 @@ public ArrayList<String> getPhotoFilePaths() {
 	 * @throws Exception
 	 */
 	public void addToDB() throws Exception{
+	    String name;
 		String photoPathName = null, videoPathName = null;
 		//Create the connection to the database
 		Class.forName("org.sqlite.JDBC");
@@ -447,6 +488,9 @@ public ArrayList<String> getPhotoFilePaths() {
 	      " videoFileName, bbID, photofilenames)" + 
 	      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
 
+	    name = this.lastName + "," + this.firstName + "," + this.middleName;
+
+	    
 	    //Add the data to the prepared statement
 	    if(isArmed){ prep.setInt(1, 1); } else { prep.setInt(1, 0); }
 	    prep.setString(2, this.narrative);
@@ -455,7 +499,7 @@ public ArrayList<String> getPhotoFilePaths() {
 	    prep.setString(5, this.address);
 	    prep.setString(6, this.affili);
 	    prep.setString(7, this.dob);
-	    prep.setString(8, this.name);
+	    prep.setString(8, name);
 	    prep.setString(9, this.caseNum);
 	    prep.setString(10, this.time);
 	    prep.setString(11, this.date);
@@ -464,14 +508,15 @@ public ArrayList<String> getPhotoFilePaths() {
 
 	    if(photoFilePath!=null){
 		    Path absPhotoFilePath = photoFilePath.toAbsolutePath();
-		    photoPathName = absPhotoFilePath.toString();
+		    //photoPathName = absPhotoFilePath.toString();
+		    photoPathName = FileHelper.getFilenameFromAbsPath(absPhotoFilePath);
 		    System.out.println("photoPathName = " + photoPathName);
 	    }
 	    prep.setString(12, photoPathName);	    
 
 	    if(videoFilePath!=null){
 	    	Path absVideoFilePath = videoFilePath.toAbsolutePath();
-	    	videoPathName = absVideoFilePath.toString();
+	    	videoPathName = FileHelper.getFilenameFromAbsPath(absVideoFilePath);
 	    } 
 	    prep.setString(13, videoPathName);
 	    //prep.setBlob(15, getBlob(photoFilePaths));
@@ -537,21 +582,23 @@ public ArrayList<String> getPhotoFilePaths() {
      * @param form - the form object
      */
     public void fill(PdfStamper stamper) {
+    	String name;
     	AcroFields form = stamper.getAcroFields();
     	
     	//TODO play with size of form field on BlueBookForm to fix apperance
     	
     	Format formatter = new SimpleDateFormat("MMMMM dd, yyyy");
     	try{
-    		if(this.caseNum!=null)
-    			form.setField("caseNum", this.getCaseNum()); 
-	    	if(this.date!=null)
-	    		form.setField("date", formatter.format(new Date(this.getIncidentDate())));
-	        if(this.name!=null){
-	        	form.setField("lastName", this.getName());
-	        	form.setField("firstName", this.getName());
-	        	form.setField("middleName", this.getName());
-	        }
+    		if(this.caseNum!=null){
+    			form.setField("caseNum", this.getCaseNum()); }
+	    	if(this.date!=null){
+	    		form.setField("date", formatter.format(new Date(this.getIncidentDate()))); }
+	        if(!this.lastName.equals("")){
+	        	form.setField("lastName", this.getLastName()); }
+	        if(!this.firstName.equals("")){
+	        	form.setField("firstName", this.getFirstName()); }
+	        if(!this.middleName.equals("")){
+	        	form.setField("middleName", this.getMiddleName()); }
 	        if(this.dob!=null)
 	        	form.setField("dob", this.getDob());
 	        if(this.affili!=null)

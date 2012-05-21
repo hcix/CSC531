@@ -21,7 +21,8 @@ import javax.swing.JToolBar;
 import utilities.FileHelper;
 //-----------------------------------------------------------------------------
 /**
- * The <code>ResizablePhotoDialog</code> class is used for resizing photos.
+ * The <code>ResizablePhotoDialog</code> class is used to present a 
+ * <code>JDialog</code> for resizing photos.
  */
 public class ResizablePhotoDialog extends JDialog {
 private static final long serialVersionUID = 1L;
@@ -54,12 +55,12 @@ private static final long serialVersionUID = 1L;
 		//get the screen size
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
-		//if the img is bigger than the default dialog size, make the dialog bigger 
+		//If the image is bigger than the default dialog size, make the dialog bigger 
 		if(originalImgIcon.getIconWidth()>500){
 			w=originalImgIcon.getIconWidth()+200;
 			if(w>screenSize.width){
-				//if the img is bigger than the screen, make the dialog just a little 
-				//smaller than the screen and the img just a little smaller the dialog
+				//img width is wider than screen -> make the dialog width slightly smaller 
+				// than the screen width & the img width slightly smaller than dialog's width
 				w=screenSize.width-100;
 				originalImgIcon=ImageHandler.getScaledImageIcon(
 						originalImgIcon, (w-100), originalImgIcon.getIconHeight());
@@ -69,8 +70,8 @@ private static final long serialVersionUID = 1L;
 		if(originalImgIcon.getIconHeight()>450){
 			h=originalImgIcon.getIconHeight()+300;
 			if(h>screenSize.height){
-				//if the img is bigger than the screen, make the dialog just a little 
-				//smaller than the screen and the img just a little smaller the dialog
+				//img height is taller than screen -> make the dialog height slightly smaller 
+				// than the screen height & the img height slightly smaller than dialog's height
 				h=screenSize.height-100;
 				originalImgIcon=ImageHandler.getScaledImageIcon(
 						originalImgIcon, originalImgIcon.getIconWidth(), (h-180));
@@ -88,12 +89,12 @@ private static final long serialVersionUID = 1L;
 		PhotoResizer pr = new PhotoResizer(this);
 		pr.registerComponent(photoFrame);
 		
-		JPanel p = new JPanel();//new BorderLayout());
+		JPanel p = new JPanel();
 		p.setPreferredSize(new Dimension(w, h));
 		p.setSize(new Dimension(w, h));
 		this.setLocationRelativeTo(parent);
 		
-		p.add(photoFrame);//, BorderLayout.CENTER);
+		p.add(photoFrame);
 		p.add(createToolbar(), BorderLayout.PAGE_END);
 
 		Container cp = this.getContentPane();
@@ -122,6 +123,7 @@ private static final long serialVersionUID = 1L;
 	    	}
 		}); 
 		
+		//add the buttons to the toolbar
 		toolbar.add(setImgButton);
 		toolbar.add(cancelButton);
 		return toolbar;
@@ -190,12 +192,13 @@ private static final long serialVersionUID = 1L;
 	*/
 	private void saveAndClose(String photofilename){
 		Path photoPath = FileHelper.savePhoto(getResizedImgIcon(), photofilename);
-//DEBUG
-//System.out.printf("\nResizablePhotoDialog: ResizablePhotoDialog(): photoPath.toString() = %s\n",photoPath.toString());
+		
+//DEBUG System.out.printf("\nResizablePhotoDialog: ResizablePhotoDialog(): photoPath.toString() = %s\n",photoPath.toString());
+		
 		setNewPhotoFilePath(photoPath);
 		
+		//close the resize dialog
 		this.setVisible(false);
-		 //close the window
 		this.dispose();	
 	}
 //-----------------------------------------------------------------------------
@@ -205,7 +208,7 @@ private static final long serialVersionUID = 1L;
 	 private void closeAndCancel() {
 		 this.setNewPhotoFilePath(null);
 		 
-		 //close the dialog
+		 //close the resize dialog
 		 this.dispose();	
 	 }
 //-----------------------------------------------------------------------------

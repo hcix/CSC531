@@ -13,6 +13,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.activation.*;
 import progAdmin.Employee;
 import program.CurrentUser;
 //-----------------------------------------------------------------------------
@@ -43,18 +46,25 @@ public class EmailHandler {
 		try{
 			Message msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(fromEmail)); 
-		
-			//create a message body part for the attachment
+	         
+			//Create the message part for an optional message
+			BodyPart bp = new MimeBodyPart();
+	        bp.setText(" "); 
+			
+			//Create a message body part for the attachment
 			MimeBodyPart mbp = new MimeBodyPart();
-	
-			//attach the file to the message
+	        
+			//Attach the file to the message
 			FileDataSource fds = new FileDataSource(attachment);
 			mbp.setDataHandler(new DataHandler(fds));
 			mbp.setFileName(fds.getName());
-			Multipart mp = new MimeMultipart();
+			
+			//Create a multipart message
+			Multipart mp = new MimeMultipart();	
+			mp.addBodyPart(bp);
 			mp.addBodyPart(mbp);
 			msg.setContent(mp);
-		      
+			
 			//set the 'Date:' header
 			msg.setSentDate(new Date());
 

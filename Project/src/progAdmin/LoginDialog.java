@@ -10,6 +10,7 @@ package progAdmin;
 
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileReader;
@@ -22,10 +23,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import net.miginfocom.swing.MigLayout;
 import program.CurrentUser;
-import utilities.DatabaseHelper;
 import utilities.FileHelper;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
@@ -65,7 +67,34 @@ public class LoginDialog extends JDialog implements ActionListener {
 	private JLabel retryLabel;
 	private JTextField caneIdField;
 	private JPasswordField passwordField;
+	JPanel progBarPanel;
 	JFrame frame;
+	LoginDialog ld = this;
+	//Background task for authorizing the user
+    SwingWorker worker = new SwingWorker<Boolean, Void>() {
+        @Override
+        public Boolean doInBackground() {
+        	//check user name and password
+			int authenticationResult = authenticateUser();
+			if(authenticationResult==0){
+				//set the login result value to be true
+				loginSuccessful = true;
+				//close the dialog
+				setVisible(false);
+			} else {
+				//display retry login text
+				displayRetryLabel(authenticationResult);
+			}
+        	return true;
+        }
+        
+        @Override
+        public void done() {
+			ld.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        	progBarPanel.setVisible(false);
+        	progBarPanel.getParent().revalidate();
+        }
+    };
 //-----------------------------------------------------------------------------
 	/**
 	 * Creates Login JFrame
@@ -96,7 +125,17 @@ public class LoginDialog extends JDialog implements ActionListener {
 		JPanel inputPanel = createInputPanel();
 		dialogPanel.add(inputPanel, "wrap");
 		JPanel buttonsPanel = createButtonsPanel();
-		dialogPanel.add(buttonsPanel, "align center");
+		dialogPanel.add(buttonsPanel, "align center, wrap");
+		progBarPanel = new JPanel();
+		dialogPanel.add(progBarPanel);
+//		UIManager.put("ProgressBar.repaintInterval", new Integer(150));
+//		UIManager.put("ProgressBar.cycleTime", new Integer(1050));
+//		JProgressBar progressBar = new JProgressBar(0, 100);
+//        progressBar.setValue(0);
+//		progressBar.setIndeterminate(true);
+//
+//		progBarPanel.add(progressBar);
+//		progBarPanel.getParent().revalidate();
 		
 		//Add the dialog to the screen
 		Container contentPane = getContentPane();
@@ -134,7 +173,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 	    JButton loginButton = new JButton("Login");
 	    loginButton.setActionCommand(LOGIN);
 	    loginButton.addActionListener(this);
-	    
+	   
 		//Add cancel button
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.setActionCommand(CANCEL);
@@ -150,41 +189,6 @@ public class LoginDialog extends JDialog implements ActionListener {
 	    buttonsPanel.add(helpButton);
 	    
 		return buttonsPanel;
-	}
-//-----------------------------------------------------------------------------
-	public void actionPerformed(ActionEvent ev) {
-		
-		if(ev.getActionCommand()==LOGIN){
-			//check user name and password
-			this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-			int authenticationResult = authenticateUser();
-			this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			if(authenticationResult==0){
-				//set the login result value to be true
-				loginSuccessful = true;
-				//close the dialog
-				setVisible(false);
-	
-/* *****************************************************************************
-* TODO: 1.Find and play a login sound upon success. 
-* TODO: 2.Create and display spash screen.
-* Since the program takes a few seconds to load, should play a login tone and
-* show a splash screen to let user know that their login has been successful
-* and the program is loading.
-*******************************************************************************/
-				
-			} else {
-				//display retry login text
-				displayRetryLabel(authenticationResult);
-			}
-		} else if(ev.getActionCommand()==CANCEL){
-			//close the dialog
-			loginSuccessful=false;
-			setVisible(false);
-		} else if(ev.getActionCommand()==HELP){
-			JOptionPane.showMessageDialog(frame, HELP_MESSAGE, 
-					"Help", JOptionPane.INFORMATION_MESSAGE);
-		}
 	}
 //-----------------------------------------------------------------------------
 	/**
@@ -219,7 +223,6 @@ public class LoginDialog extends JDialog implements ActionListener {
 				return NO_ERROR;
 			}
 			
-			
 			//Authenticate the caneID and password info via UM's web portal
 			String login_site = "https://caneid.miami.edu/cas/login"; // login url for umiami
 
@@ -249,6 +252,23 @@ public class LoginDialog extends JDialog implements ActionListener {
 			//TODO: SET CURRENT USER SET TIME
 			return NO_ERROR;
 		}
+//-----------------------------------------------------------------------------
+	public void actionPerformed(ActionEvent ev) {
+		
+		if(ev.getActionCommand()==LOGIN){
+			this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			((JButton)ev.getSource()).setSelected(true);
+			progBarPanel.getParent().revalidate();
+			worker.execute();
+		} else if(ev.getActionCommand()==CANCEL){
+			//close the dialog
+			loginSuccessful=false;
+			setVisible(false);
+		} else if(ev.getActionCommand()==HELP){
+			JOptionPane.showMessageDialog(frame, HELP_MESSAGE, 
+					"Help", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
 //-----------------------------------------------------------------------------
 	  /**
 	   * Returns whether or not the most recent login attempt was successful.

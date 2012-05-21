@@ -51,7 +51,7 @@ public class FileHelper {
     public final static int BOLO_FILE = 1;
     public final static int SHIFT_CDR_RPT_FILE = 2;
     
-    public final static String PATH_SEP = File.pathSeparator;
+    public final static String PATH_SEP = System.getProperty("file.separator");
 //-----------------------------------------------------------------------------
   	/**
   	 * Constructor used to provide access to the various inner classes of 
@@ -429,11 +429,10 @@ public class FileHelper {
 	public static Path savePhoto(ImageIcon imgIcn, String filename){
 		String progDir = getProgramDirPathName();
 		
-		System.out.printf("\nFileHelper: savePhoto(): filename = %s\n", filename);
+		//DEBUG System.out.printf("\nFileHelper: savePhoto(): filename = %s\n", filename);
 		
 		//Specifies a system independent path
 		Path destinationFile = Paths.get(progDir, PHOTO_DIR, filename);
-		//Path destinationFile = Paths.get(filename, null);
 		
 		int w = imgIcn.getIconWidth();
 		int h = imgIcn.getIconHeight();
@@ -648,6 +647,61 @@ public class FileHelper {
 //DEBUG System.out.println("FileHelper: getNameWithoutExtension: filename = " + filename);
 		
 		return filename;
+	}
+//-----------------------------------------------------------------------------
+  	/**
+	 * Given an absolute path, returns just the filename.
+	 * @param absPath - the absolute path of the file
+	 * @return the relative filename 
+	 */
+	public static String getFilenameFromAbsPath(Path absPath) {
+		String name;
+		String absFilename = absPath.toString();
+		int i = absFilename.lastIndexOf(PATH_SEP);
+		
+		name = absFilename.substring(++i);
+		
+		return name;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Given a relative filename, return the absolute path to the photo file,
+	 * located in the photos directory.
+	 * @param name - the filename relative to the photos directory
+	 * @return the absolute path to the file
+	 */
+	public static Path getAbsPhotoPathFromName(String name) {
+		String progDir = getProgramDirPathName();
+		
+		//Specifies a system independent path
+		Path path = Paths.get(progDir, PHOTO_DIR, name);
+		
+		//If no corresponding photo file exists, return null
+		if(!path.toFile().exists()){
+			return null;
+		}
+		//otherwise, return the absolute path
+		return path;
+	}
+//-----------------------------------------------------------------------------
+	/**
+	 * Given a relative filename, return the absolute path to the video file,
+	 * located in the videos directory.
+	 * @param name - the filename relative to the video directory
+	 * @return the absolute path to the file
+	 */
+	public static Path getAbsVideoPathFromName(String name) {
+		String progDir = getProgramDirPathName();
+		
+		//Specifies a system independent path
+		Path path = Paths.get(progDir, VIDEO_DIR, name);
+		
+		//If no corresponding photo file exists, return null
+		if(!path.toFile().exists()){
+			return null;
+		}
+		//otherwise, return the absolute path
+		return path;
 	}
 //-----------------------------------------------------------------------------
 	/**

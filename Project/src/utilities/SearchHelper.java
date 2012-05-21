@@ -172,7 +172,7 @@ public class SearchHelper {
 		    	entry.setBbID(allEntries.getInt("bbID"));
 		    	
 		    	name = allEntries.getString("name");
-		        if(name!=null){ entry.setName(name); }
+		        if(name!=null){ entry.setFullName(name); }
 		        narrative = allEntries.getString("narrative");
 		        if(narrative!=null){ entry.setNarrative(narrative); }
 		       // preparedBy = allEntries.getString("preparedBy");

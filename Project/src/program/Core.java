@@ -21,7 +21,7 @@ public class Core extends JFrame {
 	private static JFrame frame;
 	private static ResourceManager rm;
 	private static MySplash splash;
-	//Background task for loading images.
+	//Background task for creating the main GUI
     static SwingWorker worker = new SwingWorker<Boolean, Void>() {
         @Override
         public Boolean doInBackground() {
@@ -33,7 +33,6 @@ public class Core extends JFrame {
         public void done() {
         	splash.setVisible(false);
         }
- 
     };
 //-----------------------------------------------------------------------------	 
 	/**
