@@ -132,7 +132,6 @@ private static final long serialVersionUID = 1L;
 		
 		//Save button
 		JButton saveButton = ButtonHelper.createSaveButton(ButtonHelper.MEDIUM, "");
-				//SwingHelper.createImageButton("Save", "icons/save_32.png");
 		saveButton.setToolTipText("Save BlueBookEntry");
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -142,8 +141,6 @@ private static final long serialVersionUID = 1L;
 		
 		//Delete button
 		JButton deleteButton = ButtonHelper.createDeleteButton(ButtonHelper.MEDIUM, "");
-				//SwingHelper.createImageButton("Delete", 
-				//"icons/delete_32.png");
 		deleteButton.setToolTipText("Delete BlueBookEntry");
 		deleteButton.setActionCommand(DELETE_ACTION);
 		deleteButton.addActionListener(this);
@@ -161,15 +158,15 @@ private static final long serialVersionUID = 1L;
 		});
 		
 		//Add print button
-		JButton printButton = 
-				SwingHelper.createImageButton("Print", "icons/print_32.png");
+		JButton printButton = ButtonHelper.createPrintButton(ButtonHelper.MEDIUM, "");
+//				SwingHelper.createImageButton("Print", "icons/print_32.png");
 		printButton.setToolTipText("Print this BlueBookEntry document");
 		printButton.setActionCommand(bolo.getFilename());
 		printButton.addActionListener(this);
 		
 		//Email button
-		JButton emailButton = 
-				SwingHelper.createImageButton("Email", "icons/email_32.png");
+		JButton emailButton = ButtonHelper.createEmailButton(ButtonHelper.MEDIUM, "");
+//				SwingHelper.createImageButton("Email", "icons/email_32.png");
 		emailButton.setToolTipText("Email this BlueBookEntry document");
 		emailButton.setActionCommand(EMAIL_ACTION);
 		emailButton.addActionListener(this);
@@ -269,13 +266,13 @@ private static final long serialVersionUID = 1L;
 	 */
 	public String createPdf(String fn) throws IOException, DocumentException{
 		//put text into the form
-		// step 1
+		//step 1
 	    Document document = new Document();
-	    // step 2
+	    //step 2
 	    PdfWriter.getInstance(document, new FileOutputStream(filename));
-	    // step 3
+	    //step 3
 	    document.open();
-	    // step 4
+	    //step 4
 	    
 	    Image header = Image.getInstance(FileHelper.getImageResourcePathName("boloHeader2.png"));
 	    header.setAlignment(Image.MIDDLE);

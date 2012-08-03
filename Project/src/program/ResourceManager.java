@@ -44,6 +44,7 @@ public class ResourceManager {
     HomeTab homeTab;
     boolean mailIsSupported = false;
     boolean printIsSupported = false;
+    private boolean DEBUG = false;
 //-----------------------------------------------------------------------------
     /**
      * Creates a new <code>ResourceManager</code>. Only one instance of
@@ -58,6 +59,7 @@ public class ResourceManager {
             verifyAllActions();
         }
     	
+    	if(DEBUG){ printEnv(); }
     	//Load the properties from the progProperties.xml file
 		progProps = new Properties();
     	try{ loadProperties();
@@ -398,20 +400,19 @@ public class ResourceManager {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * DEBUG prints the system environment. 
+	 * DEBUG prints the system environment and properties. 
 	 */
 	public void printEnv(){
-		//get the syst env
-		//Map<String, String> 
+		
 		Properties pp = System.getProperties();
-//		Map<String, String> env = System.getenv();
-//		//go thru the properties and print each key/value pair
-//	    for (String envName : env.keySet()) {
-//	        System.out.format("%s=%s%n",
-//	                          envName,
-//	                          env.get(envName));
-//	    }
-//	
+		Map<String, String> env = System.getenv();
+		//Print each key/value pair in the env
+	    for (String envName : env.keySet()) {
+	        System.out.format("%s=%s%n",
+	                          envName,
+	                          env.get(envName));
+	    }
+	  //Print each key/value pair in the properties
 		for(String p : pp.stringPropertyNames()){
 			System.out.format("%s=%s%n",
                     p,

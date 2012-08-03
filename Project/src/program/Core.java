@@ -3,7 +3,7 @@ package program;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import javax.swing.ImageIcon;
+import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
@@ -22,7 +22,7 @@ public class Core extends JFrame {
 	private static ResourceManager rm;
 	private static MySplash splash;
 	//Background task for creating the main GUI
-    static SwingWorker worker = new SwingWorker<Boolean, Void>() {
+    static SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>(){
         @Override
         public Boolean doInBackground() {
         	createAndShowMainGUI();
@@ -41,7 +41,7 @@ public class Core extends JFrame {
 	public static void main(String[] args) {
 	    //Schedule a job for the event dispatch thread: creating and showing the GUI
 	    SwingUtilities.invokeLater(new Runnable() {
-			@SuppressWarnings("deprecation")
+//			@SuppressWarnings("deprecation")
 			public void run() {
 	        	
 	        	//Use the native systems look and feel
@@ -71,19 +71,21 @@ public class Core extends JFrame {
 	 * Create the GUI and show it.  For thread safety, this method should be
 	 * invoked from the event dispatch thread.
 	 */
-	private static void createAndShowMainGUI() {
-		Toolkit toolkit =  Toolkit.getDefaultToolkit ();
-		Dimension screenDim = toolkit.getScreenSize();
-		 
+	private static void createAndShowMainGUI() { 
+		String osName = System.getProperty("os.name").toUpperCase();
+		
 	    //Create and set up the main window	
 		frame = new JFrame("UMPD");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		//frame.setPreferredSize(screenDim);
 		frame.setResizable(true);
 		
 		//Uses platform specific method for opening frame
 		frame.setLocationByPlatform(true);
+		
+		//Do platform specific setup
+		if(osName.contains("MAC")){ macSetup(); }
+		else{ windowsSetup(); }
 		
 		//Add the dashboard area to the window   
 		frame.add(new DashboardPanel(), BorderLayout.PAGE_START);
@@ -92,7 +94,6 @@ public class Core extends JFrame {
 		frame.add(new MainInterfaceWindow(frame, rm), BorderLayout.CENTER);
 		
 		//Display the window
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	    frame.pack();
 	    frame.setVisible(true);
 	}
@@ -116,6 +117,17 @@ public class Core extends JFrame {
 		if(!loginDialog.isSuccessful()){
 			System.exit(0);
 		}
+	}
+//-----------------------------------------------------------------------------
+	private static void macSetup(){
+		Toolkit toolkit =  Toolkit.getDefaultToolkit();
+		Dimension screenDim = toolkit.getScreenSize();
+		frame.setLocationRelativeTo(null);
+		frame.setPreferredSize(screenDim);
+	}
+//-----------------------------------------------------------------------------
+	private static void windowsSetup(){
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
 //-----------------------------------------------------------------------------	
 	public static void invalidateFrames()
