@@ -185,7 +185,6 @@ public class BlueBookTab extends JPanel implements ActionListener {
 		return entriesPanel;
 	}
 //-----------------------------------------------------------------------------	
-
 	/** 
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
