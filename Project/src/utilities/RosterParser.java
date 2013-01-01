@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+
 import static java.nio.charset.Charset.defaultCharset;
 import static java.nio.file.Files.newBufferedReader;
 import static java.nio.file.Paths.get;
@@ -21,19 +23,25 @@ public class RosterParser {
 	/**
 	 * JDOC
 	 */
-	public ArrayList<String> getEmployeesOnShift(int shiftTime) {
+	public ArrayList<String> getEmployeesOnShift(int shiftTime, Calendar currentShiftDate) {
 		ArrayList<String> Employees = new ArrayList<String>();
 		ArrayList<File> files = new ArrayList<File>();
-		Calendar cal = Calendar.getInstance();
 		String name, day;
 		int dayAsInt;
+		
 		// Directory path here
 		//Path path = Paths.get("Project","PatrolScheduler", "employee"); //JAR
 		Path path = Paths.get("PatrolScheduler", "employee"); //ECLIPSE
-
-		dayAsInt = cal.get(Calendar.DAY_OF_WEEK);
-		day = getDayAsString(dayAsInt);
-
+		
+		if (currentShiftDate == null) {
+		    Calendar cal = Calendar.getInstance();		    	    
+		    dayAsInt = cal.get(Calendar.DAY_OF_WEEK);
+		    day = getDayAsString(dayAsInt);
+		}
+		else {
+			day = getDayAsString(currentShiftDate.get(Calendar.DAY_OF_WEEK));//BUG
+		}
+		
 		File folder = new File(path.toString());
 		Collections.addAll(files, folder.listFiles());
 

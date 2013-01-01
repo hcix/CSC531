@@ -160,7 +160,6 @@ private static final long serialVersionUID = 1L;
 		return entriesPanel;
 	}
 //-----------------------------------------------------------------------------	
-	@Override
 	public void actionPerformed(ActionEvent ev) {
 		String listId = ev.getActionCommand();
 		int id = Integer.valueOf(listId);

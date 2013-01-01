@@ -47,11 +47,15 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 	static final String SUBMIT = "submit";
 	static final String EDIT = "edit";
 	static final String LAUNCH = "launch";
+	static final String NEXT = "next";
+	static final String PREV = "prev";
 	int shiftTime;
+	Calendar currentShiftDate;
 	static int mostRecentShift;
 	DatabaseHelper dbHelper = new DatabaseHelper();
 	JTable table, editTable;
 	JFrame parent;
+	JLabel shiftLabel;
 	ResourceManager rm;
 	DefaultTableModel tableModel;
 	ItemsSidePanel itemsScroller;
@@ -79,6 +83,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 
 		// Create roll call table passing in the list of names
 		JPanel tablePanel = makeTablePanel(rm.getRollCall());
+		currentShiftDate = Calendar.getInstance();
 
 		// Create button panel
 		JPanel buttonPanel = new JPanel(new FlowLayout());
@@ -102,16 +107,30 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 				"Launch Scheduler", "icons/launcher_48.png");
 		launchButton.addActionListener(this);
 		launchButton.setActionCommand(LAUNCH);
+		
+		
+		JButton nextShiftButton = SwingHelper.createImageButton("Next", "icons/save_48.png");
+		nextShiftButton.setActionCommand(NEXT);
+		nextShiftButton.addActionListener(this);
+		
+		
+		JButton prevShiftButton = SwingHelper.createImageButton("Previous", "icons/save_48.png");
+		prevShiftButton.setActionCommand(PREV);
+		prevShiftButton.addActionListener(this);
+		
+		buttonPanel.add(prevShiftButton);
 		buttonPanel.add(addButton);
 		buttonPanel.add(deleteButton);
 		buttonPanel.add(submitButton);
-		buttonPanel.add(editButton);
+		//buttonPanel.add(editButton);
 		buttonPanel.add(launchButton);
+		buttonPanel.add(nextShiftButton);
 
+	
 		// create a label
 		Date date = Calendar.getInstance().getTime();
-		SimpleDateFormat format = new SimpleDateFormat("EEEE,MMMM dd ");
-		JLabel shiftLabel = new JLabel("Shift for " + format.format(date)
+		SimpleDateFormat format = new SimpleDateFormat("EEEE, MMMM dd, YYYY ");
+		shiftLabel = new JLabel("Shift for " + format.format(date)
 				+ " at " + rm.shiftTimeAsString(shiftTime) + ":00");
 		// change the font at some point shiftLabel.setFont();
 
@@ -125,6 +144,13 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 //-----------------------------------------------------------------------------
 	public void refreshItemsList(){
 		itemsScroller.updateItemsList();
+	}
+//-----------------------------------------------------------------------------
+	private void refreshShiftLabel() {
+		SimpleDateFormat format = new SimpleDateFormat("EEEE, MMMM dd, YYYY ");
+		shiftLabel.setText("Shift for " + format.format(currentShiftDate.getTime())
+				+ " at " + rm.shiftTimeAsString(shiftTime) + ":00");
+		// change the font at some point shiftLabel.setFont();
 	}
 //-----------------------------------------------------------------------------
 	JPanel makeTablePanel(ArrayList<String> names) {
@@ -184,16 +210,104 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 			launchScheduler();
 		} else if (e.getActionCommand() == EDIT) {
 		    editLastRollCall();
-		}
+		} else if (e.getActionCommand() == NEXT) {
+			getNextRollCall();
+		} else if (e.getActionCommand() == PREV) {
+		    getPrevRollCall();
+	    }
 	}
-
+//-----------------------------------------------------------------------------
+    private void getPrevRollCall() {
+    	ArrayList<String> names;
+    	// get the next roll call
+    	if (shiftTime == 10 || shiftTime == 22)
+    		shiftTime -= 4;
+    	else if (shiftTime == 18)
+    	    shiftTime = 10;
+    	else if (shiftTime == 6) {
+    		shiftTime = 22;
+    		//check if you have to move year, month, day (i.e 1/1
+    		if ((currentShiftDate.get(Calendar.MONTH) == 0) && (currentShiftDate.get(Calendar.DAY_OF_MONTH) == 1)) {
+    				currentShiftDate.set(currentShiftDate.get(Calendar.YEAR) - 1, 11, 31);// reset to prev year, 12/31
+    		}
+    		// check if you have to move month and day
+    		else if (currentShiftDate.get(Calendar.DAY_OF_MONTH) == 1) {
+    		    currentShiftDate.set(Calendar.MONTH, currentShiftDate.get(Calendar.MONTH) - 1); //month--
+    		    currentShiftDate.set(Calendar.DAY_OF_MONTH, currentShiftDate.
+    		    		getActualMaximum(Calendar.DAY_OF_MONTH));// day = last day of month
+    		}
+    		else  {// move day  
+    			currentShiftDate.set(Calendar.DAY_OF_MONTH, currentShiftDate.get(Calendar.DAY_OF_MONTH) - 1); //day--	
+    		}
+    	}  
+    	else {
+    		System.out.println("couldn't increment shiftTime:line 226 ShiftCdrTab");
+    		return;
+    	}
+    	try {
+    		// TODO figure out best functionality for going back and forth
+    		// shifts
+    		//testing change from nextShift to updatedShiftTime
+    		names = rm.getRollCall(shiftTime, currentShiftDate);
+    		table.setModel(new RollCallTableModel(names));
+    	} catch (Exception e) {
+    		System.out.println("couldn't get next roll call");
+    	}
+    	
+    	refreshShiftLabel();
+		
+	}
+//-----------------------------------------------------------------------------
+    private void getNextRollCall() {
+    	ArrayList<String> names;
+    	// get the next roll call
+    	if (shiftTime == 6 || shiftTime == 18)
+    		//nextShift = shiftTime + 4;
+    		shiftTime += 4;
+    	else if (shiftTime == 10)
+    		//nextShift = 18;
+    	    shiftTime = 18;
+    	else if (shiftTime == 22) {
+    		//nextShift = 6;
+    		shiftTime = 6;
+    		//check if you have to move year, month, day
+    		if (currentShiftDate.get(Calendar.MONTH) == 12) {
+    			if (currentShiftDate.get(Calendar.DAY_OF_MONTH) == 31)
+    				currentShiftDate.set(currentShiftDate.get(Calendar.YEAR) + 1, 0, 1);// reset to next year, 1/1
+    		}
+    		// check if you have to move month and day
+    		else if (currentShiftDate.get(Calendar.DAY_OF_MONTH) == 
+    				currentShiftDate.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+    		    currentShiftDate.set(Calendar.MONTH, currentShiftDate.get(Calendar.MONTH) + 1); //month++
+    		    currentShiftDate.set(Calendar.DAY_OF_MONTH, 1);// day = 1
+    		}
+    		else  {// move day  
+    			currentShiftDate.set(Calendar.DAY_OF_MONTH, currentShiftDate.get(Calendar.DAY_OF_MONTH) + 1); //day++		
+    		}
+    	}  
+    	else {
+    		System.out.println("couldn't increment shiftTime:line 226 ShiftCdrTab");
+    		return;
+    	}
+    	try {
+    		// TODO figure out best functionality for going back and forth
+    		// shifts
+    		//testing change from nextShift to updatedShiftTime
+    		names = rm.getRollCall(shiftTime, currentShiftDate);
+    		table.setModel(new RollCallTableModel(names));
+    	} catch (Exception e) {
+    		System.out.println("couldn't get next roll call");
+    	}
+    	
+    	refreshShiftLabel();
+	}
 //-----------------------------------------------------------------------------
 	public void submitRollCall() {
-		int numOfRows, i, j, nextShift;
+		int numOfRows, i, j;
 		String name, present, timeArrived, comment, shiftDate;
 		Date date;
 		DateFormat format;
-		ArrayList<String> names;
+		
 
 		numOfRows = table.getModel().getRowCount();
 
@@ -222,28 +336,9 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
 				e.printStackTrace();
 			}
 		}
-		// get the next roll call
-		if (shiftTime == 6 || shiftTime == 18)
-			nextShift = shiftTime + 4;
-		else if (shiftTime == 10)
-			nextShift = 18;
-		else if (shiftTime == 22)
-			nextShift = 6;
-		else {
-			System.out.println("couldn't increment shiftTime:line 226 ShiftCdrTab");
-			return;
-		}
-		try {
-			// TODO figure out best functionality for going back and forth
-			// shifts
-			names = rm.getRollCall(nextShift);
-			table.setModel(new RollCallTableModel(names));
-		} catch (Exception e) {
-			System.out.println("couldn't get next roll call");
-		}
+		getNextRollCall();
 		//mostRecentShift = shiftTime;
-		rm.setLatestShiftTime(shiftTime);
-		//TODO push to xml eventually
+    	rm.setLatestShiftTime(shiftTime);
 	}
 
 //-----------------------------------------------------------------------------
@@ -366,6 +461,7 @@ public class ShiftCdrTab extends JPanel implements ActionListener {
     public static int getMostRecentShift() {
 		return mostRecentShift;
 	}
+
 // =============================================================================
 private class RollCallTableModel extends AbstractTableModel implements
 		TableModelListener {
