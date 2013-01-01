@@ -83,7 +83,8 @@ public class RosterParser {
 		 * Open the reader, read each line and check if the time and day match,
 		 * if so return true, else return false
 		 */
-		try (BufferedReader reader = getReader(filePath)) {
+		try {
+			BufferedReader reader = getReader(filePath);
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				if (line.startsWith(shiftTimeAsString) && line.contains(day)) {
@@ -120,7 +121,8 @@ public class RosterParser {
 		 * Open the employee list file, check for a match with the cnumber, and
 		 * if one occurs, return the name
 		 */
-		try (BufferedReader reader = getReader(employeeFileName)) {
+		try  {
+			BufferedReader reader = getReader(employeeFileName);
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				if (line.contains(Cnumber)) {

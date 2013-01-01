@@ -15,20 +15,30 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import net.miginfocom.swing.MigLayout;
 import utilities.DatabaseHelper;
 import utilities.ui.ImageHandler;
 import utilities.ui.DisplayPanel;
 import utilities.ui.SwingHelper;
-/**
- * Configures UI for the Blue Book Tab
- */
 //-----------------------------------------------------------------------------	
+/**
+ * The <code>BlueBookTab</code> class creates a tab on the UMPD Management System
+ * to hold information of <code>BlueBookEntry</code>s.
+ */
 public class BlueBookTab extends JPanel implements ActionListener {
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	ArrayList<BlueBookEntry> bluebook;
 	JFrame parent;
 //-----------------------------------------------------------------------------	
+	/**
+	 * Creates and sets the <code>BlueBookTab</code> to view all the <code>BlueBookEntry</code>s, 
+	 * create <code>BlueBookEntry</code>s and
+	 * search the database for <code>BlueBookEntry</code>s
+	 * 
+	 * @param parent
+	 */
 	public BlueBookTab(final JFrame parent){
 		this.setLayout(new BorderLayout());
 		this.parent=parent;
@@ -40,6 +50,7 @@ private static final long serialVersionUID = 1L;
 		newEntryButton.addActionListener(new ActionListener() {
 			//Create new Blue Book entry form dialog
 			BlueBookForm formDialog = new BlueBookForm(parent);
+			@Override
 			public void actionPerformed(ActionEvent e){
 				formDialog.setVisible(true);
 			}
@@ -50,6 +61,7 @@ private static final long serialVersionUID = 1L;
 		searchButton.addActionListener(new ActionListener() {
 			//Search dialog
 			JDialog searchDialog = createSearchDialog(parent);
+			@Override
 			public void actionPerformed(ActionEvent e){
 				searchDialog.setVisible(true);
 			}
@@ -65,6 +77,13 @@ private static final long serialVersionUID = 1L;
 		this.add(buttonsPanel, BorderLayout.PAGE_END);
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Creates a search dialog for the <code>BlueBookTab</code> when the 
+	 * <code>searchButton</code> is clicked
+	 * 
+	 * @param parent
+	 * @return
+	 */
 	JDialog createSearchDialog(JFrame parent){
 		//Create the dialog and set the size
 		JDialog searchDialog = new JDialog(parent, "Search Blue Book Database", true);
@@ -105,6 +124,12 @@ private static final long serialVersionUID = 1L;
 		return searchDialog;
 	}
 //-----------------------------------------------------------------------------	
+	/**
+	 * Create the <code>entriesPanel</code> and populate it with data from the
+	 * database
+	 * 
+	 * @return entriesPanel
+	 */
 	public JPanel createEntriesPanel(){
 		JPanel entriesPanel = new JPanel(new MigLayout("gapx 30, wrap 4"));
 		JPanel entryPanel;
@@ -140,7 +165,7 @@ private static final long serialVersionUID = 1L;
 				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
 			}
 			
-			entryPanel.add(new JLabel(armedText, JLabel.CENTER), "alignx center,wrap");
+			entryPanel.add(new JLabel(armedText, SwingConstants.CENTER), "alignx center,wrap");
 			
 			entryPanel.add(new JLabel(" "), "split 3, aligny top");
 			entryPanel.add(new JLabel("Case#: "+caseNum));
@@ -160,6 +185,11 @@ private static final long serialVersionUID = 1L;
 		return entriesPanel;
 	}
 //-----------------------------------------------------------------------------	
+
+	/** 
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+
 	public void actionPerformed(ActionEvent ev) {
 		String listId = ev.getActionCommand();
 		int id = Integer.valueOf(listId);
