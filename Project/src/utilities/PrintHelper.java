@@ -46,7 +46,8 @@ public class PrintHelper implements Printable, ActionListener {
         }
     }
 //-----------------------------------------------------------------------------
-    public int print(Graphics g, PageFormat pf, int page) throws PrinterException {
+    @Override
+	public int print(Graphics g, PageFormat pf, int page) throws PrinterException {
  
         if (page > 0) { 
             return NO_SUCH_PAGE;
@@ -65,7 +66,8 @@ public class PrintHelper implements Printable, ActionListener {
         return PAGE_EXISTS;
     }
 //-----------------------------------------------------------------------------
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
          PrinterJob job = PrinterJob.getPrinterJob();
          job.setPrintable(this);
          boolean ok = job.printDialog();

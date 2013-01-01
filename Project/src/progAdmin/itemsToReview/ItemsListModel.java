@@ -1,7 +1,6 @@
 package progAdmin.itemsToReview;
 
 import javax.swing.DefaultListModel;
-import javax.swing.event.ListDataListener;
 import program.ResourceManager;
 //-----------------------------------------------------------------------------
 /**
@@ -16,10 +15,12 @@ public class ItemsListModel extends DefaultListModel  {
 	    //this.itemsList = itemsList;
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public Object getElementAt(int index) {
 		return(rm.getItems().get(index));
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public int getSize() {
 		//return(itemsList.size());
 		return(rm.getItems().size());

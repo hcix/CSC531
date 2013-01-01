@@ -58,14 +58,17 @@ public class ScrollablePicture extends JLabel
     }
 //----------------------------------------------------------------------------- 
     //Methods required by the MouseMotionListener interface:
-    public void mouseMoved(MouseEvent e) { }
-    public void mouseDragged(MouseEvent e) {
+    @Override
+	public void mouseMoved(MouseEvent e) { }
+    @Override
+	public void mouseDragged(MouseEvent e) {
         //The user is dragging us, so scroll!
         Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
         scrollRectToVisible(r);
     }
 //----------------------------------------------------------------------------- 
-    public Dimension getPreferredSize() {
+    @Override
+	public Dimension getPreferredSize() {
         if (missingPicture) {
             return new Dimension(320, 480);
         } else {
@@ -73,11 +76,13 @@ public class ScrollablePicture extends JLabel
         }
     }
 //----------------------------------------------------------------------------- 
-    public Dimension getPreferredScrollableViewportSize() {
+    @Override
+	public Dimension getPreferredScrollableViewportSize() {
         return getPreferredSize();
     }
  
-    public int getScrollableUnitIncrement(Rectangle visibleRect,
+    @Override
+	public int getScrollableUnitIncrement(Rectangle visibleRect,
                                           int orientation,
                                           int direction) {
         //Get the current position.
@@ -102,7 +107,8 @@ public class ScrollablePicture extends JLabel
         }
     }
 //----------------------------------------------------------------------------- 
-    public int getScrollableBlockIncrement(Rectangle visibleRect,
+    @Override
+	public int getScrollableBlockIncrement(Rectangle visibleRect,
                                            int orientation,
                                            int direction) {
         if (orientation == SwingConstants.HORIZONTAL) {
@@ -112,11 +118,13 @@ public class ScrollablePicture extends JLabel
         }
     }
 //----------------------------------------------------------------------------- 
-    public boolean getScrollableTracksViewportWidth() {
+    @Override
+	public boolean getScrollableTracksViewportWidth() {
         return false;
     }
 //----------------------------------------------------------------------------- 
-    public boolean getScrollableTracksViewportHeight() {
+    @Override
+	public boolean getScrollableTracksViewportHeight() {
         return false;
     }
 //-----------------------------------------------------------------------------

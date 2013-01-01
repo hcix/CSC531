@@ -3,8 +3,6 @@ package shiftCdrTab.reports;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.text.DateFormat;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -35,6 +33,7 @@ public class ReportListRenderer implements ListCellRenderer, ListDataListener {
 		this.listModel = reportFileList.getModel();
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	@SuppressWarnings("rawtypes")
 	public Component getListCellRendererComponent(JList list,Object value,int index,
             boolean isSelected, boolean hasFocus) {

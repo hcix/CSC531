@@ -43,6 +43,10 @@ public class OfficerAssignment {
 		buildingChecks = new ArrayList<String>();
 	}
 //-----------------------------------------------------------------------------	
+	/**
+	 * 
+	 * @param officer
+	 */
 	OfficerAssignment(String officer){
 		this.officer = officer;
 		//call other OfficerAssignment constructor

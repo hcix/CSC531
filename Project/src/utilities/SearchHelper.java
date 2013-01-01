@@ -10,8 +10,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import shiftCdrTab.RollCall;
-import shiftCdrTab.reports.ShiftCdrReport;
-
 import blueBookTab.BlueBookEntry;
 import boloTab.Bolo;
 

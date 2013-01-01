@@ -10,6 +10,8 @@ import java.awt.Dimension;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+
 import net.miginfocom.swing.MigLayout;
 import org.jpedal.PdfDecoder;
 //-----------------------------------------------------------------------------
@@ -60,8 +62,8 @@ private static final long serialVersionUID = 1L;
 	  private static JScrollPane initPDFDisplay(PdfDecoder pdfDecoder, JPanel otherButtons) {
 	    
 	    JScrollPane scrollPane = new JScrollPane();
-	    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+	    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 	    
 	    scrollPane.setViewportView(pdfDecoder);
   
@@ -83,8 +85,8 @@ private static final long serialVersionUID = 1L;
 		}
 		
 	    JScrollPane scrollPane = new JScrollPane();
-	    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+	    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 	    
 	    scrollPane.setViewportView(pdfDecoder);
 	        
@@ -106,8 +108,8 @@ private static final long serialVersionUID = 1L;
 		}
 		
 	    JScrollPane scrollPane = new JScrollPane();
-	    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+	    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 	    
 	    scrollPane.setViewportView(pdfDecoder);
 	        
@@ -131,8 +133,8 @@ private static final long serialVersionUID = 1L;
 		}
 		
 	    JScrollPane scrollPane = new JScrollPane();
-	    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+	    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 	    scrollPane.setPreferredSize(new Dimension(660, 900));
 	    
 	    JPanel pdfView = new JPanel(new MigLayout());

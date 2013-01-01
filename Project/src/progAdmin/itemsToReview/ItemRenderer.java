@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ItemEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,6 +33,7 @@ public class ItemRenderer implements ListCellRenderer, ListDataListener {
 		listModel = itemsList.getModel();
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public Component getListCellRendererComponent(JList list,Object value,int index,
             boolean isSelected, boolean hasFocus) {
 

@@ -4,7 +4,6 @@
 package utilities;
 
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +14,6 @@ import java.nio.file.Paths;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import org.jpedal.examples.simpleviewer.SimpleViewer;
 
@@ -478,7 +476,8 @@ return dirName;
 		}
 	 
 	    //Accept all gif, jpg, tiff, pdf, or png files
-	    public boolean accept(File f) {
+	    @Override
+		public boolean accept(File f) {
 	        if (f.isDirectory()) {
 	            return true;
 	        }
@@ -502,7 +501,8 @@ return dirName;
 	    }
 	 
 	    //The description of this filter
-	    public String getDescription() {
+	    @Override
+		public String getDescription() {
 	        return "Images";
 	    }
 	}
@@ -514,7 +514,8 @@ return dirName;
 	public class TextFilter extends FileFilter {
 	 
 	    //Accept all doc, docx, pdf, txt, or rtf files
-	    public boolean accept(File f) {
+	    @Override
+		public boolean accept(File f) {
 	        if (f.isDirectory()) {
 	            return true;
 	        }
@@ -536,7 +537,8 @@ return dirName;
 	    }
 	 
 	    //The description of this filter
-	    public String getDescription() {
+	    @Override
+		public String getDescription() {
 	        return "Images";
 	    }
 	}
@@ -548,7 +550,8 @@ return dirName;
 	public class PDFFilter extends FileFilter {
 	 
 	    //Accept only pdf files
-	    public boolean accept(File f) {
+	    @Override
+		public boolean accept(File f) {
 	        if (f.isDirectory()) {
 	            return true;
 	        }
@@ -566,7 +569,8 @@ return dirName;
 	    }
 	 
 	    //The description of this filter
-	    public String getDescription() {
+	    @Override
+		public String getDescription() {
 	        return "PDF";
 	    }
 	}

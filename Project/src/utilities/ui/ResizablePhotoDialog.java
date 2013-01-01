@@ -85,7 +85,8 @@ private static final long serialVersionUID = 1L;
 		JButton saveImgButton = new JButton("Set Image");
 		p.add(saveImgButton);
 		saveImgButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		saveAndClose(photofilename);
 				//bolo.setPhotoFilePath(photoPath);	
 	    	}

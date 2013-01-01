@@ -1,6 +1,3 @@
-/**
- * Class containing data of a BOLO
- */
 package boloTab;
 
 import java.nio.file.Path;
@@ -10,8 +7,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import javax.swing.ImageIcon;
 import utilities.ui.ImageHandler;
-
 //-----------------------------------------------------------------------------
+/**
+ * The <code>Bolo</code> class represents all the data for a single BOLO (Be On the 
+ * Look Out) instance including age, race, sex, height, weight, build, eyes, hair, 
+ * reference, case number, status, weapon, incident date
+ */
 public class Bolo {
 	private String age, race, sex, height, weight, build, eyes, hair;
 	private String reference, caseNum, status, weapon;
@@ -24,7 +25,7 @@ public class Bolo {
 	private int boloID;
 //-----------------------------------------------------------------------------
 		/**
-		 * Creates a new BOLO object with all fields initially null
+		 * Creates a new <code>Bolo</code> object with all fields initially null
 		 */
 		public Bolo(){
 			fieldArray = new String[16];
@@ -78,7 +79,7 @@ public class Bolo {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return the sex
+	 * @return sex
 	 */
 	public String getSex() {
 		return sex;
@@ -93,14 +94,14 @@ public class Bolo {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return the height
+	 * @return height
 	 */
 	public String getHeight() {
 		return height;
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @param height the height to set
+	 * @param height
 	 */
 	public void setHeight(String height) {
 		this.height = height;
@@ -108,7 +109,7 @@ public class Bolo {
 	}
 //-----------------------------------------------------------------------------
 	/**
-	 * @return the weight
+	 * @return weight
 	 */
 	public String getWeight() {
 		return weight;

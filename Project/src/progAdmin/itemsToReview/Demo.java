@@ -36,10 +36,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-
 public class Demo extends JPanel {
   /*  JTextArea output;
     JList list; 
@@ -191,7 +187,8 @@ public class Demo extends JPanel {
     }*/
   //=============================================================================
     class SharedListSelectionHandler implements ListSelectionListener {
-        public void valueChanged(ListSelectionEvent e) { 
+        @Override
+		public void valueChanged(ListSelectionEvent e) { 
             ListSelectionModel lsm = (ListSelectionModel)e.getSource();
 
             int firstIndex = e.getFirstIndex();
@@ -233,23 +230,29 @@ public class Demo extends JPanel {
         }
 
         private TableModel tableModel = new AbstractTableModel() {
-            public String getColumnName(int column) {
+            @Override
+			public String getColumnName(int column) {
                 return columnNames[column];
             }
-            public int getRowCount() { 
+            @Override
+			public int getRowCount() { 
                 return size();
             }
-            public int getColumnCount() {
+            @Override
+			public int getColumnCount() {
                 return columnNames.length;
             }
-            public Object getValueAt(int row, int column) {
+            @Override
+			public Object getValueAt(int row, int column) {
                 String[] rowData = (String [])elementAt(row);
                 return rowData[column];
             }
-            public boolean isCellEditable(int row, int column) {
+            @Override
+			public boolean isCellEditable(int row, int column) {
                 return true;
             }
-            public void setValueAt(Object value, int row, int column) {
+            @Override
+			public void setValueAt(Object value, int row, int column) {
                 String newValue = (String)value;
                 String[] rowData = (String [])elementAt(row);
                 rowData[column] = newValue;
@@ -259,31 +262,40 @@ public class Demo extends JPanel {
         };
 
         //Implement the TableModel interface.
-        public int getRowCount() {
+        @Override
+		public int getRowCount() {
             return tableModel.getRowCount();
         }
-        public int getColumnCount() {
+        @Override
+		public int getColumnCount() {
             return tableModel.getColumnCount();
         }
-        public String getColumnName(int columnIndex) {
+        @Override
+		public String getColumnName(int columnIndex) {
             return tableModel.getColumnName(columnIndex);
         }
-        public Class getColumnClass(int columnIndex) {
+        @Override
+		public Class getColumnClass(int columnIndex) {
             return tableModel.getColumnClass(columnIndex);
         }
-        public boolean isCellEditable(int rowIndex, int columnIndex) {
+        @Override
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
             return tableModel.isCellEditable(rowIndex, columnIndex);
         }
-        public Object getValueAt(int rowIndex, int columnIndex) {
+        @Override
+		public Object getValueAt(int rowIndex, int columnIndex) {
             return tableModel.getValueAt(rowIndex, columnIndex);
         }
-        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        @Override
+		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             tableModel.setValueAt(aValue, rowIndex, columnIndex);
         }
-        public void addTableModelListener(TableModelListener l) {
+        @Override
+		public void addTableModelListener(TableModelListener l) {
             tableModel.addTableModelListener(l);
         }
-        public void removeTableModelListener(TableModelListener l) {
+        @Override
+		public void removeTableModelListener(TableModelListener l) {
             tableModel.removeTableModelListener(l);
         }
     }

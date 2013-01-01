@@ -1,7 +1,6 @@
 package progAdmin.itemsToReview;
 
 import javax.swing.DefaultListModel;
-import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
@@ -20,19 +19,23 @@ public class SharedDataModel extends DefaultListModel implements TableModel {
 	}
 //-----------------------------------------------------------------------------
 	/* Implement ListModel */
+	@Override
 	public Object getElementAt(int index) {
 		return(rm.getItems().get(index));
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public int getSize() {
 		return(rm.getItems().size());
 	}
 //-----------------------------------------------------------------------------
 	/* Implement the TableModel interface */
+	@Override
 	public int getRowCount() {
 		return tableModel.getColumnCount();
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public int getColumnCount() {
 		return columnNames.length;
 	}
@@ -41,10 +44,12 @@ public class SharedDataModel extends DefaultListModel implements TableModel {
 		fireContentsChanged(this,row, row);
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public String getColumnName(int columnIndex) {
 		return tableModel.getColumnName(columnIndex);
 	}
 //-----------------------------------------------------------------------------
+	@Override
 	public Class getColumnClass(int columnIndex) {
 		return tableModel.getColumnClass(columnIndex);
 	}
@@ -76,19 +81,23 @@ public class SharedDataModel extends DefaultListModel implements TableModel {
 //=============================================================================
 		/* Create the TableModel object */
 		private TableModel tableModel = new AbstractTableModel(){
+			@Override
 			public int getColumnCount() {
 				return columnNames.length;
 			}
 		//-----------------------------------------------------------------------------
+			@Override
 			public int getRowCount() {
 				return rm.getItems().size();
 			}
 		//-----------------------------------------------------------------------------
+			@Override
 			public String getColumnName(int col) {
 			    return columnNames[col];
 			}
 		//-----------------------------------------------------------------------------
-		    public Object getValueAt(int row, int col) {
+		    @Override
+			public Object getValueAt(int row, int col) {
 		
 		    	if(col==0){
 		    		return (rm.getItems().get(row).isReviewed());
@@ -106,6 +115,7 @@ public class SharedDataModel extends DefaultListModel implements TableModel {
 			 * then the 'reviewed' column would contain text ("true"/"false"),
 			 * rather than a check box.
 			 */
+			@Override
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int c) {
 			    return getValueAt(0, c).getClass();
@@ -114,6 +124,7 @@ public class SharedDataModel extends DefaultListModel implements TableModel {
 			/*
 			 * Implement this method if your table's data can change.
 			 */
+			@Override
 			public void setValueAt(Object value, int row, int col) {
 				fireTableCellUpdated(row, col);
 				rowChanged(row);

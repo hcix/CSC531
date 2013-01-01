@@ -1,6 +1,3 @@
-/**
- *  UI for gathering information of a BOLO
- */
 package boloTab;
 
 import java.awt.Container;
@@ -25,15 +22,17 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerDateModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import net.miginfocom.swing.MigLayout;
 import utilities.FileHelper;
 import utilities.ui.ImageHandler;
 import utilities.ui.ImagePreview;
 import utilities.ui.ResizablePhotoDialog;
 import utilities.ui.SwingHelper;
-
+//-----------------------------------------------------------------------------
+/**
+ * The <code>BOLOform</code> class is where the information of a given <code>Bolo</code>
+ * is entered by the user. 
+ */
 public class BOLOform extends JDialog {
 private static final long serialVersionUID = 1L;
 	JTextField ageField,raceField,sexField,heightField,weightField,buildField;
@@ -48,6 +47,11 @@ private static final long serialVersionUID = 1L;
 	JPanel dialogPanel;
 	boolean newBOLOWascreated;
 //-----------------------------------------------------------------------------
+	/**
+	 * Creates a new window, sets the window and creates a new <code>Bolo</code> instance
+	 * 
+	 * @param parent
+	 */
 	BOLOform(JFrame parent){
 		super(parent, "New BOLO", true);
 
@@ -72,6 +76,7 @@ private static final long serialVersionUID = 1L;
 
 		//Make sure that if the user hits the 'x', the window calls the closeAndCancel method
 		this.addWindowListener(new WindowAdapter( ) {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				closeAndCancel();
 			}
@@ -122,12 +127,21 @@ private static final long serialVersionUID = 1L;
 
 	}
 //-----------------------------------------------------------------------------	
+	/**
+	 * @see loadFromExistingBOLO()
+	 * @param parent
+	 * @param bolo
+	 */
 	BOLOform(JFrame parent, Bolo bolo){
 		this(parent);
 		this.bolo = bolo;
 		loadFromExistingBOLO();
 	}
 //-----------------------------------------------------------------------------	
+	/**
+	 * 
+	 * @return infoPanel
+	 */
 	public JPanel createPhysicalDescriptionPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout("","","[][][][][][nogrid]"));
 				
@@ -187,6 +201,10 @@ private static final long serialVersionUID = 1L;
 		return infoPanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @return infoPanel
+	 */
 	public JPanel createIncidentInfoPanel(){
 		JPanel infoPanel = new JPanel(new MigLayout());
 					
@@ -216,6 +234,10 @@ private static final long serialVersionUID = 1L;
 		return infoPanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @return narrativePanel
+	 */
 	public JPanel createNarrativePanel(){
 		JPanel narrativePanel = new JPanel(new MigLayout());
 		
@@ -234,6 +256,10 @@ private static final long serialVersionUID = 1L;
 		return narrativePanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @return adminPanel
+	 */
 	public JPanel createAdministrativePanel(){
 		JPanel adminPanel = new JPanel(new MigLayout());
 		
@@ -259,6 +285,10 @@ private static final long serialVersionUID = 1L;
 		return adminPanel;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * 
+	 * @return photoVideoPanel
+	 */
 	public JPanel createPhotoVideoPanel(){
 		JPanel photoVideoPanel = new JPanel(new MigLayout("fill"));
 		
@@ -274,6 +304,7 @@ private static final long serialVersionUID = 1L;
 				"icons/camera.png");
 		addPhotoButton.setToolTipText("Attach a photo to this BOLO");
 		addPhotoButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				chooseAndAddPhoto(photoPanel);
 			}
@@ -293,6 +324,9 @@ private static final long serialVersionUID = 1L;
 		return photoVideoPanel;
 	}
 //-----------------------------------------------------------------------------
+	/*
+	 * 
+	 */
 	public JPanel createButtonsPanel(){
 	
 		JPanel buttonsPanel = new JPanel(new MigLayout("fillx", "push"));
@@ -302,6 +336,7 @@ private static final long serialVersionUID = 1L;
 				"icons/cancel_48.png");
 		cancelButton.setToolTipText("Cancel and do not save");
 		cancelButton.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent ae) {
 				closeAndCancel();
 			}
@@ -312,7 +347,8 @@ private static final long serialVersionUID = 1L;
 	    		"icons/save_48.png");
 	    saveButton.setToolTipText("Save BOLO");
 	    saveButton.addActionListener(new ActionListener( ) {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		saveAndClose();
 	    	}
 	    });
@@ -321,7 +357,8 @@ private static final long serialVersionUID = 1L;
 	    JButton previewButton = new JButton("Preview");
 	    previewButton.setToolTipText("Preview and print final BOLO document");
 	    previewButton.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 	    		//setVisible(false);
 	    		putInfoIntoBoloObject();
 	    		BOLOpreview preview = new BOLOpreview(parent, bolo);
@@ -463,6 +500,10 @@ private static final long serialVersionUID = 1L;
 		 
 	}
 //-----------------------------------------------------------------------------
+	 /**
+	  * 
+	  * @param photoPanel
+	  */
 	 public void chooseAndAddPhoto(final JPanel photoPanel){
 		//show choose photo dialog
 		final JFileChooser fc = new JFileChooser();
@@ -525,6 +566,9 @@ private static final long serialVersionUID = 1L;
 		this.dispose();	
 	 }
 //-----------------------------------------------------------------------------
+	 /**
+	  * Erases <code>BOLOfrom</code>
+	  */
 	 public void eraseForm(){
 		//set the text of all the form's fields to null
 		ageField.setText(null);
@@ -552,7 +596,11 @@ private static final long serialVersionUID = 1L;
 		(photoArea.getParent()).validate();
 	 }
 //-----------------------------------------------------------------------------
-	  public long getPrepDateEpoch(){
+	 /**
+	  *  
+	  * @return preparedCal.getTimeInMillis()/1000
+	  */
+	 public long getPrepDateEpoch(){
 		  Date day = new Date();
 		  Date time = new Date();
 
@@ -571,7 +619,11 @@ private static final long serialVersionUID = 1L;
 		  return (preparedCal.getTimeInMillis()/1000);
 	  }
 //-----------------------------------------------------------------------------
-  public long getIncidentDateEpoch(){
+	  /**
+	   * 
+	   * @return incidentCal.getTimeInMillis()/1000
+	   */
+	  public long getIncidentDateEpoch(){
 		  Date day = new Date();
 		  Date time = new Date();
 		  
@@ -588,10 +640,14 @@ private static final long serialVersionUID = 1L;
 		  incidentCal.set(Calendar.AM_PM, timeCal.get(Calendar.AM_PM));
 		  
 		  return (incidentCal.getTimeInMillis()/1000); 
-		}
+	  }
 //-----------------------------------------------------------------------------	
-  public boolean isNewBOLOWascreated(){
-	  return this.newBOLOWascreated;
-  }
+	  /**
+	   * 
+	   * @return this.newBOLOWascreated
+	   */
+	  public boolean isNewBOLOWascreated(){
+		  return this.newBOLOWascreated;
+	  }
 //-----------------------------------------------------------------------------	
 }

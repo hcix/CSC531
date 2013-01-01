@@ -19,6 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import net.miginfocom.swing.MigLayout;
 import utilities.DatabaseHelper;
 import utilities.ui.ImageHandler;
@@ -26,14 +28,22 @@ import utilities.ui.DisplayPanel;
 import utilities.ui.SwingHelper;
 //-----------------------------------------------------------------------------
 /**
- * JDOC
+ * The class <code>BOLOtab</code> creates a tab on the UMPD Management System
+ * to hold information of <code>Bolo</code>s (Be On the Look Out) and organize them
+ * into Recent <code>Bolo</code>s and Archived <code>Bolo</code>s  
  */
 public class BOLOtab extends JPanel  implements ActionListener {
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	ArrayList<Bolo> boloList;
 	JFrame parent;
 	JPanel recentBolosTab;
 //-----------------------------------------------------------------------------
+	/**
+	 * Create the <code>BOLOtab</code> to hold Recent <code>Bolo</code>s and 
+	 * Archived <code>Bolo</code>s  
+	 * 
+	 * @param parent
+	 */
 	public BOLOtab(final JFrame parent){
 		this.setLayout(new BorderLayout());
 				
@@ -58,6 +68,7 @@ private static final long serialVersionUID = 1L;
 		newBOLOButton.addActionListener(new ActionListener() {
 			//BOLO form dialog
 			BOLOform formDialog = new BOLOform(parent);
+			@Override
 			public void actionPerformed(ActionEvent e){
 				formDialog.setVisible(true);	
 				
@@ -78,6 +89,7 @@ private static final long serialVersionUID = 1L;
 
 		importBOLOButton.addActionListener(new ActionListener() {
 			//file chooser dialog
+			@Override
 			public void actionPerformed(ActionEvent e){
 				//file chooser dialog .setVisable(true);
 				//Create a file chooser
@@ -96,6 +108,7 @@ private static final long serialVersionUID = 1L;
 		searchButton.addActionListener(new ActionListener() {
 			//Search dialog
 			JDialog searchDialog = createSearchDialog(parent);
+			@Override
 			public void actionPerformed(ActionEvent e){
 				searchDialog.setVisible(true);
 			}
@@ -111,6 +124,13 @@ private static final long serialVersionUID = 1L;
 		
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * Creates a search dialog for the <code>BOLOtab</code> when the 
+	 * <code>searchButton</code> is clicked
+	 * 
+	 * @param parent  the JFrame parent 
+	 * @return searchDialog
+	 */
 	JDialog createSearchDialog(JFrame parent){
 		//Create the dialog and set the size
 		JDialog searchDialog = new JDialog(parent, "Search BOLO Database", true);
@@ -153,6 +173,11 @@ private static final long serialVersionUID = 1L;
 		return searchDialog;
 	}
 //-----------------------------------------------------------------------------
+	/**
+	 * In the <code>BOLOtab</code> create and set a recent BOLO tab as a JPanel
+	 * 
+	 * @return recentBOLOsPanel
+	 */
 	public JPanel createRecentBOLOsTab(){
 		JPanel recentBOLOsPanel = new JPanel(new MigLayout());
 		JPanel boloPanel;
@@ -192,7 +217,7 @@ private static final long serialVersionUID = 1L;
 				armedText = ("<html><center><font color=#FF0000>ARMED</font></center></html>");
 			}
 			
-			boloPanel.add(new JLabel(armedText, JLabel.CENTER), "alignx center,wrap");
+			boloPanel.add(new JLabel(armedText, SwingConstants.CENTER), "alignx center,wrap");
 			
 			boloPanel.add(new JLabel(date), "split 3, aligny top");
 			boloPanel.add(new JLabel("Case#: "+caseNum));
@@ -212,7 +237,7 @@ private static final long serialVersionUID = 1L;
 		return recentBOLOsPanel;
 	}
 //-----------------------------------------------------------------------------		
-	/* (non-Javadoc)
+	/** 
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
